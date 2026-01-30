@@ -3,9 +3,7 @@ import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useAlert } from 'dashboard/composables';
-import { useAccount } from 'dashboard/composables/useAccount';
 import { useCaptain } from 'dashboard/composables/useCaptain';
-import { useConfig } from 'dashboard/composables/useConfig';
 import { useCaptainConfigStore } from 'dashboard/store/captain/preferences';
 
 import SettingsLayout from '../SettingsLayout.vue';
@@ -17,8 +15,6 @@ import CaptainPaywall from 'next/captain/pageComponents/Paywall.vue';
 
 const { t } = useI18n();
 const { captainEnabled } = useCaptain();
-const { isEnterprise, enterprisePlanName } = useConfig();
-const { isOnChatwootCloud } = useAccount();
 
 const captainConfigStore = useCaptainConfigStore();
 const { uiFlags } = storeToRefs(captainConfigStore);
@@ -59,34 +55,13 @@ const featureToggles = computed(() => [
   },
 ]);
 
-const shouldShowFeature = feature => {
-  // Cloud will always see these features as long as captain is enabled
-  if (isOnChatwootCloud.value && captainEnabled) {
-    return true;
-  }
-
-  if (feature.enterprise) {
-    // if the app is in enterprise mode, then we can show the feature
-    // this is not the installation plan, but when the enterprise folder is missing
-    return isEnterprise;
-  }
-
+const shouldShowFeature = () => {
+  // Always show all Captain features
   return true;
 };
 
-const isFeatureAccessible = feature => {
-  // Cloud will always see these features as long as captain is enabled
-  if (isOnChatwootCloud.value && captainEnabled) {
-    return true;
-  }
-
-  if (feature.enterprise) {
-    // plan is shown, but is it accessible?
-    // This ensures that the instance has purchased the enterprise license, and only then we allow
-    // access
-    return isEnterprise && enterprisePlanName === 'enterprise';
-  }
-
+const isFeatureAccessible = () => {
+  // Always allow access to all Captain features
   return true;
 };
 
