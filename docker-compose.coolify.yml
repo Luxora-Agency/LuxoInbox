@@ -3,11 +3,15 @@ version: '3'
 services:
   base: &base
     image: ghcr.io/luxora-agency/luxoinbox:develop
+    env_file: .env
     volumes:
       - storage_data:/app/storage
 
   rails:
     <<: *base
+    depends_on:
+      - postgres
+      - redis
     expose:
       - "3000"
     environment:
@@ -20,6 +24,9 @@ services:
 
   sidekiq:
     <<: *base
+    depends_on:
+      - postgres
+      - redis
     environment:
       - NODE_ENV=production
       - RAILS_ENV=production
@@ -27,5 +34,29 @@ services:
     command: ['bundle', 'exec', 'sidekiq', '-C', 'config/sidekiq.yml']
     restart: always
 
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: always
+    expose:
+      - "5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=chatwoot
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  redis:
+    image: redis:alpine
+    restart: always
+    command: ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\""]
+    env_file: .env
+    expose:
+      - "6379"
+    volumes:
+      - redis_data:/data
+
 volumes:
   storage_data:
+  postgres_data:
+  redis_data:
