@@ -180,7 +180,7 @@ export default {
             <woot-label
               variant="dashed"
               v-bind="label"
-              :bg-color="selectedLabels.includes(label.title) ? '#2781F6' : ''"
+              :bg-color="selectedLabels.includes(label.title) ? '#D946EF' : ''"
             />
           </button>
           <NextButton

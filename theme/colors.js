@@ -11,22 +11,24 @@ const {
   redDark,
   violet,
   violetDark,
+  pink,
+  pinkDark,
 } = require('@radix-ui/colors');
 
 export const colors = {
   woot: {
-    25: blue.blue2,
-    50: blue.blue3,
-    75: blue.blue4,
-    100: blue.blue5,
-    200: blue.blue7,
-    300: blue.blue8,
-    400: blueDark.blue11,
-    500: blueDark.blue10,
-    600: blueDark.blue9,
-    700: blueDark.blue8,
-    800: blueDark.blue6,
-    900: blueDark.blue2,
+    25: pink.pink2,
+    50: pink.pink3,
+    75: pink.pink4,
+    100: pink.pink5,
+    200: pink.pink7,
+    300: pink.pink8,
+    400: pinkDark.pink11,
+    500: pinkDark.pink10,
+    600: pinkDark.pink9,
+    700: pinkDark.pink8,
+    800: pinkDark.pink6,
+    900: pinkDark.pink2,
   },
   green: {
     50: greenDark.green12,
@@ -226,7 +228,7 @@ export const colors = {
     },
 
     black: '#000000',
-    brand: '#2781F6',
+    brand: '#D946EF',
     background: 'rgb(var(--background-color) / <alpha-value>)',
     'input-background': 'rgba(var(--background-input-box))',
     surface: {
