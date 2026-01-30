@@ -1,4 +1,14 @@
-# Chatwoot Development Guidelines
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Overview
+
+Chatwoot is an open-source customer support platform (alternative to Intercom/Zendesk) built with:
+- **Backend**: Rails 7.1 (Ruby 3.4.4)
+- **Frontend**: Vue 3 with Vite
+- **Database**: PostgreSQL + Redis
+- **Background Jobs**: Sidekiq
 
 ## Build / Test / Lint
 
@@ -10,9 +20,25 @@
 - **Test Ruby**: `bundle exec rspec spec/path/to/file_spec.rb`
 - **Single Test**: `bundle exec rspec spec/path/to/file_spec.rb:LINE_NUMBER`
 - **Run Project**: `overmind start -f Procfile.dev`
+- **Storybook**: `pnpm story:dev` (Histoire for component documentation)
 - **Ruby Version**: Manage Ruby via `rbenv` and install the version listed in `.ruby-version` (e.g., `rbenv install $(cat .ruby-version)`)
 - **rbenv setup**: Before running any `bundle` or `rspec` commands, init rbenv in your shell (`eval "$(rbenv init -)"`) so the correct Ruby/Bundler versions are used
 - Always prefer `bundle exec` for Ruby CLI tasks (rspec, rake, rubocop, etc.)
+
+## Architecture
+
+### Key Directories
+- `app/javascript/dashboard/` - Main Vue dashboard app
+- `app/javascript/widget/` - Embeddable chat widget
+- `app/javascript/portal/` - Help center/customer portal
+- `app/services/` - Business logic (extracted from controllers)
+- `app/policies/` - Pundit authorization policies
+- `lib/custom_exceptions/` - Custom exception classes
+- `enterprise/` - Enterprise Edition overlay (extends/overrides OSS)
+
+### Branching Model
+- Uses git-flow; base branch is `develop`
+- Stable releases on `master` with `v1.x.x` tags
 
 ## Code Style
 
