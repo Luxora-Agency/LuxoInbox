@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    image: ghcr.io/luxora-agency/luxoinbox:develop
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=production
+      - NODE_ENV=production
+      - RAILS_LOG_TO_STDOUT=enabled
+      - RAILS_SERVE_STATIC_FILES=1
+    restart: unless-stopped
