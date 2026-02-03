@@ -32,7 +32,7 @@ const config = computed(
 
 <template>
   <div
-    class="flex gap-1 justify-center items-center px-1.5 py-1 rounded-md shadow outline-1 outline outline-n-container bg-n-solid-2"
+    class="flex gap-1 justify-center items-center px-1.5 py-1 rounded-lg shadow outline-1 outline outline-n-container bg-n-solid-2"
   >
     <Icon :icon="config.icon" class="size-4" :class="config.colorClass" />
     <span class="text-xs" :class="config.colorClass">{{

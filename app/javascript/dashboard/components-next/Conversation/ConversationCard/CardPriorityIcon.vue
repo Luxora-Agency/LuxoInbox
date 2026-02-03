@@ -11,7 +11,7 @@ defineProps({
 
 <!-- eslint-disable vue/no-static-inline-styles -->
 <template>
-  <div class="inline-flex items-center justify-center rounded-md">
+  <div class="inline-flex items-center justify-center rounded-lg">
     <!-- Low Priority -->
     <svg
       v-if="priority === CONVERSATION_PRIORITY.LOW"
