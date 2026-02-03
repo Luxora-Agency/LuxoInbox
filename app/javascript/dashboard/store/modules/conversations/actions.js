@@ -345,6 +345,18 @@ const actions = {
     }
   },
 
+  forwardMessage: async (
+    _,
+    { conversationId, messageId, targetConversationIds }
+  ) => {
+    const response = await MessageApi.forwardMessage(
+      conversationId,
+      messageId,
+      targetConversationIds
+    );
+    return response.data;
+  },
+
   deleteConversation: async ({ commit, dispatch }, conversationId) => {
     try {
       await ConversationApi.delete(conversationId);
