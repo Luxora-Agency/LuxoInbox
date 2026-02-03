@@ -78,7 +78,7 @@ const togglePortalSwitcher = () => {
                 variant="ghost"
                 color="slate"
                 size="xs"
-                class="rounded-md group-hover:bg-n-slate-3 hover:bg-n-slate-3"
+                class="rounded-lg group-hover:bg-n-slate-3 hover:bg-n-slate-3"
                 @click="togglePortalSwitcher"
               />
 

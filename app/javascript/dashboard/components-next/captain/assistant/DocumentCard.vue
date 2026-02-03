@@ -93,7 +93,7 @@ const handleAction = ({ action, value }) => {
             icon="i-lucide-ellipsis-vertical"
             color="slate"
             size="xs"
-            class="rounded-md group-hover:bg-n-alpha-2"
+            class="rounded-lg group-hover:bg-n-alpha-2"
             @click="toggleDropdown()"
           />
           <DropdownMenu

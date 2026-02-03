@@ -98,7 +98,7 @@ const pageInfo = computed(() => {
         @click="changePage(currentPage - 1)"
       />
       <div class="inline-flex items-center gap-2 text-sm text-n-slate-11">
-        <span class="px-3 tabular-nums py-0.5 bg-n-alpha-black2 rounded-md">
+        <span class="px-3 tabular-nums py-0.5 bg-n-alpha-black2 rounded-lg">
           {{ formatFullNumber(currentPage) }}
         </span>
         <span class="truncate">

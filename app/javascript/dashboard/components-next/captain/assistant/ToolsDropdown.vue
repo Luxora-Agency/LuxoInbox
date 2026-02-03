@@ -44,7 +44,7 @@ watch(
       :id="`tool-item-${idx}`"
       :key="tool.id || idx"
       :class="{ 'bg-n-alpha-black2': idx === selectedIndex }"
-      class="flex flex-col gap-1 rounded-md py-2 px-2 cursor-pointer hover:bg-n-alpha-black2"
+      class="flex flex-col gap-1 rounded-lg py-2 px-2 cursor-pointer hover:bg-n-alpha-black2"
       @click="onItemClick(idx)"
     >
       <span class="text-n-slate-12 font-medium text-sm">{{ tool.title }}</span>
