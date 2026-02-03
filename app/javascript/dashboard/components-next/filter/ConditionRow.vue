@@ -144,7 +144,7 @@ defineExpose({ validate });
 <template>
   <li class="list-none">
     <div
-      class="flex items-center gap-2 rounded-md"
+      class="flex items-center gap-2 rounded-xl"
       :class="{
         'animate-wiggle': showErrors && validationError,
       }"

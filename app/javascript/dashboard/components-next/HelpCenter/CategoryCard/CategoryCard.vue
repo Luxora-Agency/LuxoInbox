@@ -107,7 +107,7 @@ const handleAction = ({ action, value }) => {
             color="slate"
             size="xs"
             variant="ghost"
-            class="rounded-md group-hover:bg-n-alpha-2"
+            class="rounded-lg group-hover:bg-n-alpha-2"
             @click="toggleDropdown()"
           />
           <DropdownMenu

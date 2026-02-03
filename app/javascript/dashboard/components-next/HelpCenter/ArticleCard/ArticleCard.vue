@@ -133,7 +133,7 @@ const handleClick = id => {
       </span>
       <div class="flex items-center gap-2">
         <span
-          class="text-xs font-medium inline-flex items-center h-6 px-2 py-0.5 rounded-md bg-n-alpha-2"
+          class="text-xs font-medium inline-flex items-center h-6 px-2.5 py-0.5 rounded-lg bg-n-alpha-2"
           :class="statusTextColor"
         >
           {{ statusText }}
@@ -146,7 +146,7 @@ const handleClick = id => {
             icon="i-lucide-ellipsis-vertical"
             color="slate"
             size="xs"
-            class="rounded-md group-hover:bg-n-alpha-2"
+            class="rounded-lg group-hover:bg-n-alpha-2"
             @click="toggleDropdown()"
           />
           <DropdownMenu

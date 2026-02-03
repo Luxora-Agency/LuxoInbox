@@ -154,7 +154,7 @@ onBeforeMount(contextMenuActions.close);
 <template>
   <div
     role="button"
-    class="flex flex-col w-full gap-1 p-3 transition-all duration-300 ease-in-out cursor-pointer"
+    class="flex flex-col w-full gap-1 p-3 transition-all duration-200 ease-out cursor-pointer hover:bg-n-alpha-2 rounded-xl"
     @contextmenu="contextMenuActions.open($event)"
     @click="emit('click')"
   >

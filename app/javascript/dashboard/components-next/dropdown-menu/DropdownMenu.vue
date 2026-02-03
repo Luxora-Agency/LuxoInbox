@@ -123,7 +123,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="bg-n-alpha-3 backdrop-blur-[100px] border-0 outline outline-1 outline-n-container absolute rounded-xl z-50 gap-2 flex flex-col min-w-[136px] shadow-lg pb-2 px-2"
+    class="bg-n-alpha-3 backdrop-blur-[100px] border-0 ring-1 ring-n-weak/50 absolute rounded-2xl z-50 gap-2 flex flex-col min-w-[136px] shadow-xl shadow-n-slate-12/5 pb-2 px-2"
     :class="{
       'pt-2': !showSearch,
     }"
