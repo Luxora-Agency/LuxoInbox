@@ -59,15 +59,27 @@ class Attachment < ApplicationRecord
     file.attached? ? file.blob.url : ''
   end
 
+  # Thumbnail dimensions optimized for mobile screens (retina/high-DPI)
+  THUMB_MAX_WIDTH = 480
+  THUMB_MAX_HEIGHT = 480
+
   def thumb_url
     return '' unless file.attached? && image?
 
     begin
       # resize_to_limit maintains aspect ratio without cropping
-      url_for(file.representation(resize_to_limit: [250, 250]))
+      # Use processed.url for direct access without redirects (fixes issues on mobile apps)
+      representation = file.representation(resize_to_limit: [THUMB_MAX_WIDTH, THUMB_MAX_HEIGHT])
+      representation.processed
+      ActiveStorage::Current.url_options = Rails.application.routes.default_url_options if ActiveStorage::Current.url_options.blank?
+      representation.url
     rescue ActiveStorage::UnrepresentableError => e
       Rails.logger.warn "Unrepresentable image attachment: #{id} (#{file.filename}) - #{e.message}"
       ''
+    rescue StandardError => e
+      Rails.logger.warn "Error generating thumbnail for attachment #{id}: #{e.message}"
+      # Fallback to original image URL if thumbnail generation fails
+      download_url
     end
   end
 
