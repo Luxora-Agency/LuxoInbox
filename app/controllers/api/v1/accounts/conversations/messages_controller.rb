@@ -54,6 +54,16 @@ class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::
     render json: { content: translated_content }
   end
 
+  def forward
+    forwarded = Messages::ForwardService.new(
+      message: message,
+      target_conversation_ids: params[:conversation_ids],
+      user: Current.user
+    ).perform
+
+    render json: { success: true, forwarded_count: forwarded.length }
+  end
+
   private
 
   def message
@@ -65,7 +75,7 @@ class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::
   end
 
   def permitted_params
-    params.permit(:id, :target_language, :status, :external_error)
+    params.permit(:id, :target_language, :status, :external_error, conversation_ids: [])
   end
 
   def already_translated_content_available?

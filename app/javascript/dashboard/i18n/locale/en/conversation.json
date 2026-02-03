@@ -266,6 +266,7 @@
       "DELETE": "Delete",
       "CREATE_A_CANNED_RESPONSE": "Add to canned responses",
       "TRANSLATE": "Translate",
+      "FORWARD": "Forward",
       "COPY_PERMALINK": "Copy link to the message",
       "LINK_COPIED": "Message URL copied to the clipboard",
       "DELETE_CONFIRMATION": {
@@ -275,6 +276,16 @@
         "CANCEL": "Cancel"
       }
     },
+    "FORWARD": {
+      "TITLE": "Forward message",
+      "SEARCH_PLACEHOLDER": "Search conversations...",
+      "NO_RESULTS": "No conversations found",
+      "FORWARD": "Forward",
+      "CANCEL": "Cancel",
+      "SUCCESS": "Message forwarded to {count} conversation(s)",
+      "ERROR": "Failed to forward message"
+    },
+    "FORWARDED": "Forwarded",
     "SIDEBAR": {
       "CONTACT": "Contact",
       "COPILOT": "Copilot"

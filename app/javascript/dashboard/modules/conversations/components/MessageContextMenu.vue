@@ -4,6 +4,7 @@ import { mapGetters } from 'vuex';
 import { useMessageFormatter } from 'shared/composables/useMessageFormatter';
 import ContextMenu from 'dashboard/components/ui/ContextMenu.vue';
 import AddCannedModal from 'dashboard/routes/dashboard/settings/canned/AddCanned.vue';
+import ForwardMessageModal from 'dashboard/components/widgets/conversation/ForwardMessageModal.vue';
 import { useSnakeCase } from 'dashboard/composables/useTransformKeys';
 import { copyTextToClipboard } from 'shared/helpers/clipboard';
 import { conversationUrl, frontendURL } from '../../../helper/URLHelper';
@@ -18,6 +19,7 @@ import NextButton from 'dashboard/components-next/button/Button.vue';
 export default {
   components: {
     AddCannedModal,
+    ForwardMessageModal,
     MenuItem,
     ContextMenu,
     NextButton,
@@ -56,6 +58,7 @@ export default {
     return {
       isCannedResponseModalOpen: false,
       showDeleteModal: false,
+      showForwardModal: false,
     };
   },
   computed: {
@@ -152,6 +155,13 @@ export default {
     closeDeleteModal() {
       this.showDeleteModal = false;
     },
+    openForwardModal() {
+      this.handleClose();
+      this.showForwardModal = true;
+    },
+    closeForwardModal() {
+      this.showForwardModal = false;
+    },
   },
 };
 </script>
@@ -180,6 +190,15 @@ export default {
       :message="$t('CONVERSATION.CONTEXT_MENU.DELETE_CONFIRMATION.MESSAGE')"
       :confirm-text="$t('CONVERSATION.CONTEXT_MENU.DELETE_CONFIRMATION.DELETE')"
       :reject-text="$t('CONVERSATION.CONTEXT_MENU.DELETE_CONFIRMATION.CANCEL')"
+    />
+    <!-- Forward Message Modal -->
+    <ForwardMessageModal
+      v-if="showForwardModal && enabledOptions['forward']"
+      :show="showForwardModal"
+      :message="message"
+      :conversation-id="conversationId"
+      @close="closeForwardModal"
+      @update:show="showForwardModal = $event"
     />
     <NextButton
       v-if="!hideButton"
@@ -223,6 +242,15 @@ export default {
           }"
           variant="icon"
           @click.stop="handleTranslate"
+        />
+        <MenuItem
+          v-if="enabledOptions['forward']"
+          :option="{
+            icon: 'arrow-forward',
+            label: $t('CONVERSATION.CONTEXT_MENU.FORWARD'),
+          }"
+          variant="icon"
+          @click.stop="openForwardModal"
         />
         <hr />
         <MenuItem
