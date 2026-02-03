@@ -96,7 +96,7 @@ const handleSuggestion = opt => {
         <button
           v-for="prompt in promptOptions"
           :key="prompt.label"
-          class="w-full px-3 py-2 rounded-md border border-n-weak bg-n-slate-2 text-n-slate-11 flex items-center justify-between hover:bg-n-slate-3 transition-colors"
+          class="w-full px-3 py-2 rounded-lg border border-n-weak bg-n-slate-2 text-n-slate-11 flex items-center justify-between hover:bg-n-slate-3 transition-colors"
           @click="handleSuggestion(prompt)"
         >
           <span>{{ t(prompt.label) }}</span>

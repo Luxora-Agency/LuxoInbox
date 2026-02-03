@@ -128,7 +128,7 @@ const handleDocumentableClick = () => {
   <CardLayout
     selectable
     class="relative"
-    :class="{ 'rounded-md': compact }"
+    :class="{ 'rounded-xl': compact }"
     @mouseenter="emit('hover', true)"
     @mouseleave="emit('hover', false)"
   >
@@ -149,7 +149,7 @@ const handleDocumentableClick = () => {
             icon="i-lucide-ellipsis-vertical"
             color="slate"
             size="xs"
-            class="rounded-md group-hover:bg-n-alpha-2"
+            class="rounded-lg group-hover:bg-n-alpha-2"
             @click="toggleDropdown()"
           />
           <DropdownMenu

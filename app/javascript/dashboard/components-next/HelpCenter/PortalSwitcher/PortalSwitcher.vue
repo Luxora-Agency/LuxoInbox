@@ -111,7 +111,7 @@ const redirectToPortalHomePage = () => {
             color="slate"
             icon-lib="lucide"
             size="sm"
-            class="!w-6 !h-6 hover:bg-n-slate-2 text-n-slate-11 !p-0.5 rounded-md"
+            class="!w-6 !h-6 hover:bg-n-slate-2 text-n-slate-11 !p-0.5 rounded-lg"
             @click="onClickPreviewPortal"
           />
         </div>

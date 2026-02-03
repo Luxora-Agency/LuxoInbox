@@ -145,7 +145,7 @@ const handleCreateAssistant = () => {
                       size="xs"
                       :disabled="isFetchingAssistants"
                       :is-loading="isFetchingAssistants"
-                      class="rounded-md group-hover:bg-n-slate-3 hover:bg-n-slate-3 [&>span]:size-4"
+                      class="rounded-lg group-hover:bg-n-slate-3 hover:bg-n-slate-3 [&>span]:size-4"
                       @click="toggleAssistantSwitcher"
                     />
 

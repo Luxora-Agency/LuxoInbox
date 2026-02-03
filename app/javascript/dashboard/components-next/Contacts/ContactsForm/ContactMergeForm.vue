@@ -43,7 +43,7 @@ const { t } = useI18n();
           {{ t('CONTACTS_LAYOUT.SIDEBAR.MERGE.PRIMARY') }}
         </label>
         <span
-          class="flex items-center justify-center w-24 h-5 text-xs rounded-md text-n-teal-11 bg-n-alpha-2"
+          class="flex items-center justify-center w-24 h-5 text-xs rounded-lg text-n-teal-11 bg-n-alpha-2"
         >
           {{ t('CONTACTS_LAYOUT.SIDEBAR.MERGE.PRIMARY_HELP_LABEL') }}
         </span>
@@ -85,7 +85,7 @@ const { t } = useI18n();
           {{ t('CONTACTS_LAYOUT.SIDEBAR.MERGE.PARENT') }}
         </label>
         <span
-          class="flex items-center justify-center w-24 h-5 text-xs rounded-md text-n-ruby-11 bg-n-alpha-2"
+          class="flex items-center justify-center w-24 h-5 text-xs rounded-lg text-n-ruby-11 bg-n-alpha-2"
         >
           {{ t('CONTACTS_LAYOUT.SIDEBAR.MERGE.PARENT_HELP_LABEL') }}
         </span>

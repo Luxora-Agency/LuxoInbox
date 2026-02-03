@@ -25,7 +25,7 @@ defineProps({
 
 <template>
   <button
-    class="flex flex-col gap-4 w-full h-fit p-4 rounded-md border border-n-weak dark:border-n-weak"
+    class="flex flex-col gap-4 w-full h-fit p-4 rounded-xl border border-n-weak dark:border-n-weak"
     :class="{
       'border-n-brand ': active,
     }"

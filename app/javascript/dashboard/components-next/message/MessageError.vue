@@ -24,7 +24,7 @@ const canRetry = computed(() => !hasOneDayPassed(createdAt.value));
     <span>{{ t('CHAT_LIST.FAILED_TO_SEND') }}</span>
     <div class="relative group">
       <div
-        class="bg-n-alpha-2 rounded-md size-5 grid place-content-center cursor-pointer"
+        class="bg-n-alpha-2 rounded-lg size-5 grid place-content-center cursor-pointer"
       >
         <Icon
           icon="i-lucide-alert-triangle"
@@ -45,7 +45,7 @@ const canRetry = computed(() => !hasOneDayPassed(createdAt.value));
       v-if="canRetry"
       type="button"
       :disabled="status !== MESSAGE_STATUS.FAILED"
-      class="bg-n-alpha-2 rounded-md size-5 grid place-content-center cursor-pointer"
+      class="bg-n-alpha-2 rounded-lg size-5 grid place-content-center cursor-pointer"
       @click="emit('retry')"
     >
       <Icon icon="i-lucide-refresh-ccw" class="text-n-ruby-11 size-[14px]" />

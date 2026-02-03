@@ -143,7 +143,7 @@ export default {
             v-for="option in sortOptions"
             :key="option.key"
             role="button"
-            class="flex rounded-md h-5 w-full items-center justify-between px-1.5 py-0.5 gap-2 whitespace-nowrap"
+            class="flex rounded-lg h-5 w-full items-center justify-between px-1.5 py-0.5 gap-2 whitespace-nowrap"
             :class="{
               'bg-n-brand/10 dark:bg-n-brand/10': activeSort === option.key,
             }"
@@ -152,7 +152,7 @@ export default {
             <span
               class="text-xs font-medium hover:text-n-brand truncate min-w-0 dark:hover:text-n-brand"
               :class="{
-                'text-n-blue-11 dark:text-n-blue-11': activeSort === option.key,
+                'text-n-brand dark:text-n-brand': activeSort === option.key,
                 'text-n-slate-11': activeSort !== option.key,
               }"
             >
@@ -160,7 +160,7 @@ export default {
             </span>
             <span
               v-if="activeSort === option.key"
-              class="i-lucide-check size-2.5 flex-shrink-0 text-n-blue-11"
+              class="i-lucide-check size-2.5 flex-shrink-0 text-n-brand"
             />
           </div>
         </div>

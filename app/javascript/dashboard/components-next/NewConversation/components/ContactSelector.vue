@@ -105,7 +105,7 @@ const handleInput = value => {
 
       <div
         v-if="isCreatingContact"
-        class="flex items-center gap-1.5 rounded-md bg-n-alpha-2 px-3 min-h-7 min-w-0"
+        class="flex items-center gap-1.5 rounded-lg bg-n-alpha-2 px-3 min-h-7 min-w-0"
       >
         <span class="text-sm truncate text-n-slate-12">
           {{ t(`${i18nPrefix}.CONTACT_CREATING`) }}
@@ -113,7 +113,7 @@ const handleInput = value => {
       </div>
       <div
         v-else-if="selectedContact"
-        class="flex items-center gap-1.5 rounded-md bg-n-alpha-2 min-h-7 min-w-0"
+        class="flex items-center gap-1.5 rounded-lg bg-n-alpha-2 min-h-7 min-w-0"
         :class="!contactId ? 'ltr:pl-3 rtl:pr-3 ltr:pr-1 rtl:pl-1' : 'px-3'"
       >
         <span class="text-sm truncate text-n-slate-12">

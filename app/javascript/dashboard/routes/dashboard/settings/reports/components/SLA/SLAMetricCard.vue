@@ -37,7 +37,7 @@ export default {
     </span>
     <div
       v-if="isLoading"
-      class="w-12 h-6 mb-0.5 rounded-md bg-n-slate-3 animate-pulse"
+      class="w-12 h-6 mb-0.5 rounded-lg bg-n-slate-3 animate-pulse"
     />
 
     <span v-else class="text-2xl font-medium text-n-slate-12">

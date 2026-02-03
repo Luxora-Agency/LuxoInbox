@@ -52,7 +52,7 @@ const handleClickOutside = () => {
   >
     <button
       v-if="count"
-      class="h-6 px-2 rounded-md bg-n-alpha-2 gap-1.5 flex items-center"
+      class="h-6 px-2 rounded-lg bg-n-alpha-2 gap-1.5 flex items-center"
       @click="handleButtonClick()"
     >
       <Icon :icon="icon" class="size-3.5 text-n-slate-12" />

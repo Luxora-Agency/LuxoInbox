@@ -53,7 +53,7 @@ export default {
       </p>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <button
-          class="p-2 relative rounded-md border border-solid text-left cursor-default"
+          class="p-2 relative rounded-lg border border-solid text-left cursor-default"
           :class="isActive('global')"
           @click="onUpdateVisibility('global')"
         >
@@ -73,7 +73,7 @@ export default {
           </p>
         </button>
         <button
-          class="p-2 relative rounded-md border border-solid text-left cursor-default"
+          class="p-2 relative rounded-lg border border-solid text-left cursor-default"
           :class="isActive('personal')"
           @click="onUpdateVisibility('personal')"
         >
@@ -94,7 +94,7 @@ export default {
         </button>
       </div>
       <div
-        class="mt-2 flex items-start p-2 bg-n-slate-3 dark:bg-n-solid-3 rounded-md"
+        class="mt-2 flex items-start p-2 bg-n-slate-3 dark:bg-n-solid-3 rounded-lg"
       >
         <fluent-icon icon="info" size="16" class="flex-shrink-0 mt-0.5" />
         <p class="ml-2 rtl:ml-0 rtl:mr-2 mb-0 text-n-slate-11">

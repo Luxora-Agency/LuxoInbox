@@ -65,7 +65,7 @@ const handleFetchInboxes = () => {
             {{ name }}
           </h3>
           <div class="flex items-center gap-2">
-            <div class="flex items-center rounded-md bg-n-alpha-2 h-6 px-2">
+            <div class="flex items-center rounded-lg bg-n-alpha-2 h-6 px-2">
               <span
                 class="text-xs"
                 :class="enabled ? 'text-n-teal-11' : 'text-n-slate-12'"
