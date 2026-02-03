@@ -34,6 +34,8 @@ const searchResults = ref([]);
 const selectedConversations = ref([]);
 const isSearching = ref(false);
 const isForwarding = ref(false);
+const initialConversations = ref([]);
+const isLoadingInitial = ref(false);
 
 const localShow = computed({
   get() {
@@ -48,11 +50,42 @@ const hasSelectedConversations = computed(() => {
   return selectedConversations.value.length > 0;
 });
 
-const filteredResults = computed(() => {
-  return searchResults.value.filter(
+const displayedConversations = computed(() => {
+  const conversations =
+    searchQuery.value.length >= 2
+      ? searchResults.value
+      : initialConversations.value;
+  return conversations.filter(
     conversation => conversation.id !== props.conversationId
   );
 });
+
+const loadInitialConversations = async () => {
+  isLoadingInitial.value = true;
+  try {
+    // Get conversations from store first
+    const storeConversations = store.getters.getAllConversations || [];
+    if (storeConversations.length > 0) {
+      initialConversations.value = storeConversations;
+    }
+    // Also fetch recent conversations via search API for more complete results
+    const { data } = await SearchAPI.conversations({ q: '' });
+    if (data.payload && data.payload.length > 0) {
+      // Merge store conversations with search results, removing duplicates
+      const merged = [...initialConversations.value];
+      data.payload.forEach(conv => {
+        if (!merged.some(c => c.id === conv.id)) {
+          merged.push(conv);
+        }
+      });
+      initialConversations.value = merged;
+    }
+  } catch {
+    // If API fails, keep using store conversations
+  } finally {
+    isLoadingInitial.value = false;
+  }
+};
 
 const searchConversations = debounce(async query => {
   if (!query || query.length < 2) {
@@ -64,12 +97,23 @@ const searchConversations = debounce(async query => {
   try {
     const { data } = await SearchAPI.conversations({ q: query });
     searchResults.value = data.payload || [];
-  } catch (error) {
+  } catch {
     searchResults.value = [];
   } finally {
     isSearching.value = false;
   }
 }, 300);
+
+// Load conversations when modal opens
+watch(
+  () => props.show,
+  newShow => {
+    if (newShow) {
+      loadInitialConversations();
+    }
+  },
+  { immediate: true }
+);
 
 watch(searchQuery, newQuery => {
   searchConversations(newQuery);
@@ -112,6 +156,7 @@ const onClose = () => {
   searchQuery.value = '';
   searchResults.value = [];
   selectedConversations.value = [];
+  initialConversations.value = [];
   emit('close');
 };
 
@@ -172,29 +217,22 @@ const onForward = async () => {
 
         <div class="min-h-[200px] max-h-[300px] overflow-y-auto">
           <div
-            v-if="isSearching"
+            v-if="isSearching || isLoadingInitial"
             class="flex items-center justify-center h-[200px]"
           >
             <Spinner size="" />
           </div>
 
           <div
-            v-else-if="searchQuery.length >= 2 && filteredResults.length === 0"
+            v-else-if="displayedConversations.length === 0"
             class="flex items-center justify-center h-[200px] text-n-slate-11"
           >
             {{ $t('CONVERSATION.FORWARD.NO_RESULTS') }}
           </div>
 
-          <div
-            v-else-if="searchQuery.length < 2"
-            class="flex items-center justify-center h-[200px] text-n-slate-11"
-          >
-            {{ $t('CONVERSATION.FORWARD.SEARCH_PLACEHOLDER') }}
-          </div>
-
           <ul v-else class="space-y-1">
             <li
-              v-for="conversation in filteredResults"
+              v-for="conversation in displayedConversations"
               :key="conversation.id"
               class="flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-n-slate-2 dark:hover:bg-n-solid-3"
               :class="{
