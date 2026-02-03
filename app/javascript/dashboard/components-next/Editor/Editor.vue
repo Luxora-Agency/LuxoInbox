@@ -83,12 +83,13 @@ watch(
       {{ label }}
     </label>
     <div
-      class="flex flex-col w-full gap-2 px-3 py-3 transition-all duration-500 ease-in-out border rounded-lg editor-wrapper bg-n-alpha-black2"
+      class="flex flex-col w-full gap-2 px-3 py-3 transition-all duration-200 ease-out border rounded-xl editor-wrapper bg-n-alpha-black2"
       :class="[
         {
           'cursor-not-allowed opacity-50 pointer-events-none !bg-n-alpha-black2 disabled:border-n-weak dark:disabled:border-n-weak':
             disabled,
-          'border-n-brand dark:border-n-brand': isFocused,
+          'border-n-brand dark:border-n-brand ring-4 ring-n-brand/10':
+            isFocused,
           'hover:border-n-slate-6 dark:hover:border-n-slate-6 border-n-weak dark:border-n-weak':
             !isFocused && messageType !== 'error',
           'border-n-ruby-8 dark:border-n-ruby-8 hover:border-n-ruby-9 dark:hover:border-n-ruby-9':

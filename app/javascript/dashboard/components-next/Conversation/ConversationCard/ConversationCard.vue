@@ -87,7 +87,7 @@ const onCardClick = e => {
 <template>
   <div
     role="button"
-    class="flex w-full gap-3 px-3 py-4 transition-all duration-300 ease-in-out cursor-pointer"
+    class="flex w-full gap-3 px-3 py-4 transition-all duration-200 ease-out cursor-pointer hover:bg-n-alpha-2 rounded-xl group border border-transparent hover:border-n-weak/50"
     @click="onCardClick"
   >
     <Avatar
@@ -96,21 +96,24 @@ const onCardClick = e => {
       :size="24"
       :status="currentContactStatus"
       rounded-full
+      class="ring-2 ring-transparent group-hover:ring-n-brand/20 transition-all duration-200"
     />
     <div class="flex flex-col w-full gap-1 min-w-0">
       <div class="flex items-center justify-between h-6 gap-2">
-        <h4 class="text-base font-medium truncate text-n-slate-12">
+        <h4
+          class="text-base font-medium truncate text-n-slate-12 group-hover:text-n-brand transition-colors duration-200"
+        >
           {{ currentContactName }}
         </h4>
         <div class="flex items-center gap-2">
           <CardPriorityIcon :priority="conversation.priority || null" />
           <div
             v-tooltip.left="inboxName"
-            class="flex items-center justify-center flex-shrink-0 rounded-full bg-n-alpha-2 size-5"
+            class="flex items-center justify-center flex-shrink-0 rounded-full bg-n-alpha-2 size-5 group-hover:bg-n-brand/10 transition-colors duration-200"
           >
             <Icon
               :icon="inboxIcon"
-              class="flex-shrink-0 text-n-slate-11 size-3"
+              class="flex-shrink-0 text-n-slate-11 size-3 group-hover:text-n-brand transition-colors duration-200"
             />
           </div>
           <span class="text-sm text-n-slate-10">

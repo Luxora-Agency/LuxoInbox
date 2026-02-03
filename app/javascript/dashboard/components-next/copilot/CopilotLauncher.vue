@@ -55,12 +55,12 @@ const toggleSidebar = () => {
     class="fixed bottom-4 ltr:right-4 rtl:left-4 z-50"
   >
     <ButtonGroup
-      class="rounded-full bg-n-alpha-2 backdrop-blur-lg p-1 shadow hover:shadow-md"
+      class="rounded-full bg-n-alpha-2 backdrop-blur-lg p-1 shadow-lg shadow-purple-500/10 hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-200"
     >
       <Button
         icon="i-woot-captain"
         no-animation
-        class="!rounded-full !bg-n-solid-3 dark:!bg-n-alpha-2 !text-n-slate-12 text-xl transition-all duration-200 ease-out hover:brightness-110"
+        class="!rounded-full !bg-gradient-to-br !from-n-brand/90 !to-[#9F1239]/90 !text-white text-xl transition-all duration-200 ease-out hover:scale-105 hover:brightness-110"
         lg
         @click="toggleSidebar"
       />

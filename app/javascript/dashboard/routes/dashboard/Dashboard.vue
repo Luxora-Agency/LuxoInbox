@@ -141,7 +141,7 @@ export default {
     />
 
     <main
-      class="flex flex-1 h-full w-full min-h-0 px-0 overflow-hidden bg-n-surface-1"
+      class="flex flex-1 h-full w-full min-h-0 px-0 overflow-hidden bg-gradient-to-br from-n-surface-1 via-n-surface-1 to-n-alpha-1"
     >
       <UpgradePage
         v-show="showUpgradePage"

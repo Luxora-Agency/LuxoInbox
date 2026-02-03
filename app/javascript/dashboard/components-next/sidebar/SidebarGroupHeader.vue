@@ -26,28 +26,38 @@ const count = computed(() =>
 <template>
   <component
     :is="to ? 'router-link' : 'div'"
-    class="flex items-center gap-2 px-1.5 py-1 rounded-lg h-8 min-w-0"
+    class="flex items-center gap-2 px-2 py-1.5 rounded-xl h-9 min-w-0 transition-all duration-150 ease-out group"
     role="button"
     draggable="false"
     :to="to"
     :title="label"
     :class="{
-      'text-n-slate-12 bg-n-alpha-2 font-medium': isActive && !hasActiveChild,
+      'text-n-slate-12 bg-n-brand/10 font-medium shadow-sm':
+        isActive && !hasActiveChild,
       'text-n-slate-12 font-medium': hasActiveChild,
-      'text-n-slate-11 hover:bg-n-alpha-2': !isActive && !hasActiveChild,
+      'text-n-slate-11 hover:bg-n-alpha-2 hover:text-n-slate-12':
+        !isActive && !hasActiveChild,
     }"
     @click.stop="emit('toggle')"
   >
     <div v-if="icon" class="relative flex items-center gap-2">
-      <Icon v-if="icon" :icon="icon" class="size-4" />
+      <Icon
+        v-if="icon"
+        :icon="icon"
+        class="size-4 transition-colors"
+        :class="{
+          'text-n-brand': isActive && !hasActiveChild,
+          'group-hover:text-n-brand': !isActive && !hasActiveChild,
+        }"
+      />
       <span
         v-if="showBadge"
-        class="size-2 -top-px ltr:-right-px rtl:-left-px bg-n-brand absolute rounded-full border border-n-solid-2"
+        class="size-2 -top-px ltr:-right-px rtl:-left-px bg-n-brand absolute rounded-full border border-n-solid-2 animate-pulse"
       />
     </div>
     <div class="flex items-center gap-1.5 flex-grow min-w-0 flex-1">
       <span
-        class="truncate"
+        class="truncate transition-colors"
         :class="{
           'text-body-main': !isActive,
           'font-medium text-sm': isActive || hasActiveChild,
@@ -57,10 +67,10 @@ const count = computed(() =>
       </span>
       <span
         v-if="dynamicCount && !expandable"
-        class="rounded-md capitalize text-xs leading-5 font-medium text-center outline outline-1 px-1 flex-shrink-0"
+        class="rounded-lg capitalize text-xs leading-5 font-medium text-center px-1.5 flex-shrink-0 transition-colors"
         :class="{
-          'text-n-slate-12 outline-n-slate-6': isActive,
-          'text-n-slate-11 outline-n-strong': !isActive,
+          'text-white bg-n-brand': isActive,
+          'text-n-slate-11 bg-n-alpha-2': !isActive,
         }"
       >
         {{ count }}
@@ -69,7 +79,7 @@ const count = computed(() =>
     <span
       v-if="expandable"
       v-show="isExpanded"
-      class="i-lucide-chevron-up size-3"
+      class="i-lucide-chevron-up size-3 transition-transform"
       @click.stop="emit('toggle')"
     />
   </component>

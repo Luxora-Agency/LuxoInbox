@@ -1,3 +1,5 @@
 <template>
-  <div class="h-0 border-b border-n-strong -mx-2" />
+  <div
+    class="h-px bg-gradient-to-r from-transparent via-n-weak to-transparent my-1"
+  />
 </template>

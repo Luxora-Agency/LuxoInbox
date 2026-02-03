@@ -686,10 +686,10 @@ const menuItems = computed(() => {
       closeMobileSidebar,
       { ignore: ['#mobile-sidebar-launcher'] },
     ]"
-    class="bg-n-background flex flex-col text-sm pb-0.5 fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak"
+    class="bg-gradient-to-b from-n-background via-n-background to-n-alpha-1 flex flex-col text-sm pb-0.5 fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak/50"
     :class="[
       {
-        'shadow-lg md:shadow-none': isMobileSidebarOpen,
+        'shadow-xl md:shadow-none': isMobileSidebarOpen,
         'ltr:-translate-x-full rtl:translate-x-full': !isMobileSidebarOpen,
         'transition-transform duration-200 ease-out md:transition-[width]':
           !isResizing,
@@ -732,10 +732,14 @@ const menuItems = computed(() => {
         <RouterLink
           v-if="!isEffectivelyCollapsed"
           :to="{ name: 'search' }"
-          class="flex gap-2 items-center px-2 py-1 w-full h-7 rounded-lg outline outline-1 outline-n-weak bg-n-button-color transition-all duration-100 ease-out"
+          class="flex gap-2 items-center px-3 py-1.5 w-full h-8 rounded-xl outline outline-1 outline-n-weak/70 bg-n-alpha-1 hover:bg-n-alpha-2 hover:outline-n-brand/30 focus:outline-n-brand/50 transition-all duration-150 ease-out group"
         >
-          <span class="flex-shrink-0 i-lucide-search size-4 text-n-slate-10" />
-          <span class="flex-grow text-start text-n-slate-10">
+          <span
+            class="flex-shrink-0 i-lucide-search size-4 text-n-slate-10 group-hover:text-n-brand transition-colors"
+          />
+          <span
+            class="flex-grow text-start text-n-slate-10 group-hover:text-n-slate-11 transition-colors"
+          >
             {{ t('COMBOBOX.SEARCH_PLACEHOLDER') }}
           </span>
           <span
@@ -747,10 +751,12 @@ const menuItems = computed(() => {
         <RouterLink
           v-else
           :to="{ name: 'search' }"
-          class="flex items-center justify-center size-8 rounded-lg outline outline-1 outline-n-weak bg-n-button-color transition-all duration-100 ease-out hover:bg-n-alpha-2 dark:hover:bg-n-slate-9/30"
+          class="flex items-center justify-center size-8 rounded-xl outline outline-1 outline-n-weak/70 bg-n-alpha-1 transition-all duration-150 ease-out hover:bg-n-alpha-2 hover:outline-n-brand/30 dark:hover:bg-n-slate-9/30 group"
           :title="t('COMBOBOX.SEARCH_PLACEHOLDER')"
         >
-          <span class="i-lucide-search size-4 text-n-slate-11" />
+          <span
+            class="i-lucide-search size-4 text-n-slate-11 group-hover:text-n-brand transition-colors"
+          />
         </RouterLink>
         <ComposeConversation align-position="right" @close="onComposeClose">
           <template #trigger="{ toggle, isOpen }">
@@ -807,7 +813,7 @@ const menuItems = computed(() => {
         "
       />
       <div
-        class="p-1 flex-shrink-0 flex w-full z-50 gap-2 items-center border-t border-n-weak shadow-[0px_-2px_4px_0px_rgba(27,28,29,0.02)]"
+        class="p-1.5 flex-shrink-0 flex w-full z-50 gap-2 items-center border-t border-n-weak/50 bg-gradient-to-t from-n-alpha-1 to-transparent"
         :class="isEffectivelyCollapsed ? 'justify-center' : 'justify-between'"
       >
         <SidebarProfileMenu
@@ -818,14 +824,17 @@ const menuItems = computed(() => {
     </section>
     <!-- Resize Handle (desktop only) -->
     <div
-      class="hidden md:block absolute top-0 h-full w-1 cursor-col-resize z-40 ltr:right-0 rtl:left-0 group"
+      class="hidden md:block absolute top-0 h-full w-1.5 cursor-col-resize z-40 ltr:right-0 rtl:left-0 group"
       @mousedown="onResizeStart"
       @touchstart="onResizeStart"
       @dblclick="onResizeHandleDoubleClick"
     >
       <div
-        class="absolute top-0 h-full w-px ltr:right-0 rtl:left-0 bg-transparent group-hover:bg-n-brand transition-colors"
-        :class="{ 'bg-n-brand': isResizing }"
+        class="absolute top-0 h-full w-0.5 ltr:right-0 rtl:left-0 bg-transparent group-hover:bg-gradient-to-b group-hover:from-[#4C1D95] group-hover:via-[#86198F] group-hover:to-[#9F1239] transition-all duration-200 rounded-full"
+        :class="{
+          'bg-gradient-to-b from-[#4C1D95] via-[#86198F] to-[#9F1239]':
+            isResizing,
+        }"
       />
     </div>
   </aside>

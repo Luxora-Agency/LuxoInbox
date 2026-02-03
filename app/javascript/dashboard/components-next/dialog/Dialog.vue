@@ -95,7 +95,7 @@ defineExpose({ open, close });
   <TeleportWithDirection to="body">
     <dialog
       ref="dialogRef"
-      class="w-full transition-all duration-300 ease-in-out shadow-xl rounded-xl"
+      class="w-full transition-all duration-300 ease-in-out shadow-2xl shadow-n-slate-12/10 rounded-2xl"
       :class="[
         maxWidthClass,
         overflowYAuto ? 'overflow-y-auto' : 'overflow-visible',
@@ -105,7 +105,7 @@ defineExpose({ open, close });
       <OnClickOutside @trigger="close">
         <form
           ref="dialogContentRef"
-          class="flex flex-col w-full h-auto gap-6 p-6 overflow-visible text-left align-middle transition-all duration-300 ease-in-out transform bg-n-alpha-3 backdrop-blur-[100px] shadow-xl rounded-xl"
+          class="flex flex-col w-full h-auto gap-6 p-6 overflow-visible text-left align-middle transition-all duration-300 ease-in-out transform bg-n-alpha-3 backdrop-blur-[100px] shadow-2xl shadow-n-slate-12/10 rounded-2xl ring-1 ring-n-weak/50"
           @submit.prevent="confirm"
           @click.stop
         >

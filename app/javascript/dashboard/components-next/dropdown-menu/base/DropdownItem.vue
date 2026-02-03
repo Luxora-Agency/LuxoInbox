@@ -44,9 +44,10 @@ const triggerClick = () => {
     <component
       :is="componentIs"
       v-bind="$attrs"
-      class="flex text-left rtl:text-right items-center p-2 reset-base text-sm text-n-slate-12 w-full border-0"
+      class="flex text-left rtl:text-right items-center p-2 reset-base text-sm text-n-slate-12 w-full border-0 transition-all duration-150 ease-out group/item"
       :class="{
-        'hover:bg-n-alpha-2 rounded-lg w-full gap-3': !$slots.default,
+        'hover:bg-n-alpha-2 hover:text-n-brand rounded-xl w-full gap-3':
+          !$slots.default,
       }"
       :href="componentIs === 'a' ? props.link : null"
       :to="componentIs === 'router-link' ? props.link : null"
@@ -54,7 +55,11 @@ const triggerClick = () => {
     >
       <slot>
         <slot name="icon">
-          <Icon v-if="icon" class="size-4 text-n-slate-11" :icon="icon" />
+          <Icon
+            v-if="icon"
+            class="size-4 text-n-slate-11 group-hover/item:text-n-brand transition-colors duration-150"
+            :icon="icon"
+          />
         </slot>
         <slot name="label">{{ label }}</slot>
       </slot>

@@ -76,6 +76,7 @@ const computedColor = computed(() => {
   if (attrs.amber || attrs.amber === '') return 'amber';
   if (attrs.slate || attrs.slate === '') return 'slate';
   if (attrs.teal || attrs.teal === '') return 'teal';
+  if (attrs.brand || attrs.brand === '') return 'brand';
   return 'blue'; // Default color
 });
 
@@ -152,6 +153,17 @@ const STYLE_CONFIG = {
       link: 'text-n-teal-9 hover:enabled:underline focus-visible:underline outline-transparent',
       ghost:
         'text-n-teal-9 hover:enabled:bg-n-alpha-2 focus-visible:bg-n-alpha-2 outline-transparent',
+    },
+    brand: {
+      solid:
+        'bg-gradient-to-r from-[#4C1D95] via-[#86198F] to-[#9F1239] text-white shadow-lg shadow-purple-500/25 hover:enabled:shadow-xl hover:enabled:shadow-purple-500/30 hover:enabled:scale-[1.02] focus-visible:shadow-xl focus-visible:shadow-purple-500/30 outline-transparent',
+      faded:
+        'bg-n-brand/10 text-n-brand hover:enabled:bg-n-brand/20 focus-visible:bg-n-brand/20 outline-transparent',
+      outline:
+        'text-n-brand outline-n-brand hover:enabled:bg-n-brand/10 focus-visible:bg-n-brand/10',
+      link: 'text-n-brand hover:enabled:underline focus-visible:underline outline-transparent',
+      ghost:
+        'text-n-brand hover:enabled:bg-n-brand/10 focus-visible:bg-n-brand/10 outline-transparent',
     },
   },
   sizes: {

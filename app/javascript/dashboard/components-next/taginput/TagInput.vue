@@ -198,7 +198,7 @@ const handleBlur = e => emit('blur', e);
     <div
       v-for="(tag, index) in tags"
       :key="index"
-      class="flex items-center justify-center max-w-full gap-1 px-3 py-1 rounded-lg h-7 bg-n-alpha-2"
+      class="flex items-center justify-center max-w-full gap-1 px-3 py-1 rounded-xl h-7 bg-n-alpha-2 transition-colors duration-150 hover:bg-n-alpha-3"
     >
       <span class="flex-grow min-w-0 text-sm truncate text-n-slate-12">{{
         tag
