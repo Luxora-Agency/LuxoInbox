@@ -50,7 +50,7 @@ const handleCopy = async e => {
 
 <template>
   <button
-    class="flex flex-col w-full gap-1 px-2 py-1 border border-transparent border-solid rounded-md cursor-pointer hover:bg-n-slate-3 group focus:outline-none focus:bg-n-slate-3"
+    class="flex flex-col w-full gap-1 px-2 py-1 border border-transparent border-solid rounded-lg cursor-pointer hover:bg-n-slate-3 group focus:outline-none focus:bg-n-slate-3"
     @click="handlePreview"
   >
     <h4

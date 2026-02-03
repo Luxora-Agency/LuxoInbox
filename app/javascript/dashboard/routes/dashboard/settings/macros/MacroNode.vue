@@ -64,7 +64,7 @@ const dropdownValues = () => {
       class="absolute cursor-move ltr:-left-10 rtl:-right-10 ltr:mr-2 rtl:ml-2 macros__node-drag-handle"
     />
     <div
-      class="flex-grow p-2 ltr:mr-2 rtl:ml-2 rounded-md shadow-sm outline outline-1 outline-n-weak"
+      class="flex-grow p-2 ltr:mr-2 rtl:ml-2 rounded-xl shadow-sm outline outline-1 outline-n-weak"
       :class="
         errorKey
           ? 'animate-shake bg-n-ruby-8/20 outline-n-ruby-5 dark:outline-n-ruby-5'
