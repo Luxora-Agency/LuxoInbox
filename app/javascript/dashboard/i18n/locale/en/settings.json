@@ -288,6 +288,19 @@
     }
   },
   "CONFIRM_EMAIL": "Verifying...",
+  "CONFIRM_EMAIL_PAGE": {
+    "TITLE": "Verifying your email",
+    "DESCRIPTION": "Please wait while we verify your email address and prepare your account.",
+    "HERO": {
+      "TITLE": "Almost there!",
+      "DESCRIPTION": "We're verifying your email address. This will only take a moment.",
+      "STEP_1": "Email address received",
+      "STEP_2": "Account information validated",
+      "STEP_3": "Finalizing your account...",
+      "SECURITY_TITLE": "Secure Verification",
+      "SECURITY_DESC": "Your data is encrypted and protected"
+    }
+  },
   "SETTINGS": {
     "INBOXES": {
       "NEW_INBOX": "Add Inbox"
@@ -616,7 +629,7 @@
     "API": {
       "SUCCESS_MESSAGE": "Account created successfully",
       "EXIST_MESSAGE": "Account already exists",
-      "ERROR_MESSAGE": "Could not connect to Woot Server, Please try again later"
+      "ERROR_MESSAGE": "Could not connect to LuxoInbox server. Please try again later."
     },
     "FORM": {
       "NAME": {

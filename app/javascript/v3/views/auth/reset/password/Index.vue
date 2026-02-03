@@ -1,110 +1,367 @@
-<script>
+<script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { useAlert } from 'dashboard/composables';
 import { required, minLength, email } from '@vuelidate/validators';
 import { useBranding } from 'shared/composables/useBranding';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 import FormInput from '../../../../components/Form/Input.vue';
 import { resetPassword } from '../../../../api/auth';
 import NextButton from 'dashboard/components-next/button/Button.vue';
+import Icon from 'dashboard/components-next/icon/Icon.vue';
+import languages from 'dashboard/i18n';
 
-export default {
-  components: { FormInput, NextButton },
-  setup() {
-    const { replaceInstallationName } = useBranding();
-    return { v$: useVuelidate(), replaceInstallationName };
-  },
-  data() {
-    return {
-      credentials: { email: '' },
-      resetPassword: {
-        message: '',
-        showLoading: false,
-      },
-      error: '',
-    };
-  },
-  validations() {
-    return {
-      credentials: {
-        email: {
-          required,
-          email,
-          minLength: minLength(4),
-        },
-      },
-    };
-  },
-  methods: {
-    showAlertMessage(message) {
-      // Reset loading, current selected agent
-      this.resetPassword.showLoading = false;
-      useAlert(message);
+const store = useStore();
+const { t, locale } = useI18n();
+const { replaceInstallationName } = useBranding();
+
+const credentials = ref({ email: '' });
+const resetPasswordState = ref({
+  message: '',
+  showLoading: false,
+});
+
+// Language selector
+const LANGUAGE_NAMES = {
+  en: 'English',
+  es: 'Español',
+  fr: 'Français',
+  de: 'Deutsch',
+  pt_BR: 'Português (Brasil)',
+  pt: 'Português',
+  it: 'Italiano',
+  ja: '日本語',
+  ko: '한국어',
+  zh_CN: '简体中文',
+  zh_TW: '繁體中文',
+  ru: 'Русский',
+  ar: 'العربية',
+  nl: 'Nederlands',
+  pl: 'Polski',
+  tr: 'Türkçe',
+  vi: 'Tiếng Việt',
+  th: 'ไทย',
+  hi: 'हिन्दी',
+  id: 'Bahasa Indonesia',
+};
+
+const selectedLocale = ref(window.chatwootConfig.selectedLocale || 'en');
+const showLanguageDropdown = ref(false);
+const languageDropdownRef = ref(null);
+
+const availableLanguages = computed(() =>
+  Object.keys(languages).map(code => ({
+    code,
+    name: LANGUAGE_NAMES[code] || code,
+  }))
+);
+
+const currentLanguageName = computed(
+  () => LANGUAGE_NAMES[selectedLocale.value] || selectedLocale.value
+);
+
+const changeLocale = localeCode => {
+  selectedLocale.value = localeCode;
+  locale.value = localeCode;
+  showLanguageDropdown.value = false;
+};
+
+const toggleLanguageDropdown = () => {
+  showLanguageDropdown.value = !showLanguageDropdown.value;
+};
+
+const handleClickOutside = event => {
+  if (
+    languageDropdownRef.value &&
+    !languageDropdownRef.value.contains(event.target)
+  ) {
+    showLanguageDropdown.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+
+const rules = {
+  credentials: {
+    email: {
+      required,
+      email,
+      minLength: minLength(4),
     },
-    submit() {
-      this.resetPassword.showLoading = true;
-      resetPassword(this.credentials)
-        .then(res => {
-          let successMessage = this.$t('RESET_PASSWORD.API.SUCCESS_MESSAGE');
-          if (res.data && res.data.message) {
-            successMessage = res.data.message;
-          }
-          this.showAlertMessage(successMessage);
-        })
-        .catch(error => {
-          let errorMessage = this.$t('RESET_PASSWORD.API.ERROR_MESSAGE');
-          if (error?.response?.data?.message) {
-            errorMessage = error.response.data.message;
-          }
-          this.showAlertMessage(errorMessage);
-        });
-    },
   },
+};
+
+const v$ = useVuelidate(rules, { credentials });
+const globalConfig = computed(() => store.getters['globalConfig/get']);
+
+const showAlertMessage = message => {
+  resetPasswordState.value.showLoading = false;
+  useAlert(message);
+};
+
+const submit = () => {
+  resetPasswordState.value.showLoading = true;
+  resetPassword(credentials.value)
+    .then(res => {
+      let successMessage = t('RESET_PASSWORD.API.SUCCESS_MESSAGE');
+      if (res.data && res.data.message) {
+        successMessage = res.data.message;
+      }
+      showAlertMessage(successMessage);
+    })
+    .catch(error => {
+      let errorMessage = t('RESET_PASSWORD.API.ERROR_MESSAGE');
+      if (error?.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+      showAlertMessage(errorMessage);
+    });
 };
 </script>
 
 <template>
-  <div
-    class="flex flex-col justify-center w-full min-h-screen py-12 bg-n-brand/5 dark:bg-n-background sm:px-6 lg:px-8"
-  >
-    <form
-      class="bg-white shadow sm:mx-auto sm:w-full sm:max-w-lg dark:bg-n-solid-2 p-11 sm:shadow-lg sm:rounded-lg"
-      @submit.prevent="submit"
+  <main class="flex min-h-screen w-full">
+    <!-- Left Panel - Branding -->
+    <aside
+      class="hidden lg:flex lg:w-1/2 xl:w-[45%] bg-gradient-to-br from-[#4C1D95] via-[#86198F] to-[#9F1239] relative overflow-hidden"
     >
-      <h1
-        class="mb-1 text-2xl font-medium tracking-tight text-left text-n-slate-12"
+      <!-- Background Pattern -->
+      <div
+        class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-40"
+      />
+
+      <!-- Gradient Overlay for depth -->
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
+      />
+
+      <!-- Decorative circles -->
+      <div
+        class="absolute -top-24 -right-24 w-96 h-96 bg-[#D946EF]/20 rounded-full blur-3xl"
+      />
+      <div
+        class="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-[#9333EA]/20 rounded-full blur-3xl"
+      />
+
+      <!-- Content -->
+      <div class="relative z-10 flex flex-col justify-between p-10 xl:p-14">
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <div
+            class="flex items-center justify-center size-11 bg-white/20 backdrop-blur-sm rounded-xl"
+          >
+            <img
+              :src="globalConfig.logo"
+              :alt="globalConfig.installationName"
+              class="w-7 h-7 object-contain"
+            />
+          </div>
+          <span class="text-xl font-semibold text-white">
+            {{ globalConfig.installationName }}
+          </span>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col justify-center py-12">
+          <div
+            class="flex items-center justify-center size-16 bg-white/10 backdrop-blur-sm rounded-2xl mb-6"
+          >
+            <Icon icon="i-lucide-mail" class="size-8 text-white" />
+          </div>
+          <h1
+            class="text-3xl xl:text-4xl font-bold text-white leading-tight mb-4"
+          >
+            {{ t('RESET_PASSWORD.HERO.TITLE') }}
+          </h1>
+          <p class="text-lg text-white/80 mb-10 max-w-md">
+            {{ t('RESET_PASSWORD.HERO.DESCRIPTION') }}
+          </p>
+
+          <!-- Steps -->
+          <div class="space-y-5">
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl text-white font-semibold"
+              >
+                {{ t('RESET_PASSWORD.HERO.STEP_NUMBER_1') }}
+              </div>
+              <span class="text-white font-medium">
+                {{ t('RESET_PASSWORD.HERO.STEP_1') }}
+              </span>
+            </div>
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl text-white font-semibold"
+              >
+                {{ t('RESET_PASSWORD.HERO.STEP_NUMBER_2') }}
+              </div>
+              <span class="text-white font-medium">
+                {{ t('RESET_PASSWORD.HERO.STEP_2') }}
+              </span>
+            </div>
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl text-white font-semibold"
+              >
+                {{ t('RESET_PASSWORD.HERO.STEP_NUMBER_3') }}
+              </div>
+              <span class="text-white font-medium">
+                {{ t('RESET_PASSWORD.HERO.STEP_3') }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Note -->
+        <div
+          class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/10 flex items-center gap-4"
+        >
+          <div
+            class="size-12 bg-white/20 rounded-xl flex items-center justify-center"
+          >
+            <Icon icon="i-lucide-shield" class="size-6 text-white" />
+          </div>
+          <div>
+            <p class="text-white font-medium text-sm">
+              {{ t('RESET_PASSWORD.HERO.SECURITY_TITLE') }}
+            </p>
+            <p class="text-white/60 text-xs">
+              {{ t('RESET_PASSWORD.HERO.SECURITY_DESC') }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Panel - Reset Form -->
+    <section
+      class="flex-1 flex flex-col justify-center items-center p-6 sm:p-10 bg-n-background dark:bg-n-background relative"
+    >
+      <!-- Language Selector (Top Right) -->
+      <div
+        ref="languageDropdownRef"
+        class="absolute top-6 right-6 sm:top-8 sm:right-8"
       >
-        {{ $t('RESET_PASSWORD.TITLE') }}
-      </h1>
-      <p
-        class="mb-4 text-sm font-normal leading-6 tracking-normal text-n-slate-11"
-      >
-        {{ replaceInstallationName($t('RESET_PASSWORD.DESCRIPTION')) }}
-      </p>
-      <div class="space-y-5">
-        <FormInput
-          v-model="credentials.email"
-          name="email_address"
-          :has-error="v$.credentials.email.$error"
-          :error-message="$t('RESET_PASSWORD.EMAIL.ERROR')"
-          :placeholder="$t('RESET_PASSWORD.EMAIL.PLACEHOLDER')"
-          @input="v$.credentials.email.$touch"
+        <button
+          type="button"
+          class="flex items-center gap-2 px-3 py-2 text-sm text-n-slate-11 hover:text-n-slate-12 hover:bg-n-alpha-2 rounded-lg transition-colors"
+          @click="toggleLanguageDropdown"
+        >
+          <Icon icon="i-lucide-globe" class="size-4" />
+          <span class="hidden sm:inline">{{ currentLanguageName }}</span>
+          <Icon
+            icon="i-lucide-chevron-down"
+            class="size-3.5 transition-transform"
+            :class="{ 'rotate-180': showLanguageDropdown }"
+          />
+        </button>
+        <Transition
+          enter-active-class="transition duration-150 ease-out"
+          enter-from-class="opacity-0 scale-95 -translate-y-1"
+          enter-to-class="opacity-100 scale-100 translate-y-0"
+          leave-active-class="transition duration-100 ease-in"
+          leave-from-class="opacity-100 scale-100 translate-y-0"
+          leave-to-class="opacity-0 scale-95 -translate-y-1"
+        >
+          <div
+            v-if="showLanguageDropdown"
+            class="absolute right-0 mt-2 w-48 max-h-64 overflow-y-auto bg-white dark:bg-n-solid-3 rounded-xl shadow-lg ring-1 ring-n-weak/50 dark:ring-n-weak/30 py-1 z-50"
+          >
+            <button
+              v-for="lang in availableLanguages"
+              :key="lang.code"
+              type="button"
+              class="w-full px-4 py-2 text-left text-sm hover:bg-n-alpha-2 transition-colors"
+              :class="
+                selectedLocale === lang.code
+                  ? 'text-n-brand font-medium bg-n-brand/5'
+                  : 'text-n-slate-12'
+              "
+              @click="changeLocale(lang.code)"
+            >
+              {{ lang.name }}
+            </button>
+          </div>
+        </Transition>
+      </div>
+
+      <!-- Mobile Logo -->
+      <div class="lg:hidden mb-8 text-center">
+        <img
+          :src="globalConfig.logo"
+          :alt="globalConfig.installationName"
+          class="h-10 mx-auto mb-4 dark:hidden"
         />
-        <NextButton
-          lg
-          type="submit"
-          data-testid="submit_button"
-          class="w-full"
-          :label="$t('RESET_PASSWORD.SUBMIT')"
-          :disabled="v$.credentials.email.$invalid || resetPassword.showLoading"
-          :is-loading="resetPassword.showLoading"
+        <img
+          v-if="globalConfig.logoDark"
+          :src="globalConfig.logoDark"
+          :alt="globalConfig.installationName"
+          class="hidden h-10 mx-auto mb-4 dark:block"
         />
       </div>
-      <p class="mt-4 -mb-1 text-sm text-n-slate-11">
-        {{ $t('RESET_PASSWORD.GO_BACK_TO_LOGIN') }}
-        <router-link to="/auth/login" class="text-link text-n-brand">
-          {{ $t('COMMON.CLICK_HERE') }}.
-        </router-link>
-      </p>
-    </form>
-  </div>
+
+      <!-- Reset Password Form Container -->
+      <div class="w-full max-w-md">
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <div
+            class="inline-flex items-center justify-center size-14 bg-n-brand/10 dark:bg-n-brand/20 rounded-2xl mb-4"
+          >
+            <Icon icon="i-lucide-mail" class="size-7 text-n-brand" />
+          </div>
+          <h2
+            class="text-2xl sm:text-3xl font-bold tracking-tight text-n-slate-12 mb-2"
+          >
+            {{ t('RESET_PASSWORD.TITLE') }}
+          </h2>
+          <p class="text-n-slate-11">
+            {{ replaceInstallationName(t('RESET_PASSWORD.DESCRIPTION')) }}
+          </p>
+        </div>
+
+        <!-- Reset Form -->
+        <form class="space-y-5" @submit.prevent="submit">
+          <FormInput
+            v-model="credentials.email"
+            name="email_address"
+            icon="mail"
+            :has-error="v$.credentials.email.$error"
+            :error-message="t('RESET_PASSWORD.EMAIL.ERROR')"
+            :label="t('RESET_PASSWORD.EMAIL.LABEL')"
+            :placeholder="t('RESET_PASSWORD.EMAIL.PLACEHOLDER')"
+            @input="v$.credentials.email.$touch"
+          />
+          <NextButton
+            lg
+            type="submit"
+            data-testid="submit_button"
+            class="w-full"
+            :label="t('RESET_PASSWORD.SUBMIT')"
+            :disabled="
+              v$.credentials.email.$invalid || resetPasswordState.showLoading
+            "
+            :is-loading="resetPasswordState.showLoading"
+          />
+        </form>
+
+        <!-- Back to Login -->
+        <p class="mt-8 text-center text-sm text-n-slate-11">
+          <router-link
+            to="/app/login"
+            class="text-n-brand hover:text-n-brand/80 font-semibold transition-colors inline-flex items-center gap-1.5"
+          >
+            <Icon icon="i-lucide-arrow-left" class="size-4" />
+            {{ t('RESET_PASSWORD.BACK_TO_LOGIN') }}
+          </router-link>
+        </p>
+      </div>
+    </section>
+  </main>
 </template>

@@ -42,9 +42,20 @@
     },
     "API": {
       "SUCCESS_MESSAGE": "Registration Successful",
-      "ERROR_MESSAGE": "Could not connect to Woot server. Please try again."
+      "ERROR_MESSAGE": "Could not connect to LuxoInbox server. Please try again."
     },
     "SUBMIT": "Create account",
-    "HAVE_AN_ACCOUNT": "Already have an account?"
+    "HAVE_AN_ACCOUNT": "Already have an account?",
+    "HERO": {
+      "TITLE": "Start engaging your customers today",
+      "DESCRIPTION": "Join thousands of businesses using LuxoInbox to deliver exceptional customer experiences across all channels.",
+      "FEATURE_1": "Get started in minutes",
+      "FEATURE_2": "Unlimited team members",
+      "FEATURE_3": "AI-powered automation",
+      "TESTIMONIAL_TEXT": "\"LuxoInbox transformed how we handle customer support. Setup was incredibly fast and our team loves using it.\"",
+      "TESTIMONIAL_NAME": "Michael Chen",
+      "TESTIMONIAL_ROLE": "CEO, StartupFlow",
+      "TESTIMONIAL_INITIALS": "MC"
+    }
   }
 }

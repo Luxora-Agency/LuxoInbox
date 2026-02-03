@@ -47,20 +47,27 @@ const requirements = computed(() => {
 
 <template>
   <div
-    class="absolute top-0 z-50 w-64 text-xs rounded-lg px-4 py-3 bg-white dark:bg-n-solid-3 shadow-lg outline outline-1 outline-n-weak start-full ms-4"
+    class="absolute top-0 z-50 w-64 text-xs rounded-xl px-4 py-4 bg-white/95 dark:bg-n-solid-3 backdrop-blur-sm shadow-xl shadow-n-slate-12/5 dark:shadow-n-slate-1/5 ring-1 ring-n-weak/50 dark:ring-n-weak/30 start-full ms-4"
   >
-    <ul role="list" class="space-y-1.5">
+    <ul role="list" class="space-y-2">
       <li
         v-for="item in requirements"
         :key="item.id"
-        class="inline-flex gap-1.5 items-start"
+        class="inline-flex gap-2 items-start transition-colors duration-200"
       >
         <Icon
-          class="flex-none flex-shrink-0 w-3 mt-0.5"
+          class="flex-none flex-shrink-0 size-3.5 mt-0.5 transition-colors duration-200"
           :icon="item.met ? 'i-lucide-circle-check-big' : 'i-lucide-circle'"
-          :class="item.met ? 'text-n-teal-10' : 'text-n-slate-10'"
+          :class="item.met ? 'text-n-teal-10' : 'text-n-slate-9'"
         />
-        <span :class="item.met ? 'text-n-slate-11' : 'text-n-slate-10'">
+        <span
+          :class="
+            item.met
+              ? 'text-n-slate-12 font-medium'
+              : 'text-n-slate-10 font-normal'
+          "
+          class="transition-all duration-200"
+        >
           {{ item.label }}
         </span>
       </li>

@@ -115,7 +115,7 @@ const onCaptchaError = () => {
 
 <template>
   <div class="flex-1">
-    <form class="space-y-3" @submit.prevent="submit">
+    <form class="space-y-4" @submit.prevent="submit">
       <FormInput
         v-model="credentials.email"
         type="email"
@@ -171,17 +171,17 @@ const onCaptchaError = () => {
         lg
         type="submit"
         data-testid="submit_button"
-        class="w-full font-medium"
+        class="w-full font-medium mt-2"
         :label="$t('REGISTER.SUBMIT')"
         :disabled="isSignupInProgress || !isFormValid"
         :is-loading="isSignupInProgress"
       />
     </form>
-    <GoogleOAuthButton v-if="showGoogleOAuth" class="mt-3">
+    <GoogleOAuthButton v-if="showGoogleOAuth" class="mt-4">
       {{ $t('REGISTER.OAUTH.GOOGLE_SIGNUP') }}
     </GoogleOAuthButton>
     <p
-      class="text-sm mt-5 mb-0 text-n-slate-11 [&>a]:text-n-blue-10 [&>a]:font-medium [&>a]:hover:text-n-blue-11"
+      class="text-sm mt-6 mb-0 text-n-slate-11 leading-relaxed [&>a]:text-n-brand [&>a]:font-medium [&>a]:hover:text-n-brand/80 [&>a]:transition-colors"
       v-html="termsLink"
     />
   </div>

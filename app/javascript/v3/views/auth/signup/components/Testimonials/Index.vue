@@ -27,7 +27,7 @@ onBeforeMount(() => {
 
 <template>
   <div
-    class="relative flex-1 flex flex-col items-start justify-center bg-n-alpha-black2 dark:bg-n-solid-3 px-12 py-14 rounded-e-lg"
+    class="relative flex-1 flex flex-col items-start justify-center bg-gradient-to-br from-n-alpha-black2 to-n-brand/5 dark:from-n-solid-3 dark:to-n-brand/5 px-12 py-14 rounded-e-2xl"
   >
     <TestimonialCard
       v-if="testimonial"
@@ -36,13 +36,13 @@ onBeforeMount(() => {
       :author-name="testimonial.authorName"
       :author-designation="testimonial.authorCompany"
     />
-    <div class="absolute bottom-8 right-8 grid grid-cols-3 gap-1.5">
-      <span class="w-2 h-2 rounded-full bg-n-gray-5" />
-      <span class="w-2 h-2 rounded-full bg-n-gray-5" />
-      <span class="w-2 h-2 rounded-full bg-n-gray-5" />
-      <span class="w-2 h-2 rounded-full bg-n-gray-5" />
-      <span class="w-2 h-2 rounded-full bg-n-gray-5" />
-      <span class="w-2 h-2 rounded-full bg-n-gray-5" />
+    <div class="absolute bottom-8 right-8 grid grid-cols-3 gap-2">
+      <span class="w-2 h-2 rounded-full bg-n-slate-6/50 dark:bg-n-slate-6/30" />
+      <span class="w-2 h-2 rounded-full bg-n-slate-6/50 dark:bg-n-slate-6/30" />
+      <span class="w-2 h-2 rounded-full bg-n-slate-6/50 dark:bg-n-slate-6/30" />
+      <span class="w-2 h-2 rounded-full bg-n-slate-6/50 dark:bg-n-slate-6/30" />
+      <span class="w-2 h-2 rounded-full bg-n-slate-6/50 dark:bg-n-slate-6/30" />
+      <span class="w-2 h-2 rounded-full bg-n-slate-6/50 dark:bg-n-slate-6/30" />
     </div>
   </div>
 </template>

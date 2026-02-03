@@ -156,35 +156,37 @@ const handleTryAnotherMethod = () => {
 </script>
 
 <template>
-  <div class="w-full max-w-md mx-auto">
+  <div class="w-full max-w-md mx-auto px-4">
     <div
-      class="bg-white shadow sm:mx-auto sm:w-full sm:max-w-lg dark:bg-n-solid-2 p-11 sm:shadow-lg sm:rounded-lg"
+      class="bg-white/95 dark:bg-n-solid-2 backdrop-blur-sm sm:mx-auto sm:w-full sm:max-w-lg px-6 py-8 sm:px-10 sm:py-10 shadow-xl shadow-n-slate-12/5 dark:shadow-n-slate-1/5 rounded-2xl ring-1 ring-n-weak/50 dark:ring-n-weak/30"
     >
       <!-- Header -->
       <div class="text-center mb-6">
         <div
-          class="inline-flex items-center justify-center size-14 bg-n-solid-1 outline outline-n-weak rounded-full mb-4"
+          class="inline-flex items-center justify-center size-14 bg-n-brand/10 dark:bg-n-brand/20 rounded-2xl mb-4"
         >
-          <Icon icon="i-lucide-lock-keyhole" class="size-6 text-n-slate-10" />
+          <Icon icon="i-lucide-shield-check" class="size-7 text-n-brand" />
         </div>
-        <h2 class="text-2xl font-semibold text-n-slate-12">
+        <h2
+          class="text-2xl sm:text-3xl font-semibold tracking-tight text-n-slate-12"
+        >
           {{ $t('MFA_VERIFICATION.TITLE') }}
         </h2>
-        <p class="text-sm text-n-slate-11 mt-2">
+        <p class="text-sm text-n-slate-11 mt-3">
           {{ $t('MFA_VERIFICATION.DESCRIPTION') }}
         </p>
       </div>
 
       <!-- Tab Selection -->
-      <div class="flex rounded-lg bg-n-alpha-black2 p-1 mb-6">
+      <div class="flex rounded-xl bg-n-alpha-black2 p-1 mb-6">
         <button
           v-for="method in [OTP, BACKUP]"
           :key="method"
-          class="flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors"
+          class="flex-1 py-2.5 px-4 text-sm font-medium rounded-lg transition-all duration-200"
           :class="
             verificationMethod === method
-              ? 'bg-n-solid-active text-n-slate-12 shadow-sm'
-              : 'text-n-slate-12'
+              ? 'bg-white dark:bg-n-solid-active text-n-slate-12 shadow-sm'
+              : 'text-n-slate-11 hover:text-n-slate-12'
           "
           @click="verificationMethod = method"
         >
@@ -197,10 +199,12 @@ const handleTryAnotherMethod = () => {
       </div>
 
       <!-- Verification Form -->
-      <form class="space-y-4" @submit.prevent="handleVerification">
+      <form class="space-y-5" @submit.prevent="handleVerification">
         <!-- OTP Code Input -->
         <div v-if="verificationMethod === OTP">
-          <label class="block text-sm font-medium text-n-slate-12 mb-2">
+          <label
+            class="block text-sm font-medium tracking-tight text-n-slate-12 mb-3"
+          >
             {{ $t('MFA_VERIFICATION.ENTER_OTP_CODE') }}
           </label>
           <div class="flex justify-between gap-2">
@@ -213,7 +217,7 @@ const handleTryAnotherMethod = () => {
               maxlength="1"
               pattern="[0-9]"
               inputmode="numeric"
-              class="w-12 h-12 text-center text-lg font-semibold border-2 border-n-weak hover:border-n-strong rounded-lg focus:border-n-brand bg-n-alpha-black2 text-n-slate-12 placeholder:text-n-slate-10"
+              class="w-12 h-12 text-center text-lg font-semibold rounded-xl bg-n-alpha-black2 text-n-slate-12 placeholder:text-n-slate-10 outline outline-1 outline-n-weak hover:outline-n-slate-7 focus:outline-n-brand focus:ring-4 focus:ring-n-brand/10 transition-all duration-200"
               @input="handleOtpInput(i)"
               @keydown.left.prevent="focusInput(i - 1)"
               @keydown.right.prevent="focusInput(i + 1)"
@@ -243,9 +247,9 @@ const handleTryAnotherMethod = () => {
         <!-- Error Message -->
         <div
           v-if="errorMessage"
-          class="p-3 bg-n-ruby-3 outline outline-n-ruby-5 outline-1 rounded-lg"
+          class="p-4 bg-n-ruby-3 dark:bg-n-ruby-3/50 ring-1 ring-n-ruby-6 rounded-xl"
         >
-          <p class="text-sm text-n-ruby-9">{{ errorMessage }}</p>
+          <p class="text-sm text-n-ruby-11 font-medium">{{ errorMessage }}</p>
         </div>
 
         <!-- Submit Button -->
@@ -306,7 +310,7 @@ const handleTryAnotherMethod = () => {
       ref="helpModalRef"
       :title="$t('MFA_VERIFICATION.HELP_MODAL.TITLE')"
       :show-confirm-button="false"
-      class="[&>dialog>div]:bg-n-alpha-3 [&>dialog>div]:rounded-lg"
+      class="[&>dialog>div]:bg-n-alpha-3 [&>dialog>div]:rounded-xl"
       @confirm="helpModalRef?.close()"
     >
       <div class="space-y-4 text-sm text-n-slate-11">
