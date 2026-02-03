@@ -41,6 +41,7 @@ import VoiceCallBubble from './bubbles/VoiceCall.vue';
 
 import MessageError from './MessageError.vue';
 import ContextMenu from 'dashboard/modules/conversations/components/MessageContextMenu.vue';
+import ForwardMessageModal from 'dashboard/components/widgets/conversation/ForwardMessageModal.vue';
 
 /**
  * @typedef {Object} Attachment
@@ -137,6 +138,7 @@ const emit = defineEmits(['retry']);
 const contextMenuPosition = ref({});
 const showBackgroundHighlight = ref(false);
 const showContextMenu = ref(false);
+const showForwardModal = ref(false);
 const { t } = useI18n();
 const route = useRoute();
 
@@ -354,6 +356,25 @@ const isForwarded = computed(() => {
   return props.contentAttributes?.forwarded;
 });
 
+const canForward = computed(() => {
+  const hasText = !!props.content;
+  const hasAttachments = !!(props.attachments && props.attachments.length > 0);
+  const isFailedOrProcessing =
+    props.status === MESSAGE_STATUS.FAILED ||
+    props.status === MESSAGE_STATUS.PROGRESS;
+  const isDeleted = props.contentAttributes?.deleted;
+
+  return (hasText || hasAttachments) && !isFailedOrProcessing && !isDeleted;
+});
+
+function openForwardModal() {
+  showForwardModal.value = true;
+}
+
+function closeForwardModal() {
+  showForwardModal.value = false;
+}
+
 const contextMenuEnabledOptions = computed(() => {
   const hasText = !!props.content;
   const hasAttachments = !!(props.attachments && props.attachments.length > 0);
@@ -527,7 +548,7 @@ provideMessageContext({
         <Avatar v-bind="avatarInfo" :size="24" />
       </div>
       <div
-        class="[grid-area:bubble] flex flex-col"
+        class="[grid-area:bubble] flex flex-col group/message"
         :class="{
           'ltr:ml-8 rtl:mr-8 items-end': orientation === ORIENTATION.RIGHT,
           'ltr:mr-8 rtl:ml-8 items-start': orientation === ORIENTATION.LEFT,
@@ -542,7 +563,21 @@ provideMessageContext({
           <span class="i-lucide-corner-up-right size-3" />
           <span>{{ t('CONVERSATION.FORWARDED') }}</span>
         </div>
-        <Component :is="componentToRender" />
+        <div class="relative">
+          <button
+            v-if="canForward"
+            v-tooltip="t('CONVERSATION.CONTEXT_MENU.FORWARD')"
+            class="absolute -top-2 z-10 p-1 rounded-full bg-n-solid-3 border border-n-weak shadow-sm opacity-0 group-hover/message:opacity-100 transition-opacity duration-200 hover:bg-n-solid-4"
+            :class="{
+              'ltr:-left-8 rtl:-right-8': orientation === ORIENTATION.RIGHT,
+              'ltr:-right-8 rtl:-left-8': orientation === ORIENTATION.LEFT,
+            }"
+            @click="openForwardModal"
+          >
+            <span class="i-lucide-forward size-4 text-n-slate-11" />
+          </button>
+          <Component :is="componentToRender" />
+        </div>
       </div>
       <MessageError
         v-if="contentAttributes.externalError"
@@ -565,6 +600,14 @@ provideMessageContext({
         @reply-to="handleReplyTo"
       />
     </div>
+    <ForwardMessageModal
+      v-if="showForwardModal"
+      :show="showForwardModal"
+      :message="payloadForContextMenu"
+      :conversation-id="props.conversationId"
+      @close="closeForwardModal"
+      @update:show="showForwardModal = $event"
+    />
   </div>
 </template>
 
