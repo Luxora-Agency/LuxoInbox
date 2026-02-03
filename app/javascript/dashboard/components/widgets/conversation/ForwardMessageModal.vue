@@ -6,7 +6,7 @@ import { useAlert } from 'dashboard/composables';
 import SearchAPI from 'dashboard/api/search';
 import NextButton from 'dashboard/components-next/button/Button.vue';
 import Spinner from 'shared/components/Spinner.vue';
-import Thumbnail from 'dashboard/components/widgets/Thumbnail.vue';
+import Avatar from 'next/avatar/Avatar.vue';
 import { debounce } from '@chatwoot/utils';
 
 const props = defineProps({
@@ -209,10 +209,11 @@ const onForward = async () => {
                 @click.stop
                 @change="toggleSelection(conversation)"
               />
-              <Thumbnail
+              <Avatar
                 :src="getConversationThumbnail(conversation)"
-                :username="conversation.meta?.sender?.name || ''"
-                size="32px"
+                :name="conversation.meta?.sender?.name || ''"
+                :size="32"
+                rounded-full
               />
               <div class="flex-1 min-w-0">
                 <div class="font-medium truncate text-n-slate-12">
