@@ -204,7 +204,7 @@ defineExpose({
       </div>
 
       <div class="flex flex-col gap-2">
-        <div class="rounded-md">
+        <div class="rounded-lg">
           <div class="text-sm whitespace-pre-wrap text-n-slate-12">
             {{ renderedTemplate }}
           </div>
@@ -260,7 +260,7 @@ defineExpose({
 
       <p
         v-if="v$.$dirty && (v$.$invalid || isFormInvalid)"
-        class="p-2.5 text-center rounded-md bg-n-ruby-9/20 text-n-ruby-9"
+        class="p-2.5 text-center rounded-lg bg-n-ruby-9/20 text-n-ruby-9"
       >
         {{ $t('CONTENT_TEMPLATES.PARSER.FORM_ERROR_MESSAGE') }}
       </p>

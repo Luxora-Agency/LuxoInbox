@@ -75,7 +75,7 @@ const closeBanner = event => {
           class="w-full h-auto rounded"
         />
         <button
-          class="w-full px-3 py-2 bg-white text-n-iris-9 text-xs font-medium rounded-mdtracking-tight"
+          class="w-full px-3 py-2 bg-white text-n-iris-9 text-xs font-medium rounded-lg tracking-tight"
           @click.stop="openModal"
         >
           {{ t('YEAR_IN_REVIEW.BANNER.BUTTON') }}
