@@ -63,7 +63,8 @@ class Attachment < ApplicationRecord
     return '' unless file.attached? && image?
 
     begin
-      url_for(file.representation(resize_to_fill: [250, nil]))
+      # resize_to_limit maintains aspect ratio without cropping
+      url_for(file.representation(resize_to_limit: [250, 250]))
     rescue ActiveStorage::UnrepresentableError => e
       Rails.logger.warn "Unrepresentable image attachment: #{id} (#{file.filename}) - #{e.message}"
       ''
@@ -111,7 +112,8 @@ class Attachment < ApplicationRecord
   def file_metadata
     metadata = {
       extension: extension,
-      data_url: file_url,
+      # Use download_url for direct access without redirects (fixes 307/301 issues on mobile apps)
+      data_url: download_url,
       thumb_url: thumb_url,
       file_size: file.byte_size,
       width: file.metadata[:width],
