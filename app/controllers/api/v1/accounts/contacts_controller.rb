@@ -17,7 +17,8 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
   before_action :set_include_contact_inboxes, only: [:index, :active, :search, :filter, :show, :update]
 
   def index
-    @contacts = fetch_contacts(resolved_contacts)
+    contacts = apply_permission_filter(resolved_contacts)
+    @contacts = fetch_contacts(contacts)
     @contacts_count = @contacts.total_count
   end
 
@@ -28,6 +29,7 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
       'name ILIKE :search OR email ILIKE :search OR phone_number ILIKE :search OR contacts.identifier LIKE :search',
       search: "%#{params[:q].strip}%"
     )
+    contacts = apply_permission_filter(contacts)
     @contacts = fetch_contacts_with_has_more(contacts)
   end
 
@@ -53,6 +55,7 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
   def active
     contacts = Current.account.contacts.where(id: ::OnlineStatusTracker
                   .get_available_contact_ids(Current.account.id))
+    contacts = apply_permission_filter(contacts)
     @contacts = fetch_contacts(contacts)
     @contacts_count = @contacts.total_count
   end
@@ -61,8 +64,8 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
 
   def filter
     result = ::Contacts::FilterService.new(Current.account, Current.user, params.permit!).perform
-    contacts = result[:contacts]
-    @contacts_count = result[:count]
+    contacts = apply_permission_filter(result[:contacts])
+    @contacts_count = contacts.count
     @contacts = fetch_contacts(contacts)
   rescue CustomExceptions::CustomFilter::InvalidAttribute,
          CustomExceptions::CustomFilter::InvalidOperator,
@@ -211,5 +214,9 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
 
   def render_error(error, error_status)
     render json: error, status: error_status
+  end
+
+  def apply_permission_filter(contacts)
+    ::Contacts::PermissionFilterService.new(contacts, Current.user, Current.account).perform
   end
 end
