@@ -440,6 +440,10 @@
           },
           "COMPANY_NAME": {
             "PLACEHOLDER": "Enter the company name"
+          },
+          "ASSIGNEE": {
+            "PLACEHOLDER": "Assign to agent",
+            "NONE": "No agent assigned"
           }
         },
         "UPDATE_BUTTON": "Update contact",
