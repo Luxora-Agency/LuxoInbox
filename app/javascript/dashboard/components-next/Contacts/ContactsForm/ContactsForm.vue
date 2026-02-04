@@ -1,6 +1,7 @@
 <script setup>
-import { computed, reactive, watch } from 'vue';
+import { computed, reactive, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
 import { required, email } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
 import { splitName } from '@chatwoot/utils';
@@ -28,6 +29,26 @@ const props = defineProps({
 const emit = defineEmits(['update']);
 
 const { t } = useI18n();
+const store = useStore();
+
+// Fetch agents on mount
+onMounted(() => {
+  store.dispatch('agents/get');
+});
+
+const agents = computed(() => store.getters['agents/getVerifiedAgents'] || []);
+
+const agentOptions = computed(() => [
+  {
+    label: t('CONTACTS_LAYOUT.CARD.EDIT_DETAILS_FORM.FORM.ASSIGNEE.NONE'),
+    value: null,
+  },
+  ...agents.value.map(agent => ({
+    label: agent.name,
+    value: agent.id,
+    thumbnail: agent.thumbnail,
+  })),
+]);
 
 const FORM_CONFIG = {
   FIRST_NAME: { field: 'firstName' },
@@ -56,6 +77,7 @@ const defaultState = {
   firstName: '',
   lastName: '',
   phoneNumber: '',
+  assigneeId: null,
   additionalAttributes: {
     description: '',
     companyName: '',
@@ -94,6 +116,7 @@ const prepareStateBasedOnProps = () => {
     name = '',
     email: emailAddress,
     phoneNumber,
+    assigneeId = null,
     additionalAttributes = {},
   } = props.contactData || {};
   const { firstName, lastName } = splitName(name || '');
@@ -113,6 +136,7 @@ const prepareStateBasedOnProps = () => {
     lastName,
     email: emailAddress,
     phoneNumber,
+    assigneeId,
     additionalAttributes: {
       description,
       companyName,
@@ -212,6 +236,11 @@ const handleCountrySelection = value => {
   emit('update', state);
 };
 
+const handleAgentSelection = value => {
+  state.assigneeId = value;
+  emit('update', state);
+};
+
 const resetValidation = () => {
   v$.value.$reset();
 };
@@ -285,6 +314,22 @@ defineExpose({
             "
           />
         </template>
+        <ComboBox
+          v-model="state.assigneeId"
+          :options="agentOptions"
+          :placeholder="
+            t(
+              'CONTACTS_LAYOUT.CARD.EDIT_DETAILS_FORM.FORM.ASSIGNEE.PLACEHOLDER'
+            )
+          "
+          class="[&>div>button]:h-8"
+          :class="{
+            '[&>div>button]:bg-n-alpha-black2 [&>div>button:not(.focused)]:!outline-transparent':
+              !isDetailsView,
+            '[&>div>button]:!bg-n-alpha-black2': isDetailsView,
+          }"
+          @update:model-value="handleAgentSelection"
+        />
       </div>
     </div>
     <div class="flex flex-col items-start gap-2">

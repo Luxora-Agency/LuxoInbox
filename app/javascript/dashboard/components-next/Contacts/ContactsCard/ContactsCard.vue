@@ -19,6 +19,8 @@ const props = defineProps({
   phoneNumber: { type: String, default: '' },
   thumbnail: { type: String, default: '' },
   availabilityStatus: { type: String, default: null },
+  assignee: { type: Object, default: null },
+  assigneeId: { type: Number, default: null },
   isExpanded: { type: Boolean, default: false },
   isUpdating: { type: Boolean, default: false },
   selectable: { type: Boolean, default: false },
@@ -43,6 +45,7 @@ const getInitialContactData = () => ({
   email: props.email,
   phoneNumber: props.phoneNumber,
   additionalAttributes: props.additionalAttributes,
+  assigneeId: props.assigneeId,
 });
 
 const contactData = ref(getInitialContactData());
@@ -183,6 +186,19 @@ const handleAvatarHover = isHovered => {
               {{ formattedLocation }}
             </span>
             <div v-if="countryDetails" class="w-px h-3 truncate bg-n-slate-6" />
+            <span
+              v-if="assignee"
+              class="inline-flex items-center gap-1.5 text-sm truncate text-n-slate-11"
+            >
+              <Avatar
+                :name="assignee.name"
+                :src="assignee.thumbnail"
+                :size="16"
+                rounded-full
+              />
+              {{ assignee.name }}
+            </span>
+            <div v-if="assignee" class="w-px h-3 truncate bg-n-slate-6" />
             <Button
               :label="t('CONTACTS_LAYOUT.CARD.VIEW_DETAILS')"
               variant="link"
