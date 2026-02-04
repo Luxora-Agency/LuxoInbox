@@ -51,9 +51,11 @@ export function useContactFilterContext() {
 
   const contactAttributes = useMapGetter('attributes/getContactAttributes');
   const labels = useMapGetter('labels/getLabels');
+  const agents = useMapGetter('agents/getAgents');
 
   const {
     equalityOperators,
+    presenceOperators,
     containmentOperators,
     dateOperators,
     getOperatorTypes,
@@ -197,6 +199,20 @@ export function useContactFilterContext() {
       })),
       dataType: 'text',
       filterOperators: equalityOperators.value,
+      attributeModel: 'standard',
+    },
+    {
+      attributeKey: CONTACT_ATTRIBUTES.ASSIGNEE_ID,
+      value: CONTACT_ATTRIBUTES.ASSIGNEE_ID,
+      attributeName: t('CONTACTS_LAYOUT.FILTER.ASSIGNEE'),
+      label: t('CONTACTS_LAYOUT.FILTER.ASSIGNEE'),
+      inputType: 'searchSelect',
+      options: agents.value?.map(agent => ({
+        id: agent.id,
+        name: agent.name,
+      })),
+      dataType: 'text',
+      filterOperators: presenceOperators.value,
       attributeModel: 'standard',
     },
     ...customFilterTypes.value,

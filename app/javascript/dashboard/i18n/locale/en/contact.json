@@ -392,6 +392,7 @@
       "BLOCKED": "Blocked",
       "BLOCKED_TRUE": "True",
       "BLOCKED_FALSE": "False",
+      "ASSIGNEE": "Assigned agent",
       "BUTTONS": {
         "CLEAR_FILTERS": "Clear filters",
         "UPDATE_SEGMENT": "Update segment",

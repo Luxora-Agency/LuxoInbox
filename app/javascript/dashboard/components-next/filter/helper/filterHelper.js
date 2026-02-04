@@ -28,6 +28,7 @@ export const CONTACT_ATTRIBUTES = {
   REFERER: 'referer',
   BLOCKED: 'blocked',
   LABELS: 'labels',
+  ASSIGNEE_ID: 'assignee_id',
 };
 
 /**
