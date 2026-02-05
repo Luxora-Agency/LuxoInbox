@@ -14,20 +14,16 @@ const { t } = useI18n();
 
 <template>
   <div
-    class="flex flex-col items-center justify-center h-full bg-gradient-to-br from-n-slate-1 via-n-background to-woot-50/30 dark:from-n-solid-4 dark:via-n-solid-5 dark:to-woot-950/20"
+    class="flex flex-col items-center justify-center h-full bg-n-background dark:bg-n-solid-5"
   >
-    <div
-      class="flex flex-col items-center gap-5 p-10 rounded-3xl bg-white/70 dark:bg-n-solid-3/70 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-black/30 max-w-md"
-    >
+    <div class="flex flex-col items-center gap-6 p-8 max-w-sm">
       <div
-        class="flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-woot-500 to-woot-600 shadow-lg shadow-woot-500/30"
+        class="flex items-center justify-center w-16 h-16 rounded-2xl bg-woot-100 dark:bg-woot-500/20"
       >
-        <span class="i-lucide-message-square-text text-white size-10" />
+        <span class="i-lucide-message-square-text text-woot-500 size-8" />
       </div>
       <div class="flex flex-col items-center gap-2">
-        <span
-          class="text-lg font-semibold text-n-slate-12 text-center leading-snug"
-        >
+        <span class="text-base font-medium text-n-slate-12 text-center">
           {{ message }}
         </span>
         <span class="text-sm text-n-slate-10 text-center">
