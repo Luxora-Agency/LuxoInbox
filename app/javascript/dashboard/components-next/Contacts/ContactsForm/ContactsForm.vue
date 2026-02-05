@@ -178,6 +178,14 @@ const getValidationKey = key => {
   return FORM_CONFIG[key]?.field;
 };
 
+const emitValidatedState = async () => {
+  const isFormValid = await v$.value.$validate();
+  if (isFormValid) {
+    const { firstName, lastName, ...stateWithoutNames } = state;
+    emit('update', stateWithoutNames);
+  }
+};
+
 // Creates a computed property for two-way form field binding
 const getFormBinding = key => {
   const field = FORM_CONFIG[key]?.field;
@@ -215,11 +223,7 @@ const getFormBinding = key => {
         }
       }
 
-      const isFormValid = await v$.value.$validate();
-      if (isFormValid) {
-        const { firstName, lastName, ...stateWithoutNames } = state;
-        emit('update', stateWithoutNames);
-      }
+      await emitValidatedState();
     },
   });
 };
@@ -230,15 +234,15 @@ const getMessageType = key => {
     : 'info';
 };
 
-const handleCountrySelection = value => {
+const handleCountrySelection = async value => {
   const selectedCountry = countries.find(option => option.id === value);
   state.additionalAttributes.country = selectedCountry?.name || '';
-  emit('update', state);
+  await emitValidatedState();
 };
 
-const handleAgentSelection = value => {
+const handleAgentSelection = async value => {
   state.assigneeId = value;
-  emit('update', state);
+  await emitValidatedState();
 };
 
 const resetValidation = () => {
@@ -357,7 +361,7 @@ defineExpose({
             class="w-auto min-w-[100px] text-sm bg-transparent outline-none reset-base text-n-slate-12 dark:text-n-slate-12 placeholder:text-n-slate-10 dark:placeholder:text-n-slate-10"
             :placeholder="item.placeholder"
             :size="item.placeholder.length"
-            @input="emit('update', state)"
+            @input="emitValidatedState"
           />
         </div>
       </div>
