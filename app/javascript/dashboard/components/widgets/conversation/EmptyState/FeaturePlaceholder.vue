@@ -18,32 +18,32 @@ const keyShortcuts = [
 
 <template>
   <div
-    class="flex flex-col gap-2 w-full mt-3 pt-3 border-t border-n-slate-3 dark:border-white/10"
+    class="flex flex-col gap-2 w-full mt-2 pt-3 border-t border-n-slate-2 dark:border-n-solid-2"
   >
     <div
       v-for="keyShortcut in keyShortcuts"
       :key="keyShortcut.key"
-      class="flex items-center gap-3 px-3 py-2 rounded-lg bg-n-slate-2/50 dark:bg-n-solid-2/50 hover:bg-n-slate-3/50 dark:hover:bg-n-solid-2/80 transition-colors duration-200"
+      class="flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-n-slate-1 dark:hover:bg-n-solid-2 transition-colors duration-150"
     >
-      <div class="flex items-center gap-1">
+      <div class="flex items-center gap-0.5">
         <Hotkey
-          custom-class="w-6 h-5 text-xs font-medium text-n-slate-12
-                        bg-white dark:bg-n-solid-3
-                        border border-n-slate-3 dark:border-white/10
-                        rounded shadow-sm"
+          custom-class="w-6 h-5 text-xs font-medium text-n-slate-11
+                        bg-n-slate-2 dark:bg-n-solid-2
+                        border border-n-slate-3 dark:border-n-solid-1
+                        rounded"
         >
           ⌘
         </Hotkey>
         <Hotkey
-          custom-class="w-6 h-5 text-xs font-medium text-n-slate-12
-                        bg-white dark:bg-n-solid-3
-                        border border-n-slate-3 dark:border-white/10
-                        rounded shadow-sm"
+          custom-class="w-6 h-5 text-xs font-medium text-n-slate-11
+                        bg-n-slate-2 dark:bg-n-solid-2
+                        border border-n-slate-3 dark:border-n-solid-1
+                        rounded"
         >
           {{ keyShortcut.key }}
         </Hotkey>
       </div>
-      <span class="text-xs text-n-slate-11">
+      <span class="text-xs text-n-slate-10">
         {{ keyShortcut.description }}
       </span>
     </div>

@@ -59,19 +59,18 @@ const toggleConversationLayout = () => {
 
 <template>
   <div
-    class="relative z-10 flex items-center justify-between gap-2 px-4 h-[72px] bg-white/70 dark:bg-n-solid-3/70 backdrop-blur-xl border-b border-white/30 dark:border-white/10 shadow-sm shadow-black/5 dark:shadow-black/10"
+    class="relative z-10 flex items-center justify-between gap-2 px-4 h-16 bg-white dark:bg-n-solid-3 border-b border-n-slate-2 dark:border-n-solid-2"
   >
     <div class="flex items-center gap-3 min-w-0 flex-1">
-      <!-- Icono con gradiente -->
       <div
-        class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-woot-500 to-violet-500 shadow-lg shadow-woot-500/25"
+        class="flex items-center justify-center w-9 h-9 rounded-lg bg-woot-500"
       >
-        <span class="i-lucide-messages-square text-white size-5" />
+        <span class="i-lucide-messages-square text-white size-4" />
       </div>
       <div class="flex flex-col min-w-0">
         <div class="flex items-center gap-2">
           <h1
-            class="text-base font-semibold truncate text-n-slate-12"
+            class="text-sm font-semibold truncate text-n-slate-12"
             :title="pageTitle"
           >
             {{ pageTitle }}
@@ -80,14 +79,14 @@ const toggleConversationLayout = () => {
             v-if="
               allCount > 0 && hasAppliedFiltersOrActiveFolders && !isListLoading
             "
-            class="px-2 py-0.5 rounded-full text-xs font-medium bg-woot-500/10 text-woot-500"
+            class="px-1.5 py-0.5 rounded text-xs font-medium bg-woot-50 dark:bg-woot-500/10 text-woot-600 dark:text-woot-400"
             :title="allCount"
           >
             {{ formattedAllCount }}
           </span>
           <span
             v-if="!hasAppliedFiltersOrActiveFolders"
-            class="px-2 py-0.5 rounded-full text-xs font-medium bg-n-slate-3 dark:bg-n-solid-2 text-n-slate-11"
+            class="px-1.5 py-0.5 rounded text-xs font-medium bg-n-slate-2 dark:bg-n-solid-2 text-n-slate-11"
           >
             {{ t(`CHAT_LIST.CHAT_STATUS_FILTER_ITEMS.${activeStatus}.TEXT`) }}
           </span>

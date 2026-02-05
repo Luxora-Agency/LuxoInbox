@@ -234,11 +234,12 @@ const deleteConversation = () => {
 
 <template>
   <div
-    class="relative flex items-start flex-grow-0 flex-shrink-0 w-auto max-w-full py-0.5 cursor-pointer conversation group mx-3 my-1.5 rounded-xl transition-all duration-200 ease-out bg-white/60 dark:bg-n-solid-3/60 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm shadow-black/5 dark:shadow-black/10 hover:bg-white/80 dark:hover:bg-n-solid-3/80 hover:shadow-md hover:shadow-black/10 dark:hover:shadow-black/20 hover:border-white/50 dark:hover:border-white/15"
+    class="relative flex items-start flex-grow-0 flex-shrink-0 w-auto max-w-full py-0.5 cursor-pointer conversation group mx-3 my-1.5 rounded-xl transition-all duration-200 ease-out bg-white dark:bg-n-solid-3 border border-n-slate-2 dark:border-n-solid-2 shadow-sm hover:shadow-md hover:border-n-slate-3 dark:hover:border-n-solid-1"
     :class="{
-      'bg-white/90 dark:bg-n-solid-3/90 !border-woot-500/40 shadow-md shadow-woot-500/15 ring-1 ring-woot-500/20':
+      '!bg-woot-50 dark:!bg-woot-500/10 !border-woot-200 dark:!border-woot-500/30 shadow-md ring-1 ring-woot-500/10':
         isActiveChat,
-      'bg-woot-500/10 dark:bg-woot-500/15 !border-woot-500/20': selected,
+      '!bg-woot-50/50 dark:!bg-woot-500/5 !border-woot-200/50 dark:!border-woot-500/20':
+        selected,
       'px-0': compact,
       'px-3': !compact,
     }"
