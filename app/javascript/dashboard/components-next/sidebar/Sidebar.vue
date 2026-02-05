@@ -303,7 +303,7 @@ const menuItems = computed(() => {
       ],
     },
     {
-      name: 'Captain',
+      name: 'LuxoIA',
       icon: 'i-woot-captain',
       label: t('SIDEBAR.CAPTAIN'),
       activeOn: ['captain_assistants_create_index'],
