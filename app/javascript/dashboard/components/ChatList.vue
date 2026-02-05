@@ -902,7 +902,7 @@ watch(conversationFilters, (newVal, oldVal) => {
 
 <template>
   <div
-    class="flex flex-col flex-shrink-0 conversations-list-wrap bg-n-surface-1"
+    class="flex flex-col flex-shrink-0 conversations-list-wrap bg-gradient-to-br from-n-background via-n-background to-n-slate-3/30 ltr:border-r rtl:border-l border-white/10"
     :class="[
       { hidden: !showConversationList },
       isOnExpandedLayout ? 'basis-full' : 'w-[340px] 2xl:w-[412px]',
@@ -953,12 +953,19 @@ watch(conversationFilters, (newVal, oldVal) => {
       @chat-tab-change="updateAssigneeTab"
     />
 
-    <p
+    <div
       v-if="!chatListLoading && !conversationList.length"
-      class="flex overflow-auto justify-center items-center p-4"
+      class="flex flex-col items-center justify-center py-12 px-6 mx-3 mt-4 bg-white/30 dark:bg-n-solid-3/30 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-2xl"
     >
-      {{ $t('CHAT_LIST.LIST.404') }}
-    </p>
+      <div
+        class="flex items-center justify-center w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-n-slate-3 to-n-slate-4 dark:from-n-solid-3 dark:to-n-solid-4"
+      >
+        <span class="i-lucide-message-square-off text-n-slate-10 size-8" />
+      </div>
+      <p class="text-sm font-medium text-n-slate-11 text-center">
+        {{ $t('CHAT_LIST.LIST.404') }}
+      </p>
+    </div>
     <ConversationBulkActions
       v-if="selectedConversations.length"
       :conversations="selectedConversations"
@@ -1014,15 +1021,27 @@ watch(conversationFilters, (newVal, oldVal) => {
           </DynamicScrollerItem>
         </template>
         <template #after>
-          <div v-if="chatListLoading" class="flex justify-center my-4">
-            <Spinner class="text-n-brand" />
-          </div>
-          <p
-            v-else-if="showEndOfListMessage"
-            class="p-4 text-center text-n-slate-11"
+          <div
+            v-if="chatListLoading"
+            class="flex flex-col items-center justify-center py-6 gap-3"
           >
-            {{ $t('CHAT_LIST.EOF') }}
-          </p>
+            <div class="relative">
+              <div
+                class="absolute inset-0 rounded-full bg-gradient-to-r from-woot-500 to-violet-500 blur-xl opacity-30 animate-pulse"
+              />
+              <Spinner class="text-n-brand" />
+            </div>
+            <span class="text-xs text-n-slate-11">
+              {{ $t('CHAT_LIST.LOADING') }}
+            </span>
+          </div>
+          <div
+            v-else-if="showEndOfListMessage"
+            class="flex items-center justify-center gap-2 py-4 mx-3 mb-3 bg-white/30 dark:bg-n-solid-3/30 backdrop-blur-sm border border-white/20 dark:border-white/5 rounded-xl text-n-slate-11"
+          >
+            <span class="i-lucide-check-circle size-4 text-green-500" />
+            <span class="text-sm">{{ $t('CHAT_LIST.EOF') }}</span>
+          </div>
           <IntersectionObserver
             v-else
             :options="intersectionObserverOptions"
