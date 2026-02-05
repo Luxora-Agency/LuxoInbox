@@ -234,11 +234,11 @@ const deleteConversation = () => {
 
 <template>
   <div
-    class="relative flex items-start flex-grow-0 flex-shrink-0 w-auto max-w-full py-0 cursor-pointer conversation group mx-3 my-1 rounded-xl transition-all duration-300 ease-out bg-white/40 dark:bg-n-solid-3/40 backdrop-blur-md border border-white/20 dark:border-white/5 hover:bg-white/60 dark:hover:bg-n-solid-3/60 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:scale-[1.01] hover:border-white/40 dark:hover:border-white/10"
+    class="relative flex items-start flex-grow-0 flex-shrink-0 w-auto max-w-full py-0.5 cursor-pointer conversation group mx-3 my-1.5 rounded-xl transition-all duration-200 ease-out bg-white/60 dark:bg-n-solid-3/60 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm shadow-black/5 dark:shadow-black/10 hover:bg-white/80 dark:hover:bg-n-solid-3/80 hover:shadow-md hover:shadow-black/10 dark:hover:shadow-black/20 hover:border-white/50 dark:hover:border-white/15"
     :class="{
-      'bg-white/70 dark:bg-n-solid-3/70 !border-woot-500/30 shadow-lg shadow-woot-500/10 scale-[1.01]':
+      'bg-white/90 dark:bg-n-solid-3/90 !border-woot-500/40 shadow-md shadow-woot-500/15 ring-1 ring-woot-500/20':
         isActiveChat,
-      'bg-woot-500/5 dark:bg-woot-500/10': selected,
+      'bg-woot-500/10 dark:bg-woot-500/15 !border-woot-500/20': selected,
       'px-0': compact,
       'px-3': !compact,
     }"

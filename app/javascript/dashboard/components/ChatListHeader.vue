@@ -59,7 +59,7 @@ const toggleConversationLayout = () => {
 
 <template>
   <div
-    class="relative z-10 flex items-center justify-between gap-2 px-4 h-[72px] bg-white/50 dark:bg-n-solid-3/50 backdrop-blur-xl border-b border-white/20 dark:border-white/5"
+    class="relative z-10 flex items-center justify-between gap-2 px-4 h-[72px] bg-white/70 dark:bg-n-solid-3/70 backdrop-blur-xl border-b border-white/30 dark:border-white/10 shadow-sm shadow-black/5 dark:shadow-black/10"
   >
     <div class="flex items-center gap-3 min-w-0 flex-1">
       <!-- Icono con gradiente -->

@@ -902,7 +902,7 @@ watch(conversationFilters, (newVal, oldVal) => {
 
 <template>
   <div
-    class="flex flex-col flex-shrink-0 conversations-list-wrap bg-gradient-to-br from-n-background via-n-background to-n-slate-3/30 ltr:border-r rtl:border-l border-white/10"
+    class="flex flex-col flex-shrink-0 conversations-list-wrap bg-gradient-to-b from-n-background via-n-background to-n-slate-2/50 dark:to-n-solid-2/30 ltr:border-r rtl:border-l border-n-slate-3 dark:border-white/10"
     :class="[
       { hidden: !showConversationList },
       isOnExpandedLayout ? 'basis-full' : 'w-[340px] 2xl:w-[412px]',
@@ -955,15 +955,18 @@ watch(conversationFilters, (newVal, oldVal) => {
 
     <div
       v-if="!chatListLoading && !conversationList.length"
-      class="flex flex-col items-center justify-center py-12 px-6 mx-3 mt-4 bg-white/30 dark:bg-n-solid-3/30 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-2xl"
+      class="flex flex-col items-center justify-center py-10 px-6 mx-3 mt-3 bg-white/60 dark:bg-n-solid-3/60 backdrop-blur-xl border border-white/30 dark:border-white/10 rounded-2xl shadow-sm"
     >
       <div
-        class="flex items-center justify-center w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-n-slate-3 to-n-slate-4 dark:from-n-solid-3 dark:to-n-solid-4"
+        class="flex items-center justify-center w-14 h-14 mb-3 rounded-xl bg-gradient-to-br from-n-slate-2 to-n-slate-3 dark:from-n-solid-2 dark:to-n-solid-3 border border-white/20 dark:border-white/5"
       >
-        <span class="i-lucide-message-square-off text-n-slate-10 size-8" />
+        <span class="i-lucide-inbox text-n-slate-10 size-7" />
       </div>
-      <p class="text-sm font-medium text-n-slate-11 text-center">
+      <p class="text-sm font-medium text-n-slate-12 text-center mb-1">
         {{ $t('CHAT_LIST.LIST.404') }}
+      </p>
+      <p class="text-xs text-n-slate-10 text-center">
+        {{ $t('CHAT_LIST.NO_CONVERSATIONS_AVAILABLE') }}
       </p>
     </div>
     <ConversationBulkActions
@@ -1037,10 +1040,14 @@ watch(conversationFilters, (newVal, oldVal) => {
           </div>
           <div
             v-else-if="showEndOfListMessage"
-            class="flex items-center justify-center gap-2 py-4 mx-3 mb-3 bg-white/30 dark:bg-n-solid-3/30 backdrop-blur-sm border border-white/20 dark:border-white/5 rounded-xl text-n-slate-11"
+            class="flex items-center justify-center gap-2 py-3 mx-3 mb-3 bg-gradient-to-r from-green-500/10 to-emerald-500/10 dark:from-green-500/20 dark:to-emerald-500/20 backdrop-blur-sm border border-green-500/20 dark:border-green-500/30 rounded-xl"
           >
             <span class="i-lucide-check-circle size-4 text-green-500" />
-            <span class="text-sm">{{ $t('CHAT_LIST.EOF') }}</span>
+            <span
+              class="text-sm font-medium text-green-600 dark:text-green-400"
+            >
+              {{ $t('CHAT_LIST.EOF') }}
+            </span>
           </div>
           <IntersectionObserver
             v-else
