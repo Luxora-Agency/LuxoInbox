@@ -46,31 +46,33 @@ useKeyboardEvents(keyboardEvents);
 </script>
 
 <template>
-  <div
-    class="flex items-center gap-1 px-3 py-2 border-b border-n-slate-2 dark:border-n-solid-2"
-  >
-    <button
-      v-for="(item, index) in items"
-      :key="item.key"
-      class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors duration-150"
-      :class="[
-        index === activeTabIndex
-          ? 'bg-n-slate-2 dark:bg-n-solid-2 text-n-slate-12'
-          : 'text-n-slate-10 hover:text-n-slate-12 hover:bg-n-slate-1 dark:hover:bg-n-solid-3',
-      ]"
-      @click="onTabChange(index)"
+  <div class="px-3 py-2">
+    <div
+      class="flex items-center gap-1 p-1 rounded-xl bg-n-slate-2/50 dark:bg-n-solid-2/50"
     >
-      <span>{{ item.name }}</span>
-      <span
-        class="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 rounded-md text-xs font-medium"
+      <button
+        v-for="(item, index) in items"
+        :key="item.key"
+        class="relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200"
         :class="[
           index === activeTabIndex
-            ? 'bg-woot-500 text-white'
-            : 'bg-n-slate-3 dark:bg-n-solid-1 text-n-slate-10',
+            ? 'bg-white dark:bg-n-solid-3 text-n-slate-12 shadow-sm'
+            : 'text-n-slate-10 hover:text-n-slate-12',
         ]"
+        @click="onTabChange(index)"
       >
-        {{ item.count }}
-      </span>
-    </button>
+        <span>{{ item.name }}</span>
+        <span
+          class="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 rounded-full text-xs font-semibold"
+          :class="[
+            index === activeTabIndex
+              ? 'bg-woot-500 text-white'
+              : 'bg-n-slate-3 dark:bg-n-solid-1 text-n-slate-10',
+          ]"
+        >
+          {{ item.count }}
+        </span>
+      </button>
+    </div>
   </div>
 </template>

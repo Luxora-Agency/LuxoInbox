@@ -59,13 +59,13 @@ const toggleConversationLayout = () => {
 
 <template>
   <div
-    class="relative z-10 flex items-center justify-between gap-2 px-4 h-16 bg-white dark:bg-n-solid-3 border-b border-n-slate-2 dark:border-n-solid-2"
+    class="relative z-10 flex items-center justify-between gap-2 px-4 h-16 bg-white/80 dark:bg-n-solid-3/80 backdrop-blur-sm border-b border-n-slate-2 dark:border-n-solid-2"
   >
     <div class="flex items-center gap-3 min-w-0 flex-1">
       <div
-        class="flex items-center justify-center w-9 h-9 rounded-lg bg-woot-500"
+        class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-woot-500 to-woot-600 shadow-lg shadow-woot-500/25"
       >
-        <span class="i-lucide-messages-square text-white size-4" />
+        <span class="i-lucide-messages-square text-white size-5" />
       </div>
       <div class="flex flex-col min-w-0">
         <div class="flex items-center gap-2">
