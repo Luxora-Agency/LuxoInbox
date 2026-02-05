@@ -94,7 +94,7 @@ const formattedMessage = computed(() => {
   const messageContent = `<span class="${messageClasses.value.normal}">${formatPushMessage(props.inboxItem?.pushMessageBody || '')}</span>`;
 
   return isUnread.value
-    ? `<span class="inline-flex flex-shrink-0 w-2 h-2 mb-px rounded-full bg-n-iris-10 ltr:mr-1 rtl:ml-1"></span> ${messageContent}`
+    ? `<span class="inline-flex flex-shrink-0 w-2 h-2 mb-px rounded-full bg-gradient-to-r from-woot-500 to-violet-500 shadow-sm shadow-woot-500/50 ltr:mr-1.5 rtl:ml-1.5"></span> ${messageContent}`
     : messageContent;
 });
 
@@ -154,7 +154,7 @@ onBeforeMount(contextMenuActions.close);
 <template>
   <div
     role="button"
-    class="flex flex-col w-full gap-1 p-3 transition-all duration-200 ease-out cursor-pointer hover:bg-n-alpha-2 rounded-xl"
+    class="flex flex-col w-full gap-1 p-3 cursor-pointer"
     @contextmenu="contextMenuActions.open($event)"
     @click="emit('click')"
   >

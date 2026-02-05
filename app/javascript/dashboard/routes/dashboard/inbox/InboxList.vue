@@ -222,47 +222,83 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="flex w-full h-full bg-n-surface-1">
+  <section
+    class="flex w-full h-full bg-gradient-to-br from-n-background via-n-background to-n-slate-3/30"
+  >
     <div
-      class="flex flex-col h-full w-full lg:min-w-[340px] lg:max-w-[340px] ltr:border-r rtl:border-l border-n-weak"
+      class="flex flex-col h-full w-full lg:min-w-[360px] lg:max-w-[360px] ltr:border-r rtl:border-l border-white/10"
       :class="!currentConversationId ? 'flex' : 'hidden xl:flex'"
     >
+      <!-- Header con efecto glass -->
       <InboxListHeader
         :is-context-menu-open="isInboxContextMenuOpen"
         @filter="onFilterChange"
         @redirect="redirectToInbox"
       />
+
+      <!-- Lista de notificaciones -->
       <div
         ref="notificationList"
-        class="flex flex-col gap-0.5 w-full h-[calc(100%-56px)] pb-4 overflow-x-hidden px-2 overflow-y-auto divide-y divide-n-weak [&>*:hover]:!border-y-transparent [&>*.active]:!border-y-transparent [&>*:hover+*]:!border-t-transparent [&>*.active+*]:!border-t-transparent"
+        class="flex flex-col gap-2 w-full h-[calc(100%-72px)] pb-4 overflow-x-hidden px-3 overflow-y-auto"
       >
-        <InboxCard
+        <!-- Cards de notificaciones -->
+        <div
           v-for="notificationItem in notifications"
           :key="notificationItem.id"
-          :inbox-item="notificationItem"
-          :state-inbox="stateInbox(notificationItem.primaryActor?.inboxId)"
-          class="inbox-card rounded-none hover:rounded-lg hover:bg-n-alpha-1 dark:hover:bg-n-alpha-3"
-          :class="
-            currentConversationId === notificationItem.primaryActor?.id
-              ? 'bg-n-alpha-1 dark:bg-n-alpha-3 !rounded-lg active'
-              : ''
-          "
-          @mark-notification-as-read="markNotificationAsRead"
-          @mark-notification-as-un-read="markNotificationAsUnRead"
-          @delete-notification="deleteNotification"
-          @context-menu-open="isInboxContextMenuOpen = true"
-          @context-menu-close="isInboxContextMenuOpen = false"
-          @click="openConversation(notificationItem)"
-        />
-        <div v-if="uiFlags.isFetching" class="flex justify-center my-4">
-          <Spinner class="text-n-brand" />
-        </div>
-        <p
-          v-if="showEmptyState"
-          class="p-4 text-sm font-medium text-center text-n-slate-10"
+          class="group"
         >
-          {{ $t('INBOX.LIST.NO_NOTIFICATIONS') }}
-        </p>
+          <InboxCard
+            :inbox-item="notificationItem"
+            :state-inbox="stateInbox(notificationItem.primaryActor?.inboxId)"
+            class="inbox-card rounded-xl transition-all duration-300 ease-out bg-white/40 dark:bg-n-solid-3/40 backdrop-blur-md border border-white/20 dark:border-white/5 hover:bg-white/60 dark:hover:bg-n-solid-3/60 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/20 hover:scale-[1.02] hover:border-white/40 dark:hover:border-white/10"
+            :class="
+              currentConversationId === notificationItem.primaryActor?.id
+                ? 'bg-white/70 dark:bg-n-solid-3/70 !border-woot-500/30 shadow-lg shadow-woot-500/10 scale-[1.02] active'
+                : ''
+            "
+            @mark-notification-as-read="markNotificationAsRead"
+            @mark-notification-as-un-read="markNotificationAsUnRead"
+            @delete-notification="deleteNotification"
+            @context-menu-open="isInboxContextMenuOpen = true"
+            @context-menu-close="isInboxContextMenuOpen = false"
+            @click="openConversation(notificationItem)"
+          />
+        </div>
+
+        <!-- Loading state -->
+        <div
+          v-if="uiFlags.isFetching"
+          class="flex flex-col items-center justify-center py-8 gap-3"
+        >
+          <div class="relative">
+            <div
+              class="absolute inset-0 rounded-full bg-gradient-to-r from-woot-500 to-violet-500 blur-xl opacity-30 animate-pulse"
+            />
+            <Spinner class="text-n-brand" />
+          </div>
+          <span class="text-xs text-n-slate-11">
+            {{ t('INBOX.LIST.LOADING') }}
+          </span>
+        </div>
+
+        <!-- Estado vacío con glassmorphism -->
+        <div
+          v-if="showEmptyState"
+          class="flex flex-col items-center justify-center py-12 px-6 mx-2 mt-4 bg-white/30 dark:bg-n-solid-3/30 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-2xl"
+        >
+          <div
+            class="flex items-center justify-center w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-n-slate-3 to-n-slate-4 dark:from-n-solid-3 dark:to-n-solid-4"
+          >
+            <span class="i-lucide-inbox text-n-slate-10 size-8" />
+          </div>
+          <p class="text-sm font-medium text-n-slate-11 text-center">
+            {{ t('INBOX.LIST.NO_NOTIFICATIONS') }}
+          </p>
+          <p class="text-xs text-n-slate-10 text-center mt-1">
+            {{ t('INBOX.LIST.NOTE') }}
+          </p>
+        </div>
+
         <IntersectionObserver
           v-if="!showEndOfList && !uiFlags.isFetching"
           :options="infiniteLoaderOptions"

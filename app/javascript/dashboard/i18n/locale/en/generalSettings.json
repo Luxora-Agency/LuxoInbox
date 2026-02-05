@@ -152,6 +152,7 @@
     "LIST": {
       "LOADING_MESSAGE": "Loading notifications...",
       "404": "No Notifications",
+      "SUBTITLE": "Notifications from all subscribed inboxes",
       "TABLE_HEADER": [
         "Name",
         "Phone Number",
