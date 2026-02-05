@@ -31,6 +31,14 @@ const getters = {
     const permissions = getUserPermissions(currentUser, currentAccountId);
     const userRole = getUserRole(currentUser, currentAccountId);
 
+    // Get user's team IDs (teams where user is a member)
+    const myTeams = rootGetters['teams/getMyTeams'] || [];
+    const userTeamIds = myTeams.map(team => team.id);
+
+    // Get user's inbox IDs
+    const allInboxes = rootGetters['inboxes/getInboxes'] || [];
+    const userInboxIds = allInboxes.map(inbox => inbox.id);
+
     return allConversations
       .filter(conversation => {
         const matchesFilterResult = matchesFilters(
@@ -41,7 +49,8 @@ const getters = {
           conversation,
           userRole,
           permissions,
-          currentUserId
+          currentUserId,
+          { userTeamIds, userInboxIds }
         );
 
         return matchesFilterResult && allowedForRole;
