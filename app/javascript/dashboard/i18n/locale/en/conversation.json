@@ -16,7 +16,8 @@
     "VIEW_TRANSLATED": "View translated",
     "EMPTY_STATE": {
       "CMD_BAR": "to open command menu",
-      "KEYBOARD_SHORTCUTS": "to view keyboard shortcuts"
+      "KEYBOARD_SHORTCUTS": "to view keyboard shortcuts",
+      "CLICK_TO_VIEW": "Click on a conversation to view details"
     },
     "SEARCH": {
       "TITLE": "Search messages",

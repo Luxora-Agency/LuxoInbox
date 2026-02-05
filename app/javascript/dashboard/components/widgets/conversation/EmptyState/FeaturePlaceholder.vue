@@ -18,32 +18,32 @@ const keyShortcuts = [
 
 <template>
   <div
-    class="flex flex-col gap-3 mt-4 pt-4 border-t border-white/20 dark:border-white/5"
+    class="flex flex-col gap-2 w-full mt-3 pt-3 border-t border-n-slate-3 dark:border-white/10"
   >
     <div
       v-for="keyShortcut in keyShortcuts"
       :key="keyShortcut.key"
-      class="flex items-center gap-3 px-4 py-2 rounded-lg bg-white/40 dark:bg-n-solid-2/40 hover:bg-white/60 dark:hover:bg-n-solid-2/60 transition-colors duration-200"
+      class="flex items-center gap-3 px-3 py-2 rounded-lg bg-n-slate-2/50 dark:bg-n-solid-2/50 hover:bg-n-slate-3/50 dark:hover:bg-n-solid-2/80 transition-colors duration-200"
     >
-      <div class="flex items-center gap-1.5">
+      <div class="flex items-center gap-1">
         <Hotkey
-          custom-class="w-7 h-6 text-sm font-medium text-n-slate-12
-                        bg-white/60 dark:bg-n-solid-3/60
-                        border border-white/30 dark:border-white/10
-                        rounded-md shadow-sm"
+          custom-class="w-6 h-5 text-xs font-medium text-n-slate-12
+                        bg-white dark:bg-n-solid-3
+                        border border-n-slate-3 dark:border-white/10
+                        rounded shadow-sm"
         >
           ⌘
         </Hotkey>
         <Hotkey
-          custom-class="w-7 h-6 text-xs font-medium text-n-slate-12
-                        bg-white/60 dark:bg-n-solid-3/60
-                        border border-white/30 dark:border-white/10
-                        rounded-md shadow-sm"
+          custom-class="w-6 h-5 text-xs font-medium text-n-slate-12
+                        bg-white dark:bg-n-solid-3
+                        border border-n-slate-3 dark:border-white/10
+                        rounded shadow-sm"
         >
           {{ keyShortcut.key }}
         </Hotkey>
       </div>
-      <span class="text-sm text-n-slate-11">
+      <span class="text-xs text-n-slate-11">
         {{ keyShortcut.description }}
       </span>
     </div>
