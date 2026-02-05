@@ -13,23 +13,30 @@ const buildContactFormData = contactParams => {
   const formData = new FormData();
   const { additional_attributes = {}, ...contactProperties } = contactParams;
   Object.keys(contactProperties).forEach(key => {
-    if (contactProperties[key]) {
+    if (
+      contactProperties[key] !== null &&
+      contactProperties[key] !== undefined
+    ) {
       formData.append(key, contactProperties[key]);
     }
   });
-  const { social_profiles, ...additionalAttributesProperties } =
+  const { social_profiles = {}, ...additionalAttributesProperties } =
     additional_attributes;
   Object.keys(additionalAttributesProperties).forEach(key => {
-    formData.append(
-      `additional_attributes[${key}]`,
-      additionalAttributesProperties[key]
-    );
+    if (additionalAttributesProperties[key]) {
+      formData.append(
+        `additional_attributes[${key}]`,
+        additionalAttributesProperties[key]
+      );
+    }
   });
   Object.keys(social_profiles).forEach(key => {
-    formData.append(
-      `additional_attributes[social_profiles][${key}]`,
-      social_profiles[key]
-    );
+    if (social_profiles[key]) {
+      formData.append(
+        `additional_attributes[social_profiles][${key}]`,
+        social_profiles[key]
+      );
+    }
   });
   return formData;
 };
