@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useUISettings } from 'dashboard/composables/useUISettings';
 import { formatNumber } from '@chatwoot/utils';
 import wootConstants from 'dashboard/constants/globals';
@@ -26,6 +27,7 @@ const emit = defineEmits([
   'filtersModal',
 ]);
 
+const { t } = useI18n();
 const { uiSettings, updateUISettings } = useUISettings();
 
 const onBasicFilterChange = (value, type) => {
@@ -57,39 +59,50 @@ const toggleConversationLayout = () => {
 
 <template>
   <div
-    class="flex items-center justify-between gap-2 px-3 h-[3.25rem]"
-    :class="{
-      'border-b border-n-strong': hasAppliedFiltersOrActiveFolders,
-    }"
+    class="relative z-10 flex items-center justify-between gap-2 px-4 h-[72px] bg-white/50 dark:bg-n-solid-3/50 backdrop-blur-xl border-b border-white/20 dark:border-white/5"
   >
-    <div class="flex items-center justify-center min-w-0">
-      <h1
-        class="text-base font-medium truncate text-n-slate-12"
-        :title="pageTitle"
+    <div class="flex items-center gap-3 min-w-0 flex-1">
+      <!-- Icono con gradiente -->
+      <div
+        class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-woot-500 to-violet-500 shadow-lg shadow-woot-500/25"
       >
-        {{ pageTitle }}
-      </h1>
-      <span
-        v-if="
-          allCount > 0 && hasAppliedFiltersOrActiveFolders && !isListLoading
-        "
-        class="px-2 py-1 my-0.5 mx-1 rounded-md capitalize bg-n-slate-3 text-xxs text-n-slate-12 shrink-0"
-        :title="allCount"
-      >
-        {{ formattedAllCount }}
-      </span>
-      <span
-        v-if="!hasAppliedFiltersOrActiveFolders"
-        class="px-2 py-1 my-0.5 mx-1 rounded-md capitalize bg-n-slate-3 text-xxs text-n-slate-12 shrink-0"
-      >
-        {{ $t(`CHAT_LIST.CHAT_STATUS_FILTER_ITEMS.${activeStatus}.TEXT`) }}
-      </span>
+        <span class="i-lucide-messages-square text-white size-5" />
+      </div>
+      <div class="flex flex-col min-w-0">
+        <div class="flex items-center gap-2">
+          <h1
+            class="text-base font-semibold truncate text-n-slate-12"
+            :title="pageTitle"
+          >
+            {{ pageTitle }}
+          </h1>
+          <span
+            v-if="
+              allCount > 0 && hasAppliedFiltersOrActiveFolders && !isListLoading
+            "
+            class="px-2 py-0.5 rounded-full text-xs font-medium bg-woot-500/10 text-woot-500"
+            :title="allCount"
+          >
+            {{ formattedAllCount }}
+          </span>
+          <span
+            v-if="!hasAppliedFiltersOrActiveFolders"
+            class="px-2 py-0.5 rounded-full text-xs font-medium bg-n-slate-3 dark:bg-n-solid-2 text-n-slate-11"
+          >
+            {{ t(`CHAT_LIST.CHAT_STATUS_FILTER_ITEMS.${activeStatus}.TEXT`) }}
+          </span>
+        </div>
+        <p class="text-xs text-n-slate-10">
+          {{ t('CHAT_LIST.SUBTITLE') }}
+        </p>
+      </div>
     </div>
-    <div class="flex items-center gap-1">
+
+    <div class="flex items-center gap-2">
       <template v-if="hasAppliedFilters && !hasActiveFolders">
         <div class="relative">
           <NextButton
-            v-tooltip.top-end="$t('FILTER.CUSTOM_VIEWS.ADD.SAVE_BUTTON')"
+            v-tooltip.top-end="t('FILTER.CUSTOM_VIEWS.ADD.SAVE_BUTTON')"
             icon="i-lucide-save"
             slate
             xs
@@ -98,12 +111,12 @@ const toggleConversationLayout = () => {
           />
           <div
             id="saveFilterTeleportTarget"
-            class="absolute z-50 mt-2"
+            class="absolute z-[100] mt-2"
             :class="{ 'ltr:right-0 rtl:left-0': isOnExpandedLayout }"
           />
         </div>
         <NextButton
-          v-tooltip.top-end="$t('FILTER.CLEAR_BUTTON_LABEL')"
+          v-tooltip.top-end="t('FILTER.CLEAR_BUTTON_LABEL')"
           icon="i-lucide-circle-x"
           ruby
           faded
@@ -111,11 +124,12 @@ const toggleConversationLayout = () => {
           @click="emit('resetFilters')"
         />
       </template>
+
       <template v-if="hasActiveFolders">
         <div class="relative">
           <NextButton
             id="toggleConversationFilterButton"
-            v-tooltip.top-end="$t('FILTER.CUSTOM_VIEWS.EDIT.EDIT_BUTTON')"
+            v-tooltip.top-end="t('FILTER.CUSTOM_VIEWS.EDIT.EDIT_BUTTON')"
             icon="i-lucide-pen-line"
             slate
             xs
@@ -124,13 +138,13 @@ const toggleConversationLayout = () => {
           />
           <div
             id="conversationFilterTeleportTarget"
-            class="absolute z-50 mt-2"
+            class="absolute z-[100] mt-2"
             :class="{ 'ltr:right-0 rtl:left-0': isOnExpandedLayout }"
           />
         </div>
         <NextButton
           id="toggleConversationFilterButton"
-          v-tooltip.top-end="$t('FILTER.CUSTOM_VIEWS.DELETE.DELETE_BUTTON')"
+          v-tooltip.top-end="t('FILTER.CUSTOM_VIEWS.DELETE.DELETE_BUTTON')"
           icon="i-lucide-trash-2"
           ruby
           xs
@@ -138,10 +152,11 @@ const toggleConversationLayout = () => {
           @click="emit('deleteFolders')"
         />
       </template>
+
       <div v-else class="relative">
         <NextButton
           id="toggleConversationFilterButton"
-          v-tooltip.right="$t('FILTER.TOOLTIP_LABEL')"
+          v-tooltip.right="t('FILTER.TOOLTIP_LABEL')"
           icon="i-lucide-list-filter"
           slate
           xs
@@ -150,15 +165,17 @@ const toggleConversationLayout = () => {
         />
         <div
           id="conversationFilterTeleportTarget"
-          class="absolute z-50 mt-2"
+          class="absolute z-[100] mt-2"
           :class="{ 'ltr:right-0 rtl:left-0': isOnExpandedLayout }"
         />
       </div>
+
       <ConversationBasicFilter
         v-if="!hasAppliedFiltersOrActiveFolders"
         :is-on-expanded-layout="isOnExpandedLayout"
         @change-filter="onBasicFilterChange"
       />
+
       <SwitchLayout
         :is-on-expanded-layout="isOnExpandedLayout"
         @toggle="toggleConversationLayout"
