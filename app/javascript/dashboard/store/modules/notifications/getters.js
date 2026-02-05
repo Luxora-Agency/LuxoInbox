@@ -3,11 +3,10 @@ import camelcaseKeys from 'camelcase-keys';
 import { getUserRole } from 'dashboard/helper/permissionsHelper';
 
 /**
- * Filter notifications based on user role, conversation assignment, team and inbox membership
+ * Filter notifications based on user role and conversation assignment
  * Administrators see all notifications, agents see notifications for:
- * - Conversations assigned to them
- * - Conversations in their teams
- * - Conversations in their inboxes
+ * - Conversations assigned directly to them
+ * - Conversations assigned to their teams
  */
 const filterByAssignment = (notifications, rootGetters) => {
   const currentUser = rootGetters.getCurrentUser;
@@ -23,31 +22,22 @@ const filterByAssignment = (notifications, rootGetters) => {
   const myTeams = rootGetters['teams/getMyTeams'] || [];
   const userTeamIds = myTeams.map(team => team.id);
 
-  // Get user's inbox IDs
-  const allInboxes = rootGetters['inboxes/getInboxes'] || [];
-  const userInboxIds = allInboxes.map(inbox => inbox.id);
-
-  // Filter notifications for agents based on assignment, team, or inbox access
+  // Filter notifications for agents based on direct assignment or team assignment
   return notifications.filter(notification => {
     const primaryActor =
       notification.primary_actor || notification.primaryActor;
     if (!primaryActor) return false;
 
-    // Check if assigned to user
+    // Check if assigned directly to user
     const assignee = primaryActor.meta?.assignee;
     const isAssignedToUser = assignee?.id === currentUser.id;
 
-    // Check if user has team access
+    // Check if conversation is assigned to a team the user belongs to
     const conversationTeamId = primaryActor.meta?.team?.id;
-    const hasTeamAccess =
+    const isAssignedToUserTeam =
       conversationTeamId && userTeamIds.includes(conversationTeamId);
 
-    // Check if user has inbox access
-    const conversationInboxId = primaryActor.inbox_id || primaryActor.inboxId;
-    const hasInboxAccess =
-      conversationInboxId && userInboxIds.includes(conversationInboxId);
-
-    return isAssignedToUser || hasTeamAccess || hasInboxAccess;
+    return isAssignedToUser || isAssignedToUserTeam;
   });
 };
 
