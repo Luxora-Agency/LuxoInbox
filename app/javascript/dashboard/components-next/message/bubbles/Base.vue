@@ -20,17 +20,23 @@ const { variant, orientation, inReplyTo, shouldGroupWithNext } =
 const { t } = useI18n();
 
 const varaintBaseMap = {
-  [MESSAGE_VARIANTS.AGENT]: 'bg-n-solid-blue text-n-slate-12',
+  [MESSAGE_VARIANTS.AGENT]:
+    'bg-gradient-to-br from-woot-500 to-woot-600 text-white shadow-lg shadow-woot-500/25',
   [MESSAGE_VARIANTS.PRIVATE]:
-    'bg-n-solid-amber text-n-amber-12 [&_.prosemirror-mention-node]:font-semibold',
-  [MESSAGE_VARIANTS.USER]: 'bg-n-slate-4 text-n-slate-12',
-  [MESSAGE_VARIANTS.ACTIVITY]: 'bg-n-alpha-1 text-n-slate-11 text-sm',
-  [MESSAGE_VARIANTS.BOT]: 'bg-n-solid-iris text-n-slate-12',
-  [MESSAGE_VARIANTS.TEMPLATE]: 'bg-n-solid-iris text-n-slate-12',
-  [MESSAGE_VARIANTS.ERROR]: 'bg-n-ruby-4 text-n-ruby-12',
+    'bg-amber-100/90 dark:bg-amber-500/20 backdrop-blur-sm text-amber-900 dark:text-amber-200 border border-amber-200/50 dark:border-amber-500/30 [&_.prosemirror-mention-node]:font-semibold',
+  [MESSAGE_VARIANTS.USER]:
+    'bg-white/90 dark:bg-n-solid-3/90 backdrop-blur-sm text-n-slate-12 border border-n-slate-2 dark:border-n-solid-2 shadow-sm',
+  [MESSAGE_VARIANTS.ACTIVITY]:
+    'bg-n-slate-2/50 dark:bg-n-solid-3/50 text-n-slate-11 text-sm',
+  [MESSAGE_VARIANTS.BOT]:
+    'bg-gradient-to-br from-woot-400 to-woot-600 text-white shadow-lg shadow-woot-500/25',
+  [MESSAGE_VARIANTS.TEMPLATE]:
+    'bg-gradient-to-br from-woot-400 to-woot-600 text-white shadow-lg shadow-woot-500/25',
+  [MESSAGE_VARIANTS.ERROR]:
+    'bg-red-100/90 dark:bg-red-500/20 backdrop-blur-sm text-red-900 dark:text-red-200 border border-red-200/50 dark:border-red-500/30',
   [MESSAGE_VARIANTS.EMAIL]: 'w-full',
   [MESSAGE_VARIANTS.UNSUPPORTED]:
-    'bg-n-solid-amber/70 border border-dashed border-n-amber-12 text-n-amber-12',
+    'bg-amber-100/70 dark:bg-amber-500/20 border border-dashed border-amber-400 dark:border-amber-500/50 text-amber-800 dark:text-amber-200',
 };
 
 const orientationMap = {

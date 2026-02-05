@@ -442,7 +442,9 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col justify-between flex-grow h-full min-w-0 m-0">
+  <div
+    class="flex flex-col justify-between flex-grow h-full min-w-0 m-0 bg-gradient-to-b from-n-slate-1 to-n-background dark:from-n-solid-4 dark:to-n-solid-5"
+  >
     <Banner
       v-if="!currentChat.can_reply"
       color-scheme="alert"
