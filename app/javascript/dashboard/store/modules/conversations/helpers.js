@@ -69,13 +69,17 @@ export const applyPageFilters = (conversation, filters) => {
  * @param {string} role - The user's role (administrator, agent, etc.)
  * @param {Array<string>} permissions - List of permission strings the user has
  * @param {number|string} currentUserId - The ID of the current user
+ * @param {Object} options - Additional options for filtering
+ * @param {Array<number>} options.userTeamIds - IDs of teams the user belongs to
+ * @param {Array<number>} options.userInboxIds - IDs of inboxes the user has access to
  * @returns {boolean} - Whether the user has permissions to access this conversation
  */
 export const applyRoleFilter = (
   conversation,
   role,
   permissions,
-  currentUserId
+  currentUserId,
+  { userTeamIds = [], userInboxIds = [] } = {}
 ) => {
   // Administrators can see all conversations
   if (role === 'administrator') {
@@ -91,19 +95,32 @@ export const applyRoleFilter = (
   const isUnassigned = !conversationAssignee;
   const isAssignedToUser = conversationAssignee?.id === currentUserId;
 
-  // Agents can only see conversations assigned to them
+  // Check if user has access through team membership
+  const conversationTeamId = conversation.meta?.team?.id;
+  const hasTeamAccess =
+    conversationTeamId && userTeamIds.includes(conversationTeamId);
+
+  // Check if user has access through inbox membership
+  const conversationInboxId = conversation.inbox_id;
+  const hasInboxAccess =
+    conversationInboxId && userInboxIds.includes(conversationInboxId);
+
+  // Agents can see conversations if:
+  // 1. Assigned to them, OR
+  // 2. They are a member of the conversation's team, OR
+  // 3. They are a member of the conversation's inbox
   if (role === 'agent') {
-    return isAssignedToUser;
+    return isAssignedToUser || hasTeamAccess || hasInboxAccess;
   }
 
   // Check unassigned management permission
   if (permissions.includes('conversation_unassigned_manage')) {
-    return isUnassigned || isAssignedToUser;
+    return isUnassigned || isAssignedToUser || hasTeamAccess || hasInboxAccess;
   }
 
   // Check participating conversation management permission
   if (permissions.includes('conversation_participating_manage')) {
-    return isAssignedToUser;
+    return isAssignedToUser || hasTeamAccess || hasInboxAccess;
   }
 
   return false;
