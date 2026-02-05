@@ -3,7 +3,7 @@
     "SUBTITLE": "Your conversations",
     "LOADING": "Fetching conversations",
     "LOAD_MORE_CONVERSATIONS": "Load more conversations",
-    "EOF": "All conversations loaded 🎉",
+    "EOF": "All conversations loaded",
     "LIST": {
       "404": "No conversations found"
     },
