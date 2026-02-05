@@ -331,8 +331,8 @@ en:
       description: 'Create issues in Linear directly from your conversation window. Alternatively, link existing Linear issues for a more streamlined and efficient issue tracking process.'
     notion:
       name: 'Notion'
-      short_description: 'Integrate databases, documents and pages directly with Captain.'
-      description: 'Connect your Notion workspace to enable Captain to access and generate intelligent responses using content from your databases, documents, and pages to provide more contextual customer support.'
+      short_description: 'Integrate databases, documents and pages directly with LuxoIA.'
+      description: 'Connect your Notion workspace to enable LuxoIA to access and generate intelligent responses using content from your databases, documents, and pages to provide more contextual customer support.'
     shopify:
       name: 'Shopify'
       short_description: 'Access order details and customer data from your Shopify store.'
@@ -345,9 +345,9 @@ en:
     copilot_message_required: Message is required
     copilot_error: 'Please connect an assistant to this inbox to use Copilot'
     copilot_limit: 'You are out of Copilot credits. You can buy more credits from the billing section.'
-    upgrade: 'Upgrade your plan to enable Captain AI'
-    disabled: 'Captain AI is disabled for this account.'
-    api_key_missing: 'Captain AI API key is not configured.'
+    upgrade: 'Upgrade your plan to enable LuxoIA AI'
+    disabled: 'LuxoIA AI is disabled for this account.'
+    api_key_missing: 'LuxoIA AI API key is not configured.'
     copilot:
       using_tool: 'Using tool %{function_name}'
       completed_tool_call: 'Completed %{function_name} tool call'

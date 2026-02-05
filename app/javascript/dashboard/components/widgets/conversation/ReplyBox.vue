@@ -1340,10 +1340,10 @@ export default {
 }
 
 .reply-box {
-  @apply relative mb-3 mx-3 border border-n-slate-2 dark:border-n-solid-2 rounded-2xl bg-white/90 dark:bg-n-solid-3/90 backdrop-blur-sm shadow-lg shadow-black/5 dark:shadow-black/20;
+  @apply relative mb-3 mx-3 border border-n-slate-2 dark:border-n-solid-2 rounded-2xl bg-white dark:bg-n-solid-3 shadow-md;
 
   &.is-private {
-    @apply bg-amber-50/90 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/30;
+    @apply bg-n-solid-amber border-n-amber-10/20 dark:border-n-amber-10/30;
   }
 }
 

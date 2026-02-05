@@ -323,7 +323,7 @@
     "ACTIVE": "Active",
     "COMPANIES": "Companies",
     "ALL_COMPANIES": "All Companies",
-    "CAPTAIN": "Captain",
+    "CAPTAIN": "LuxoIA",
     "CAPTAIN_ASSISTANTS": "Assistants",
     "CAPTAIN_DOCUMENTS": "Documents",
     "CAPTAIN_RESPONSES": "FAQs",
@@ -393,15 +393,15 @@
     },
     "DOCS": "Read docs",
     "SECURITY": "Security",
-    "CAPTAIN_AI": "Captain",
+    "CAPTAIN_AI": "LuxoIA",
     "CONVERSATION_WORKFLOW": "Conversation Workflow"
   },
   "CAPTAIN_SETTINGS": {
-    "TITLE": "Captain Settings",
-    "DESCRIPTION": "Configure your AI models and features for Captain. Captain follows a credit based billing, you will be charged credits for every action Captain takes based on the model selected.",
-    "LOADING": "Loading Captain configuration...",
-    "LINK_TEXT": "Learn more about Captain Credits",
-    "NOT_ENABLED": "Captain is not enabled for your account. Please upgrade your plan to access Captain features.",
+    "TITLE": "LuxoIA Settings",
+    "DESCRIPTION": "Configure your AI models and features for LuxoIA. LuxoIA follows a credit based billing, you will be charged credits for every action LuxoIA takes based on the model selected.",
+    "LOADING": "Loading LuxoIA configuration...",
+    "LINK_TEXT": "Learn more about LuxoIA Credits",
+    "NOT_ENABLED": "LuxoIA is not enabled for your account. Please upgrade your plan to access LuxoIA features.",
     "MODEL_CONFIG": {
       "TITLE": "Model Configuration",
       "DESCRIPTION": "Select AI models for different features.",
@@ -440,8 +440,8 @@
       }
     },
     "API": {
-      "SUCCESS": "Captain settings updated successfully.",
-      "ERROR": "Failed to update Captain settings. Please try again."
+      "SUCCESS": "LuxoIA settings updated successfully.",
+      "ERROR": "Failed to update LuxoIA settings. Please try again."
     }
   },
   "BILLING_SETTINGS": {
@@ -460,12 +460,12 @@
       "BUTTON_TXT": "Go to the billing portal"
     },
     "CAPTAIN": {
-      "TITLE": "Captain",
-      "DESCRIPTION": "Manage usage and credits for Captain AI.",
+      "TITLE": "LuxoIA",
+      "DESCRIPTION": "Manage usage and credits for LuxoIA AI.",
       "BUTTON_TXT": "Buy more credits",
       "DOCUMENTS": "Documents",
       "RESPONSES": "Credits",
-      "UPGRADE": "Captain is not available on the free plan, upgrade now to get access to assistants, copilot and more.",
+      "UPGRADE": "LuxoIA is not available on the free plan, upgrade now to get access to assistants, copilot and more.",
       "REFRESH_CREDITS": "Refresh"
     },
     "CHAT_WITH_US": {
@@ -477,7 +477,7 @@
     "TOPUP": {
       "BUY_CREDITS": "Buy more credits",
       "MODAL_TITLE": "Buy AI Credits",
-      "MODAL_DESCRIPTION": "Purchase additional credits for Captain AI.",
+      "MODAL_DESCRIPTION": "Purchase additional credits for LuxoIA AI.",
       "CREDITS": "CREDITS",
       "ONE_TIME": "one-time",
       "POPULAR": "Most Popular",
