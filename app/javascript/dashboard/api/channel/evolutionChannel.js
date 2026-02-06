@@ -1,94 +1,29 @@
 /* global axios */
+import ApiClient from '../ApiClient';
 
-const EVOLUTION_API_BASE_URL = 'http://localhost:8080';
-const EVOLUTION_API_KEY = '4GFRr4Sa57scLSatTYKKiCGbf3Tf4k7G';
-
-class EvolutionChannel {
+class EvolutionChannel extends ApiClient {
   constructor() {
-    this.baseUrl = EVOLUTION_API_BASE_URL;
-    this.apiKey = EVOLUTION_API_KEY;
+    super('evolution', { accountScoped: true });
   }
 
-  getHeaders() {
-    return {
-      apikey: this.apiKey,
-      'Content-Type': 'application/json',
-    };
+  createInstance(instanceName) {
+    return axios.post(`${this.baseUrl()}/evolution/create_instance`, {
+      instance_name: instanceName,
+    });
   }
 
-  async createInstance(instanceName, webhookUrl) {
-    const response = await axios.post(
-      `${this.baseUrl}/instance/create`,
-      {
-        instanceName,
-        qrcode: true,
-        integration: 'WHATSAPP-BAILEYS',
-        webhook: {
-          url: webhookUrl,
-          byEvents: false,
-          base64: true,
-          events: [
-            'QRCODE_UPDATED',
-            'MESSAGES_UPSERT',
-            'MESSAGES_UPDATE',
-            'MESSAGES_DELETE',
-            'SEND_MESSAGE',
-            'CONNECTION_UPDATE',
-          ],
-        },
-      },
-      { headers: this.getHeaders() }
+  getQRCode(instanceName) {
+    return axios.get(`${this.baseUrl()}/evolution/connect/${instanceName}`);
+  }
+
+  getConnectionStatus(instanceName) {
+    return axios.get(
+      `${this.baseUrl()}/evolution/connection_state/${instanceName}`
     );
-    return response.data;
   }
 
-  async getQRCode(instanceName) {
-    const response = await axios.get(
-      `${this.baseUrl}/instance/connect/${instanceName}`,
-      { headers: this.getHeaders() }
-    );
-    return response.data;
-  }
-
-  async getConnectionStatus(instanceName) {
-    const response = await axios.get(
-      `${this.baseUrl}/instance/connectionState/${instanceName}`,
-      { headers: this.getHeaders() }
-    );
-    return response.data;
-  }
-
-  async fetchInstances() {
-    const response = await axios.get(
-      `${this.baseUrl}/instance/fetchInstances`,
-      { headers: this.getHeaders() }
-    );
-    return response.data;
-  }
-
-  async deleteInstance(instanceName) {
-    const response = await axios.delete(
-      `${this.baseUrl}/instance/delete/${instanceName}`,
-      { headers: this.getHeaders() }
-    );
-    return response.data;
-  }
-
-  async restartInstance(instanceName) {
-    const response = await axios.post(
-      `${this.baseUrl}/instance/restart/${instanceName}`,
-      {},
-      { headers: this.getHeaders() }
-    );
-    return response.data;
-  }
-
-  async logoutInstance(instanceName) {
-    const response = await axios.delete(
-      `${this.baseUrl}/instance/logout/${instanceName}`,
-      { headers: this.getHeaders() }
-    );
-    return response.data;
+  deleteInstance(instanceName) {
+    return axios.delete(`${this.baseUrl()}/evolution/delete/${instanceName}`);
   }
 }
 

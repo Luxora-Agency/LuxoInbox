@@ -27,13 +27,8 @@ class Evolution::SendOnEvolutionService
     channel.additional_attributes&.dig('evolution_instance')
   end
 
-  def evolution_api_url
-    channel.additional_attributes&.dig('evolution_api_url') || 'http://localhost:8080'
-  end
-
-  def api_key
-    # Use configured API key or default
-    ENV.fetch('EVOLUTION_API_KEY', '4GFRr4Sa57scLSatTYKKiCGbf3Tf4k7G')
+  def api_client
+    @api_client ||= Evolution::ApiClient.new
   end
 
   def recipient_phone
@@ -54,42 +49,24 @@ class Evolution::SendOnEvolutionService
   end
 
   def send_text_message
-    response = HTTParty.post(
-      "#{evolution_api_url}/message/sendText/#{instance_name}",
-      headers: {
-        'apikey' => api_key,
-        'Content-Type' => 'application/json'
-      },
-      body: {
-        number: recipient_phone,
-        text: message.content
-      }.to_json
+    api_client.send_text(
+      instance_name: instance_name,
+      number: recipient_phone,
+      text: message.content
     )
-
-    handle_response(response)
   end
 
   def send_media_message
     attachment = message.attachments.first
-    media_type = detect_media_type(attachment)
 
-    response = HTTParty.post(
-      "#{evolution_api_url}/message/sendMedia/#{instance_name}",
-      headers: {
-        'apikey' => api_key,
-        'Content-Type' => 'application/json'
-      },
-      body: {
-        number: recipient_phone,
-        mediatype: media_type,
-        mimetype: attachment.file.content_type,
-        caption: message.content.presence || '',
-        media: attachment.file_url,
-        fileName: attachment.file.filename.to_s
-      }.to_json
+    api_client.send_media(
+      instance_name: instance_name,
+      number: recipient_phone,
+      media_type: detect_media_type(attachment),
+      media_url: attachment.file_url,
+      caption: message.content.presence || '',
+      filename: attachment.file.filename.to_s
     )
-
-    handle_response(response)
   end
 
   def detect_media_type(attachment)
@@ -105,15 +82,5 @@ class Evolution::SendOnEvolutionService
     else
       'document'
     end
-  end
-
-  def handle_response(response)
-    unless response.success?
-      error_message = response.parsed_response['message'] || response.body
-      Rails.logger.error("Evolution API error: #{error_message}")
-      raise StandardError, error_message
-    end
-
-    response.parsed_response
   end
 end

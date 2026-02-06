@@ -53,7 +53,6 @@ const createChatwootInbox = async () => {
         webhook_url: `${window.location.origin}/webhooks/evolution/${route.params.accountId}`,
         additional_attributes: {
           evolution_instance: instanceName.value,
-          evolution_api_url: evolutionChannel.baseUrl,
           provider: 'evolution',
         },
       },
@@ -89,12 +88,13 @@ const startPolling = () => {
 
   pollingInterval.value = setInterval(async () => {
     try {
-      const status = await evolutionChannel.getConnectionStatus(
+      const { data } = await evolutionChannel.getConnectionStatus(
         instanceName.value
       );
-      connectionStatus.value = status.state;
+      const state = data.instance?.state || data.state;
+      connectionStatus.value = state;
 
-      if (status.state === 'open') {
+      if (state === 'open') {
         clearInterval(pollingInterval.value);
         pollingInterval.value = null;
         currentStep.value = STEPS.CONNECTING;
@@ -110,9 +110,9 @@ const refreshQRCode = async () => {
   try {
     isLoading.value = true;
     errorMessage.value = '';
-    const qrResponse = await evolutionChannel.getQRCode(instanceName.value);
-    if (qrResponse.base64) {
-      qrCodeBase64.value = qrResponse.base64;
+    const { data } = await evolutionChannel.getQRCode(instanceName.value);
+    if (data.base64) {
+      qrCodeBase64.value = data.base64;
     }
   } catch {
     errorMessage.value = t(
@@ -134,24 +134,17 @@ const createEvolutionInstance = async () => {
     errorMessage.value = '';
     instanceName.value = generateInstanceName();
 
-    // Get the webhook URL for this account
-    const accountId = route.params.accountId;
-    const webhookUrl = `${window.location.origin}/webhooks/evolution/${accountId}`;
+    const { data } = await evolutionChannel.createInstance(instanceName.value);
 
-    const response = await evolutionChannel.createInstance(
-      instanceName.value,
-      webhookUrl
-    );
-
-    if (response.qrcode?.base64) {
-      qrCodeBase64.value = response.qrcode.base64;
+    if (data.qrcode?.base64) {
+      qrCodeBase64.value = data.qrcode.base64;
       currentStep.value = STEPS.QR_CODE;
       startPolling();
     } else {
       // Instance created but no QR, try to get it
       const qrResponse = await evolutionChannel.getQRCode(instanceName.value);
-      if (qrResponse.base64) {
-        qrCodeBase64.value = qrResponse.base64;
+      if (qrResponse.data.base64) {
+        qrCodeBase64.value = qrResponse.data.base64;
         currentStep.value = STEPS.QR_CODE;
         startPolling();
       } else {
@@ -160,7 +153,9 @@ const createEvolutionInstance = async () => {
     }
   } catch (error) {
     errorMessage.value =
+      error.response?.data?.error ||
       error.response?.data?.message ||
+      error.message ||
       t('INBOX_MGMT.ADD.WHATSAPP.EVOLUTION.ERRORS.INSTANCE_CREATION_FAILED');
     useAlert(errorMessage.value);
   } finally {
