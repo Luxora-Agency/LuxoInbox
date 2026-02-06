@@ -144,7 +144,7 @@ const submit = () => {
 
       <!-- Decorative circles -->
       <div
-        class="absolute -top-24 -right-24 w-96 h-96 bg-[#D946EF]/20 rounded-full blur-3xl"
+        class="absolute -top-24 -right-24 w-96 h-96 bg-[#E91E8C]/20 rounded-full blur-3xl"
       />
       <div
         class="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-[#9333EA]/20 rounded-full blur-3xl"
