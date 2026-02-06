@@ -22,22 +22,19 @@ const globalConfig = useMapGetter('globalConfig/get');
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#woot-logo-clip-2342424e23u32098)">
-      <path
-        d="M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z"
-        fill="#D946EF"
-      />
-      <path
-        d="M11.4172 11.4172H7.70831C5.66383 11.4172 4 9.75328 4 7.70828C4 5.66394 5.66383 4 7.70835 4C9.75339 4 11.4172 5.66394 11.4172 7.70828V11.4172Z"
-        fill="white"
-        stroke="white"
-        stroke-width="0.1875"
-      />
-    </g>
     <defs>
-      <clipPath id="woot-logo-clip-2342424e23u32098">
-        <rect width="16" height="16" fill="white" />
-      </clipPath>
+      <linearGradient id="fuchsia-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#E91E8C" />
+        <stop offset="100%" stop-color="#C41872" />
+      </linearGradient>
     </defs>
+    <rect width="16" height="16" rx="4" fill="url(#fuchsia-grad)" />
+    <path
+      d="M4 5.5C4 4.94772 4.44772 4.5 5 4.5H11C11.5523 4.5 12 4.94772 12 5.5V9.5C12 10.0523 11.5523 10.5 11 10.5H9L7 12.5V10.5H5C4.44772 10.5 4 10.0523 4 9.5V5.5Z"
+      fill="white"
+    />
+    <circle cx="6" cy="7.5" r="0.75" fill="#E91E8C" />
+    <circle cx="8" cy="7.5" r="0.75" fill="#E91E8C" />
+    <circle cx="10" cy="7.5" r="0.75" fill="#E91E8C" />
   </svg>
 </template>

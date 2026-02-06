@@ -295,6 +295,11 @@ Rails.application.routes.draw do
             resource :authorization, only: [:create]
           end
 
+          post 'evolution/create_instance', to: 'evolution#create_instance', as: :evolution_create_instance
+          get 'evolution/connect/:instance_name', to: 'evolution#connect', as: :evolution_connect
+          get 'evolution/connection_state/:instance_name', to: 'evolution#connection_state', as: :evolution_connection_state
+          delete 'evolution/delete/:instance_name', to: 'evolution#delete_instance', as: :evolution_delete_instance
+
           resources :webhooks, only: [:index, :create, :update, :destroy]
           namespace :integrations do
             resources :apps, only: [:index, :show]
@@ -563,6 +568,7 @@ Rails.application.routes.draw do
   get 'webhooks/instagram', to: 'webhooks/instagram#verify'
   post 'webhooks/instagram', to: 'webhooks/instagram#events'
   post 'webhooks/tiktok', to: 'webhooks/tiktok#events'
+  post 'webhooks/evolution/:account_id', to: 'webhooks/evolution#process_payload'
 
   namespace :twitter do
     resource :callback, only: [:show]
