@@ -236,7 +236,9 @@
           "WHATSAPP_CLOUD": "WhatsApp Cloud",
           "WHATSAPP_CLOUD_DESC": "Quick setup through Meta",
           "TWILIO_DESC": "Connect via Twilio credentials",
-          "360_DIALOG": "360Dialog"
+          "360_DIALOG": "360Dialog",
+          "EVOLUTION_QR": "WhatsApp QR",
+          "EVOLUTION_QR_DESC": "Connect by scanning QR code"
         },
         "SELECT_PROVIDER": {
           "TITLE": "Select your API provider",
@@ -310,6 +312,31 @@
         },
         "API": {
           "ERROR_MESSAGE": "We were not able to save the WhatsApp channel"
+        },
+        "EVOLUTION": {
+          "TITLE": "Connect WhatsApp via QR Code",
+          "DESC": "Scan the QR code with your WhatsApp app to connect your phone number to this inbox.",
+          "GENERATE_QR": "Generate QR Code",
+          "CANCEL": "Cancel",
+          "QR_TITLE": "Scan QR Code",
+          "QR_DESC": "Open WhatsApp on your phone, go to Settings > Linked Devices > Link a Device, and scan the QR code below.",
+          "WAITING_SCAN": "Waiting for you to scan the QR code...",
+          "REFRESH_QR": "Refresh QR Code",
+          "CONNECTING_TITLE": "Connecting...",
+          "CONNECTING_DESC": "Setting up your WhatsApp inbox. Please wait...",
+          "SUCCESS_TITLE": "WhatsApp Connected!",
+          "SUCCESS_DESC": "Your WhatsApp number has been successfully connected. Redirecting to add agents...",
+          "INFO": {
+            "TITLE": "How it works",
+            "STEP_1": "Click \"Generate QR Code\" to create a unique QR code",
+            "STEP_2": "Scan the QR code with your WhatsApp app",
+            "STEP_3": "Your messages will be received in this inbox"
+          },
+          "ERRORS": {
+            "INSTANCE_CREATION_FAILED": "Failed to create WhatsApp instance. Please try again.",
+            "QR_REFRESH_FAILED": "Failed to refresh QR code. Please try again.",
+            "INBOX_CREATION_FAILED": "Failed to create inbox. Please try again."
+          }
         }
       },
       "VOICE": {

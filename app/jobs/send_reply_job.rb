@@ -17,9 +17,11 @@ class SendReplyJob < ApplicationJob
 
   def perform(message_id)
     message = Message.find(message_id)
-    channel_name = message.conversation.inbox.channel.class.to_s
+    channel = message.conversation.inbox.channel
+    channel_name = channel.class.to_s
 
     return send_on_facebook_page(message) if channel_name == 'Channel::FacebookPage'
+    return send_on_evolution(message) if evolution_channel?(channel)
 
     service_class = CHANNEL_SERVICES[channel_name]
     return unless service_class
@@ -35,5 +37,14 @@ class SendReplyJob < ApplicationJob
     else
       ::Facebook::SendOnFacebookService.new(message: message).perform
     end
+  end
+
+  def evolution_channel?(channel)
+    channel.is_a?(Channel::Api) &&
+      channel.additional_attributes&.dig('provider') == 'evolution'
+  end
+
+  def send_on_evolution(message)
+    ::Evolution::SendOnEvolutionService.new(message: message).perform
   end
 end
