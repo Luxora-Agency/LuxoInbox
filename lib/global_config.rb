@@ -52,6 +52,8 @@ class GlobalConfig
 
     def db_fallback(config_key)
       InstallationConfig.find_by(name: config_key)&.value
+    rescue ActiveRecord::StatementInvalid, ActiveRecord::ConnectionNotEstablished
+      nil
     end
   end
 end
