@@ -71,6 +71,7 @@ export const applyPageFilters = (conversation, filters) => {
  * @param {number|string} currentUserId - The ID of the current user
  * @param {Object} options - Additional options for filtering
  * @param {Array<number>} options.userTeamIds - IDs of teams the user belongs to
+ * @param {Array<number>} options.userInboxIds - IDs of inboxes the user is a member of
  * @returns {boolean} - Whether the user has permissions to access this conversation
  */
 export const applyRoleFilter = (
@@ -78,7 +79,7 @@ export const applyRoleFilter = (
   role,
   permissions,
   currentUserId,
-  { userTeamIds = [] } = {}
+  { userTeamIds = [], userInboxIds = [] } = {}
 ) => {
   // Administrators can see all conversations
   if (role === 'administrator') {
@@ -99,21 +100,35 @@ export const applyRoleFilter = (
   const isAssignedToUserTeam =
     conversationTeamId && userTeamIds.includes(conversationTeamId);
 
+  // Inbox membership matches the backend PermissionFilterService, which
+  // returns every conversation from inboxes the user belongs to. Without
+  // this check, real-time events for unassigned conversations (e.g. a new
+  // WhatsApp message before auto-assignment runs) get filtered out and the
+  // UI only catches up after a manual refresh.
+  const isMemberOfInbox =
+    conversation.inbox_id && userInboxIds.includes(conversation.inbox_id);
+
   // Agents can see conversations if:
   // 1. Assigned directly to them, OR
-  // 2. Assigned to a team they belong to
+  // 2. Assigned to a team they belong to, OR
+  // 3. They belong to the inbox (matches backend access check)
   if (role === 'agent') {
-    return isAssignedToUser || isAssignedToUserTeam;
+    return isAssignedToUser || isAssignedToUserTeam || isMemberOfInbox;
   }
 
   // Check unassigned management permission
   if (permissions.includes('conversation_unassigned_manage')) {
-    return isUnassigned || isAssignedToUser || isAssignedToUserTeam;
+    return (
+      isUnassigned ||
+      isAssignedToUser ||
+      isAssignedToUserTeam ||
+      isMemberOfInbox
+    );
   }
 
   // Check participating conversation management permission
   if (permissions.includes('conversation_participating_manage')) {
-    return isAssignedToUser || isAssignedToUserTeam;
+    return isAssignedToUser || isAssignedToUserTeam || isMemberOfInbox;
   }
 
   return false;

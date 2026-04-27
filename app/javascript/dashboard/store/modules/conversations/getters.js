@@ -35,6 +35,10 @@ const getters = {
     const myTeams = rootGetters['teams/getMyTeams'] || [];
     const userTeamIds = myTeams.map(team => team.id);
 
+    // Inboxes the API exposes to the user; matches backend permission scope.
+    const userInboxes = rootGetters['inboxes/getInboxes'] || [];
+    const userInboxIds = userInboxes.map(inbox => inbox.id);
+
     return allConversations
       .filter(conversation => {
         const matchesFilterResult = matchesFilters(
@@ -46,7 +50,7 @@ const getters = {
           userRole,
           permissions,
           currentUserId,
-          { userTeamIds }
+          { userTeamIds, userInboxIds }
         );
 
         return matchesFilterResult && allowedForRole;
@@ -115,13 +119,20 @@ const getters = {
     const permissions = getUserPermissions(currentUser, currentAccountId);
     const userRole = getUserRole(currentUser, currentAccountId);
 
+    const myTeams = rootGetters['teams/getMyTeams'] || [];
+    const userTeamIds = myTeams.map(team => team.id);
+
+    const userInboxes = rootGetters['inboxes/getInboxes'] || [];
+    const userInboxIds = userInboxes.map(inbox => inbox.id);
+
     return _state.allConversations.filter(conversation => {
       const shouldFilter = applyPageFilters(conversation, activeFilters);
       const allowedForRole = applyRoleFilter(
         conversation,
         userRole,
         permissions,
-        currentUserId
+        currentUserId,
+        { userTeamIds, userInboxIds }
       );
 
       return shouldFilter && allowedForRole;
