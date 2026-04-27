@@ -3,10 +3,11 @@ import camelcaseKeys from 'camelcase-keys';
 import { getUserRole } from 'dashboard/helper/permissionsHelper';
 
 /**
- * Filter notifications based on user role and conversation assignment
+ * Filter notifications based on user role and conversation access.
  * Administrators see all notifications, agents see notifications for:
  * - Conversations assigned directly to them
- * - Conversations assigned to their teams
+ * - Conversations assigned to teams they belong to
+ * - Conversations from inboxes they are members of (matches backend scope)
  */
 const filterByAssignment = (notifications, rootGetters) => {
   const currentUser = rootGetters.getCurrentUser;
@@ -22,22 +23,25 @@ const filterByAssignment = (notifications, rootGetters) => {
   const myTeams = rootGetters['teams/getMyTeams'] || [];
   const userTeamIds = myTeams.map(team => team.id);
 
-  // Filter notifications for agents based on direct assignment or team assignment
+  const userInboxes = rootGetters['inboxes/getInboxes'] || [];
+  const userInboxIds = userInboxes.map(inbox => inbox.id);
+
   return notifications.filter(notification => {
     const primaryActor =
       notification.primary_actor || notification.primaryActor;
     if (!primaryActor) return false;
 
-    // Check if assigned directly to user
     const assignee = primaryActor.meta?.assignee;
     const isAssignedToUser = assignee?.id === currentUser.id;
 
-    // Check if conversation is assigned to a team the user belongs to
     const conversationTeamId = primaryActor.meta?.team?.id;
     const isAssignedToUserTeam =
       conversationTeamId && userTeamIds.includes(conversationTeamId);
 
-    return isAssignedToUser || isAssignedToUserTeam;
+    const inboxId = primaryActor.inbox_id || primaryActor.inboxId;
+    const isMemberOfInbox = inboxId && userInboxIds.includes(inboxId);
+
+    return isAssignedToUser || isAssignedToUserTeam || isMemberOfInbox;
   });
 };
 
