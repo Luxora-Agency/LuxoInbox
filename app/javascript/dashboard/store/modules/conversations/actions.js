@@ -315,7 +315,18 @@ const actions = {
     }
   },
 
-  addMessage({ commit, rootGetters }, message) {
+  async addMessage({ commit, getters, rootGetters }, message) {
+    const conversationId = message.conversation_id;
+    const conversation = getters.getConversationById(conversationId);
+    if (!conversation) {
+      try {
+        const response = await ConversationApi.show(conversationId);
+        commit(types.UPDATE_CONVERSATION, response.data);
+        commit(`contacts/${types.SET_CONTACT_ITEM}`, response.data.meta.sender);
+      } catch {
+        // If hydration fails, still let ADD_MESSAGE try the current store.
+      }
+    }
     commit(types.ADD_MESSAGE, message);
     if (message.message_type === MESSAGE_TYPE.INCOMING) {
       commit(types.SET_CONVERSATION_CAN_REPLY, {
