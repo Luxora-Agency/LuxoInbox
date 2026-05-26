@@ -111,8 +111,9 @@ const refreshQRCode = async () => {
     isLoading.value = true;
     errorMessage.value = '';
     const { data } = await evolutionChannel.getQRCode(instanceName.value);
-    if (data.base64) {
-      qrCodeBase64.value = data.base64;
+    const qr = extractQRCode(data);
+    if (qr) {
+      qrCodeBase64.value = qr;
     }
   } catch {
     errorMessage.value = t(
@@ -121,6 +122,17 @@ const refreshQRCode = async () => {
   } finally {
     isLoading.value = false;
   }
+};
+
+const extractQRCode = data => {
+  // Handle different Evolution API response formats
+  return data.qrcode?.base64 || data.base64 || data.qrcode?.pairingCode || null;
+};
+
+const showQRCode = (base64, startPoll = true) => {
+  qrCodeBase64.value = base64;
+  currentStep.value = STEPS.QR_CODE;
+  if (startPoll) startPolling();
 };
 
 const createEvolutionInstance = async () => {
@@ -136,21 +148,23 @@ const createEvolutionInstance = async () => {
 
     const { data } = await evolutionChannel.createInstance(instanceName.value);
 
-    if (data.qrcode?.base64) {
-      qrCodeBase64.value = data.qrcode.base64;
-      currentStep.value = STEPS.QR_CODE;
-      startPolling();
-    } else {
-      // Instance created but no QR, try to get it
-      const qrResponse = await evolutionChannel.getQRCode(instanceName.value);
-      if (qrResponse.data.base64) {
-        qrCodeBase64.value = qrResponse.data.base64;
-        currentStep.value = STEPS.QR_CODE;
-        startPolling();
-      } else {
-        throw new Error('No QR code received');
-      }
+    const qr = extractQRCode(data);
+    if (qr) {
+      showQRCode(qr);
+      return;
     }
+
+    // Instance created but no QR in response, fetch it separately
+    const { data: qrData } = await evolutionChannel.getQRCode(
+      instanceName.value
+    );
+    const fallbackQR = extractQRCode(qrData);
+    if (fallbackQR) {
+      showQRCode(fallbackQR);
+      return;
+    }
+
+    throw new Error('No QR code received from Evolution API');
   } catch (error) {
     errorMessage.value =
       error.response?.data?.error ||
