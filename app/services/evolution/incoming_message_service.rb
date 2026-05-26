@@ -15,6 +15,19 @@ class Evolution::IncomingMessageService
     @message_data ||= params.dig(:data, :message) || params[:data]
   end
 
+  def message_payload
+    @message_payload ||= message_data[:message] || {}
+  end
+
+  def media_processor
+    @media_processor ||= Evolution::MediaProcessor.new(
+      inbox: inbox,
+      message_data: message_data,
+      message_payload: message_payload,
+      params: params
+    )
+  end
+
   def sender_info
     @sender_info ||= begin
       remote_jid = message_data[:key]&.dig(:remoteJid) || message_data[:remoteJid]
@@ -28,25 +41,19 @@ class Evolution::IncomingMessageService
   def extract_phone_number(jid)
     return unless jid
 
-    # Remove @s.whatsapp.net or @g.us suffix
     jid.to_s.split('@').first&.prepend('+')
   end
 
   def message_content
-    @message_content ||= if message_data[:message]
-                           extract_message_content(message_data[:message])
-                         else
-                           message_data[:body] || message_data[:text] || ''
-                         end
+    @message_content ||= text_content || media_processor.caption || fallback_content || ''
   end
 
-  def extract_message_content(message)
-    message[:conversation] ||
-      message.dig(:extendedTextMessage, :text) ||
-      message.dig(:imageMessage, :caption) ||
-      message.dig(:videoMessage, :caption) ||
-      message.dig(:documentMessage, :caption) ||
-      '[Media message]'
+  def text_content
+    message_payload[:conversation] || message_payload.dig(:extendedTextMessage, :text)
+  end
+
+  def fallback_content
+    message_data[:body] || message_data[:text]
   end
 
   def message_type
@@ -71,10 +78,7 @@ class Evolution::IncomingMessageService
       account: inbox.account
     )
 
-    inbox.contact_inboxes.create!(
-      contact: contact,
-      source_id: sender_info[:phone_number]
-    )
+    inbox.contact_inboxes.create!(contact: contact, source_id: sender_info[:phone_number])
 
     contact
   end
@@ -87,7 +91,6 @@ class Evolution::IncomingMessageService
     contact_inbox = inbox.contact_inboxes.find_by(contact: @contact)
     return create_new_conversation unless contact_inbox
 
-    # Find existing open conversation or create new one
     conversation = contact_inbox.conversations.where(status: [:open, :pending]).last
     conversation || create_new_conversation
   end
@@ -107,19 +110,19 @@ class Evolution::IncomingMessageService
   end
 
   def create_message
-    return if message_content.blank?
+    return if message_content.blank? && !media_processor.media?
     return if duplicate_message?
 
     message = @conversation.messages.create!(
       account: inbox.account,
       inbox: inbox,
-      content: message_content,
+      content: message_content.presence,
       message_type: message_type,
       sender: message_type == :incoming ? @contact : nil,
       source_id: message_id
     )
 
-    process_attachments(message) if attachments?
+    media_processor.attach_to(message) if media_processor.media?
     message
   end
 
@@ -131,15 +134,5 @@ class Evolution::IncomingMessageService
     return false unless message_id
 
     @conversation.messages.exists?(source_id: message_id)
-  end
-
-  def attachments?
-    media_types = %i[imageMessage videoMessage audioMessage documentMessage]
-    media_types.any? { |type| message_data[:message]&.key?(type) }
-  end
-
-  def process_attachments(message)
-    # Handle media attachments in future iterations
-    Rails.logger.info("Evolution: Message #{message.id} has attachments that need processing")
   end
 end

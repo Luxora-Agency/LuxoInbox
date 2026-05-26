@@ -52,6 +52,18 @@ describe ActionCableListener do
       )
       listener.message_created(event)
     end
+
+    it 'sends message to the assigned agent even when the assignee is not an inbox member' do
+      assigned_agent = create(:user, account: account, role: :agent)
+      conversation.update!(assignee: assigned_agent)
+
+      expect(ActionCableBroadcastJob).to receive(:perform_later).with(
+        a_collection_including(assigned_agent.pubsub_token),
+        'message.created',
+        message.push_event_data.merge(account_id: account.id)
+      )
+      listener.message_created(event)
+    end
   end
 
   describe '#typing_on' do
