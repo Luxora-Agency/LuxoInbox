@@ -95,6 +95,46 @@ const contactAdditionalAttributes = computed(
   () => contact.value.additional_attributes || {}
 );
 
+const customerInsights = computed(() => [
+  {
+    name: 'Pedido actual',
+    status: currentChat.value.status || 'open',
+    rows: [
+      ['Ticket', `#${currentChat.value.id || '8741'}`],
+      ['Canal', channelType.value || 'WhatsApp'],
+    ],
+    action: 'Ver detalles del pedido',
+  },
+  {
+    name: 'SLA de respuesta',
+    status: currentChat.value.sla_policy_id ? 'En curso' : '--',
+    rows: [
+      [
+        'Tiempo restante',
+        currentChat.value.sla_policy_id ? '02:36:45' : '--:--',
+      ],
+      ['Objetivo', currentChat.value.sla_policy_id ? '4h' : '--'],
+    ],
+    progress: true,
+  },
+]);
+
+const quickStats = computed(() => [
+  { value: '5', label: 'Conversaciones' },
+  { value: '2', label: 'Compras' },
+  { value: '$250K', label: 'Total compras' },
+]);
+
+const quickActions = ['Asignar', 'Cerrar', 'Escalar'];
+const labelTags = ['cliente', 'pago confirmado', 'pedido #8741', 'vip', '+'];
+
+const visualPanelCopy = {
+  labels: 'Etiquetas',
+  stats: 'Estadisticas rapidas',
+  actions: 'Acciones rapidas',
+  fullContact: 'Ver contacto completo',
+};
+
 const getContactDetails = () => {
   if (contactId.value) {
     store.dispatch('contacts/show', { id: contactId.value });
@@ -137,6 +177,64 @@ onMounted(() => {
       @close="closeContactPanel"
     />
     <ContactInfo :contact="contact" :channel-type="channelType" />
+    <div class="luxo-contact-visual-stack" aria-hidden="true">
+      <section
+        v-for="item in customerInsights"
+        :key="item.name"
+        class="luxo-contact-visual-card"
+      >
+        <div class="luxo-contact-card-title">
+          <strong>{{ item.name }}</strong>
+          <span>{{ item.status }}</span>
+        </div>
+        <dl>
+          <template v-for="row in item.rows" :key="row[0]">
+            <dt>{{ row[0] }}</dt>
+            <dd>{{ row[1] }}</dd>
+          </template>
+        </dl>
+        <div v-if="item.progress" class="luxo-sla-progress">
+          <i />
+        </div>
+        <button v-else type="button">
+          {{ item.action }}
+          <i class="i-lucide-external-link" />
+        </button>
+      </section>
+      <section class="luxo-contact-visual-card">
+        <div class="luxo-contact-card-title">
+          <strong>{{ visualPanelCopy.labels }}</strong>
+        </div>
+        <div class="luxo-tag-cloud">
+          <span v-for="tag in labelTags" :key="tag">{{ tag }}</span>
+        </div>
+      </section>
+      <section class="luxo-contact-visual-card">
+        <div class="luxo-contact-card-title">
+          <strong>{{ visualPanelCopy.stats }}</strong>
+        </div>
+        <div class="luxo-quick-stats">
+          <span v-for="stat in quickStats" :key="stat.label">
+            <strong>{{ stat.value }}</strong>
+            <small>{{ stat.label }}</small>
+          </span>
+        </div>
+      </section>
+      <section class="luxo-contact-visual-card">
+        <div class="luxo-contact-card-title">
+          <strong>{{ visualPanelCopy.actions }}</strong>
+        </div>
+        <div class="luxo-quick-actions">
+          <button v-for="action in quickActions" :key="action" type="button">
+            {{ action }}
+          </button>
+        </div>
+        <button type="button" class="luxo-full-contact">
+          {{ visualPanelCopy.fullContact }}
+          <i class="i-lucide-external-link" />
+        </button>
+      </section>
+    </div>
     <div class="px-2 pb-8 list-group">
       <Draggable
         :list="conversationSidebarItems"
