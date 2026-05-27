@@ -1,5 +1,6 @@
 <script setup>
 import { h, ref, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { provideSidebarContext, useSidebarResize } from './provider';
 import { useAccount } from 'dashboard/composables/useAccount';
 import { useKbd } from 'dashboard/composables/utils/useKbd';
@@ -39,6 +40,7 @@ const emit = defineEmits([
 
 const { accountScopedRoute, isOnChatwootCloud } = useAccount();
 const store = useStore();
+const route = useRoute();
 const searchShortcut = useKbd([`$mod`, 'k']);
 const { t } = useI18n();
 
@@ -76,9 +78,18 @@ const {
   COLLAPSED_THRESHOLD,
 } = useSidebarResize();
 
+const isLuxoConversationRail = computed(() => {
+  const routeName = String(route.name || '');
+  return (
+    !isMobile.value &&
+    routeName.includes('conversation') &&
+    !routeName.startsWith('inbox')
+  );
+});
+
 // On mobile, sidebar is always expanded (flyout mode)
 const isEffectivelyCollapsed = computed(
-  () => !isMobile.value && isCollapsed.value
+  () => !isMobile.value && (isCollapsed.value || isLuxoConversationRail.value)
 );
 
 // Resize handle logic
@@ -689,13 +700,18 @@ const menuItems = computed(() => {
     class="luxo-sidebar-shell bg-gradient-to-b from-n-background via-n-background to-n-alpha-1 flex flex-col text-sm pb-0.5 fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak/50"
     :class="[
       {
+        'is-luxo-conversation-rail': isLuxoConversationRail,
         'shadow-xl md:shadow-none': isMobileSidebarOpen,
         'ltr:-translate-x-full rtl:translate-x-full': !isMobileSidebarOpen,
         'transition-transform duration-200 ease-out md:transition-[width]':
           !isResizing,
       },
     ]"
-    :style="isMobile ? undefined : { width: `${sidebarWidth}px` }"
+    :style="
+      isMobile || isLuxoConversationRail
+        ? undefined
+        : { width: `${sidebarWidth}px` }
+    "
   >
     <section
       class="grid"
