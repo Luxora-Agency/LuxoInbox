@@ -902,7 +902,7 @@ watch(conversationFilters, (newVal, oldVal) => {
 
 <template>
   <div
-    class="luxo-chat-list flex flex-col flex-shrink-0 conversations-list-wrap bg-gradient-to-b from-white to-n-slate-1 dark:from-n-solid-3 dark:to-n-solid-4 ltr:border-r rtl:border-l border-n-slate-2 dark:border-n-solid-2"
+    class="flex flex-col flex-shrink-0 conversations-list-wrap bg-gradient-to-b from-white to-n-slate-1 dark:from-n-solid-3 dark:to-n-solid-4 ltr:border-r rtl:border-l border-n-slate-2 dark:border-n-solid-2"
     :class="[
       { hidden: !showConversationList },
       isOnExpandedLayout ? 'basis-full' : 'w-[340px] 2xl:w-[412px]',

@@ -686,7 +686,7 @@ const menuItems = computed(() => {
       closeMobileSidebar,
       { ignore: ['#mobile-sidebar-launcher'] },
     ]"
-    class="luxo-sidebar-shell bg-gradient-to-b from-n-background via-n-background to-n-alpha-1 flex flex-col text-sm pb-0.5 fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak/50"
+    class="bg-gradient-to-b from-n-background via-n-background to-n-alpha-1 flex flex-col text-sm pb-0.5 fixed top-0 ltr:left-0 rtl:right-0 h-full z-40 w-[200px] md:w-auto md:relative md:flex-shrink-0 md:ltr:translate-x-0 md:rtl:translate-x-0 ltr:border-r rtl:border-l border-n-weak/50"
     :class="[
       {
         'shadow-xl md:shadow-none': isMobileSidebarOpen,

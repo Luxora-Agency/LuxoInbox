@@ -59,11 +59,11 @@ const toggleConversationLayout = () => {
 
 <template>
   <div
-    class="luxo-chat-list-header relative z-10 flex items-center justify-between gap-2 px-4 h-16 bg-white/80 dark:bg-n-solid-3/80 backdrop-blur-sm border-b border-n-slate-2 dark:border-n-solid-2"
+    class="relative z-10 flex items-center justify-between gap-2 px-4 h-16 bg-white/80 dark:bg-n-solid-3/80 backdrop-blur-sm border-b border-n-slate-2 dark:border-n-solid-2"
   >
     <div class="flex items-center gap-3 min-w-0 flex-1">
       <div
-        class="luxo-header-mark flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-woot-500 to-woot-600 shadow-lg shadow-woot-500/25"
+        class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-woot-500 to-woot-600 shadow-lg shadow-woot-500/25"
       >
         <span class="i-lucide-messages-square text-white size-5" />
       </div>
@@ -76,15 +76,17 @@ const toggleConversationLayout = () => {
             {{ pageTitle }}
           </h1>
           <span
-            v-if="allCount > 0 && !isListLoading"
-            class="luxo-list-total px-1.5 py-0.5 rounded text-xs font-medium bg-woot-50 dark:bg-woot-500/10 text-woot-600 dark:text-woot-400"
+            v-if="
+              allCount > 0 && hasAppliedFiltersOrActiveFolders && !isListLoading
+            "
+            class="px-1.5 py-0.5 rounded text-xs font-medium bg-woot-50 dark:bg-woot-500/10 text-woot-600 dark:text-woot-400"
             :title="allCount"
           >
             {{ formattedAllCount }}
           </span>
           <span
             v-if="!hasAppliedFiltersOrActiveFolders"
-            class="luxo-status-chip px-1.5 py-0.5 rounded text-xs font-medium bg-n-slate-2 dark:bg-n-solid-2 text-n-slate-11"
+            class="px-1.5 py-0.5 rounded text-xs font-medium bg-n-slate-2 dark:bg-n-solid-2 text-n-slate-11"
           >
             {{ t(`CHAT_LIST.CHAT_STATUS_FILTER_ITEMS.${activeStatus}.TEXT`) }}
           </span>
