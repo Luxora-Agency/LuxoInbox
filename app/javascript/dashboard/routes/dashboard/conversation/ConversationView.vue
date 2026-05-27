@@ -195,7 +195,7 @@ export default {
 </script>
 
 <template>
-  <section class="flex w-full h-full min-w-0">
+  <section class="luxo-inbox-workspace relative flex w-full h-full min-w-0">
     <ChatList
       :show-conversation-list="showConversationList"
       :conversation-inbox="inboxId"

@@ -26,6 +26,22 @@ const status = ref('');
 const type = ref('');
 const sortOrder = ref(wootConstants.INBOX_SORT_BY.NEWEST);
 const isInboxContextMenuOpen = ref(false);
+const commandbarItems = [
+  { icon: 'i-lucide-list-filter', label: 'Filtrar' },
+  { icon: 'i-lucide-users', label: 'Asignar' },
+  { icon: 'i-lucide-arrow-down-up', label: 'Ordenar: Recientes' },
+];
+
+const commandbarSearch = {
+  icon: 'i-lucide-search',
+  label: 'Buscar conversaciones, contactos, mensajes...',
+  shortcut: '⌘K',
+};
+
+const commandbarPrimary = {
+  icon: 'i-lucide-send',
+  label: 'Nuevo mensaje',
+};
 
 const infiniteLoaderOptions = computed(() => ({
   root: notificationList.value,
@@ -223,10 +239,10 @@ onMounted(() => {
 
 <template>
   <section
-    class="flex w-full h-full bg-gradient-to-br from-n-background via-n-background to-n-slate-3/30"
+    class="luxo-inbox-workspace luxo-notification-workspace relative flex w-full h-full bg-gradient-to-br from-n-background via-n-background to-n-slate-3/30"
   >
     <div
-      class="flex flex-col h-full w-full lg:min-w-[360px] lg:max-w-[360px] ltr:border-r rtl:border-l border-white/10"
+      class="luxo-inbox-list flex flex-col h-full w-full lg:min-w-[360px] lg:max-w-[360px] ltr:border-r rtl:border-l border-white/10"
       :class="!currentConversationId ? 'flex' : 'hidden xl:flex'"
     >
       <!-- Header con efecto glass -->
@@ -304,6 +320,25 @@ onMounted(() => {
           :options="infiniteLoaderOptions"
           @observed="loadMoreNotifications"
         />
+      </div>
+    </div>
+    <div class="luxo-inbox-commandbar" aria-hidden="true">
+      <div class="luxo-command-search">
+        <span :class="commandbarSearch.icon" />
+        <span>{{ commandbarSearch.label }}</span>
+        <kbd>{{ commandbarSearch.shortcut }}</kbd>
+      </div>
+      <div
+        v-for="item in commandbarItems"
+        :key="item.label"
+        class="luxo-command-action"
+      >
+        <span :class="item.icon" />
+        <span>{{ item.label }}</span>
+      </div>
+      <div class="luxo-command-new">
+        <span :class="commandbarPrimary.icon" />
+        <span>{{ commandbarPrimary.label }}</span>
       </div>
     </div>
     <router-view />
