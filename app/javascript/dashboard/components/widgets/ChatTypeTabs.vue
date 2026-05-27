@@ -46,7 +46,7 @@ useKeyboardEvents(keyboardEvents);
 </script>
 
 <template>
-  <div class="luxo-chat-tabs px-3 py-2">
+  <div class="px-3 py-2">
     <div
       class="flex items-center gap-1 p-1 rounded-xl bg-n-slate-2/50 dark:bg-n-solid-2/50"
     >

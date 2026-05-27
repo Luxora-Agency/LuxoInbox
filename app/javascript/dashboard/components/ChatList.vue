@@ -48,7 +48,6 @@ import {
 import { useEmitter } from 'dashboard/composables/emitter';
 import { useEventListener } from '@vueuse/core';
 import { useConversationRequiredAttributes } from 'dashboard/composables/useConversationRequiredAttributes';
-import { useKbd } from 'dashboard/composables/utils/useKbd';
 
 import { emitter } from 'shared/helpers/mitt';
 
@@ -86,7 +85,6 @@ const props = defineProps({
 const emit = defineEmits(['conversationLoad']);
 const { uiSettings } = useUISettings();
 const { t } = useI18n();
-const searchShortcut = useKbd([`$mod`, 'k']);
 const router = useRouter();
 const route = useRoute();
 const store = useStore();
@@ -255,8 +253,6 @@ const activeAssigneeTabCount = computed(() => {
   ).count;
   return count;
 });
-
-const listSearchPlaceholder = computed(() => t('COMBOBOX.SEARCH_PLACEHOLDER'));
 
 const conversationListPagination = computed(() => {
   const conversationsPerPage = 25;
@@ -906,7 +902,7 @@ watch(conversationFilters, (newVal, oldVal) => {
 
 <template>
   <div
-    class="luxo-chat-list flex flex-col flex-shrink-0 conversations-list-wrap bg-gradient-to-b from-white to-n-slate-1 dark:from-n-solid-3 dark:to-n-solid-4 ltr:border-r rtl:border-l border-n-slate-2 dark:border-n-solid-2"
+    class="flex flex-col flex-shrink-0 conversations-list-wrap bg-gradient-to-b from-white to-n-slate-1 dark:from-n-solid-3 dark:to-n-solid-4 ltr:border-r rtl:border-l border-n-slate-2 dark:border-n-solid-2"
     :class="[
       { hidden: !showConversationList },
       isOnExpandedLayout ? 'basis-full' : 'w-[340px] 2xl:w-[412px]',
@@ -956,16 +952,6 @@ watch(conversationFilters, (newVal, oldVal) => {
       is-compact
       @chat-tab-change="updateAssigneeTab"
     />
-
-    <RouterLink
-      :to="{ name: 'search' }"
-      class="luxo-list-search"
-      :aria-label="listSearchPlaceholder"
-    >
-      <span class="i-lucide-search" />
-      <span>{{ listSearchPlaceholder }}</span>
-      <kbd>{{ searchShortcut }}</kbd>
-    </RouterLink>
 
     <div
       v-if="!chatListLoading && !conversationList.length"
