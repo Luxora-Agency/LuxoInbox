@@ -30,41 +30,6 @@
   color: #eef2ff;
 }
 
-.luxo-sidebar-shell.is-luxo-conversation-rail {
-  width: 4.25rem !important;
-  min-width: 4.25rem !important;
-  max-width: 4.25rem !important;
-  padding-inline: 0.35rem;
-}
-
-.luxo-sidebar-shell.is-luxo-conversation-rail section:first-of-type {
-  gap: 1rem !important;
-  margin-block: 0.7rem 1.15rem !important;
-}
-
-.luxo-sidebar-shell.is-luxo-conversation-rail nav {
-  padding-inline: 0.25rem !important;
-}
-
-.luxo-sidebar-shell.is-luxo-conversation-rail nav ul {
-  align-items: center;
-  gap: 0.55rem !important;
-}
-
-.luxo-sidebar-shell.is-luxo-conversation-rail nav a,
-.luxo-sidebar-shell.is-luxo-conversation-rail nav button {
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-  border-radius: 0.82rem !important;
-}
-
-.luxo-sidebar-shell.is-luxo-conversation-rail nav [class*='bg-n-alpha-2'],
-.luxo-sidebar-shell.is-luxo-conversation-rail nav [class*='bg-n-brand'] {
-  background: linear-gradient(180deg, rgba(228, 17, 99, 0.34), rgba(228, 17, 99, 0.14)) !important;
-  color: #fff !important;
-  box-shadow: 0 0 0 1px rgba(236, 72, 153, 0.45), 0 14px 28px rgba(228, 17, 99, 0.18);
-}
-
 .luxo-sidebar-shell .outline-n-weak\/70,
 .luxo-sidebar-shell [class*='outline-n-weak'] {
   outline-color: rgba(148, 163, 184, 0.16) !important;
@@ -105,16 +70,6 @@
     var(--luxo-panel) !important;
   border-color: rgba(236, 72, 153, 0.16) !important;
   box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
-}
-
-.luxo-chat-list {
-  width: 21.85rem !important;
-  max-width: 21.85rem !important;
-}
-
-.luxo-inbox-list {
-  width: 24.1rem !important;
-  max-width: 24.1rem !important;
 }
 
 .luxo-chat-list-header,
@@ -192,39 +147,9 @@
   border: 1px solid rgba(236, 72, 153, 0.28);
 }
 
-.luxo-list-search {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  height: 2.15rem;
-  margin: 0.32rem 0.7rem 0.5rem;
-  padding: 0 0.75rem;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  border-radius: 0.55rem;
-  background: rgba(7, 10, 18, 0.74);
-  color: var(--luxo-muted);
-  font-size: 0.78rem;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
-}
-
-.luxo-list-search span:nth-child(2) {
-  min-width: 0;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.luxo-list-search kbd {
-  border: 0;
-  background: transparent;
-  color: var(--luxo-muted);
-  font-size: 0.68rem;
-}
-
 .luxo-conversation-card.conversation {
-  min-height: 4.25rem;
-  margin: 0.29rem 0.62rem !important;
+  min-height: 4.45rem;
+  margin: 0.32rem 0.7rem !important;
   border-radius: 0.82rem !important;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)),
@@ -338,17 +263,6 @@
   background:
     linear-gradient(180deg, rgba(10, 12, 20, 0.82), rgba(7, 9, 16, 0.96)),
     var(--luxo-bg) !important;
-}
-
-.luxo-messages-view::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 0, rgba(236, 72, 153, 0.08), transparent 19rem),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025), transparent 16%, transparent 84%, rgba(255, 255, 255, 0.025));
-  opacity: 0.7;
 }
 
 .luxo-messages-view::before {
@@ -470,162 +384,10 @@
   border-color: var(--luxo-border) !important;
 }
 
-.luxo-contact-visual-stack {
-  display: grid;
-  gap: 0.7rem;
-  padding: 0 0.75rem 0.75rem;
-}
-
-.luxo-contact-visual-card {
-  display: grid;
-  gap: 0.62rem;
-  padding: 0.75rem;
-  border: 1px solid rgba(148, 163, 184, 0.13);
-  border-radius: 0.62rem;
-  background: rgba(12, 15, 25, 0.78);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
-}
-
-.luxo-contact-card-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.6rem;
-}
-
-.luxo-contact-card-title strong {
-  color: var(--luxo-text);
-  font-size: 0.78rem;
-}
-
-.luxo-contact-card-title span {
-  padding: 0.17rem 0.45rem;
-  border-radius: 999px;
-  background: rgba(34, 197, 94, 0.14);
-  color: var(--luxo-green);
-  font-size: 0.66rem;
-}
-
-.luxo-contact-visual-card dl {
-  display: grid;
-  gap: 0.42rem;
-  margin: 0;
-}
-
-.luxo-contact-visual-card dl div,
-.luxo-contact-visual-card dt,
-.luxo-contact-visual-card dd {
-  margin: 0;
-}
-
-.luxo-contact-visual-card dl {
-  grid-template-columns: auto 1fr;
-}
-
-.luxo-contact-visual-card dt {
-  color: var(--luxo-muted);
-  font-size: 0.72rem;
-}
-
-.luxo-contact-visual-card dd {
-  color: var(--luxo-text);
-  font-size: 0.72rem;
-  text-align: right;
-}
-
-.luxo-contact-visual-card button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.42rem;
-  min-height: 2rem;
-  border: 1px solid rgba(236, 72, 153, 0.36);
-  border-radius: 0.45rem;
-  background: rgba(228, 17, 99, 0.06);
-  color: #ff6fa5;
-  font-size: 0.75rem;
-}
-
-.luxo-sla-progress {
-  position: relative;
-  height: 0.35rem;
-  overflow: hidden;
-  border-radius: 999px;
-  background: rgba(148, 163, 184, 0.12);
-}
-
-.luxo-sla-progress i {
-  position: absolute;
-  inset: 0 34% 0 0;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #ff2e7c, #e41163);
-}
-
-.luxo-tag-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.42rem;
-}
-
-.luxo-tag-cloud span {
-  padding: 0.18rem 0.42rem;
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  border-radius: 0.35rem;
-  background: rgba(255, 255, 255, 0.035);
-  color: var(--luxo-muted);
-  font-size: 0.68rem;
-}
-
-.luxo-tag-cloud span:nth-child(2) {
-  background: rgba(34, 197, 94, 0.13);
-  color: var(--luxo-green);
-}
-
-.luxo-tag-cloud span:nth-child(4) {
-  background: rgba(124, 58, 237, 0.16);
-  color: #c4b5fd;
-}
-
-.luxo-quick-stats,
-.luxo-quick-actions {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-}
-
-.luxo-quick-stats span {
-  display: grid;
-  gap: 0.2rem;
-  text-align: center;
-  border-inline-end: 1px solid rgba(148, 163, 184, 0.12);
-}
-
-.luxo-quick-stats span:last-child {
-  border-inline-end: 0;
-}
-
-.luxo-quick-stats strong {
-  color: var(--luxo-text);
-  font-size: 1rem;
-}
-
-.luxo-quick-stats small {
-  color: var(--luxo-muted);
-  font-size: 0.64rem;
-}
-
-.luxo-quick-actions {
-  gap: 0.45rem;
-}
-
-.luxo-full-contact {
-  width: 100%;
-}
-
 .luxo-inbox-commandbar {
   position: absolute;
   top: 1.05rem;
-  left: calc(24.1rem + 2rem);
+  left: calc(360px + 2rem);
   right: 2.2rem;
   z-index: 4;
   display: flex;
