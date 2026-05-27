@@ -443,7 +443,7 @@ export default {
 
 <template>
   <div
-    class="flex flex-col justify-between flex-grow h-full min-w-0 m-0 bg-gradient-to-b from-n-slate-1 to-n-background dark:from-n-solid-4 dark:to-n-solid-5"
+    class="luxo-messages-view flex flex-col justify-between flex-grow h-full min-w-0 m-0 bg-gradient-to-b from-n-slate-1 to-n-background dark:from-n-solid-4 dark:to-n-solid-5"
   >
     <Banner
       v-if="!currentChat.can_reply"
@@ -461,7 +461,7 @@ export default {
     />
     <MessageList
       ref="conversationPanelRef"
-      class="conversation-panel flex-shrink flex-grow basis-px flex flex-col overflow-y-auto relative h-full m-0 pb-4"
+      class="luxo-message-list conversation-panel flex-shrink flex-grow basis-px flex flex-col overflow-y-auto relative h-full m-0 pb-4"
       :current-user-id="currentUserId"
       :first-unread-id="unReadMessages[0]?.id"
       :is-an-email-channel="isAnEmailChannel"

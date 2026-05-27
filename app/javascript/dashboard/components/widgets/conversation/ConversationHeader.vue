@@ -90,12 +90,38 @@ const hasMultipleInboxes = computed(
 );
 
 const hasSlaPolicyId = computed(() => props.chat?.sla_policy_id);
+
+const assigneeName = computed(() => {
+  return (
+    chatMetadata.value?.assignee?.name ||
+    t('CHAT_LIST.ASSIGNEE_TYPE_TABS.unassigned')
+  );
+});
+
+const priorityLabel = computed(() => {
+  const priority = props.chat?.priority;
+  if (!priority) {
+    return t('CONVERSATION.PRIORITY.OPTIONS.NONE');
+  }
+  return t(`CONVERSATION.PRIORITY.OPTIONS.${priority.toUpperCase()}`);
+});
+
+const priorityTone = computed(() => {
+  return props.chat?.priority || 'none';
+});
+
+const metricLabels = {
+  assignee: 'Asignado a',
+  sla: 'SLA',
+  priority: 'Prioridad',
+  emptySla: '--:--',
+};
 </script>
 
 <template>
   <div
     ref="conversationHeader"
-    class="flex flex-col gap-3 items-center justify-between flex-1 w-full min-w-0 xl:flex-row px-4 py-3 h-24 xl:h-14 bg-white/80 dark:bg-n-solid-3/80 backdrop-blur-sm border-b border-n-slate-2 dark:border-n-solid-2"
+    class="luxo-conversation-header flex flex-col gap-3 items-center justify-between flex-1 w-full min-w-0 xl:flex-row px-4 py-3 h-24 xl:h-14 bg-white/80 dark:bg-n-solid-3/80 backdrop-blur-sm border-b border-n-slate-2 dark:border-n-solid-2"
   >
     <div
       class="flex items-center justify-start w-full xl:w-auto max-w-full min-w-0 xl:flex-1"
@@ -144,13 +170,26 @@ const hasSlaPolicyId = computed(() => props.chat?.sla_policy_id);
     <div
       class="flex flex-row items-center justify-start xl:justify-end flex-shrink-0 gap-2 w-full xl:w-auto header-actions-wrap"
     >
-      <SLACardLabel
-        v-if="hasSlaPolicyId"
-        :chat="chat"
-        show-extended-info
-        :parent-width="width"
-        class="hidden md:flex"
-      />
+      <div class="luxo-header-metrics hidden md:flex">
+        <div class="luxo-header-metric">
+          <span>{{ metricLabels.assignee }}</span>
+          <strong>{{ assigneeName }}</strong>
+        </div>
+        <div class="luxo-header-metric luxo-header-metric-sla">
+          <span>{{ metricLabels.sla }}</span>
+          <SLACardLabel
+            v-if="hasSlaPolicyId"
+            :chat="chat"
+            show-extended-info
+            :parent-width="width"
+          />
+          <strong v-else>{{ metricLabels.emptySla }}</strong>
+        </div>
+        <div class="luxo-header-metric" :data-priority="priorityTone">
+          <span>{{ metricLabels.priority }}</span>
+          <strong>{{ priorityLabel }}</strong>
+        </div>
+      </div>
       <MoreActions :conversation-id="currentChat.id" />
     </div>
   </div>

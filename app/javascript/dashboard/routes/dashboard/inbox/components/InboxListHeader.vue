@@ -82,12 +82,12 @@ const onFilterChange = option => {
 
 <template>
   <div
-    class="relative z-20 flex items-center justify-between w-full gap-2 h-[72px] px-4 bg-white/50 dark:bg-n-solid-3/50 backdrop-blur-xl border-b border-white/20 dark:border-white/5"
+    class="luxo-inbox-list-header relative z-20 flex items-center justify-between w-full gap-2 h-[72px] px-4 bg-white/50 dark:bg-n-solid-3/50 backdrop-blur-xl border-b border-white/20 dark:border-white/5"
   >
     <div class="flex items-center gap-3 min-w-0 flex-1">
       <!-- Icono con gradiente -->
       <div
-        class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-woot-500 to-violet-500 shadow-lg shadow-woot-500/25"
+        class="luxo-header-mark flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-woot-500 to-violet-500 shadow-lg shadow-woot-500/25"
       >
         <span class="i-lucide-inbox text-white size-5" />
       </div>

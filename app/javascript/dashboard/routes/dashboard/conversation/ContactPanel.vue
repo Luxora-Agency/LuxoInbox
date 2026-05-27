@@ -131,7 +131,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="luxo-contact-panel w-full">
     <SidebarActionsHeader
       :title="$t('CONVERSATION.SIDEBAR.CONTACT')"
       @close="closeContactPanel"

@@ -14,11 +14,11 @@ const { t } = useI18n();
 
 <template>
   <div
-    class="flex flex-col items-center justify-center h-full bg-n-background dark:bg-n-solid-5"
+    class="luxo-empty-state flex flex-col items-center justify-center h-full bg-n-background dark:bg-n-solid-5"
   >
-    <div class="flex flex-col items-center gap-6 p-8 max-w-sm">
+    <div class="luxo-empty-card flex flex-col items-center gap-6 p-8 max-w-sm">
       <div
-        class="flex items-center justify-center w-16 h-16 rounded-2xl bg-woot-100 dark:bg-woot-500/20"
+        class="luxo-empty-icon flex items-center justify-center w-16 h-16 rounded-2xl bg-woot-100 dark:bg-woot-500/20"
       >
         <span class="i-lucide-message-square-text text-woot-500 size-8" />
       </div>

@@ -101,7 +101,8 @@ const replyToPreview = computed(() => {
 
 <template>
   <div
-    class="text-sm"
+    class="luxo-message-bubble text-sm"
+    :data-message-variant="variant"
     :class="[
       messageClass,
       {
