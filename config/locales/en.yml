@@ -205,10 +205,10 @@ en:
         review_notes: Review Notes
   notifications:
     notification_title:
-      conversation_creation: 'A conversation (#%{display_id}) has been created in %{inbox_name}'
+      conversation_creation: '%{sender_name} (#%{display_id})'
       conversation_assignment: 'A conversation (#%{display_id}) has been assigned to you'
-      assigned_conversation_new_message: 'A new message is created in conversation (#%{display_id})'
-      conversation_mention: 'You have been mentioned in conversation (#%{display_id})'
+      assigned_conversation_new_message: '%{sender_name} (#%{display_id})'
+      conversation_mention: '%{sender_name} mentioned you (#%{display_id})'
       sla_missed_first_response: 'SLA target first response missed for conversation (#%{display_id})'
       sla_missed_next_response: 'SLA target next response missed for conversation (#%{display_id})'
       sla_missed_resolution: 'SLA target resolution missed for conversation (#%{display_id})'
