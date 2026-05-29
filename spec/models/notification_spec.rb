@@ -23,9 +23,10 @@ RSpec.describe Notification do
 
   context 'when push_title is called' do
     it 'returns appropriate title suited for the notification type conversation_creation' do
-      notification = create(:notification, notification_type: 'conversation_creation')
-      expect(notification.push_message_title).to eq "A conversation (##{notification.primary_actor.display_id}) \
-has been created in #{notification.primary_actor.inbox.name}"
+      conversation = create(:conversation)
+      message = create(:message, sender: create(:user), content: Faker::Lorem.paragraphs(number: 2), conversation: conversation)
+      notification = create(:notification, notification_type: 'conversation_creation', primary_actor: conversation, secondary_actor: message)
+      expect(notification.push_message_title).to eq "#{message.sender.name} (##{notification.primary_actor.display_id})"
     end
 
     it 'returns appropriate title suited for the notification type conversation_assignment' do
@@ -39,7 +40,7 @@ has been assigned to you"
       notification = create(:notification, notification_type: 'assigned_conversation_new_message', primary_actor: message.conversation,
                                            secondary_actor: message)
 
-      expect(notification.push_message_title).to eq "A new message is created in conversation (##{notification.primary_actor.display_id})"
+      expect(notification.push_message_title).to eq "#{message.sender.name} (##{notification.primary_actor.display_id})"
     end
 
     it 'returns appropriate title suited for the notification type assigned_conversation_new_message when attachment message' do
@@ -48,7 +49,7 @@ has been assigned to you"
       notification = create(:notification, notification_type: 'assigned_conversation_new_message', primary_actor: message.conversation,
                                            secondary_actor: message)
 
-      expect(notification.push_message_title).to eq "A new message is created in conversation (##{notification.primary_actor.display_id})"
+      expect(notification.push_message_title).to eq "#{message.sender.name} (##{notification.primary_actor.display_id})"
     end
 
     it 'returns appropriate title suited for the notification type participating_conversation_new_message' do
@@ -56,7 +57,7 @@ has been assigned to you"
       notification = create(:notification, notification_type: 'participating_conversation_new_message', primary_actor: message.conversation,
                                            secondary_actor: message)
 
-      expect(notification.push_message_title).to eq "A new message is created in conversation (##{notification.primary_actor.display_id})"
+      expect(notification.push_message_title).to eq "#{message.sender.name} (##{notification.primary_actor.display_id})"
     end
 
     it 'returns appropriate title suited for the notification type conversation_mention' do
@@ -64,7 +65,7 @@ has been assigned to you"
       notification = create(:notification, notification_type: 'conversation_mention', primary_actor: message.conversation,
                                            secondary_actor: message)
 
-      expect(notification.push_message_title).to eq "You have been mentioned in conversation (##{notification.primary_actor.display_id})"
+      expect(notification.push_message_title).to eq "#{message.sender.name} mentioned you (##{notification.primary_actor.display_id})"
     end
   end
 
@@ -73,14 +74,14 @@ has been assigned to you"
       conversation = create(:conversation)
       message = create(:message, sender: create(:user), content: Faker::Lorem.paragraphs(number: 2), conversation: conversation)
       notification = create(:notification, notification_type: 'conversation_creation', primary_actor: conversation, secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: #{message.content.truncate_words(10)}"
+      expect(notification.push_message_body).to eq "#{message.content.truncate_words(10)}"
     end
 
     it 'returns appropriate body suited for the notification type conversation_assignment' do
       conversation = create(:conversation)
       message = create(:message, sender: create(:user), content: Faker::Lorem.paragraphs(number: 2), conversation: conversation)
       notification = create(:notification, notification_type: 'conversation_assignment', primary_actor: conversation, secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: #{message.content.truncate_words(10)}"
+      expect(notification.push_message_body).to eq "#{message.content.truncate_words(10)}"
     end
 
     it 'returns appropriate body suited for the notification type conversation_assignment with outgoing message only' do
@@ -88,7 +89,7 @@ has been assigned to you"
       message = create(:message, sender: create(:user), content: Faker::Lorem.paragraphs(number: 2), message_type: :outgoing,
                                  conversation: conversation)
       notification = create(:notification, notification_type: 'conversation_assignment', primary_actor: conversation, secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: #{message.content.truncate_words(10)}"
+      expect(notification.push_message_body).to eq "#{message.content.truncate_words(10)}"
     end
 
     it 'returns appropriate body suited for the notification type assigned_conversation_new_message' do
@@ -96,7 +97,7 @@ has been assigned to you"
       message = create(:message, sender: create(:user), content: Faker::Lorem.paragraphs(number: 2), conversation: conversation)
       notification = create(:notification, notification_type: 'assigned_conversation_new_message', primary_actor: conversation,
                                            secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: #{message.content.truncate_words(10)}"
+      expect(notification.push_message_body).to eq "#{message.content.truncate_words(10)}"
     end
 
     it 'returns appropriate body suited for the notification type assigned_conversation_new_message when attachment message' do
@@ -107,7 +108,7 @@ has been assigned to you"
       message.save!
       notification = create(:notification, notification_type: 'assigned_conversation_new_message', primary_actor: conversation,
                                            secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: Attachment"
+      expect(notification.push_message_body).to eq "Attachment"
     end
 
     it 'returns appropriate body suited for the notification type participating_conversation_new_message having multple mention' do
@@ -117,7 +118,7 @@ has been assigned to you"
                                  conversation: conversation)
       notification = create(:notification, notification_type: 'participating_conversation_new_message', primary_actor: conversation,
                                            secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: Hey @John, @Alisha Peter can you check this ticket?"
+      expect(notification.push_message_body).to eq "Hey @John, @Alisha Peter can you check this ticket?"
     end
 
     it 'returns appropriate body suited for the notification type conversation_mention if username contains white space' do
@@ -125,7 +126,7 @@ has been assigned to you"
       message = create(:message, sender: create(:user), content: 'Hey [@John Peter](mention://user/1/john%20K) please check this?',
                                  conversation: conversation)
       notification = create(:notification, notification_type: 'conversation_mention', primary_actor: conversation, secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: Hey @John Peter please check this?"
+      expect(notification.push_message_body).to eq "Hey @John Peter please check this?"
     end
 
     it 'returns appropriate body suited for the notification type conversation_mention if username contains emoji' do
@@ -133,7 +134,7 @@ has been assigned to you"
       content = 'Hey [@👍 customer support](mention://team/1/%F0%9F%91%8D%20customer%20support) please check this?'
       message = create(:message, sender: create(:user), content: content, conversation: conversation)
       notification = create(:notification, notification_type: 'conversation_mention', primary_actor: conversation, secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: Hey @👍 customer support please check this?"
+      expect(notification.push_message_body).to eq "Hey @👍 customer support please check this?"
     end
 
     it 'returns appropriate body suited for the notification type conversation_mention if team name contains emoji and spaces' do
@@ -141,7 +142,7 @@ has been assigned to you"
       content = 'Please check [@🚀 Development Team](mention://team/2/%F0%9F%9A%80%20Development%20Team)'
       message = create(:message, sender: create(:user), content: content, conversation: conversation)
       notification = create(:notification, notification_type: 'conversation_mention', primary_actor: conversation, secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: Please check @🚀 Development Team"
+      expect(notification.push_message_body).to eq "Please check @🚀 Development Team"
     end
 
     it 'returns appropriate body suited for the notification type conversation_mention with mixed emoji and regular mentions' do
@@ -150,7 +151,7 @@ has been assigned to you"
                 '[@👍 customer support](mention://team/1/%F0%9F%91%8D%20customer%20support) please review'
       message = create(:message, sender: create(:user), content: content, conversation: conversation)
       notification = create(:notification, notification_type: 'conversation_mention', primary_actor: conversation, secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: Hey @John Doe and @👍 customer support please review"
+      expect(notification.push_message_body).to eq "Hey @John Doe and @👍 customer support please review"
     end
 
     it 'returns appropriate body suited for the notification type conversation_mention with special characters in names' do
@@ -158,7 +159,7 @@ has been assigned to you"
       content = 'Please review [@user@domain.com](mention://user/4/user%40domain.com)'
       message = create(:message, sender: create(:user), content: content, conversation: conversation)
       notification = create(:notification, notification_type: 'conversation_mention', primary_actor: conversation, secondary_actor: message)
-      expect(notification.push_message_body).to eq "#{message.sender.name}: Please review @user@domain.com"
+      expect(notification.push_message_body).to eq "Please review @user@domain.com"
     end
 
     it 'calls remove duplicate notification job' do

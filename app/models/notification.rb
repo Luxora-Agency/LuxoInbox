@@ -101,10 +101,10 @@ class Notification < ApplicationRecord
     i18n_key = notification_title_map[notification_type]
     return '' unless i18n_key
 
-    if notification_type == 'conversation_creation'
-      I18n.t(i18n_key, display_id: conversation.display_id, inbox_name: primary_actor.inbox.name)
-    elsif %w[conversation_assignment assigned_conversation_new_message participating_conversation_new_message
-             conversation_mention].include?(notification_type)
+    case notification_type
+    when 'conversation_creation', 'assigned_conversation_new_message', 'participating_conversation_new_message', 'conversation_mention'
+      I18n.t(i18n_key, display_id: conversation.display_id, sender_name: push_sender_name)
+    when 'conversation_assignment'
       I18n.t(i18n_key, display_id: conversation.display_id)
     else
       I18n.t(i18n_key, display_id: primary_actor.display_id)
@@ -113,16 +113,7 @@ class Notification < ApplicationRecord
   # rubocop:enable Metrics/MethodLength
 
   def push_message_body
-    case notification_type
-    when 'conversation_creation', 'sla_missed_first_response'
-      message_body(conversation.messages.first)
-    when 'assigned_conversation_new_message', 'participating_conversation_new_message', 'conversation_mention'
-      message_body(secondary_actor)
-    when 'conversation_assignment', 'sla_missed_next_response', 'sla_missed_resolution'
-      message_body((conversation.messages.incoming.last || conversation.messages.outgoing.last))
-    else
-      ''
-    end
+    message_content(notification_message)
   end
 
   def conversation
@@ -131,10 +122,19 @@ class Notification < ApplicationRecord
 
   private
 
-  def message_body(actor)
-    sender_name = sender_name(actor)
-    content = message_content(actor)
-    "#{sender_name}: #{content}"
+  def notification_message
+    case notification_type
+    when 'conversation_creation', 'sla_missed_first_response'
+      conversation.messages.first
+    when 'assigned_conversation_new_message', 'participating_conversation_new_message', 'conversation_mention'
+      secondary_actor
+    when 'conversation_assignment', 'sla_missed_next_response', 'sla_missed_resolution'
+      conversation.messages.incoming.last || conversation.messages.outgoing.last
+    end
+  end
+
+  def push_sender_name
+    sender_name(notification_message)
   end
 
   def sender_name(actor)
