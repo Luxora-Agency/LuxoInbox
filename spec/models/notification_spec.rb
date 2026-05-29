@@ -65,7 +65,7 @@ has been assigned to you"
       notification = create(:notification, notification_type: 'conversation_mention', primary_actor: message.conversation,
                                            secondary_actor: message)
 
-      expect(notification.push_message_title).to eq "#{message.sender.name} mentioned you (##{notification.primary_actor.display_id})"
+      expect(notification.push_message_title).to eq "#{message.sender.name} (##{notification.primary_actor.display_id})"
     end
   end
 
