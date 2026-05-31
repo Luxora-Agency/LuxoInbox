@@ -106,6 +106,11 @@ const startPolling = () => {
   }, 3000);
 };
 
+const extractQRCode = data => {
+  // Handle different Evolution API response formats
+  return data.qrcode?.base64 || data.base64 || data.qrcode?.pairingCode || null;
+};
+
 const refreshQRCode = async () => {
   try {
     isLoading.value = true;
@@ -122,11 +127,6 @@ const refreshQRCode = async () => {
   } finally {
     isLoading.value = false;
   }
-};
-
-const extractQRCode = data => {
-  // Handle different Evolution API response formats
-  return data.qrcode?.base64 || data.base64 || data.qrcode?.pairingCode || null;
 };
 
 const showQRCode = (base64, startPoll = true) => {
