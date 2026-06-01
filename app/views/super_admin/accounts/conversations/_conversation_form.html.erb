@@ -1,0 +1,20 @@
+<%= form_with url: super_admin_account_conversation_path(@account, @conversation), method: :patch, scope: :conversation do |f| %>
+  <div class="flex flex-wrap items-end gap-4">
+    <label class="flex flex-col text-sm text-n-slate-11">
+      Status
+      <%= f.select :status, Conversation.statuses.keys, { selected: @conversation.status }, class: "mt-1" %>
+    </label>
+
+    <label class="flex flex-col text-sm text-n-slate-11">
+      Priority
+      <%= f.select :priority, Conversation.priorities.keys, { include_blank: true, selected: @conversation.priority }, class: "mt-1" %>
+    </label>
+
+    <label class="flex flex-col text-sm text-n-slate-11">
+      Assignee
+      <%= f.select :assignee_id, @account_users.map { |u| [u.name, u.id] }, { include_blank: "Unassigned", selected: @conversation.assignee_id }, class: "mt-1" %>
+    </label>
+
+    <%= f.submit "Save conversation", class: "button" %>
+  </div>
+<% end %>

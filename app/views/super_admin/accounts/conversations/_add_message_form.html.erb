@@ -1,0 +1,19 @@
+<%= form_with url: super_admin_account_conversation_messages_path(@account, @conversation), method: :post, scope: :message do |f| %>
+  <div class="flex flex-wrap items-end gap-4 mb-3">
+    <label class="flex flex-col text-sm text-n-slate-11">
+      Type
+      <%= f.select :message_type, [["Incoming (from contact)", "incoming"], ["Outgoing (from agent)", "outgoing"]], {}, class: "mt-1" %>
+    </label>
+
+    <label class="flex flex-col text-sm text-n-slate-11">
+      Sender (outgoing only)
+      <%= f.select :sender_id, @account_users.map { |u| [u.name, u.id] }, { include_blank: "No agent" }, class: "mt-1" %>
+    </label>
+  </div>
+
+  <%= f.text_area :content, rows: 3, class: "w-full text-sm", placeholder: "Message content" %>
+
+  <div class="mt-2">
+    <%= f.submit "Add message", class: "button" %>
+  </div>
+<% end %>

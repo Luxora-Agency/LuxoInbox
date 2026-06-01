@@ -1,0 +1,7 @@
+<% if @messages.empty? %>
+  <p class="text-n-slate-11">No messages in this conversation.</p>
+<% else %>
+  <div class="space-y-3">
+    <%= render partial: "message", collection: @messages, as: :message %>
+  </div>
+<% end %>
