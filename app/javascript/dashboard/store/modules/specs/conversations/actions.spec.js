@@ -263,13 +263,15 @@ describe('#actions', () => {
   });
 
   describe('#addMessage', () => {
-    it('sends correct mutations if message is incoming', () => {
+    const getters = { getConversationById: () => ({ id: 1 }) };
+
+    it('sends correct mutations if message is incoming', async () => {
       const message = {
         id: 1,
         message_type: 0,
         conversation_id: 1,
       };
-      actions.addMessage({ commit }, message);
+      await actions.addMessage({ commit, getters, rootGetters: {} }, message);
       expect(commit.mock.calls).toEqual([
         [types.ADD_MESSAGE, message],
         [
@@ -279,13 +281,13 @@ describe('#actions', () => {
         [types.ADD_CONVERSATION_ATTACHMENTS, message],
       ]);
     });
-    it('sends correct mutations if message is not an incoming message', () => {
+    it('sends correct mutations if message is not an incoming message', async () => {
       const message = {
         id: 1,
         message_type: 1,
         conversation_id: 1,
       };
-      actions.addMessage({ commit }, message);
+      await actions.addMessage({ commit, getters, rootGetters: {} }, message);
       expect(commit.mock.calls).toEqual([[types.ADD_MESSAGE, message]]);
     });
   });

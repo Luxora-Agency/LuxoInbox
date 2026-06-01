@@ -6,13 +6,11 @@
 
 name: Publish Chatwoot CE docker images
 
+# NOTE: Auto-triggers disabled for this fork. This workflow publishes to the
+# upstream `chatwoot/chatwoot` DockerHub repo and requires DockerHub secrets the
+# fork does not have. The fork uses `build-docker.yml` (ghcr.io) instead.
+# Kept as manual-only so it no longer fails on every push to develop/master.
 on:
-  push:
-    branches:
-      - develop
-      - master
-    tags:
-      - v*
   workflow_dispatch:
 
 env:
