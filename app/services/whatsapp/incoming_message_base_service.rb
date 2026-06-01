@@ -32,11 +32,22 @@ class Whatsapp::IncomingMessageBaseService
     set_contact
     return unless @contact
 
+    # Conversations edited from the super admin are frozen: drop further client
+    # messages so the conversation stays as an admin-managed snapshot.
+    if conversation_admin_locked?
+      clear_message_source_id_from_redis
+      return
+    end
+
     ActiveRecord::Base.transaction do
       set_conversation
       create_messages
       clear_message_source_id_from_redis
     end
+  end
+
+  def conversation_admin_locked?
+    @contact_inbox.conversations.order(:created_at).last&.additional_attributes&.dig('admin_locked').present?
   end
 
   def process_statuses

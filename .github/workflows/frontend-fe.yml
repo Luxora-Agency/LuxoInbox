@@ -1,9 +1,7 @@
 name: Frontend Lint & Test
 
+# Runs on PRs only (not on push to develop) so the deploy build runs first on push.
 on:
-  push:
-    branches:
-      - develop
   pull_request:
     branches:
       - develop

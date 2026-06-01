@@ -21,7 +21,9 @@ class SuperAdmin::Accounts::ConversationsController < SuperAdmin::ApplicationCon
                          alert: 'Assignee must belong to this account')
     end
 
-    @conversation.update!(conversation_params)
+    attrs = conversation_params.to_h
+    attrs[:additional_attributes] = (@conversation.additional_attributes || {}).merge('admin_locked' => true)
+    @conversation.update!(attrs)
     redirect_to super_admin_account_conversation_path(@account, @conversation), notice: 'Conversation updated'
   end
 
