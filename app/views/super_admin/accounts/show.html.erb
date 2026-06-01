@@ -25,6 +25,7 @@ as well as a link to its edit page.
     </h1>
 
     <div>
+      <%= link_to("Conversations", super_admin_account_conversations_path(page.resource), class: "button") %>
       <%= if accessible_action?(page.resource, :edit)
         link_to("Edit", [:edit, namespace, page.resource], class: "button")
       end %>

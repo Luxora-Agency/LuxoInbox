@@ -1,0 +1,32 @@
+<% content_for(:title) do %>
+  Conversation #<%= @conversation.display_id %> — <%= @account.name %>
+<% end %>
+
+<header class="flex px-8 py-4 items-center justify-between border-b border-n-weak" role="banner">
+  <div class="flex flex-col">
+    <h1 class="text-base font-medium leading-6 text-n-slate-12" id="page-title">
+      <%= content_for(:title) %>
+    </h1>
+    <p class="text-sm text-n-slate-11 m-0">
+      <%= @conversation.contact&.name.presence || "—" %> · <%= @conversation.inbox&.name %>
+    </p>
+  </div>
+  <%= link_to "← Back to conversations", super_admin_account_conversations_path(@account), class: "button" %>
+</header>
+
+<section class="main-content__body px-8 space-y-8">
+  <div>
+    <h3 class="text-sm font-medium text-n-slate-12 mb-2">Conversation</h3>
+    <%= render "conversation_form" %>
+  </div>
+
+  <div>
+    <h3 class="text-sm font-medium text-n-slate-12 mb-2">Messages</h3>
+    <%= render "messages" %>
+  </div>
+
+  <div>
+    <h3 class="text-sm font-medium text-n-slate-12 mb-2">Add message</h3>
+    <%= render "add_message_form" %>
+  </div>
+</section>

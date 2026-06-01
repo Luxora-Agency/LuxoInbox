@@ -1,0 +1,51 @@
+<% content_for(:title) do %>
+  Conversations — <%= @account.name %>
+<% end %>
+
+<header class="flex px-8 py-4 items-center justify-between border-b border-n-weak" role="banner">
+  <h1 class="text-base font-medium leading-6 text-n-slate-12" id="page-title">
+    <%= content_for(:title) %>
+  </h1>
+  <%= link_to "← Back to account", super_admin_account_path(@account), class: "button" %>
+</header>
+
+<section class="main-content__body px-8">
+  <% if @conversations.empty? %>
+    <p class="text-n-slate-11 py-6">This account has no conversations.</p>
+  <% else %>
+    <table aria-labelledby="page-title">
+      <thead>
+        <tr>
+          <th class="cell-label">ID</th>
+          <th class="cell-label">Contact</th>
+          <th class="cell-label">Inbox</th>
+          <th class="cell-label">Status</th>
+          <th class="cell-label">Priority</th>
+          <th class="cell-label">Messages</th>
+          <th class="cell-label">Created</th>
+          <th class="cell-label"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @conversations.each do |conversation| %>
+          <tr class="js-table-row">
+            <td class="cell-data">#<%= conversation.display_id %></td>
+            <td class="cell-data"><%= conversation.contact&.name.presence || "—" %></td>
+            <td class="cell-data"><%= conversation.inbox&.name %></td>
+            <td class="cell-data"><%= conversation.status %></td>
+            <td class="cell-data"><%= conversation.priority || "—" %></td>
+            <td class="cell-data"><%= conversation.messages.size %></td>
+            <td class="cell-data"><%= conversation.created_at.to_fs(:short) %></td>
+            <td class="cell-data">
+              <%= link_to "View", super_admin_account_conversation_path(@account, conversation), class: "button" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="py-4">
+      <%= paginate @conversations if respond_to?(:paginate) %>
+    </div>
+  <% end %>
+</section>
