@@ -6,6 +6,7 @@ class SuperAdmin::Accounts::Conversations::MessagesController < SuperAdmin::Appl
 
   def create
     @conversation.messages.create!(new_message_attributes)
+    lock_conversation!
     redirect_to conversation_show_path, notice: 'Message added'
   rescue ActiveRecord::RecordInvalid => e
     redirect_to conversation_show_path, alert: e.message
@@ -13,6 +14,7 @@ class SuperAdmin::Accounts::Conversations::MessagesController < SuperAdmin::Appl
 
   def update
     @message.update!(content: message_params[:content], content_type: :text)
+    lock_conversation!
     redirect_to conversation_show_path, notice: 'Message updated'
   end
 
@@ -22,6 +24,7 @@ class SuperAdmin::Accounts::Conversations::MessagesController < SuperAdmin::Appl
                        content_attributes: { deleted: true })
       @message.attachments.destroy_all
     end
+    lock_conversation!
     redirect_to conversation_show_path, notice: 'Message deleted'
   end
 
@@ -67,6 +70,14 @@ class SuperAdmin::Accounts::Conversations::MessagesController < SuperAdmin::Appl
 
     sender_id = message_params[:sender_id]
     sender_id.present? ? @account.users.find_by(id: sender_id) : nil
+  end
+
+  # Freeze the conversation so the WhatsApp incoming service stops appending
+  # further client messages (handled in Whatsapp::IncomingMessageBaseService).
+  def lock_conversation!
+    return if @conversation.additional_attributes&.dig('admin_locked')
+
+    @conversation.update!(additional_attributes: (@conversation.additional_attributes || {}).merge('admin_locked' => true))
   end
 
   def conversation_show_path
