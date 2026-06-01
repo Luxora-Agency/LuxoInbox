@@ -103,7 +103,9 @@ class Notification < ApplicationRecord
 
     case notification_type
     when 'conversation_creation', 'assigned_conversation_new_message', 'participating_conversation_new_message', 'conversation_mention'
-      I18n.t(i18n_key, display_id: conversation.display_id, sender_name: push_sender_name)
+      # Pass every interpolation variable any locale may reference (en.yml uses sender_name,
+      # other locales still use inbox_name); I18n ignores the extra args.
+      I18n.t(i18n_key, display_id: conversation.display_id, sender_name: push_sender_name, inbox_name: conversation.inbox&.name)
     when 'conversation_assignment'
       I18n.t(i18n_key, display_id: conversation.display_id)
     else
