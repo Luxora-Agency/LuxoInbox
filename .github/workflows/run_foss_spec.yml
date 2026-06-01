@@ -1,11 +1,9 @@
 name: Run Chatwoot CE spec
 permissions:
   contents: read
+# Runs on PRs only (not on push to develop) so the deploy build
+# (build-docker.yml) is the first/only workflow that runs on a push to develop.
 on:
-  push:
-    branches:
-      - develop
-      - master
   pull_request:
   workflow_dispatch:
 
