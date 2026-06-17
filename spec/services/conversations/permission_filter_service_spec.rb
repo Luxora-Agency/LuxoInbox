@@ -6,7 +6,7 @@ RSpec.describe Conversations::PermissionFilterService do
   let!(:another_conversation) { create(:conversation, account: account, inbox: inbox) }
   let(:admin) { create(:user, account: account, role: :administrator) }
   let(:agent) { create(:user, account: account, role: :agent) }
-  let!(:inbox) { create(:inbox, account: account) }
+  let!(:inbox) { create(:inbox, account: account, enable_auto_assignment: false) }
 
   # This inbox_member is used to establish the agent's access to the inbox
   before { create(:inbox_member, user: agent, inbox: inbox) }
