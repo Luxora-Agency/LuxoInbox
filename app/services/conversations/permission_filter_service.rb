@@ -10,10 +10,16 @@ class Conversations::PermissionFilterService
   def perform
     return conversations if user_role == 'administrator'
 
-    accessible_conversations
+    agent_accessible_conversations
   end
 
   private
+
+  # Agents only see conversations assigned to them. Inbox membership grants
+  # access to an inbox, but not visibility of teammates' conversations.
+  def agent_accessible_conversations
+    accessible_conversations.assigned_to(user)
+  end
 
   def accessible_conversations
     conversations.where(inbox: user.inboxes.where(account_id: account.id))

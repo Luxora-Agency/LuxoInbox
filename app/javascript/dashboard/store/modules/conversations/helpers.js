@@ -100,20 +100,17 @@ export const applyRoleFilter = (
   const isAssignedToUserTeam =
     conversationTeamId && userTeamIds.includes(conversationTeamId);
 
-  // Inbox membership matches the backend PermissionFilterService, which
-  // returns every conversation from inboxes the user belongs to. Without
-  // this check, real-time events for unassigned conversations (e.g. a new
-  // WhatsApp message before auto-assignment runs) get filtered out and the
-  // UI only catches up after a manual refresh.
+  // Inbox membership, used only by the custom-role branches below to mirror
+  // their backend scope. Plain agents are scoped to assigned conversations
+  // only (see below), so this does not widen their visibility.
   const isMemberOfInbox =
     conversation.inbox_id && userInboxIds.includes(conversation.inbox_id);
 
-  // Agents can see conversations if:
-  // 1. Assigned directly to them, OR
-  // 2. Assigned to a team they belong to, OR
-  // 3. They belong to the inbox (matches backend access check)
+  // Agents can only see conversations assigned directly to them. This matches
+  // the backend PermissionFilterService, which scopes agents to their assigned
+  // conversations so teammates' conversations never reach the store.
   if (role === 'agent') {
-    return isAssignedToUser || isAssignedToUserTeam || isMemberOfInbox;
+    return isAssignedToUser;
   }
 
   // Check unassigned management permission
