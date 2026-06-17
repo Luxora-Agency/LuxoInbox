@@ -15,10 +15,15 @@ class Conversations::PermissionFilterService
 
   private
 
-  # Agents only see conversations assigned to them. Inbox membership grants
-  # access to an inbox, but not visibility of teammates' conversations.
+  # Agents see conversations assigned to them plus unassigned ones in their
+  # inboxes (so they can pick up new work), but never conversations assigned
+  # to teammates.
   def agent_accessible_conversations
-    accessible_conversations.assigned_to(user)
+    mine = accessible_conversations.assigned_to(user)
+    unassigned = accessible_conversations.unassigned
+
+    Conversation.from("(#{mine.to_sql} UNION #{unassigned.to_sql}) as conversations")
+                .where(account_id: account.id)
   end
 
   def accessible_conversations

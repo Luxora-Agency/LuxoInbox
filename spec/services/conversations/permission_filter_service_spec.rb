@@ -27,20 +27,17 @@ RSpec.describe Conversations::PermissionFilterService do
     end
 
     context 'when user is an agent' do
-      it 'returns all conversations with no further filtering' do
-        inbox_ids = agent.inboxes.where(account_id: account.id).pluck(:id)
+      it 'returns conversations assigned to them and unassigned ones, but not teammates' do
+        assigned_to_agent = create(:conversation, account: account, inbox: inbox, assignee: agent)
+        assigned_to_other = create(:conversation, account: account, inbox: inbox, assignee: create(:user, account: account))
 
-        # The base implementation returns all conversations
-        # expecting the caller to filter by assigned inboxes
-        result = described_class.new(
-          account.conversations.where(inbox_id: inbox_ids),
-          agent,
-          account
-        ).perform
+        result = described_class.new(account.conversations, agent, account).perform
 
         expect(result).to include(conversation)
         expect(result).to include(another_conversation)
-        expect(result.count).to eq(2)
+        expect(result).to include(assigned_to_agent)
+        expect(result).not_to include(assigned_to_other)
+        expect(result.count).to eq(3)
       end
     end
   end
