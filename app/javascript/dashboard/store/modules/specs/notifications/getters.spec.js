@@ -33,7 +33,14 @@ describe('#getters', () => {
       status: 'snoozed',
       sortOrder: 'desc',
     };
-    expect(getters.getFilteredNotifications(state)(filters)).toEqual([
+    // administrator sees all notifications; this exercises type/status/sort filters
+    const rootGetters = {
+      getCurrentUser: { id: 1, accounts: [{ id: 1, role: 'administrator' }] },
+      getCurrentAccountId: 1,
+    };
+    expect(
+      getters.getFilteredNotifications(state, {}, {}, rootGetters)(filters)
+    ).toEqual([
       { id: 1, read_at: '2024-02-07T11:42:39.988Z', snoozed_until: null },
       { id: 2, read_at: null, snoozed_until: null },
       {
