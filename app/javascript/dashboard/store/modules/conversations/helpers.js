@@ -97,35 +97,33 @@ export const applyRoleFilter = (
 
   // Check if conversation is assigned to a team the user belongs to
   const conversationTeamId = conversation.meta?.team?.id;
-  const isAssignedToUserTeam =
-    conversationTeamId && userTeamIds.includes(conversationTeamId);
+  const isAssignedToUserTeam = Boolean(
+    conversationTeamId && userTeamIds.includes(conversationTeamId)
+  );
 
-  // Inbox membership, used only by the custom-role branches below to mirror
-  // their backend scope. Plain agents are scoped to assigned conversations
-  // only (see below), so this does not widen their visibility.
-  const isMemberOfInbox =
-    conversation.inbox_id && userInboxIds.includes(conversation.inbox_id);
+  // Inbox membership: the user belongs to the conversation's inbox.
+  const isMemberOfInbox = Boolean(
+    conversation.inbox_id && userInboxIds.includes(conversation.inbox_id)
+  );
 
-  // Agents can only see conversations assigned directly to them. This matches
-  // the backend PermissionFilterService, which scopes agents to their assigned
-  // conversations so teammates' conversations never reach the store.
+  // Agents see conversations assigned to them plus unassigned ones in their
+  // inboxes (so they can pick up new work, including realtime events for new
+  // conversations before auto-assignment). This matches the backend
+  // PermissionFilterService; teammates' conversations never reach the store.
   if (role === 'agent') {
-    return isAssignedToUser;
+    return isAssignedToUser || (isUnassigned && isMemberOfInbox);
   }
 
-  // Check unassigned management permission
+  // Check unassigned management permission. Mirrors the Enterprise backend
+  // (unassigned + mine), which is already scoped to the user's inboxes.
   if (permissions.includes('conversation_unassigned_manage')) {
-    return (
-      isUnassigned ||
-      isAssignedToUser ||
-      isAssignedToUserTeam ||
-      isMemberOfInbox
-    );
+    return isUnassigned || isAssignedToUser || isAssignedToUserTeam;
   }
 
-  // Check participating conversation management permission
+  // Check participating conversation management permission. Mirrors the
+  // Enterprise backend, which returns only conversations assigned to the user.
   if (permissions.includes('conversation_participating_manage')) {
-    return isAssignedToUser || isAssignedToUserTeam || isMemberOfInbox;
+    return isAssignedToUser || isAssignedToUserTeam;
   }
 
   return false;

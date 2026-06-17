@@ -58,36 +58,56 @@ describe('Conversation Helpers', () => {
       ).toBe(true);
     });
 
-    // Test for agent role
-    it('always returns true for agent role regardless of permissions', () => {
+    // Test for agent role: own conversations + unassigned ones in member inboxes
+    it('returns own and unassigned (in member inboxes) conversations for agent role', () => {
       const role = 'agent';
       const permissions = [];
       const currentUserId = 1;
+      const options = { userInboxIds: [10] };
 
+      // assigned to the agent -> visible
       expect(
         applyRoleFilter(
-          conversationWithAssignee,
+          { meta: { assignee: { id: 1 } }, inbox_id: 10 },
           role,
           permissions,
-          currentUserId
+          currentUserId,
+          options
         )
       ).toBe(true);
+
+      // assigned to a teammate -> hidden
       expect(
         applyRoleFilter(
-          conversationWithDifferentAssignee,
+          { meta: { assignee: { id: 2 } }, inbox_id: 10 },
           role,
           permissions,
-          currentUserId
+          currentUserId,
+          options
         )
-      ).toBe(true);
+      ).toBe(false);
+
+      // unassigned in a member inbox -> visible
       expect(
         applyRoleFilter(
-          conversationWithoutAssignee,
+          { meta: { assignee: null }, inbox_id: 10 },
           role,
           permissions,
-          currentUserId
+          currentUserId,
+          options
         )
       ).toBe(true);
+
+      // unassigned in a non-member inbox -> hidden
+      expect(
+        applyRoleFilter(
+          { meta: { assignee: null }, inbox_id: 99 },
+          role,
+          permissions,
+          currentUserId,
+          options
+        )
+      ).toBe(false);
     });
 
     // Test for custom role with 'conversation_manage' permission
