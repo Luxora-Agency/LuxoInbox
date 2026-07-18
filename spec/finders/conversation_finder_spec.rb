@@ -74,8 +74,7 @@ describe ConversationFinder do
 
       it 'filter conversations by assignee type all' do
         result = conversation_finder.perform
-        # agent sees own open (2) + unassigned open (1); not teammate's
-        expect(result[:conversations].length).to be 3
+        expect(result[:conversations].length).to be 4
       end
     end
 
@@ -93,8 +92,7 @@ describe ConversationFinder do
 
       it 'returns all conversations' do
         result = conversation_finder.perform
-        # agent sees own (3, incl. resolved) + unassigned (1); not teammate's
-        expect(result[:conversations].length).to be 4
+        expect(result[:conversations].length).to be 5
       end
     end
 
@@ -103,17 +101,16 @@ describe ConversationFinder do
 
       it 'filter conversations by assignee type assigned' do
         result = conversation_finder.perform
-        # agent sees only its own open assigned conversations
-        expect(result[:conversations].length).to be 2
+        expect(result[:conversations].length).to be 3
       end
 
       it 'returns the correct meta' do
         result = conversation_finder.perform
         expect(result[:count]).to eq({
                                        mine_count: 2,
-                                       assigned_count: 2,
+                                       assigned_count: 3,
                                        unassigned_count: 1,
-                                       all_count: 3
+                                       all_count: 4
                                      })
       end
     end
@@ -133,7 +130,7 @@ describe ConversationFinder do
       let(:params) { { labels: ['resolved'] } }
 
       it 'filter conversations by labels' do
-        conversation = inbox.conversations.assigned_to(user_1).first
+        conversation = inbox.conversations.first
         conversation.update_labels('resolved')
 
         result = conversation_finder.perform
@@ -142,12 +139,9 @@ describe ConversationFinder do
     end
 
     context 'with source_id' do
-      let(:params) { { source_id: 'agent_visible_source' } }
+      let(:params) { { source_id: 'testing_source_id' } }
 
       it 'filter conversations by source id' do
-        # source_id sits on a conversation the agent can see (unassigned in their inbox)
-        visible_contact_inbox = create(:contact_inbox, inbox: inbox, source_id: 'agent_visible_source')
-        create(:conversation, account: account, inbox: inbox, contact_inbox: visible_contact_inbox)
         result = conversation_finder.perform
         expect(result[:conversations].length).to be 1
       end
@@ -158,8 +152,7 @@ describe ConversationFinder do
 
       it 'returns conversations with any source' do
         result = conversation_finder.perform
-        # agent sees own open (2) + unassigned open (1); not teammate's
-        expect(result[:conversations].length).to be 3
+        expect(result[:conversations].length).to be 4
       end
     end
 

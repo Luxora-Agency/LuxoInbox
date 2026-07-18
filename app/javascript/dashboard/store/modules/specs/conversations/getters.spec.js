@@ -386,33 +386,8 @@ describe('#getters', () => {
     });
 
     it('filters conversations based on role permissions for agent', () => {
-      // Agent (id 1) sees own conversations + unassigned ones in member
-      // inboxes, but not conversations assigned to teammates.
-      const agentConversations = [
-        {
-          id: 1,
-          status: 'open',
-          inbox_id: 2,
-          meta: { assignee: { id: 1 } },
-          last_activity_at: 1000,
-        },
-        {
-          id: 2,
-          status: 'open',
-          inbox_id: 2,
-          meta: {},
-          last_activity_at: 2000,
-        },
-        {
-          id: 3,
-          status: 'resolved',
-          inbox_id: 2,
-          meta: { assignee: { id: 2 } },
-          last_activity_at: 3000,
-        },
-      ];
       const state = {
-        allConversations: agentConversations,
+        allConversations: mockConversations,
         chatSortFilter: 'last_activity_at_desc',
         appliedFilters: [],
       };
@@ -423,8 +398,6 @@ describe('#getters', () => {
           ...mockRootGetters.getCurrentUser,
           accounts: [{ id: 1, role: 'agent', permissions: [] }],
         },
-        'inboxes/getInboxes': [{ id: 2 }],
-        'teams/getMyTeams': [],
       };
 
       const result = getters.getFilteredConversations(
@@ -434,8 +407,11 @@ describe('#getters', () => {
         rootGetters
       );
 
-      // own (id 1) + unassigned in member inbox (id 2), desc; not teammate's (id 3)
-      expect(result).toEqual([agentConversations[1], agentConversations[0]]);
+      expect(result).toEqual([
+        mockConversations[2],
+        mockConversations[1],
+        mockConversations[0],
+      ]);
     });
 
     it('filters conversations for custom role with conversation_manage permission', () => {
@@ -639,20 +615,11 @@ describe('#getters', () => {
         appliedFilters: [],
       };
 
-      // use an administrator so visibility doesn't filter the set being sorted
-      const rootGetters = {
-        ...mockRootGetters,
-        getCurrentUser: {
-          ...mockRootGetters.getCurrentUser,
-          accounts: [{ id: 1, role: 'administrator', permissions: [] }],
-        },
-      };
-
       const result = getters.getFilteredConversations(
         state,
         {},
         {},
-        rootGetters
+        mockRootGetters
       );
 
       expect(result).toEqual([

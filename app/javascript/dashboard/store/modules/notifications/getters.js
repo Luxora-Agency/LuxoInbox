@@ -7,8 +7,7 @@ import { getUserRole } from 'dashboard/helper/permissionsHelper';
  * Administrators see all notifications, agents see notifications for:
  * - Conversations assigned directly to them
  * - Conversations assigned to teams they belong to
- * - Unassigned conversations in inboxes they are members of
- * Mirrors the conversation visibility scope (applyRoleFilter).
+ * - Conversations from inboxes they are members of (matches backend scope)
  */
 const filterByAssignment = (notifications, rootGetters) => {
   const currentUser = rootGetters.getCurrentUser;
@@ -34,21 +33,15 @@ const filterByAssignment = (notifications, rootGetters) => {
 
     const assignee = primaryActor.meta?.assignee;
     const isAssignedToUser = assignee?.id === currentUser.id;
-    const isUnassigned = !assignee;
 
     const conversationTeamId = primaryActor.meta?.team?.id;
-    const isAssignedToUserTeam = Boolean(
-      conversationTeamId && userTeamIds.includes(conversationTeamId)
-    );
+    const isAssignedToUserTeam =
+      conversationTeamId && userTeamIds.includes(conversationTeamId);
 
     const inboxId = primaryActor.inbox_id || primaryActor.inboxId;
-    const isMemberOfInbox = Boolean(inboxId && userInboxIds.includes(inboxId));
+    const isMemberOfInbox = inboxId && userInboxIds.includes(inboxId);
 
-    return (
-      isAssignedToUser ||
-      isAssignedToUserTeam ||
-      (isUnassigned && isMemberOfInbox)
-    );
+    return isAssignedToUser || isAssignedToUserTeam || isMemberOfInbox;
   });
 };
 

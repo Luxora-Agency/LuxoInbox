@@ -97,33 +97,38 @@ export const applyRoleFilter = (
 
   // Check if conversation is assigned to a team the user belongs to
   const conversationTeamId = conversation.meta?.team?.id;
-  const isAssignedToUserTeam = Boolean(
-    conversationTeamId && userTeamIds.includes(conversationTeamId)
-  );
+  const isAssignedToUserTeam =
+    conversationTeamId && userTeamIds.includes(conversationTeamId);
 
-  // Inbox membership: the user belongs to the conversation's inbox.
-  const isMemberOfInbox = Boolean(
-    conversation.inbox_id && userInboxIds.includes(conversation.inbox_id)
-  );
+  // Inbox membership matches the backend PermissionFilterService, which
+  // returns every conversation from inboxes the user belongs to. Without
+  // this check, real-time events for unassigned conversations (e.g. a new
+  // WhatsApp message before auto-assignment runs) get filtered out and the
+  // UI only catches up after a manual refresh.
+  const isMemberOfInbox =
+    conversation.inbox_id && userInboxIds.includes(conversation.inbox_id);
 
-  // Agents see conversations assigned to them plus unassigned ones in their
-  // inboxes (so they can pick up new work, including realtime events for new
-  // conversations before auto-assignment). This matches the backend
-  // PermissionFilterService; teammates' conversations never reach the store.
+  // Agents can see conversations if:
+  // 1. Assigned directly to them, OR
+  // 2. Assigned to a team they belong to, OR
+  // 3. They belong to the inbox (matches backend access check)
   if (role === 'agent') {
-    return isAssignedToUser || (isUnassigned && isMemberOfInbox);
+    return isAssignedToUser || isAssignedToUserTeam || isMemberOfInbox;
   }
 
-  // Check unassigned management permission. Mirrors the Enterprise backend
-  // (unassigned + mine), which is already scoped to the user's inboxes.
+  // Check unassigned management permission
   if (permissions.includes('conversation_unassigned_manage')) {
-    return isUnassigned || isAssignedToUser || isAssignedToUserTeam;
+    return (
+      isUnassigned ||
+      isAssignedToUser ||
+      isAssignedToUserTeam ||
+      isMemberOfInbox
+    );
   }
 
-  // Check participating conversation management permission. Mirrors the
-  // Enterprise backend, which returns only conversations assigned to the user.
+  // Check participating conversation management permission
   if (permissions.includes('conversation_participating_manage')) {
-    return isAssignedToUser || isAssignedToUserTeam;
+    return isAssignedToUser || isAssignedToUserTeam || isMemberOfInbox;
   }
 
   return false;

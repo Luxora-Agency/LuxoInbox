@@ -4,9 +4,7 @@ describe Conversations::FilterService do
   subject(:filter_service) { described_class }
 
   let!(:account) { create(:account) }
-  # Administrator so the #perform examples exercise filter mechanics over all
-  # conversations; agent-visibility scoping is covered in #base_relation below.
-  let!(:user_1) { create(:user, account: account, role: :administrator) }
+  let!(:user_1) { create(:user, account: account) }
   let!(:user_2) { create(:user, account: account) }
   let!(:campaign_1) { create(:campaign, title: 'Test Campaign', account: account) }
   let!(:campaign_2) { create(:campaign, title: 'Campaign', account: account) }
