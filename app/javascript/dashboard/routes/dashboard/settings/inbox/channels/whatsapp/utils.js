@@ -9,7 +9,7 @@ export const loadFacebookSdk = async () => {
 };
 
 export const initializeFacebook = (appId, apiVersion) => {
-  const version = apiVersion || 'v22.0';
+  const version = apiVersion || 'v25.0';
   return new Promise(resolve => {
     const init = () => {
       window.FB.init({
@@ -76,6 +76,7 @@ export const initWhatsAppEmbeddedSignup = configId => {
           setup: {},
           featureType: 'whatsapp_business_app_onboarding',
           sessionInfoVersion: '3',
+          version: 'v4',
         },
       }
     );
@@ -83,7 +84,7 @@ export const initWhatsAppEmbeddedSignup = configId => {
 };
 
 export const setupFacebookSdk = async (appId, apiVersion) => {
-  const version = apiVersion || 'v22.0';
+  const version = apiVersion || 'v25.0';
   await loadFacebookSdk();
   await initializeFacebook(appId, version);
 };
