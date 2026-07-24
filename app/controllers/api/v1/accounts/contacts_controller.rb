@@ -222,3 +222,5 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
     ::Contacts::PermissionFilterService.new(contacts, Current.user, Current.account).perform
   end
 end
+
+Api::V1::Accounts::ContactsController.prepend_mod_with('Api::V1::Accounts::ContactsController')
