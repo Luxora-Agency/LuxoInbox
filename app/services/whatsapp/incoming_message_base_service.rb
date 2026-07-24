@@ -3,6 +3,7 @@
 # https://developers.facebook.com/docs/whatsapp/api/media/
 class Whatsapp::IncomingMessageBaseService
   include ::Whatsapp::IncomingMessageServiceHelpers
+  include ::Whatsapp::IncomingMessageIdentifierHelper
 
   pattr_initialize [:inbox!, :params!]
 
@@ -54,9 +55,11 @@ class Whatsapp::IncomingMessageBaseService
   end
 
   def process_statuses
-    return unless find_message_by_source_id(@processed_params[:statuses].first[:id])
+    status = @processed_params[:statuses].first
+    return unless find_message_by_source_id(status[:id])
 
-    update_message_with_status(@message, @processed_params[:statuses].first)
+    update_whatsapp_identifiers_from_status(status)
+    update_message_with_status(@message, status)
   rescue ArgumentError => e
     Rails.logger.error "Error while processing whatsapp status update #{e.message}"
   end
@@ -72,11 +75,25 @@ class Whatsapp::IncomingMessageBaseService
 
   def create_messages
     message = @processed_params[:messages].first
+    return create_unsupported_message(message) if message_type == 'unsupported'
+
     log_error(message) && return if error_webhook_event?(message)
 
     process_in_reply_to(message)
 
     message_type == 'contacts' ? create_contact_messages(message) : create_regular_message(message)
+  end
+
+  # WhatsApp delivers messages it cannot render (e.g. coexistence companion-device syncs that
+  # fail with error 131060) as type: unsupported with no content. We still persist a placeholder
+  # so the contact/conversation isn't created "headless" and agents know to check the WhatsApp app.
+  def create_unsupported_message(message)
+    log_error(message) if error_webhook_event?(message)
+    process_in_reply_to(message)
+    create_message(message)
+    @message.content = I18n.t('conversations.messages.whatsapp.unsupported_message')
+    @message.content_attributes = @message.content_attributes.merge(is_unsupported: true)
+    @message.save!
   end
 
   def create_contact_messages(message)
@@ -148,7 +165,7 @@ class Whatsapp::IncomingMessageBaseService
 
   def attach_location
     location = @processed_params[:messages].first['location']
-    location_name = location['name'] ? "#{location['name']}, #{location['address']}" : ''
+    location_name = (location['name'] ? "#{location['name']}, #{location['address']}" : '').first(255)
     @message.attachments.new(
       account_id: @message.account_id,
       file_type: file_content_type(message_type),
@@ -203,7 +220,10 @@ class Whatsapp::IncomingMessageBaseService
   end
 
   def contact_name_matches_phone_number?
-    phone_number = "+#{@processed_params[:messages].first[:from]}"
+    message_phone_number = whatsapp_phone_number(@processed_params[:messages].first[:from])
+    return false if message_phone_number.blank?
+
+    phone_number = "+#{message_phone_number}"
     formatted_phone_number = TelephoneNumber.parse(phone_number).international_number
     @contact.name == phone_number || @contact.name == formatted_phone_number
   end

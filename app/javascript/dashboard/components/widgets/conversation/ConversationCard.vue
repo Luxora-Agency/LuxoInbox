@@ -1,123 +1,57 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import { useStore, useMapGetter } from 'dashboard/composables/store';
 import { getLastMessage } from 'dashboard/helper/conversationHelper';
-import { frontendURL, conversationUrl } from 'dashboard/helper/URLHelper';
 import Avatar from 'next/avatar/Avatar.vue';
 import MessagePreview from './MessagePreview.vue';
 import InboxName from '../InboxName.vue';
-import ConversationContextMenu from './contextMenu/Index.vue';
 import TimeAgo from 'dashboard/components/ui/TimeAgo.vue';
 import CardLabels from './conversationCardComponents/CardLabels.vue';
 import CardPriorityIcon from 'dashboard/components-next/Conversation/ConversationCard/CardPriorityIcon.vue';
 import SLACardLabel from './components/SLACardLabel.vue';
-import ContextMenu from 'dashboard/components/ui/ContextMenu.vue';
 import VoiceCallStatus from './VoiceCallStatus.vue';
+import Checkbox from 'dashboard/components-next/checkbox/Checkbox.vue';
 
 const props = defineProps({
-  activeLabel: { type: String, default: '' },
-  chat: { type: Object, default: () => ({}) },
-  hideInboxName: { type: Boolean, default: false },
-  hideThumbnail: { type: Boolean, default: false },
-  teamId: { type: [String, Number], default: 0 },
-  foldersId: { type: [String, Number], default: 0 },
-  showAssignee: { type: Boolean, default: false },
-  conversationType: { type: String, default: '' },
+  chat: { type: Object, required: true },
+  currentContact: { type: Object, required: true },
+  assignee: { type: Object, default: () => ({}) },
+  inbox: { type: Object, default: () => ({}) },
   selected: { type: Boolean, default: false },
+  isActiveChat: { type: Boolean, default: false },
+  showAssignee: { type: Boolean, default: false },
+  showInboxName: { type: Boolean, default: false },
+  hideThumbnail: { type: Boolean, default: false },
   compact: { type: Boolean, default: false },
-  enableContextMenu: { type: Boolean, default: false },
-  allowedContextMenuOptions: { type: Array, default: () => [] },
 });
 
 const emit = defineEmits([
-  'contextMenuToggle',
-  'assignAgent',
-  'assignLabel',
-  'removeLabel',
-  'assignTeam',
-  'markAsUnread',
-  'markAsRead',
-  'assignPriority',
-  'updateConversationStatus',
-  'deleteConversation',
+  'click',
+  'contextmenu',
   'selectConversation',
   'deSelectConversation',
 ]);
 
-const router = useRouter();
-const store = useStore();
-
 const hovered = ref(false);
-const showContextMenu = ref(false);
-const contextMenu = ref({ x: null, y: null });
-
-// Reset UI state when conversation changes at same index (no :key, instance reused on reorder)
-// This prevents context menu/hover state from leaking to a different conversation
-// Emit contextMenuToggle(false) to sync parent state if menu was open during recycling
-const resetState = () => {
-  if (showContextMenu.value) {
-    emit('contextMenuToggle', false);
-  }
-  hovered.value = false;
-  showContextMenu.value = false;
-  contextMenu.value = { x: null, y: null };
-};
-
-watch(() => props.chat.id, resetState);
-
-const currentChat = useMapGetter('getSelectedChat');
-const inboxesList = useMapGetter('inboxes/getInboxes');
-const activeInbox = useMapGetter('getSelectedInbox');
-const accountId = useMapGetter('getCurrentAccountId');
-
-const chatMetadata = computed(() => props.chat.meta || {});
-
-const assignee = computed(() => chatMetadata.value.assignee || {});
-
-const senderId = computed(() => chatMetadata.value.sender?.id);
-
-const currentContact = computed(() => {
-  return senderId.value
-    ? store.getters['contacts/getContact'](senderId.value)
-    : {};
-});
-
-const isActiveChat = computed(() => {
-  return currentChat.value.id === props.chat.id;
-});
 
 const unreadCount = computed(() => props.chat.unread_count);
-
 const hasUnread = computed(() => unreadCount.value > 0);
-
-const isInboxNameVisible = computed(() => !activeInbox.value);
-
 const lastMessageInChat = computed(() => getLastMessage(props.chat));
 
-const voiceCallData = computed(() => ({
-  status: props.chat.additional_attributes?.call_status,
-  direction: props.chat.additional_attributes?.call_direction,
-}));
-
-const inboxId = computed(() => props.chat.inbox_id);
-
-const inbox = computed(() => {
-  return inboxId.value ? store.getters['inboxes/getInbox'](inboxId.value) : {};
-});
-
-const showInboxName = computed(() => {
-  return (
-    !props.hideInboxName &&
-    isInboxNameVisible.value &&
-    inboxesList.value.length > 1
-  );
+const voiceCallData = computed(() => {
+  const last = lastMessageInChat.value;
+  if (last?.content_type !== 'voice_call' || !last.call) {
+    return { status: null, direction: null };
+  }
+  return {
+    status: last.call.status,
+    direction: last.call.direction === 'outgoing' ? 'outbound' : 'inbound',
+  };
 });
 
 const showMetaSection = computed(() => {
   return (
-    showInboxName.value ||
-    (props.showAssignee && assignee.value.name) ||
+    props.showInboxName ||
+    (props.showAssignee && props.assignee.name) ||
     props.chat.priority
   );
 });
@@ -136,41 +70,6 @@ const messagePreviewClass = computed(() => {
   ];
 });
 
-const conversationPath = computed(() => {
-  return frontendURL(
-    conversationUrl({
-      accountId: accountId.value,
-      activeInbox: activeInbox.value,
-      id: props.chat.id,
-      label: props.activeLabel,
-      teamId: props.teamId,
-      conversationType: props.conversationType,
-      foldersId: props.foldersId,
-    })
-  );
-});
-
-const onCardClick = e => {
-  const path = conversationPath.value;
-  if (!path) return;
-
-  // Handle Ctrl/Cmd + Click for new tab
-  if (e.metaKey || e.ctrlKey) {
-    e.preventDefault();
-    window.open(
-      `${window.chatwootConfig.hostURL}${path}`,
-      '_blank',
-      'noopener,noreferrer'
-    );
-    return;
-  }
-
-  // Skip if already active
-  if (isActiveChat.value) return;
-
-  router.push({ path });
-};
-
 const onThumbnailHover = () => {
   hovered.value = !props.hideThumbnail;
 };
@@ -181,85 +80,38 @@ const onThumbnailLeave = () => {
 
 const onSelectConversation = checked => {
   if (checked) {
-    emit('selectConversation', props.chat.id, inbox.value.id);
+    emit('selectConversation', props.chat.id, props.inbox.id);
   } else {
-    emit('deSelectConversation', props.chat.id, inbox.value.id);
+    emit('deSelectConversation', props.chat.id, props.inbox.id);
   }
 };
 
-const openContextMenu = e => {
-  if (!props.enableContextMenu) return;
-  e.preventDefault();
-  emit('contextMenuToggle', true);
-  contextMenu.value.x = e.pageX || e.clientX;
-  contextMenu.value.y = e.pageY || e.clientY;
-  showContextMenu.value = true;
-};
+const selectedModel = computed({
+  get: () => props.selected,
+  set: value => onSelectConversation(value),
+});
 
-const closeContextMenu = () => {
-  emit('contextMenuToggle', false);
-  showContextMenu.value = false;
-  contextMenu.value.x = null;
-  contextMenu.value.y = null;
-};
-
-const onUpdateConversation = (status, snoozedUntil) => {
-  closeContextMenu();
-  emit('updateConversationStatus', props.chat.id, status, snoozedUntil);
-};
-
-const onAssignAgent = agent => {
-  emit('assignAgent', agent, [props.chat.id]);
-  closeContextMenu();
-};
-
-const onAssignLabel = label => {
-  emit('assignLabel', [label.title], [props.chat.id]);
-};
-
-const onRemoveLabel = label => {
-  emit('removeLabel', [label.title], [props.chat.id]);
-};
-
-const onAssignTeam = team => {
-  emit('assignTeam', team, props.chat.id);
-  closeContextMenu();
-};
-
-const markAsUnread = () => {
-  emit('markAsUnread', props.chat.id);
-  closeContextMenu();
-};
-
-const markAsRead = () => {
-  emit('markAsRead', props.chat.id);
-  closeContextMenu();
-};
-
-const assignPriority = priority => {
-  emit('assignPriority', priority, props.chat.id);
-  closeContextMenu();
-};
-
-const deleteConversation = () => {
-  emit('deleteConversation', props.chat.id);
-  closeContextMenu();
-};
+watch(
+  () => props.chat.id,
+  () => {
+    hovered.value = false;
+  }
+);
 </script>
 
 <template>
   <div
     class="relative flex items-start flex-grow-0 flex-shrink-0 w-auto max-w-full py-0.5 cursor-pointer conversation group mx-3 my-1 rounded-xl transition-all duration-200 ease-out bg-white/80 dark:bg-n-solid-3/80 backdrop-blur-sm border border-n-slate-2/80 dark:border-n-solid-2/80 hover:bg-white dark:hover:bg-n-solid-3 hover:shadow-md hover:border-n-slate-3 dark:hover:border-n-solid-1"
     :class="{
-      '!bg-woot-50 dark:!bg-woot-500/15 !border-woot-300 dark:!border-woot-500/40 shadow-md shadow-woot-500/10':
+      'active !bg-woot-50 dark:!bg-woot-500/15 !border-woot-300 dark:!border-woot-500/40 shadow-md shadow-woot-500/10':
         isActiveChat,
       '!bg-woot-50/50 dark:!bg-woot-500/10 !border-woot-200 dark:!border-woot-500/20':
         selected,
       'px-0': compact,
       'px-3': !compact,
     }"
-    @click="onCardClick"
-    @contextmenu="openContextMenu($event)"
+    @click="$emit('click', $event)"
+    @contextmenu="$emit('contextmenu', $event)"
   >
     <div
       class="relative"
@@ -274,7 +126,6 @@ const deleteConversation = () => {
         :status="currentContact.availability_status"
         :class="!showInboxName ? 'mt-4' : 'mt-8'"
         hide-offline-status
-        rounded-full
       >
         <template #overlay="{ size }">
           <label
@@ -283,13 +134,7 @@ const deleteConversation = () => {
             :style="{ width: `${size}px`, height: `${size}px` }"
             @click.stop
           >
-            <input
-              :value="selected"
-              :checked="selected"
-              class="!m-0 cursor-pointer"
-              type="checkbox"
-              @change="onSelectConversation($event.target.checked)"
-            />
+            <Checkbox v-model="selectedModel" />
           </label>
         </template>
       </Avatar>
@@ -386,32 +231,5 @@ const deleteConversation = () => {
         </template>
       </CardLabels>
     </div>
-    <ContextMenu
-      v-if="showContextMenu"
-      :x="contextMenu.x"
-      :y="contextMenu.y"
-      @close="closeContextMenu"
-    >
-      <ConversationContextMenu
-        :status="chat.status"
-        :inbox-id="inbox.id"
-        :priority="chat.priority"
-        :chat-id="chat.id"
-        :has-unread-messages="hasUnread"
-        :conversation-labels="chat.labels"
-        :conversation-url="conversationPath"
-        :allowed-options="allowedContextMenuOptions"
-        @update-conversation="onUpdateConversation"
-        @assign-agent="onAssignAgent"
-        @assign-label="onAssignLabel"
-        @remove-label="onRemoveLabel"
-        @assign-team="onAssignTeam"
-        @mark-as-unread="markAsUnread"
-        @mark-as-read="markAsRead"
-        @assign-priority="assignPriority"
-        @delete-conversation="deleteConversation"
-        @close="closeContextMenu"
-      />
-    </ContextMenu>
   </div>
 </template>

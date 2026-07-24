@@ -145,7 +145,6 @@ const allowedMenuItems = computed(() => {
           :src="currentUser.avatar_url"
           :status="currentUserAvailability"
           class="flex-shrink-0 ring-2 ring-transparent group-hover:ring-n-brand/20 transition-all duration-200"
-          rounded-full
         />
         <div v-if="!isCollapsed" class="min-w-0">
           <div
