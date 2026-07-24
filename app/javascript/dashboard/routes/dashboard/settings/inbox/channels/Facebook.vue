@@ -14,6 +14,7 @@ import { useBranding } from 'shared/composables/useBranding';
 import NextButton from 'dashboard/components-next/button/Button.vue';
 
 import { loadScript } from 'dashboard/helper/DOMHelpers';
+import { buildFacebookLoginScopes } from 'dashboard/helper/facebookScopes';
 import * as Sentry from '@sentry/vue';
 
 export default {
@@ -152,8 +153,7 @@ export default {
           }
         },
         {
-          scope:
-            'pages_manage_metadata,business_management,pages_messaging,instagram_basic,pages_show_list,pages_read_engagement,instagram_manage_messages',
+          scope: buildFacebookLoginScopes(),
         }
       );
     },
