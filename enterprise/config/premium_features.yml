@@ -1,10 +1,5 @@
 # List of the premium features in EE edition
-- disable_branding
-- audit_logs
-- sla
-- custom_roles
-- captain_integration
-- captain_integration_v2
-- captain_document_auto_sync
-- csat_review_notes
-- conversation_required_attributes
+# LuxoInbox fork divergence: intentionally emptied so the nightly reconciler no
+# longer force-disables premium features per-account. Upstream merges will
+# reintroduce the list; re-empty it after each upstream bump.
+[]
