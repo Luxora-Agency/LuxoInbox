@@ -72,8 +72,6 @@ module Whatsapp::IncomingMessageServiceHelpers
   end
 
   def referral_attributes(message)
-    return {} if outgoing_echo
-
     message[:referral]&.to_h&.deep_stringify_keys || {}
   end
 

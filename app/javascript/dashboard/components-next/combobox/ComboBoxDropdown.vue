@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import Spinner from 'dashboard/components-next/spinner/Spinner.vue';
+import Icon from 'dashboard/components-next/icon/Icon.vue';
 
 const props = defineProps({
   open: {
@@ -26,6 +28,10 @@ const props = defineProps({
   selectedValues: {
     type: [String, Number, Array],
     default: () => [],
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -63,15 +69,22 @@ defineExpose({
     class="absolute z-50 w-full mt-1 transition-opacity duration-200 ring-1 ring-n-weak/50 rounded-xl shadow-xl shadow-n-slate-12/5 bg-n-solid-1 overflow-hidden"
   >
     <div class="relative border-b border-n-weak">
-      <span
-        class="absolute i-lucide-search top-2.5 size-4 left-3 text-n-slate-10"
+      <Spinner
+        v-if="loading"
+        :size="16"
+        class="absolute top-2.5 start-3 text-n-slate-11"
+      />
+      <Icon
+        v-else
+        icon="i-lucide-search"
+        class="absolute top-2.5 size-4 start-3 text-n-slate-10"
       />
       <input
         ref="searchInput"
         :value="searchValue"
         type="search"
         :placeholder="searchPlaceholder || t('COMBOBOX.SEARCH_PLACEHOLDER')"
-        class="reset-base w-full py-2.5 pl-10 pr-2 text-sm focus:outline-none border-none rounded-t-xl bg-n-solid-1 text-n-slate-12"
+        class="reset-base w-full py-2.5 !ps-10 !pe-2 text-sm focus:outline-none border-none rounded-t-xl bg-n-solid-1 text-n-slate-12"
         @input="onInputSearch"
       />
     </div>
