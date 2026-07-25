@@ -163,14 +163,6 @@ describe Whatsapp::EmbeddedSignupService do
         allow(reauth_service).to receive(:perform).with(access_token, phone_info).and_return(channel)
 
         allow(channel).to receive(:phone_number).and_return('+1234567890')
-
-        health_service = instance_double(Whatsapp::HealthService)
-        allow(Whatsapp::HealthService).to receive(:new).and_return(health_service)
-        allow(health_service).to receive(:fetch_health_status).and_return({
-                                                                            platform_type: 'CLOUD_API',
-                                                                            throughput: { 'level' => 'STANDARD' },
-                                                                            messaging_limit_tier: 'TIER_1000'
-                                                                          })
       end
 
       it 'uses ReauthorizationService and sets up webhooks' do
@@ -179,6 +171,12 @@ describe Whatsapp::EmbeddedSignupService do
 
         result = service_with_inbox.perform
         expect(result).to eq(channel)
+      end
+
+      it 'skips the immediate health check' do
+        expect(Whatsapp::HealthService).not_to receive(:new)
+
+        service_with_inbox.perform
       end
 
       context 'with real channel requiring reauthorization' do
