@@ -5,16 +5,21 @@ class Whatsapp::IncomingMessageBaseService
   include ::Whatsapp::IncomingMessageServiceHelpers
   include ::Whatsapp::IncomingMessageIdentifierHelper
 
-  pattr_initialize [:inbox!, :params!]
+  pattr_initialize [:inbox!, :params!, :outgoing_echo]
 
   def perform
     processed_params
 
     if processed_params.try(:[], :statuses).present?
       process_statuses
-    elsif processed_params.try(:[], :messages).present?
+    elsif messages_data.present?
       process_messages
     end
+  end
+
+  # Returns messages array for both regular messages and echo events
+  def messages_data
+    @processed_params&.dig(:messages) || @processed_params&.dig(:message_echoes)
   end
 
   private
@@ -24,29 +29,26 @@ class Whatsapp::IncomingMessageBaseService
     # if the webhook event is a reaction or an ephermal message or an unsupported message.
     return if unprocessable_message_type?(message_type)
 
-    # Multiple webhook event can be received against the same message due to misconfigurations in the Meta
-    # business manager account. While we have not found the core reason yet, the following line ensure that
-    # there are no duplicate messages created.
-    return if find_message_by_source_id(@processed_params[:messages].first[:id]) || message_under_process?
+    # Multiple webhook events can be received for the same message due to
+    # misconfigurations in the Meta business manager account.
+    # We use an atomic Redis SET NX to prevent concurrent workers from both
+    # processing the same message simultaneously.
+    return if find_message_by_source_id(messages_data.first[:id])
+    return unless lock_message_source_id!
 
-    cache_message_source_id_in_redis
     set_contact
     return unless @contact
-    # Blocked contacts must never create conversations or messages (upstream v4.13.0 semantics).
-    # The fork has no echo/outgoing concept, so this guard is unconditional on inbound.
-    return if @contact.blocked?
+    return if @contact.blocked? && !outgoing_echo
 
-    # Conversations edited from the super admin are frozen: drop further client
-    # messages so the conversation stays as an admin-managed snapshot.
-    if conversation_admin_locked?
-      clear_message_source_id_from_redis
-      return
-    end
+    # Fork: super-admin freeze. A conversation edited/frozen from the super admin panel
+    # (additional_attributes['admin_locked']) must stop absorbing further INBOUND CUSTOMER
+    # messages. Echoes are the business's own outbound sync — never drop them, or coexistence
+    # loses the business's replies. No dedup-lock release here: the lock is TTL-based upstream.
+    return if !outgoing_echo && conversation_admin_locked?
 
     ActiveRecord::Base.transaction do
       set_conversation
       create_messages
-      clear_message_source_id_from_redis
     end
   end
 
@@ -74,7 +76,7 @@ class Whatsapp::IncomingMessageBaseService
   end
 
   def create_messages
-    message = @processed_params[:messages].first
+    message = messages_data.first
     return create_unsupported_message(message) if message_type == 'unsupported'
 
     log_error(message) && return if error_webhook_event?(message)
@@ -90,7 +92,7 @@ class Whatsapp::IncomingMessageBaseService
   def create_unsupported_message(message)
     log_error(message) if error_webhook_event?(message)
     process_in_reply_to(message)
-    create_message(message)
+    create_message(message, source_id: message[:id])
     @message.content = I18n.t('conversations.messages.whatsapp.unsupported_message')
     @message.content_attributes = @message.content_attributes.merge(is_unsupported: true)
     @message.save!
@@ -98,36 +100,26 @@ class Whatsapp::IncomingMessageBaseService
 
   def create_contact_messages(message)
     message['contacts'].each do |contact|
-      create_message(contact)
+      # Pass source_id from parent message since contact objects don't have :id
+      create_message(contact, source_id: message[:id], content_attributes_source: message)
       attach_contact(contact)
       @message.save!
     end
   end
 
   def create_regular_message(message)
-    create_message(message)
+    create_message(message, source_id: message[:id])
     attach_files
     attach_location if message_type == 'location'
     @message.save!
   end
 
   def set_contact
-    contact_params = @processed_params[:contacts]&.first
-    return if contact_params.blank?
-
-    waid = processed_waid(contact_params[:wa_id])
-
-    contact_inbox = ::ContactInboxWithContactBuilder.new(
-      source_id: waid,
-      inbox: inbox,
-      contact_attributes: { name: contact_params.dig(:profile, :name), phone_number: "+#{@processed_params[:messages].first[:from]}" }
-    ).perform
-
-    @contact_inbox = contact_inbox
-    @contact = contact_inbox.contact
-
-    # Update existing contact name if ProfileName is available and current name is just phone number
-    update_contact_with_profile_name(contact_params)
+    if outgoing_echo
+      set_contact_from_echo
+    else
+      set_contact_from_message
+    end
   end
 
   def set_conversation
@@ -148,7 +140,7 @@ class Whatsapp::IncomingMessageBaseService
   def attach_files
     return if %w[text button interactive location contacts].include?(message_type)
 
-    attachment_payload = @processed_params[:messages].first[message_type.to_sym]
+    attachment_payload = messages_data.first[message_type.to_sym]
     @message.content ||= attachment_payload[:caption]
 
     attachment_file = download_attachment_file(attachment_payload)
@@ -166,7 +158,7 @@ class Whatsapp::IncomingMessageBaseService
   end
 
   def attach_location
-    location = @processed_params[:messages].first['location']
+    location = messages_data.first['location']
     location_name = (location['name'] ? "#{location['name']}, #{location['address']}" : '').first(255)
     @message.attachments.new(
       account_id: @message.account_id,
@@ -178,16 +170,26 @@ class Whatsapp::IncomingMessageBaseService
     )
   end
 
-  def create_message(message)
+  def create_message(message, source_id: nil, content_attributes_source: message)
     @message = @conversation.messages.build(
       content: message_content(message),
       account_id: @inbox.account_id,
       inbox_id: @inbox.id,
-      message_type: :incoming,
-      sender: @contact,
-      source_id: message[:id].to_s,
-      in_reply_to_external_id: @in_reply_to_external_id
+      message_type: outgoing_echo ? :outgoing : :incoming,
+      # Set status to :delivered for echo messages to prevent SendReplyJob from trying to send them
+      status: outgoing_echo ? :delivered : :sent,
+      sender: outgoing_echo ? nil : @contact,
+      source_id: (source_id || message[:id]).to_s,
+      content_attributes: message_content_attributes(content_attributes_source)
     )
+  end
+
+  def message_content_attributes(message)
+    content_attrs = outgoing_echo ? { external_echo: true } : {}
+    content_attrs[:in_reply_to_external_id] = @in_reply_to_external_id if @in_reply_to_external_id.present?
+    referral_content_attrs = referral_attributes(message)
+    content_attrs[:referral] = referral_content_attrs if referral_content_attrs.present?
+    content_attrs
   end
 
   def attach_contact(contact)
@@ -222,7 +224,7 @@ class Whatsapp::IncomingMessageBaseService
   end
 
   def contact_name_matches_phone_number?
-    message_phone_number = whatsapp_phone_number(@processed_params[:messages].first[:from])
+    message_phone_number = whatsapp_phone_number(messages_data.first[:from])
     return false if message_phone_number.blank?
 
     phone_number = "+#{message_phone_number}"

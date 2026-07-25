@@ -674,5 +674,35 @@ describe Whatsapp::IncomingMessageService do
         expect(existing_contact.name).to eq(phone_number) # Should not change
       end
     end
+
+    context 'when the last conversation is frozen from the super admin (admin_locked)' do
+      let(:wa_id) { '2423423243' }
+      let(:contact_inbox) { create(:contact_inbox, inbox: whatsapp_channel.inbox, source_id: wa_id) }
+
+      before do
+        create(:conversation, inbox: whatsapp_channel.inbox, contact_inbox: contact_inbox,
+                              contact: contact_inbox.contact, additional_attributes: { 'admin_locked' => true })
+      end
+
+      it 'drops inbound customer messages and does not create a message' do
+        described_class.new(inbox: whatsapp_channel.inbox, params: params).perform
+
+        expect(whatsapp_channel.inbox.messages.count).to eq(0)
+        expect(contact_inbox.conversations.last.messages.count).to eq(0)
+      end
+
+      it 'still persists outgoing echoes so coexistence keeps the business replies' do
+        echo_params = {
+          'message_echoes' => [{ 'from' => '15550001111', 'to' => wa_id, 'id' => 'wamid.echo-on-locked',
+                                 'text' => { 'body' => 'business reply' }, 'timestamp' => '1633034394', 'type' => 'text' }]
+        }.with_indifferent_access
+
+        described_class.new(inbox: whatsapp_channel.inbox, params: echo_params, outgoing_echo: true).perform
+
+        message = whatsapp_channel.inbox.messages.find_by(source_id: 'wamid.echo-on-locked')
+        expect(message).to be_present
+        expect(message.message_type).to eq('outgoing')
+      end
+    end
   end
 end
