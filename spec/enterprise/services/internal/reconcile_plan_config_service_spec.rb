@@ -24,24 +24,24 @@ RSpec.describe Internal::ReconcilePlanConfigService do
         expect(disable_branding_account.reload.enabled_features.keys).to include('disable_branding')
       end
 
-      it 'creates a premium config reset warning if config was modified' do
+      it 'does not create a premium config reset warning even if config was modified (fork keeps premium config editable)' do
         create(:installation_config, name: 'INSTALLATION_NAME', value: 'custom-name')
-        service.perform
-        expect(Redis::Alfred.get(Redis::Alfred::CHATWOOT_INSTALLATION_CONFIG_RESET_WARNING)).to eq('true')
-      end
-
-      it 'will not create a premium config reset warning if config is not modified' do
-        create(:installation_config, name: 'INSTALLATION_NAME', value: 'Chatwoot')
         service.perform
         expect(Redis::Alfred.get(Redis::Alfred::CHATWOOT_INSTALLATION_CONFIG_RESET_WARNING)).to be_nil
       end
 
-      it 'updates the premium configs to default' do
+      it 'clears any stale premium config reset warning' do
+        Redis::Alfred.set(Redis::Alfred::CHATWOOT_INSTALLATION_CONFIG_RESET_WARNING, true)
+        service.perform
+        expect(Redis::Alfred.get(Redis::Alfred::CHATWOOT_INSTALLATION_CONFIG_RESET_WARNING)).to be_nil
+      end
+
+      it 'does not reset premium configs so super-admin edits persist' do
         create(:installation_config, name: 'INSTALLATION_NAME', value: 'custom-name')
         create(:installation_config, name: 'LOGO', value: '/custom-path/logo.svg')
         service.perform
-        expect(InstallationConfig.find_by(name: 'INSTALLATION_NAME').value).to eq('Chatwoot')
-        expect(InstallationConfig.find_by(name: 'LOGO').value).to eq('/brand-assets/logo.svg')
+        expect(InstallationConfig.find_by(name: 'INSTALLATION_NAME').value).to eq('custom-name')
+        expect(InstallationConfig.find_by(name: 'LOGO').value).to eq('/custom-path/logo.svg')
       end
     end
 

@@ -2,8 +2,7 @@ module Enterprise::SuperAdmin::AppConfigsController
   private
 
   def allowed_configs
-    return super if ChatwootHub.pricing_plan == 'community'
-
+    # Fork keeps premium config editors available regardless of hub pricing plan.
     case @config
     when 'custom_branding'
       @allowed_configs = custom_branding_options
