@@ -65,7 +65,9 @@ class Webhooks::EvolutionEventsJob < ApplicationJob
   end
 
   def find_inbox_by_instance(instance_name)
-    @account.inboxes.joins(:channel).where(channel: { type: 'Channel::Api' }).find_each do |inbox|
+    # Inbox#channel is polymorphic, so it can only be filtered through the
+    # inboxes.channel_type column — joining the association raises.
+    @account.inboxes.includes(:channel).where(channel_type: 'Channel::Api').find_each do |inbox|
       return inbox if inbox.channel.additional_attributes&.dig('evolution_instance') == instance_name
     end
     nil
