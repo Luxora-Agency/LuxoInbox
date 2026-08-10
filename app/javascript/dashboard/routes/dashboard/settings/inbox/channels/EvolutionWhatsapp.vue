@@ -28,7 +28,12 @@ const qrCodeBase64 = ref('');
 const isLoading = ref(false);
 const connectionStatus = ref('');
 const pollingInterval = ref(null);
+const qrRefreshInterval = ref(null);
 const errorMessage = ref('');
+
+// Evolution rotates the pairing QR roughly every minute; a stale one makes
+// WhatsApp reject the scan with "couldn't link device".
+const QR_REFRESH_INTERVAL = 20000;
 
 const isConfigStep = computed(() => currentStep.value === STEPS.CONFIG);
 const isQRCodeStep = computed(() => currentStep.value === STEPS.QR_CODE);
@@ -81,10 +86,19 @@ const createChatwootInbox = async () => {
   }
 };
 
-const startPolling = () => {
+const stopTimers = () => {
   if (pollingInterval.value) {
     clearInterval(pollingInterval.value);
+    pollingInterval.value = null;
   }
+  if (qrRefreshInterval.value) {
+    clearInterval(qrRefreshInterval.value);
+    qrRefreshInterval.value = null;
+  }
+};
+
+const startPolling = () => {
+  stopTimers();
 
   pollingInterval.value = setInterval(async () => {
     try {
@@ -95,8 +109,7 @@ const startPolling = () => {
       connectionStatus.value = state;
 
       if (state === 'open') {
-        clearInterval(pollingInterval.value);
-        pollingInterval.value = null;
+        stopTimers();
         currentStep.value = STEPS.CONNECTING;
         await createChatwootInbox();
       }
@@ -104,6 +117,16 @@ const startPolling = () => {
       // Silently handle polling errors
     }
   }, 3000);
+
+  qrRefreshInterval.value = setInterval(async () => {
+    try {
+      const { data } = await evolutionChannel.getQRCode(instanceName.value);
+      const qr = extractQRCode(data);
+      if (qr) qrCodeBase64.value = qr;
+    } catch {
+      // Keep showing the previous code until the next refresh succeeds
+    }
+  }, QR_REFRESH_INTERVAL);
 };
 
 const extractQRCode = data => {
@@ -178,10 +201,7 @@ const createEvolutionInstance = async () => {
 };
 
 const cancelSetup = async () => {
-  if (pollingInterval.value) {
-    clearInterval(pollingInterval.value);
-    pollingInterval.value = null;
-  }
+  stopTimers();
 
   if (instanceName.value) {
     try {
@@ -199,9 +219,7 @@ const cancelSetup = async () => {
 };
 
 onUnmounted(() => {
-  if (pollingInterval.value) {
-    clearInterval(pollingInterval.value);
-  }
+  stopTimers();
 });
 </script>
 
