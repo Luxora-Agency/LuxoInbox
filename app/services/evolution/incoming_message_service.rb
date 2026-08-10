@@ -11,8 +11,11 @@ class Evolution::IncomingMessageService
 
   private
 
+  # Evolution sends the message envelope in `data` (key, pushName, message,
+  # messageTimestamp); `data.message` is only the content payload, which the
+  # rest of this service reads through #message_payload.
   def message_data
-    @message_data ||= params.dig(:data, :message) || params[:data]
+    @message_data ||= params[:data]
   end
 
   def message_payload
