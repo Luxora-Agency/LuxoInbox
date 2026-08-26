@@ -58,36 +58,78 @@ describe('Conversation Helpers', () => {
       ).toBe(true);
     });
 
-    // Test for agent role
-    it('always returns true for agent role regardless of permissions', () => {
+    // Agents only see conversations they can access: assigned to them,
+    // assigned to one of their teams, or in an inbox they are a member of.
+    describe('with agent role', () => {
       const role = 'agent';
       const permissions = [];
       const currentUserId = 1;
 
-      expect(
-        applyRoleFilter(
-          conversationWithAssignee,
-          role,
-          permissions,
-          currentUserId
-        )
-      ).toBe(true);
-      expect(
-        applyRoleFilter(
-          conversationWithDifferentAssignee,
-          role,
-          permissions,
-          currentUserId
-        )
-      ).toBe(true);
-      expect(
-        applyRoleFilter(
-          conversationWithoutAssignee,
-          role,
-          permissions,
-          currentUserId
-        )
-      ).toBe(true);
+      it('returns true for conversations assigned to the agent', () => {
+        expect(
+          applyRoleFilter(
+            conversationWithAssignee,
+            role,
+            permissions,
+            currentUserId
+          )
+        ).toBe(true);
+      });
+
+      it('returns false for conversations assigned to other agents', () => {
+        expect(
+          applyRoleFilter(
+            conversationWithDifferentAssignee,
+            role,
+            permissions,
+            currentUserId
+          )
+        ).toBe(false);
+      });
+
+      it('returns false for unassigned conversations outside their scope', () => {
+        expect(
+          applyRoleFilter(
+            conversationWithoutAssignee,
+            role,
+            permissions,
+            currentUserId
+          )
+        ).toBe(false);
+      });
+
+      it('returns true for conversations assigned to one of their teams', () => {
+        const conversationWithTeam = {
+          meta: { assignee: { id: 2 }, team: { id: 3 } },
+        };
+
+        expect(
+          applyRoleFilter(
+            conversationWithTeam,
+            role,
+            permissions,
+            currentUserId,
+            { userTeamIds: [3] }
+          )
+        ).toBe(true);
+      });
+
+      it('returns true for conversations in an inbox they belong to', () => {
+        const conversationInMemberInbox = {
+          meta: { assignee: null },
+          inbox_id: 5,
+        };
+
+        expect(
+          applyRoleFilter(
+            conversationInMemberInbox,
+            role,
+            permissions,
+            currentUserId,
+            { userInboxIds: [5] }
+          )
+        ).toBe(true);
+      });
     });
 
     // Test for custom role with 'conversation_manage' permission

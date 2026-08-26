@@ -68,14 +68,17 @@ class Reports::RawDataSource < Reports::DataSource
     when 'conversations_count'
       scope.conversations.visible_to_account.where(account_id: account.id, created_at: range)
     when 'incoming_messages_count'
-      scope.messages.where(account_id: account.id, created_at: range).incoming.unscope(:order)
-           .where.not(conversation_id: Conversation.hidden_ids_for(account.id))
+      visible_messages_scope.incoming
     when 'outgoing_messages_count'
-      scope.messages.where(account_id: account.id, created_at: range).outgoing.unscope(:order)
-           .where.not(conversation_id: Conversation.hidden_ids_for(account.id))
+      visible_messages_scope.outgoing
     else
       reporting_event_count_scope
     end
+  end
+
+  def visible_messages_scope
+    scope.messages.where(account_id: account.id, created_at: range).unscope(:order)
+         .where.not(conversation_id: Conversation.hidden_ids_for(account.id))
   end
 
   def reporting_event_count_scope

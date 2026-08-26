@@ -223,10 +223,11 @@ RSpec.describe Account::ContactsExportJob do
     it 'never exports the hidden column even when it is explicitly requested' do
       described_class.perform_now(account.id, user.id, %w[id email hidden], {})
 
-      csv_data = CSV.parse(account.contacts_export.download, headers: true)
+      # The export is prefixed with a UTF-8 BOM, which otherwise lands on the first header.
+      csv_content = account.contacts_export.download.force_encoding('UTF-8').delete_prefix("\xEF\xBB\xBF")
 
-      expect(csv_data.headers).to eq(%w[id email])
-      expect(account.contacts_export.download).not_to include('hidden')
+      expect(CSV.parse(csv_content, headers: true).headers).to eq(%w[id email])
+      expect(csv_content).not_to include('hidden')
     end
   end
 end

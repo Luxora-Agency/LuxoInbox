@@ -499,11 +499,43 @@ describe('#getters', () => {
         rootGetters
       );
 
-      expect(result).toEqual([
-        mockConversations[2],
-        mockConversations[1],
-        mockConversations[0],
-      ]);
+      // Agents only see conversations they are involved with; the agent is not
+      // a member of any team or inbox here, so only their own one is visible.
+      expect(result).toEqual([mockConversations[0]]);
+    });
+
+    it('includes conversations from inboxes the agent belongs to', () => {
+      const conversationInMemberInbox = {
+        id: 4,
+        status: 'open',
+        meta: {},
+        inbox_id: 7,
+        last_activity_at: 4000,
+      };
+
+      const state = {
+        allConversations: [...mockConversations, conversationInMemberInbox],
+        chatSortFilter: 'last_activity_at_desc',
+        appliedFilters: [],
+      };
+
+      const rootGetters = {
+        ...mockRootGetters,
+        getCurrentUser: {
+          ...mockRootGetters.getCurrentUser,
+          accounts: [{ id: 1, role: 'agent', permissions: [] }],
+        },
+        'inboxes/getInboxes': [{ id: 7 }],
+      };
+
+      const result = getters.getFilteredConversations(
+        state,
+        {},
+        {},
+        rootGetters
+      );
+
+      expect(result).toEqual([conversationInMemberInbox, mockConversations[0]]);
     });
 
     it('filters conversations for custom role with conversation_manage permission', () => {
@@ -707,11 +739,21 @@ describe('#getters', () => {
         appliedFilters: [],
       };
 
+      // Administrator role keeps every conversation in scope so the assertion
+      // exercises sorting rather than the role filter.
+      const rootGetters = {
+        ...mockRootGetters,
+        getCurrentUser: {
+          ...mockRootGetters.getCurrentUser,
+          accounts: [{ id: 1, role: 'administrator', permissions: [] }],
+        },
+      };
+
       const result = getters.getFilteredConversations(
         state,
         {},
         {},
-        mockRootGetters
+        rootGetters
       );
 
       expect(result).toEqual([

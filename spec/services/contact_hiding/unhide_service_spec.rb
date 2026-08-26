@@ -31,7 +31,7 @@ describe ContactHiding::UnhideService do
 
     it 'reindexes the messages of the unhidden conversations when advanced search is enabled' do
       allow(ChatwootApp).to receive(:advanced_search_allowed?).and_return(true)
-      relation = double # rubocop:disable RSpec/VerifiedDoubles
+      relation = double
       allow(relation).to receive(:reindex)
       allow(Message).to receive(:where).and_call_original
       allow(Message).to receive(:where).with(conversation_id: [conversation.id]).and_return(relation)

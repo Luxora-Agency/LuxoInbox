@@ -38,12 +38,16 @@ class AutomationRuleListener < BaseListener
 
   private
 
-  def process_conversation_event(event, event_name)
-    return if hidden_subject?(event)
-    return if performed_by_automation?(event)
+  def skip_conversation_event?(event, event_name)
+    return true if hidden_subject?(event)
+    return true if performed_by_automation?(event)
 
     auto_reply_skip_events = %w[conversation_created conversation_opened]
-    return if auto_reply_skip_events.include?(event_name) && ignore_auto_reply_event?(event)
+    auto_reply_skip_events.include?(event_name) && ignore_auto_reply_event?(event)
+  end
+
+  def process_conversation_event(event, event_name)
+    return if skip_conversation_event?(event, event_name)
 
     conversation = event.data[:conversation]
     account = conversation.account

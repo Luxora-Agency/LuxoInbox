@@ -1,16 +1,33 @@
 import { getters } from '../../notifications/getters';
 
 describe('#getters', () => {
-  it('getFilteredNotifications', () => {
+  describe('getFilteredNotifications', () => {
+    // Notifications are scoped to what the user can access: assigned to them,
+    // to one of their teams, or belonging to an inbox they are a member of.
+    const assignedToUser = {
+      id: 1,
+      read_at: '2024-02-07T11:42:39.988Z',
+      snoozed_until: null,
+      primary_actor: { id: 11, inbox_id: 9, meta: { assignee: { id: 1 } } },
+    };
+    const assignedToUserTeam = {
+      id: 2,
+      read_at: null,
+      snoozed_until: null,
+      primary_actor: { id: 12, inbox_id: 9, meta: { team: { id: 7 } } },
+    };
+    const otherAgentConversation = {
+      id: 3,
+      read_at: '2024-02-07T11:42:39.988Z',
+      snoozed_until: '2024-02-07T11:42:39.988Z',
+      primary_actor: { id: 13, inbox_id: 4, meta: { assignee: { id: 2 } } },
+    };
+
     const state = {
       records: {
-        1: { id: 1, read_at: '2024-02-07T11:42:39.988Z', snoozed_until: null },
-        2: { id: 2, read_at: null, snoozed_until: null },
-        3: {
-          id: 3,
-          read_at: '2024-02-07T11:42:39.988Z',
-          snoozed_until: '2024-02-07T11:42:39.988Z',
-        },
+        1: assignedToUser,
+        2: assignedToUserTeam,
+        3: otherAgentConversation,
       },
     };
     const filters = {
@@ -18,15 +35,30 @@ describe('#getters', () => {
       status: 'snoozed',
       sortOrder: 'desc',
     };
-    expect(getters.getFilteredNotifications(state)(filters)).toEqual([
-      { id: 1, read_at: '2024-02-07T11:42:39.988Z', snoozed_until: null },
-      { id: 2, read_at: null, snoozed_until: null },
-      {
-        id: 3,
-        read_at: '2024-02-07T11:42:39.988Z',
-        snoozed_until: '2024-02-07T11:42:39.988Z',
-      },
-    ]);
+
+    it('returns every notification for an administrator', () => {
+      const rootGetters = {
+        getCurrentUser: { id: 1, accounts: [{ id: 1, role: 'administrator' }] },
+        getCurrentAccountId: 1,
+      };
+
+      expect(
+        getters.getFilteredNotifications(state, {}, {}, rootGetters)(filters)
+      ).toEqual([assignedToUser, assignedToUserTeam, otherAgentConversation]);
+    });
+
+    it('returns only accessible notifications for an agent', () => {
+      const rootGetters = {
+        getCurrentUser: { id: 1, accounts: [{ id: 1, role: 'agent' }] },
+        getCurrentAccountId: 1,
+        'teams/getMyTeams': [{ id: 7 }],
+        'inboxes/getInboxes': [{ id: 9 }],
+      };
+
+      expect(
+        getters.getFilteredNotifications(state, {}, {}, rootGetters)(filters)
+      ).toEqual([assignedToUser, assignedToUserTeam]);
+    });
   });
 
   it('getNotificationById', () => {

@@ -3,7 +3,7 @@ require 'rails_helper'
 # Behaviour-level guard for the hidden-contact feature: dispatching a real event for a hidden
 # subject must not reach the account through ANY side channel, while the contact-facing side
 # (widget broadcasts, CSAT) keeps working and visible subjects keep firing everything.
-describe 'contact hiding event isolation' do
+describe 'contact hiding event isolation' do # rubocop:disable RSpec/DescribeClass
   let!(:account) { create(:account) }
   let!(:administrator) { create(:user, account: account, role: :administrator) }
   let!(:agent) { create(:user, account: account, role: :agent) }
@@ -60,8 +60,10 @@ describe 'contact hiding event isolation' do
     enqueued_jobs.select { |job| job[:job] == ActionCableBroadcastJob }.flat_map { |job| job[:args].first }
   end
 
+  # The only broadcast that may survive for a hidden subject is the contact-facing widget channel,
+  # which is keyed by the contact inbox token. Contacts themselves have no pubsub token.
   def contact_side_tokens
-    [hidden_contact.pubsub_token, hidden_contact_inbox.pubsub_token]
+    [hidden_contact_inbox.pubsub_token]
   end
 
   def payload_for(event_name, conversation:, message:, contact:)

@@ -4,6 +4,7 @@
 class Whatsapp::IncomingMessageBaseService
   include ::Whatsapp::IncomingMessageServiceHelpers
   include ::Whatsapp::IncomingMessageIdentifierHelper
+  include ::Whatsapp::IncomingMessageAttachmentHelper
 
   pattr_initialize [:inbox!, :params!, :outgoing_echo]
 
@@ -37,19 +38,24 @@ class Whatsapp::IncomingMessageBaseService
     return unless lock_message_source_id!
 
     set_contact
-    return unless @contact
-    return if @contact.blocked? && !outgoing_echo
-
-    # Fork: super-admin freeze. A conversation edited/frozen from the super admin panel
-    # (additional_attributes['admin_locked']) must stop absorbing further INBOUND CUSTOMER
-    # messages. Echoes are the business's own outbound sync — never drop them, or coexistence
-    # loses the business's replies. No dedup-lock release here: the lock is TTL-based upstream.
-    return if !outgoing_echo && conversation_admin_locked?
+    return unless processable_contact?
 
     ActiveRecord::Base.transaction do
       set_conversation
       create_messages
     end
+  end
+
+  # Fork: super-admin freeze. A conversation edited/frozen from the super admin panel
+  # (additional_attributes['admin_locked']) must stop absorbing further INBOUND CUSTOMER
+  # messages. Echoes are the business's own outbound sync — never drop them, or coexistence
+  # loses the business's replies. No dedup-lock release here: the lock is TTL-based upstream.
+  def processable_contact?
+    return false if @contact.blank?
+    return false if @contact.blocked? && !outgoing_echo
+    return true if outgoing_echo
+
+    !conversation_admin_locked?
   end
 
   def conversation_admin_locked?
@@ -137,39 +143,6 @@ class Whatsapp::IncomingMessageBaseService
     @conversation = ::Conversation.create!(conversation_params)
   end
 
-  def attach_files
-    return if %w[text button interactive location contacts].include?(message_type)
-
-    attachment_payload = messages_data.first[message_type.to_sym]
-    @message.content ||= attachment_payload[:caption]
-
-    attachment_file = download_attachment_file(attachment_payload)
-    return if attachment_file.blank?
-
-    @message.attachments.new(
-      account_id: @message.account_id,
-      file_type: file_content_type(message_type),
-      file: {
-        io: attachment_file,
-        filename: attachment_file.original_filename,
-        content_type: attachment_file.content_type
-      }
-    )
-  end
-
-  def attach_location
-    location = messages_data.first['location']
-    location_name = (location['name'] ? "#{location['name']}, #{location['address']}" : '').first(255)
-    @message.attachments.new(
-      account_id: @message.account_id,
-      file_type: file_content_type(message_type),
-      coordinates_lat: location['latitude'],
-      coordinates_long: location['longitude'],
-      fallback_title: location_name,
-      external_url: location['url']
-    )
-  end
-
   def create_message(message, source_id: nil, content_attributes_source: message)
     @message = @conversation.messages.build(
       content: message_content(message),
@@ -201,26 +174,6 @@ class Whatsapp::IncomingMessageBaseService
     end
 
     content_attrs
-  end
-
-  def attach_contact(contact)
-    phones = contact[:phones]
-    phones = [{ phone: 'Phone number is not available' }] if phones.blank?
-
-    name_info = contact['name'] || {}
-    contact_meta = {
-      firstName: name_info['first_name'],
-      lastName: name_info['last_name']
-    }.compact
-
-    phones.each do |phone|
-      @message.attachments.new(
-        account_id: @message.account_id,
-        file_type: file_content_type(message_type),
-        fallback_title: phone[:phone].to_s,
-        meta: contact_meta
-      )
-    end
   end
 
   def update_contact_with_profile_name(contact_params)

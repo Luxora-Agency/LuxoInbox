@@ -401,15 +401,19 @@ class Conversation < ApplicationRecord
                                                                        performed_by: Current.executed_by)
   end
 
+  # Hidden conversations are invisible to the account, so their deletion must not reach the
+  # account-facing unread count broadcasts. Skip building the payload instead of shipping the
+  # hidden flag inside it — the flag must never appear in an account-facing broadcast.
   def set_unread_count_deletion_data
+    return if hidden?
+
     @unread_count_deletion_data = {
       id: id,
       account_id: account_id,
       inbox_id: inbox_id,
       assignee_id: assignee_id,
       team_id: team_id,
-      cached_label_list: cached_label_list,
-      hidden: hidden
+      cached_label_list: cached_label_list
     }
   end
 

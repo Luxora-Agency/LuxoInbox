@@ -60,7 +60,8 @@ RSpec.describe Account do
   end
 
   describe 'captain defaults for new accounts' do
-    it 'does not store Captain model overrides or enable premium Captain features' do
+    # Fork decision: this install unlocks premium Captain for everyone, so config/features.yml ships it enabled by default.
+    it 'enables the Captain features without storing Captain model overrides' do
       InstallationConfig.find_or_initialize_by(name: 'ACCOUNT_LEVEL_FEATURE_DEFAULTS').update!(
         value: Featurable::FEATURE_LIST,
         locked: true
@@ -68,8 +69,8 @@ RSpec.describe Account do
 
       account = create(:account)
 
-      expect(account).not_to be_feature_enabled('captain_integration')
-      expect(account).not_to be_feature_enabled('captain_integration_v2')
+      expect(account).to be_feature_enabled('captain_integration')
+      expect(account).to be_feature_enabled('captain_integration_v2')
       expect(account.captain_models).to be_nil
     end
   end

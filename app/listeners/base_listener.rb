@@ -38,10 +38,17 @@ class BaseListener
   end
 
   def hidden_subject?(event)
-    data = event.data
-    conversation = data[:conversation] || data[:message]&.conversation
-    return true if conversation&.hidden?
+    hidden_conversation?(event.data) || hidden_contact?(event.data)
+  end
 
+  private
+
+  def hidden_conversation?(data)
+    conversation = data[:conversation] || data[:message]&.conversation
+    conversation&.hidden? || false
+  end
+
+  def hidden_contact?(data)
     contact = data[:contact] || data[:contact_inbox]&.contact
     contact&.hidden? || false
   end

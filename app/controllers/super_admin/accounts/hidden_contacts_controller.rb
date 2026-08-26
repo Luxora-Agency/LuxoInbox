@@ -1,4 +1,3 @@
-# rubocop:disable Rails/I18nLocaleTexts
 class SuperAdmin::Accounts::HiddenContactsController < SuperAdmin::ApplicationController
   before_action :set_account
 
@@ -23,4 +22,3 @@ class SuperAdmin::Accounts::HiddenContactsController < SuperAdmin::ApplicationCo
     @account = Account.find(params[:account_id])
   end
 end
-# rubocop:enable Rails/I18nLocaleTexts

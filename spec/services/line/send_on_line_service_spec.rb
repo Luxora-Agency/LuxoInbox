@@ -162,8 +162,9 @@ describe Line::SendOnLineService do
         attachment = message.attachments.new(account_id: message.account_id, file_type: :image)
         attachment.file.attach(io: Rails.root.join('spec/assets/avatar.png').open, filename: 'avatar.png', content_type: 'image/png')
         attachment.save!
-        expected_original_url_regex = %r{rails/active_storage/blobs/redirect/[a-zA-Z0-9=_\-+]+/avatar\.png}
-        expected_preview_url_regex = %r{rails/active_storage/representations/redirect/[a-zA-Z0-9=_\-+]+/[a-zA-Z0-9=_\-+]+/avatar\.png}
+        expected_original_url_regex = %r{rails/active_storage/blobs/redirect/[^/]+/avatar\.png}
+        # Fork decision: Attachment#thumb_url serves the processed representation directly instead of the redirect route.
+        expected_preview_url_regex = %r{rails/active_storage/disk/[^/]+/avatar\.png}
 
         expect(line_client).to receive(:push_message).with(
           message.conversation.contact_inbox.source_id,
@@ -185,8 +186,9 @@ describe Line::SendOnLineService do
         attachment.file.attach(io: Rails.root.join('spec/assets/avatar.png').open, filename: 'avatar.png', content_type: 'image/png')
         attachment.save!
         message.update!(content: nil)
-        expected_original_url_regex = %r{rails/active_storage/blobs/redirect/[a-zA-Z0-9=_\-+]+/avatar\.png}
-        expected_preview_url_regex = %r{rails/active_storage/representations/redirect/[a-zA-Z0-9=_\-+]+/[a-zA-Z0-9=_\-+]+/avatar\.png}
+        expected_original_url_regex = %r{rails/active_storage/blobs/redirect/[^/]+/avatar\.png}
+        # Fork decision: Attachment#thumb_url serves the processed representation directly instead of the redirect route.
+        expected_preview_url_regex = %r{rails/active_storage/disk/[^/]+/avatar\.png}
 
         expect(line_client).to receive(:push_message).with(
           message.conversation.contact_inbox.source_id,

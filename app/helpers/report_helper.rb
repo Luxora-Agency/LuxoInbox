@@ -60,16 +60,12 @@ module ReportHelper
 
   def bot_resolutions
     scope.reporting_events.where(account_id: account.id, name: :conversation_bot_resolved, created_at: range)
-         .where.not(conversation_id: bot_handoff_conversation_ids_subquery)
+         .where.not(conversation_id: bot_handoffs)
   end
 
   def bot_handoffs
     scope.reporting_events.joins(:conversation).select(:conversation_id).where(account_id: account.id, name: :conversation_bot_handoff,
                                                                                created_at: range).distinct
-  end
-
-  def bot_handoff_conversation_ids_subquery
-    bot_handoffs
   end
 
   def avg_first_response_time

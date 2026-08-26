@@ -49,7 +49,9 @@ RSpec.describe 'Contact hiding visibility', type: :request do
       end
 
       it 'omits the hidden conversation from every assignee_type slice' do
-        %w[all unassigned].each do |assignee_type|
+        assignee_types = %w[all unassigned]
+
+        assignee_types.each do |assignee_type|
           get "/api/v1/accounts/#{account.id}/conversations",
               params: { assignee_type: assignee_type }, headers: auth_headers, as: :json
 
@@ -106,7 +108,7 @@ RSpec.describe 'Contact hiding visibility', type: :request do
       end
 
       it 'omits the hidden contact from the online contact list' do
-        allow(::OnlineStatusTracker).to receive(:get_available_contact_ids).and_return([hidden_contact.id, visible_contact.id])
+        allow(OnlineStatusTracker).to receive(:get_available_contact_ids).and_return([hidden_contact.id, visible_contact.id])
 
         get "/api/v1/accounts/#{account.id}/contacts/active", headers: auth_headers, as: :json
 
@@ -146,7 +148,9 @@ RSpec.describe 'Contact hiding visibility', type: :request do
       end
 
       it 'omits hidden records from the conversation and contact search tabs' do
-        %w[conversations contacts].each do |tab|
+        search_tabs = %w[conversations contacts]
+
+        search_tabs.each do |tab|
           get "/api/v1/accounts/#{account.id}/search/#{tab}", params: { q: 'Zeta' }, headers: auth_headers, as: :json
 
           expect(response.body).not_to include(hidden_contact.email)
@@ -200,7 +204,9 @@ RSpec.describe 'Contact hiding visibility', type: :request do
     let(:report_params) { { since: 1.day.ago.to_i.to_s, until: 1.day.from_now.to_i.to_s } }
 
     it 'leaves the hidden contact alone when a bulk delete targets it' do
-      perform_enqueued_jobs do
+      # Scoped to the bulk action job so the administrator's avatar job, enqueued when `auth_headers`
+      # first builds the user inside this block, is not performed and does not reach gravatar.
+      perform_enqueued_jobs(only: Contacts::BulkActionJob) do
         post "/api/v1/accounts/#{account.id}/bulk_actions",
              params: { type: 'Contact', action_name: 'delete', ids: [hidden_contact.id] }, headers: auth_headers, as: :json
       end
@@ -266,8 +272,9 @@ RSpec.describe 'Contact hiding visibility', type: :request do
 
       expect(response).to have_http_status(:success)
       expect(response.parsed_body.dig('meta', 'total_count')).to eq(1)
-      expect(response.body).not_to include(hidden_contact.email)
-      expect(response.body).to include(visible_contact.email)
+      # The drilldown record carries the contact name, never the email, so identify the rows by name.
+      contact_names = response.parsed_body['payload'].map { |record| record.dig('conversation', 'contact_name') }
+      expect(contact_names).to contain_exactly(visible_contact.name)
     end
   end
 end

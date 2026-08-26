@@ -17,7 +17,7 @@ RSpec.describe Contacts::BulkActionService do
         bulk_delete_service = instance_double(Contacts::BulkDeleteService, perform: true)
 
         expect(Contacts::BulkDeleteService).to receive(:new)
-          .with(account: account, contact_ids: match_array([first_contact.id, second_contact.id]))
+          .with(account: account, contact_ids: contain_exactly(first_contact.id, second_contact.id))
           .and_return(bulk_delete_service)
 
         service.perform
@@ -31,7 +31,7 @@ RSpec.describe Contacts::BulkActionService do
         bulk_assign_service = instance_double(Contacts::BulkAssignLabelsService, perform: true)
 
         expect(Contacts::BulkAssignLabelsService).to receive(:new)
-          .with(account: account, contact_ids: match_array([first_contact.id, second_contact.id]), labels: %w[vip support])
+          .with(account: account, contact_ids: contain_exactly(first_contact.id, second_contact.id), labels: %w[vip support])
           .and_return(bulk_assign_service)
 
         service.perform
@@ -45,7 +45,7 @@ RSpec.describe Contacts::BulkActionService do
         bulk_remove_service = instance_double(Contacts::BulkRemoveLabelsService, perform: true)
 
         expect(Contacts::BulkRemoveLabelsService).to receive(:new)
-          .with(account: account, contact_ids: match_array([first_contact.id, second_contact.id]), labels: %w[vip])
+          .with(account: account, contact_ids: contain_exactly(first_contact.id, second_contact.id), labels: %w[vip])
           .and_return(bulk_remove_service)
 
         service.perform

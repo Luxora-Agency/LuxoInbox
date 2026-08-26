@@ -8,11 +8,11 @@ class Conversations::UnreadCounts::Listener < BaseListener
   private_constant :FILTERED_CONVERSATION_UPDATE_KEYS
 
   def message_created(event)
-    return if hidden_subject?(event)
-
     message, = extract_message_and_account(event)
     account = message.account
-    return unless account.feature_enabled?('conversation_unread_counts') || account.feature_enabled?(filtered_count_feature_flag)
+    # The hidden check loads the conversation, so it runs only once this listener has work to do.
+    return unless unread_counts_relevant?(account)
+    return if hidden_subject?(event)
 
     conversation = message.conversation
     refreshed = refresh(conversation) if message.incoming? && account.feature_enabled?('conversation_unread_counts')
@@ -72,8 +72,8 @@ class Conversations::UnreadCounts::Listener < BaseListener
 
   def conversation_deleted(event)
     conversation_data = event.data[:conversation_data]&.with_indifferent_access
+    # Hidden conversations never dispatch this event (Conversation#set_unread_count_deletion_data).
     return if conversation_data.blank?
-    return if conversation_data[:hidden]
 
     account = Account.find_by(id: conversation_data[:account_id])
     return if account.blank?
@@ -86,6 +86,10 @@ class Conversations::UnreadCounts::Listener < BaseListener
   end
 
   private
+
+  def unread_counts_relevant?(account)
+    account.feature_enabled?('conversation_unread_counts') || account.feature_enabled?(filtered_count_feature_flag)
+  end
 
   def refresh_then_invalidate(conversation, changed_attributes = nil)
     refreshed = refresh(conversation, changed_attributes)

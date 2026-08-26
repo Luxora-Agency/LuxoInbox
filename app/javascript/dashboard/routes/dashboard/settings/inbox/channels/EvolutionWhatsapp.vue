@@ -46,6 +46,11 @@ const generateInstanceName = () => {
   return `luxoinbox_${timestamp}_${random}`;
 };
 
+const extractQRCode = data => {
+  // Handle different Evolution API response formats
+  return data.qrcode?.base64 || data.base64 || data.qrcode?.pairingCode || null;
+};
+
 const createChatwootInbox = async () => {
   try {
     isLoading.value = true;
@@ -127,11 +132,6 @@ const startPolling = () => {
       // Keep showing the previous code until the next refresh succeeds
     }
   }, QR_REFRESH_INTERVAL);
-};
-
-const extractQRCode = data => {
-  // Handle different Evolution API response formats
-  return data.qrcode?.base64 || data.base64 || data.qrcode?.pairingCode || null;
 };
 
 const refreshQRCode = async () => {

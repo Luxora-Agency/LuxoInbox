@@ -180,11 +180,12 @@ describe ContactInboxWithContactBuilder do
 
     it 'releases the slot when the contact insert is rolled back' do
       call_count = 0
-      allow_any_instance_of(Contact).to receive(:save!).and_wrap_original do |method, *args| # rubocop:disable RSpec/AnyInstance
+      # `has_many#create!` reaches Contact#save!(validate: true), so the wrapper has to keep the keyword arguments.
+      allow_any_instance_of(Contact).to receive(:save!).and_wrap_original do |method, *args, **kwargs| # rubocop:disable RSpec/AnyInstance
         call_count += 1
         raise ActiveRecord::RecordNotUnique, 'duplicate key' if call_count == 1
 
-        method.call(*args)
+        method.call(*args, **kwargs)
       end
 
       build_contact_inbox('retry-1')

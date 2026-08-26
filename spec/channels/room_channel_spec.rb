@@ -27,8 +27,8 @@ RSpec.describe RoomChannel do
     let!(:hidden_contact) { create(:contact, account: account, hidden: true) }
 
     it 'excludes hidden contacts from the presence payload sent to the user' do
-      ::OnlineStatusTracker.update_presence(account.id, 'Contact', visible_contact.id)
-      ::OnlineStatusTracker.update_presence(account.id, 'Contact', hidden_contact.id)
+      OnlineStatusTracker.update_presence(account.id, 'Contact', visible_contact.id)
+      OnlineStatusTracker.update_presence(account.id, 'Contact', hidden_contact.id)
 
       broadcasted_payload = nil
       allow(ActionCable.server).to receive(:broadcast) { |_token, payload| broadcasted_payload = payload }
