@@ -9,6 +9,7 @@
     },
     "NO_CONVERSATIONS_AVAILABLE": "New conversations will appear here",
     "FAILED_TO_SEND": "Failed to send",
+    "FETCH_ERROR": "Couldn't load conversations. Please try again.",
     "TAB_HEADING": "Conversations",
     "MENTION_HEADING": "Mentions",
     "UNATTENDED_HEADING": "Unattended",

@@ -223,7 +223,7 @@ onMounted(() => {
 
 <template>
   <section
-    class="flex w-full h-full bg-gradient-to-br from-n-background via-n-background to-n-slate-3/30"
+    class="flex w-full h-full min-w-0 bg-gradient-to-br from-n-background via-n-background to-n-slate-3/30"
   >
     <div
       class="flex flex-col h-full w-full lg:min-w-[360px] lg:max-w-[360px] ltr:border-r rtl:border-l border-white/10"

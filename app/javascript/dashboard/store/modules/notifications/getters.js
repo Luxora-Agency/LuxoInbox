@@ -46,9 +46,6 @@ const filterByAssignment = (notifications, rootGetters) => {
 };
 
 export const getters = {
-  getNotifications($state) {
-    return Object.values($state.records).sort((n1, n2) => n2.id - n1.id);
-  },
   getFilteredNotifications:
     ($state, _getters, _rootState, rootGetters) => filters => {
       const sortOrder = filters.sortOrder === 'desc' ? 'newest' : 'oldest';
