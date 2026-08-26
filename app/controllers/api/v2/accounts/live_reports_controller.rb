@@ -53,7 +53,7 @@ class Api::V2::Accounts::LiveReportsController < Api::V1::Accounts::BaseControll
   end
 
   def load_conversations
-    scope = Current.account.conversations
+    scope = Current.account.conversations.visible_to_account
     scope = scope.where(team_id: team.id) if team.present?
     @conversations = scope
   end

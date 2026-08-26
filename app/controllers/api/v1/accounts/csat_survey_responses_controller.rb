@@ -34,7 +34,9 @@ class Api::V1::Accounts::CsatSurveyResponsesController < Api::V1::Accounts::Base
   end
 
   def set_csat_survey_responses
-    base_query = Current.account.csat_survey_responses.includes([:conversation, :assigned_agent, :contact])
+    base_query = Current.account.csat_survey_responses
+                        .where.not(conversation_id: Conversation.hidden_ids_for(Current.account.id))
+                        .includes([:conversation, :assigned_agent, :contact])
     @csat_survey_responses = filtrate(base_query).filter_by_created_at(range)
                                                  .filter_by_assigned_agent_id(params[:user_ids])
                                                  .filter_by_inbox_id(params[:inbox_id])

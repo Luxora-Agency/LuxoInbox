@@ -13,7 +13,7 @@ class Api::V1::Accounts::Companies::ContactsController < Api::V1::Accounts::Comp
   before_action :fetch_contact, only: [:destroy]
 
   def index
-    @contacts = fetch_contacts(@company.contacts.order(:name, :id))
+    @contacts = fetch_contacts(@company.contacts.visible_to_account.order(:name, :id))
     @contacts_count = @contacts.total_count
   end
 
@@ -28,7 +28,7 @@ class Api::V1::Accounts::Companies::ContactsController < Api::V1::Accounts::Comp
   end
 
   def create
-    @contact = Current.account.contacts.find(params[:contact_id])
+    @contact = Current.account.contacts.visible_to_account.find(params[:contact_id])
     membership_service.assign(contact: @contact)
   end
 
@@ -44,7 +44,7 @@ class Api::V1::Accounts::Companies::ContactsController < Api::V1::Accounts::Comp
   end
 
   def fetch_contact
-    @contact = @company.contacts.find(params[:id])
+    @contact = @company.contacts.visible_to_account.find(params[:id])
   end
 
   def fetch_contacts(contacts)
@@ -55,7 +55,7 @@ class Api::V1::Accounts::Companies::ContactsController < Api::V1::Accounts::Comp
   end
 
   def contact_search_scope
-    Current.account.contacts
+    Current.account.contacts.visible_to_account
            .where('contacts.company_id IS NULL OR contacts.company_id != ?', @company.id)
            .where(CONTACT_SEARCH_QUERY, search: "%#{params[:q].strip}%")
            .order(:name, :id)

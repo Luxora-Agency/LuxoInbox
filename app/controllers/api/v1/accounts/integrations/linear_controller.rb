@@ -107,7 +107,9 @@ class Api::V1::Accounts::Integrations::LinearController < Api::V1::Accounts::Int
   end
 
   def fetch_conversation
-    @conversation = Current.account.conversations.find_by!(display_id: permitted_params[:conversation_id])
+    # visible_to_account keeps hidden conversations indistinguishable from
+    # non-existent ones (RecordNotFound -> 404), matching the policy elsewhere.
+    @conversation = Current.account.conversations.visible_to_account.find_by!(display_id: permitted_params[:conversation_id])
   end
 
   def linear_processor_service

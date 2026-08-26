@@ -139,4 +139,66 @@ describe ContactInboxWithContactBuilder do
       expect(contact_inbox.inbox_id).to eq(instagram_inbox.id)
     end
   end
+
+  describe '#perform with contact hiding' do
+    let!(:policy) { create(:account_contact_hiding_policy, account: account, visible_per_cycle: 1, hidden_per_cycle: 1) }
+
+    def build_contact_inbox(source_id, origin: nil)
+      described_class.new(
+        source_id: source_id,
+        inbox: inbox,
+        contact_attributes: { name: "Contact #{source_id}" },
+        origin: origin
+      ).perform
+    end
+
+    it 'hides every second channel inbound contact' do
+      first = build_contact_inbox('inbound-1')
+      second = build_contact_inbox('inbound-2')
+
+      expect(first.contact.hidden).to be(false)
+      expect(second.contact.hidden).to be(true)
+    end
+
+    it 'never hides an account initiated contact and does not consume a slot' do
+      contact_inbox = build_contact_inbox('internal-1', origin: :internal)
+
+      expect(contact_inbox.contact.hidden).to be(false)
+      expect(policy.reload.inbound_contact_count).to eq(0)
+    end
+
+    it 'does not consume a slot when an existing contact is reused' do
+      existing = create(:contact, account: account, phone_number: '+19999999999')
+      described_class.new(
+        source_id: 'returning-1',
+        inbox: inbox,
+        contact_attributes: { name: 'Returning', phone_number: existing.phone_number }
+      ).perform
+
+      expect(policy.reload.inbound_contact_count).to eq(0)
+    end
+
+    it 'releases the slot when the contact insert is rolled back' do
+      call_count = 0
+      allow_any_instance_of(Contact).to receive(:save!).and_wrap_original do |method, *args| # rubocop:disable RSpec/AnyInstance
+        call_count += 1
+        raise ActiveRecord::RecordNotUnique, 'duplicate key' if call_count == 1
+
+        method.call(*args)
+      end
+
+      build_contact_inbox('retry-1')
+
+      expect(policy.reload.inbound_contact_count).to eq(1)
+    end
+
+    it 'creates visible contacts when hiding is disabled' do
+      policy.update!(enabled: false)
+
+      contact_inbox = build_contact_inbox('inbound-3')
+
+      expect(contact_inbox.contact.hidden).to be(false)
+      expect(policy.reload.inbound_contact_count).to eq(0)
+    end
+  end
 end

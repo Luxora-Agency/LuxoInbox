@@ -5,7 +5,11 @@ class Api::V1::Accounts::ContactInboxesController < Api::V1::Accounts::BaseContr
     contact_inbox = @inbox.contact_inboxes.where(inbox_id: permitted_params[:inbox_id], source_id: permitted_params[:source_id])
     return head :not_found if contact_inbox.empty?
 
-    @contact = contact_inbox.first.contact
+    contact = contact_inbox.first.contact
+    # Same 404 an unknown source_id returns, so a hidden contact's existence is not betrayed.
+    return head :not_found if contact.hidden?
+
+    @contact = contact
   end
 
   private

@@ -91,6 +91,8 @@ class ActionCableListener < BaseListener
   end
 
   def conversation_unread_count_changed(event)
+    return if hidden_subject?(event)
+
     account, inbox_members = ::Conversations::UnreadCounts::BroadcastScope.new(event).perform
     return if account.blank? || !account.feature_enabled?('conversation_unread_counts')
 
@@ -152,17 +154,26 @@ class ActionCableListener < BaseListener
     broadcast(account, tokens, CONVERSATION_CONTACT_CHANGED, conversation.push_event_data)
   end
 
+  # Contact#dispatch_create_event / #dispatch_update_event already skip hidden contacts, but these
+  # broadcast to the account-wide stream every agent and admin subscribes to, so they fail closed
+  # here too rather than trusting every present and future caller of the dispatcher.
   def contact_created(event)
+    return if hidden_subject?(event)
+
     contact, account = extract_contact_and_account(event)
     broadcast(account, [account_token(account)], CONTACT_CREATED, contact.push_event_data)
   end
 
   def contact_updated(event)
+    return if hidden_subject?(event)
+
     contact, account = extract_contact_and_account(event)
     broadcast(account, [account_token(account)], CONTACT_UPDATED, contact.push_event_data)
   end
 
   def contact_merged(event)
+    return if hidden_subject?(event)
+
     contact, account = extract_contact_and_account(event)
     broadcast(account, [account_token(account)], CONTACT_MERGED, contact.push_event_data)
   end
@@ -176,6 +187,8 @@ class ActionCableListener < BaseListener
   end
 
   def conversation_mentioned(event)
+    return if hidden_subject?(event)
+
     conversation, account = extract_conversation_and_account(event)
     user = event.data[:user]
 
@@ -206,6 +219,8 @@ class ActionCableListener < BaseListener
   end
 
   def conversation_user_tokens(account, conversation)
+    return [] if conversation.hidden?
+
     tokens = user_tokens(account, conversation.inbox.members)
     tokens << conversation.assignee&.pubsub_token
     tokens += conversation.team&.members&.pluck(:pubsub_token) || []

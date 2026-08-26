@@ -8,6 +8,11 @@ class ConversationPolicy < ApplicationPolicy
   end
 
   def show?
+    # A hidden conversation must be indistinguishable from one that does not exist.
+    # Raising here makes the controller render 404 (like an unknown display_id)
+    # instead of 401, which would otherwise leak the conversation's existence.
+    raise ActiveRecord::RecordNotFound if record.hidden?
+
     administrator? || agent_bot? || agent_can_view_conversation?
   end
 

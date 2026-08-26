@@ -46,7 +46,7 @@ class Api::V1::Accounts::Integrations::ShopifyController < Api::V1::Accounts::In
   end
 
   def contact
-    @contact ||= Current.account.contacts.find_by(id: params[:contact_id])
+    @contact ||= Current.account.contacts.visible_to_account.find_by(id: params[:contact_id])
   end
 
   def fetch_hook

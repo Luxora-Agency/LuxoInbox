@@ -207,5 +207,19 @@ RSpec.describe Enterprise::Conversations::PermissionFilterService do
         expect(result).not_to include(other_inbox_conversation)
       end
     end
+
+    context 'when conversations are hidden from the account' do
+      let(:custom_role) { create(:custom_role, account: account, permissions: ['conversation_manage']) }
+      let!(:hidden_conversation) { create(:conversation, account: account, inbox: inbox, assignee: agent, hidden: true) }
+
+      before { AccountUser.find_by(user: agent, account: account).update(role: :agent, custom_role: custom_role) }
+
+      it 'excludes them even for a custom role that manages every conversation' do
+        result = Conversations::PermissionFilterService.new(account.conversations, agent, account).perform
+
+        expect(result).not_to include(hidden_conversation)
+        expect(result).to include(assigned_conversation)
+      end
+    end
   end
 end

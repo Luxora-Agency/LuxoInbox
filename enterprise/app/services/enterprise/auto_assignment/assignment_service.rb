@@ -57,7 +57,7 @@ module Enterprise::AutoAssignment::AssignmentService
 
   # Override to apply exclusion rules
   def unassigned_conversations(limit)
-    scope = inbox.conversations.unassigned.open
+    scope = inbox.conversations.visible_to_account.unassigned.open
 
     # First apply the assignment policy's age exclusion (defaults to 7 days)
     scope = apply_age_exclusions(scope, age_exclusion_hours(policy))

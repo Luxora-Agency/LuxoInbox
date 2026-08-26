@@ -127,7 +127,7 @@ class V2::ReportBuilder
   end
 
   def live_conversations
-    @open_conversations = scope.conversations.where(account_id: @account.id).open
+    @open_conversations = scope.conversations.visible_to_account.where(account_id: @account.id).open
     metric = {
       open: @open_conversations.count,
       unattended: @open_conversations.unattended.count

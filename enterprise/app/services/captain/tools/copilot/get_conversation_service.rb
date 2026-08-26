@@ -7,7 +7,7 @@ class Captain::Tools::Copilot::GetConversationService < Captain::Tools::BaseTool
   param :conversation_id, type: :integer, desc: 'ID of the conversation to retrieve', required: true
 
   def execute(conversation_id:)
-    conversation = Conversation.find_by(display_id: conversation_id, account_id: @assistant.account_id)
+    conversation = Conversation.visible_to_account.find_by(display_id: conversation_id, account_id: @assistant.account_id)
     return 'Conversation not found' if conversation.blank?
 
     conversation.to_llm_text(include_private_messages: true)

@@ -9,7 +9,7 @@ class Captain::Tools::Copilot::SearchContactsService < Captain::Tools::BaseTool
   param :name, type: :string, desc: 'Filter contacts by name (partial match)'
 
   def execute(email: nil, phone_number: nil, name: nil)
-    contacts = Contact.where(account_id: @assistant.account_id)
+    contacts = Contact.visible_to_account.where(account_id: @assistant.account_id)
     contacts = contacts.where(email: email) if email.present?
     contacts = contacts.where(phone_number: phone_number) if phone_number.present?
     contacts = contacts.where('LOWER(name) ILIKE ?', "%#{name.downcase}%") if name.present?

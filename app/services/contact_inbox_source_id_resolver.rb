@@ -1,5 +1,5 @@
 class ContactInboxSourceIdResolver
-  pattr_initialize [:inbox!, :source_ids!, :contact_attributes!]
+  pattr_initialize [:inbox!, :source_ids!, :contact_attributes!, :origin]
 
   def perform
     existing_contact_inbox || create_contact_inbox
@@ -20,7 +20,8 @@ class ContactInboxSourceIdResolver
     ::ContactInboxWithContactBuilder.new(
       source_id: normalized_source_ids.first,
       inbox: inbox,
-      contact_attributes: contact_attributes
+      contact_attributes: contact_attributes,
+      origin: origin
     ).perform
   end
 

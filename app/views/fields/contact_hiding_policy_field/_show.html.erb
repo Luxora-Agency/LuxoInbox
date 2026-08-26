@@ -1,0 +1,16 @@
+<% if field.enabled? %>
+  <div class="space-y-1">
+    <div><%= t('super_admin.contact_hiding.show.enabled') %> —
+      <%= t('super_admin.contact_hiding.show.ratio',
+            hidden: field.hidden_per_cycle, visible: field.visible_per_cycle) %></div>
+    <div><%= t('super_admin.contact_hiding.show.cycle_position',
+               position: field.cycle_position + 1, length: field.cycle_length) %>
+      (<%= field.next_contact_hidden? ? t('super_admin.contact_hiding.show.next_hidden')
+                                      : t('super_admin.contact_hiding.show.next_visible') %>)</div>
+    <div><%= t('super_admin.contact_hiding.show.inbound_evaluated') %>: <%= field.inbound_contact_count %></div>
+    <div><%= t('super_admin.contact_hiding.show.hidden_total') %>: <%= field.hidden_contact_count %></div>
+    <div><%= t('super_admin.contact_hiding.show.unhidden_total') %>: <%= field.unhidden_contact_count %></div>
+  </div>
+<% else %>
+  <div><%= t('super_admin.contact_hiding.show.disabled') %></div>
+<% end %>

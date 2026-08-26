@@ -3,7 +3,7 @@
 # for contact inbox logic it uses the contact inbox builder
 
 class ContactInboxWithContactBuilder
-  pattr_initialize [:inbox!, :contact_attributes!, :source_id, :hmac_verified]
+  pattr_initialize [:inbox!, :contact_attributes!, :source_id, :hmac_verified, :origin]
 
   def perform
     find_or_create_contact_and_contact_inbox
@@ -49,14 +49,29 @@ class ContactInboxWithContactBuilder
   end
 
   def create_contact
+    hidden = hide_new_contact?
     account.contacts.create!(
       name: contact_name,
       phone_number: contact_attributes[:phone_number],
       email: contact_attributes[:email],
       identifier: contact_attributes[:identifier],
       additional_attributes: contact_attributes[:additional_attributes],
-      custom_attributes: contact_attributes[:custom_attributes]
+      custom_attributes: contact_attributes[:custom_attributes],
+      hidden: hidden,
+      hidden_at: hidden ? Time.current : nil
     )
+  end
+
+  def hide_new_contact?
+    return false unless channel_inbound?
+
+    ContactHiding::DecisionService.new(account: account).hide_next_contact?
+  end
+
+  # Reaching this builder IS the definition of channel-inbound. The two
+  # account-initiated entry points that share it pass `origin: :internal`.
+  def channel_inbound?
+    origin.blank? || origin.to_sym == :channel_inbound
   end
 
   def contact_name

@@ -1,5 +1,6 @@
 class SuperAdmin::AccountsController < SuperAdmin::ApplicationController
   before_action :validate_suspension_metadata, only: :update
+  before_action :validate_contact_hiding_policy, only: :update
 
   # Overwrite any of the RESTful controller actions to implement custom behavior
   # For example, you may want to send an email after a foo is updated.
@@ -37,7 +38,9 @@ class SuperAdmin::AccountsController < SuperAdmin::ApplicationController
   #
   def resource_params
     permitted_params = super
-    permitted_params.extract!(:suspension_category, :suspension_reason)
+    # contact_hiding_policy is a has_one, not an account column; Administrate would raise
+    # ActiveModel::UnknownAttributeError if it reached assign_attributes.
+    permitted_params.extract!(:suspension_category, :suspension_reason, :contact_hiding_policy)
     permitted_params[:limits] = permitted_params[:limits].to_h.compact if permitted_params.key?(:limits)
     permitted_params[:captain_models] = permitted_params[:captain_models].to_h.compact_blank.presence if permitted_params.key?(:captain_models)
     permitted_params[:selected_feature_flags] = params[:enabled_features].keys.map(&:to_sym) if params[:enabled_features].present?
@@ -46,6 +49,7 @@ class SuperAdmin::AccountsController < SuperAdmin::ApplicationController
 
   def update
     apply_suspension_metadata
+    apply_contact_hiding_policy
     super
   end
 
@@ -76,6 +80,33 @@ class SuperAdmin::AccountsController < SuperAdmin::ApplicationController
   end
 
   private
+
+  def contact_hiding_params
+    @contact_hiding_params ||= params.dig(:account, :contact_hiding_policy)
+                                     &.permit(:enabled, :visible_per_cycle, :hidden_per_cycle)
+  end
+
+  def validate_contact_hiding_policy
+    return if contact_hiding_params.blank?
+
+    policy = ::ContactHiding::PolicyUpdateService.new(
+      account: requested_resource, params: contact_hiding_params
+    ).build
+    return if policy.valid?
+
+    policy.errors.full_messages.each { |message| requested_resource.errors.add(:base, message) }
+    render :edit,
+           locals: { page: Administrate::Page::Form.new(dashboard, requested_resource) },
+           status: :unprocessable_entity
+  end
+
+  def apply_contact_hiding_policy
+    return if contact_hiding_params.blank?
+
+    ::ContactHiding::PolicyUpdateService.new(
+      account: requested_resource, params: contact_hiding_params
+    ).perform
+  end
 
   def validate_suspension_metadata
     return unless suspension_metadata_required?

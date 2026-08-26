@@ -2,7 +2,9 @@ class Conversations::PermissionFilterService
   attr_reader :conversations, :user, :account
 
   def initialize(conversations, user, account)
-    @conversations = conversations
+    # Applied here and not in `perform` because the administrator branch and the
+    # enterprise override both bypass `perform`'s body.
+    @conversations = conversations.visible_to_account
     @user = user
     @account = account
   end

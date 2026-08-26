@@ -113,6 +113,7 @@ class Captain::AssistantDrilldownBuilder
 
   def conversations_for(conversation_ids)
     account.conversations
+           .visible_to_account
            .where(id: conversation_ids)
            .includes(:assignee, :contact, :inbox)
            .order(created_at: :desc)

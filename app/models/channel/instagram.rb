@@ -34,11 +34,12 @@ class Channel::Instagram < ApplicationRecord
     'Instagram'
   end
 
-  def create_contact_inbox(instagram_id, name)
+  def create_contact_inbox(instagram_id, name, origin: nil)
     @contact_inbox = ::ContactInboxWithContactBuilder.new({
                                                             source_id: instagram_id,
                                                             inbox: inbox,
-                                                            contact_attributes: { name: name }
+                                                            contact_attributes: { name: name },
+                                                            origin: origin
                                                           }).perform
   end
 

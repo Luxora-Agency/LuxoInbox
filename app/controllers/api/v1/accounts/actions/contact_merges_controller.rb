@@ -22,6 +22,6 @@ class Api::V1::Accounts::Actions::ContactMergesController < Api::V1::Accounts::B
   end
 
   def contacts
-    @contacts ||= Current.account.contacts
+    @contacts ||= Current.account.contacts.visible_to_account
   end
 end

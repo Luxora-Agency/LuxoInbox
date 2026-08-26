@@ -20,8 +20,17 @@ class RoomChannel < ApplicationCable::Channel
     return if @current_account.blank?
 
     data = { account_id: @current_account.id, users: ::OnlineStatusTracker.get_available_users(@current_account.id) }
-    data[:contacts] = ::OnlineStatusTracker.get_available_contacts(@current_account.id) if @current_user.is_a? User
+    data[:contacts] = visible_online_contacts if @current_user.is_a? User
     ActionCable.server.broadcast(pubsub_token, { event: 'presence.update', data: data })
+  end
+
+  def visible_online_contacts
+    contacts = ::OnlineStatusTracker.get_available_contacts(@current_account.id)
+    return contacts if contacts.blank?
+
+    # get_available_contacts keys are stringified ids.
+    hidden = @current_account.contacts.hidden_from_account.where(id: contacts.keys).pluck(:id).map(&:to_s)
+    contacts.except(*hidden)
   end
 
   def ensure_stream

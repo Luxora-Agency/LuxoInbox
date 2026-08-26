@@ -2,7 +2,8 @@ class Contacts::PermissionFilterService
   attr_reader :contacts, :user, :account
 
   def initialize(contacts, user, account)
-    @contacts = contacts
+    # Applied in the initializer so it survives the administrator early return in #perform.
+    @contacts = contacts.visible_to_account
     @user = user
     @account = account
   end

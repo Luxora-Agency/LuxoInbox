@@ -5,9 +5,11 @@ module Whatsapp::IncomingMessageIdentifierHelper
     return if source_ids.blank?
 
     contact_attributes = contact_attributes_for_identifier(source_ids.first, message[:to])
+    # An echo is the business's own outbound message synced back, not an inbound contact.
     @contact_inbox = find_or_create_contact_inbox(
       source_ids: source_ids,
-      contact_attributes: contact_attributes
+      contact_attributes: contact_attributes,
+      origin: :internal
     )
     @contact = @contact_inbox.contact
     update_whatsapp_identifiers(source_ids: source_ids, phone_number: contact_attributes[:phone_number])
@@ -30,11 +32,12 @@ module Whatsapp::IncomingMessageIdentifierHelper
     update_contact_with_profile_name(contact_params)
   end
 
-  def find_or_create_contact_inbox(source_ids:, contact_attributes:)
+  def find_or_create_contact_inbox(source_ids:, contact_attributes:, origin: nil)
     ContactInboxSourceIdResolver.new(
       inbox: inbox,
       source_ids: source_ids,
-      contact_attributes: contact_attributes
+      contact_attributes: contact_attributes,
+      origin: origin
     ).perform
   end
 

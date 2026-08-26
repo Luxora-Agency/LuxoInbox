@@ -36,7 +36,7 @@ class Instagram::TestEventService
     @contact_inbox = @inbox.contact_inboxes.where(source_id: @messaging[:sender][:id]).first
     unless @contact_inbox
       @contact_inbox ||= @inbox.channel.create_contact_inbox(
-        'sender_username', 'sender_username'
+        'sender_username', 'sender_username', origin: :internal
       )
     end
 

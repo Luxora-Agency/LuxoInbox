@@ -167,4 +167,53 @@ RSpec.describe Account::ContactsExportJob do
       expect(csv_data.length).to eq(8)
     end
   end
+
+  context 'when contacts are hidden from the account' do
+    let!(:hidden_contact) do
+      create(:contact, account: account, hidden: true, email: 'hidden@text.example', phone_number: '+910808080899')
+    end
+    let!(:visible_contact) { create(:contact, account: account, email: 'visible@text.example') }
+    let(:contains_filter) do
+      { :payload => [email_filter.merge(:values => 'text.example', :query_operator => nil)] }.with_indifferent_access
+    end
+
+    it 'excludes hidden contacts from the plain export' do
+      described_class.perform_now(account.id, user.id, %w[id email], {})
+
+      emails = CSV.parse(account.contacts_export.download, headers: true).pluck('email')
+
+      expect(emails).to include(visible_contact.email)
+      expect(emails).not_to include(hidden_contact.email)
+    end
+
+    it 'excludes hidden contacts from the label export' do
+      create(:label, account: account, title: 'spec-hidden')
+      hidden_contact.add_labels(['spec-hidden'])
+      visible_contact.add_labels(['spec-hidden'])
+
+      described_class.perform_now(account.id, user.id, %w[id email], { :payload => nil, :label => 'spec-hidden' })
+
+      emails = CSV.parse(account.contacts_export.download, headers: true).pluck('email')
+
+      expect(emails).to eq([visible_contact.email])
+    end
+
+    it 'excludes hidden contacts from the filtered export' do
+      described_class.perform_now(account.id, user.id, %w[id email], contains_filter)
+
+      emails = CSV.parse(account.contacts_export.download, headers: true).pluck('email')
+
+      expect(emails).to include(visible_contact.email)
+      expect(emails).not_to include(hidden_contact.email)
+    end
+
+    it 'never exports the hidden column even when it is explicitly requested' do
+      described_class.perform_now(account.id, user.id, %w[id email hidden], {})
+
+      csv_data = CSV.parse(account.contacts_export.download, headers: true)
+
+      expect(csv_data.headers).to eq(%w[id email])
+      expect(account.contacts_export.download).not_to include('hidden')
+    end
+  end
 end

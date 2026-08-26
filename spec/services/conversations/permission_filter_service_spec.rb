@@ -43,5 +43,23 @@ RSpec.describe Conversations::PermissionFilterService do
         expect(result.count).to eq(2)
       end
     end
+
+    context 'when the account has conversations hidden from it' do
+      let!(:hidden_conversation) { create(:conversation, account: account, inbox: inbox, hidden: true) }
+
+      it 'excludes them from the administrator result' do
+        result = described_class.new(account.conversations, admin, account).perform
+
+        expect(result).not_to include(hidden_conversation)
+        expect(result.count).to eq(2)
+      end
+
+      it 'excludes them from the agent result' do
+        result = described_class.new(account.conversations.where(inbox_id: inbox.id), agent, account).perform
+
+        expect(result).not_to include(hidden_conversation)
+        expect(result.count).to eq(2)
+      end
+    end
   end
 end

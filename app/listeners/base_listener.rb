@@ -36,4 +36,13 @@ class BaseListener
 
     changed_attributes.map { |k, v| { k => { previous_value: v[0], current_value: v[1] } } }
   end
+
+  def hidden_subject?(event)
+    data = event.data
+    conversation = data[:conversation] || data[:message]&.conversation
+    return true if conversation&.hidden?
+
+    contact = data[:contact] || data[:contact_inbox]&.contact
+    contact&.hidden? || false
+  end
 end

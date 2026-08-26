@@ -719,6 +719,51 @@ RSpec.describe Conversation do
     end
   end
 
+  describe 'when conversation is created for a hidden contact' do
+    let(:account) { create(:account) }
+    let(:inbox) { create(:inbox, account: account) }
+    let(:hidden_contact) { create(:contact, account: account, hidden: true) }
+    let(:visible_contact) { create(:contact, account: account) }
+
+    it 'inserts the conversation as hidden' do
+      conversation = create(:conversation, account: account, contact: hidden_contact, inbox: inbox)
+
+      expect(conversation.reload.hidden).to be(true)
+    end
+
+    it 'keeps the conversation visible for a visible contact' do
+      conversation = create(:conversation, account: account, contact: visible_contact, inbox: inbox)
+
+      expect(conversation.reload.hidden).to be(false)
+    end
+
+    it 'inherits the flag regardless of who creates the conversation' do
+      conversation = inbox.conversations.create!(
+        account: account,
+        contact: hidden_contact,
+        contact_inbox: create(:contact_inbox, contact: hidden_contact, inbox: inbox)
+      )
+
+      expect(conversation.reload.hidden).to be(true)
+    end
+
+    it 'hides every later conversation of the same contact' do
+      contact_inbox = create(:contact_inbox, contact: hidden_contact, inbox: inbox)
+      first = create(:conversation, account: account, contact: hidden_contact, inbox: inbox, contact_inbox: contact_inbox,
+                                    status: :resolved)
+      second = create(:conversation, account: account, contact: hidden_contact, inbox: inbox, contact_inbox: contact_inbox)
+
+      expect(first.reload.hidden).to be(true)
+      expect(second.reload.hidden).to be(true)
+    end
+
+    it 'never un-hides a conversation that was created hidden for a visible contact' do
+      conversation = create(:conversation, account: account, contact: visible_contact, inbox: inbox, hidden: true)
+
+      expect(conversation.reload.hidden).to be(true)
+    end
+  end
+
   describe '#botinbox: when conversation created inside inbox with agent bot' do
     let!(:bot_inbox) { create(:agent_bot_inbox) }
     let(:conversation) { create(:conversation, inbox: bot_inbox.inbox) }

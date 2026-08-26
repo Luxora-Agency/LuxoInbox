@@ -70,20 +70,13 @@ class Evolution::IncomingMessageService
   end
 
   def set_contact
-    contact = inbox.contact_inboxes.find_by(source_id: sender_info[:phone_number])&.contact
-    @contact = contact || create_contact
-  end
-
-  def create_contact
-    contact = inbox.account.contacts.create!(
-      name: sender_info[:name],
-      phone_number: sender_info[:phone_number],
-      account: inbox.account
-    )
-
-    inbox.contact_inboxes.create!(contact: contact, source_id: sender_info[:phone_number])
-
-    contact
+    @contact_inbox = ::ContactInboxWithContactBuilder.new(
+      inbox: inbox,
+      source_id: sender_info[:phone_number],
+      contact_attributes: { name: sender_info[:name], phone_number: sender_info[:phone_number] },
+      origin: from_me? ? :internal : :channel_inbound
+    ).perform
+    @contact = @contact_inbox.contact
   end
 
   def set_conversation
@@ -91,22 +84,14 @@ class Evolution::IncomingMessageService
   end
 
   def find_or_create_conversation
-    contact_inbox = inbox.contact_inboxes.find_by(contact: @contact)
-    return create_new_conversation unless contact_inbox
-
-    conversation = contact_inbox.conversations.where(status: [:open, :pending]).last
-    conversation || create_new_conversation
+    @contact_inbox.conversations.where(status: [:open, :pending]).last || create_new_conversation
   end
 
   def create_new_conversation
-    contact_inbox = inbox.contact_inboxes.find_or_create_by!(contact: @contact) do |ci|
-      ci.source_id = sender_info[:phone_number]
-    end
-
     inbox.conversations.create!(
       account: inbox.account,
       contact: @contact,
-      contact_inbox: contact_inbox,
+      contact_inbox: @contact_inbox,
       inbox: inbox,
       status: :open
     )

@@ -10,6 +10,7 @@
 #  contact_last_seen_at   :datetime
 #  custom_attributes      :jsonb
 #  first_reply_created_at :datetime
+#  hidden                 :boolean          default(FALSE), not null
 #  identifier             :string
 #  last_activity_at       :datetime         not null
 #  priority               :integer
@@ -35,6 +36,7 @@
 #  conv_acid_inbid_stat_asgnid_idx                    (account_id,inbox_id,status,assignee_id)
 #  index_conversations_on_account_id                  (account_id)
 #  index_conversations_on_account_id_and_display_id   (account_id,display_id) UNIQUE
+#  index_conversations_on_account_id_where_hidden     (account_id,id) WHERE hidden
 #  index_conversations_on_assignee_id_and_account_id  (assignee_id,account_id)
 #  index_conversations_on_campaign_id                 (campaign_id)
 #  index_conversations_on_contact_id                  (contact_id)
@@ -83,6 +85,8 @@ class Conversation < ApplicationRecord
   enum status: { open: 0, resolved: 1, pending: 2, snoozed: 3 }
   enum priority: { low: 0, medium: 1, high: 2, urgent: 3 }
 
+  scope :visible_to_account, -> { where(hidden: false) }
+  scope :hidden_from_account, -> { where(hidden: true) }
   scope :unassigned, -> { where(assignee_id: nil) }
   scope :assigned, -> { where.not(assignee_id: nil) }
   scope :assigned_to, ->(agent) { where(assignee_id: agent.id) }
@@ -127,6 +131,7 @@ class Conversation < ApplicationRecord
 
   before_save :ensure_snooze_until_reset
   before_create :determine_conversation_status
+  before_create :inherit_hidden_from_contact
   before_create :ensure_waiting_since
 
   after_update_commit :execute_after_update_commit_callbacks
@@ -136,6 +141,10 @@ class Conversation < ApplicationRecord
   after_destroy_commit :notify_conversation_deletion
 
   delegate :auto_resolve_after, to: :account
+
+  def self.hidden_ids_for(account_id)
+    hidden_from_account.where(account_id: account_id).select(:id)
+  end
 
   def can_reply?
     Conversations::MessageWindowService.new(self).can_reply?
@@ -295,6 +304,11 @@ class Conversation < ApplicationRecord
     set_active_bot_conversation if inbox.active_bot?
   end
 
+  # Assign only when true so an explicitly hidden conversation is never un-hidden.
+  def inherit_hidden_from_contact
+    self.hidden = true if contact.hidden?
+  end
+
   def handle_campaign_status
     set_active_bot_conversation if campaign.sender_id.nil? && inbox.active_bot?
   end
@@ -382,7 +396,8 @@ class Conversation < ApplicationRecord
       inbox_id: inbox_id,
       assignee_id: assignee_id,
       team_id: team_id,
-      cached_label_list: cached_label_list
+      cached_label_list: cached_label_list,
+      hidden: hidden
     }
   end
 

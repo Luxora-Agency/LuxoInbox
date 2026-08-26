@@ -2,6 +2,8 @@ class ReportingEventListener < BaseListener
   include ReportingEventHelper
 
   def conversation_resolved(event)
+    return if hidden_subject?(event)
+
     conversation = extract_conversation_and_account(event)[0]
     event_end_time = event.timestamp
     time_to_resolve = event_end_time.to_i - conversation.created_at.to_i
@@ -25,6 +27,8 @@ class ReportingEventListener < BaseListener
   end
 
   def first_reply_created(event)
+    return if hidden_subject?(event)
+
     message = extract_message_and_account(event)[0]
     conversation = message.conversation
     first_response_time = message.created_at.to_i - last_non_human_activity(conversation).to_i
@@ -47,6 +51,8 @@ class ReportingEventListener < BaseListener
   end
 
   def reply_created(event)
+    return if hidden_subject?(event)
+
     message = extract_message_and_account(event)[0]
     conversation = message.conversation
     waiting_since = event.data[:waiting_since]
@@ -72,6 +78,8 @@ class ReportingEventListener < BaseListener
   end
 
   def conversation_bot_handoff(event)
+    return if hidden_subject?(event)
+
     conversation = extract_conversation_and_account(event)[0]
     event_end_time = event.timestamp
 
@@ -99,14 +107,20 @@ class ReportingEventListener < BaseListener
   end
 
   def conversation_captain_inference_resolved(event)
+    return if hidden_subject?(event)
+
     create_captain_inference_event(event, 'conversation_captain_inference_resolved')
   end
 
   def conversation_captain_inference_handoff(event)
+    return if hidden_subject?(event)
+
     create_captain_inference_event(event, 'conversation_captain_inference_handoff')
   end
 
   def conversation_opened(event)
+    return if hidden_subject?(event)
+
     conversation = extract_conversation_and_account(event)[0]
     event_end_time = event.timestamp
 

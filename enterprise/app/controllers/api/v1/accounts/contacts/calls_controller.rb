@@ -25,7 +25,7 @@ class Api::V1::Accounts::Contacts::CallsController < Api::V1::Accounts::BaseCont
   private
 
   def contact
-    @contact ||= Current.account.contacts.find(params[:id])
+    @contact ||= Current.account.contacts.visible_to_account.find(params[:id])
   end
 
   def voice_inbox

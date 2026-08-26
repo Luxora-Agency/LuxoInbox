@@ -594,6 +594,17 @@ RSpec.describe 'Contacts API', type: :request do
 
         expect(response).to have_http_status(:success)
       end
+
+      it 'never hides an agent created contact and does not consume a hiding slot' do
+        policy = create(:account_contact_hiding_policy, account: account, visible_per_cycle: 0, hidden_per_cycle: 1)
+
+        post "/api/v1/accounts/#{account.id}/contacts", headers: admin.create_new_auth_token,
+                                                        params: valid_params.merge({ inbox_id: inbox.id })
+
+        expect(response).to have_http_status(:success)
+        expect(Contact.find(response.parsed_body['payload']['contact']['id']).hidden).to be(false)
+        expect(policy.reload.inbound_contact_count).to eq(0)
+      end
     end
   end
 

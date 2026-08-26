@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_07_24_000000) do
+ActiveRecord::Schema[7.1].define(version: 2026_08_11_000003) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -26,6 +26,21 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_24_000000) do
     t.datetime "updated_at", null: false
     t.index ["owner_type", "owner_id"], name: "index_access_tokens_on_owner_type_and_owner_id"
     t.index ["token"], name: "index_access_tokens_on_token", unique: true
+  end
+
+  create_table "account_contact_hiding_policies", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.integer "visible_per_cycle", default: 1, null: false
+    t.integer "hidden_per_cycle", default: 0, null: false
+    t.bigint "inbound_contact_count", default: 0, null: false
+    t.bigint "hidden_contact_count", default: 0, null: false
+    t.bigint "unhidden_contact_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_contact_hiding_policies_on_account_id", unique: true
+    t.check_constraint "visible_per_cycle + hidden_per_cycle > 0", name: "chk_achp_cycle_length_positive"
+    t.check_constraint "visible_per_cycle >= 0 AND hidden_per_cycle >= 0", name: "chk_achp_cycle_values_non_negative"
   end
 
   create_table "account_saml_settings", force: :cascade do |t|
@@ -740,9 +755,12 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_24_000000) do
     t.boolean "blocked", default: false, null: false
     t.bigint "company_id"
     t.bigint "assignee_id"
+    t.boolean "hidden", default: false, null: false
+    t.datetime "hidden_at"
     t.index "lower((email)::text), account_id", name: "index_contacts_on_lower_email_account_id"
     t.index ["account_id", "contact_type"], name: "index_contacts_on_account_id_and_contact_type"
     t.index ["account_id", "email", "phone_number", "identifier"], name: "index_contacts_on_nonempty_fields", where: "(((email)::text <> ''::text) OR ((phone_number)::text <> ''::text) OR ((identifier)::text <> ''::text))"
+    t.index ["account_id", "id"], name: "index_contacts_on_account_id_where_hidden", where: "hidden"
     t.index ["account_id", "last_activity_at"], name: "index_contacts_on_account_id_and_last_activity_at", order: { last_activity_at: "DESC NULLS LAST" }
     t.index ["account_id"], name: "index_contacts_on_account_id"
     t.index ["account_id"], name: "index_resolved_contact_account_id", where: "(((email)::text <> ''::text) OR ((phone_number)::text <> ''::text) OR ((identifier)::text <> ''::text))"
@@ -794,7 +812,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_24_000000) do
     t.datetime "waiting_since"
     t.text "cached_label_list"
     t.bigint "assignee_agent_bot_id"
+    t.boolean "hidden", default: false, null: false
     t.index ["account_id", "display_id"], name: "index_conversations_on_account_id_and_display_id", unique: true
+    t.index ["account_id", "id"], name: "index_conversations_on_account_id_where_hidden", where: "hidden"
     t.index ["account_id", "id"], name: "index_conversations_on_id_and_account_id"
     t.index ["account_id", "inbox_id", "status", "assignee_id"], name: "conv_acid_inbid_stat_asgnid_idx"
     t.index ["account_id"], name: "index_conversations_on_account_id"
@@ -1500,6 +1520,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_24_000000) do
     t.index ["inbox_id"], name: "index_working_hours_on_inbox_id"
   end
 
+  add_foreign_key "account_contact_hiding_policies", "accounts"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "contacts", "users", column: "assignee_id"

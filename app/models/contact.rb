@@ -11,6 +11,8 @@
 #  country_code          :string           default("")
 #  custom_attributes     :jsonb
 #  email                 :string
+#  hidden                :boolean          default(FALSE), not null
+#  hidden_at             :datetime
 #  identifier            :string
 #  last_activity_at      :datetime
 #  last_name             :string           default("")
@@ -28,6 +30,7 @@
 #  index_contacts_on_account_id                          (account_id)
 #  index_contacts_on_account_id_and_contact_type         (account_id,contact_type)
 #  index_contacts_on_account_id_and_last_activity_at     (account_id,last_activity_at DESC NULLS LAST)
+#  index_contacts_on_account_id_where_hidden             (account_id,id) WHERE hidden
 #  index_contacts_on_blocked                             (blocked)
 #  index_contacts_on_company_id                          (company_id)
 #  index_contacts_on_lower_email_account_id              (lower((email)::text), account_id)
@@ -70,6 +73,9 @@ class Contact < ApplicationRecord
   before_save :sync_contact_attributes
 
   enum contact_type: { visitor: 0, lead: 1, customer: 2 }
+
+  scope :visible_to_account, -> { where(hidden: false) }
+  scope :hidden_from_account, -> { where(hidden: true) }
 
   scope :order_on_last_activity_at, lambda { |direction|
     order(
@@ -143,6 +149,10 @@ class Contact < ApplicationRecord
       .where('contacts.created_at < ?', time_period)
       .where.missing(:conversations)
   }
+
+  def self.hidden_ids_for(account_id)
+    hidden_from_account.where(account_id: account_id).select(:id)
+  end
 
   def get_source_id(inbox_id)
     contact_inboxes.find_by!(inbox_id: inbox_id).source_id
@@ -235,15 +245,24 @@ class Contact < ApplicationRecord
     ::Contacts::SyncAttributes.new(self).perform
   end
 
+  # Hidden contacts are invisible to the account, so they emit no account-facing
+  # events at all. Gating here rather than adding `hidden` to push_event_data keeps
+  # the flag out of every other contact payload.
   def dispatch_create_event
+    return if hidden
+
     Rails.configuration.dispatcher.dispatch(CONTACT_CREATED, Time.zone.now, contact: self)
   end
 
   def dispatch_update_event
+    return if hidden
+
     Rails.configuration.dispatcher.dispatch(CONTACT_UPDATED, Time.zone.now, contact: self, changed_attributes: previous_changes)
   end
 
   def dispatch_destroy_event
+    return if hidden
+
     # Pass serialized data instead of ActiveRecord object to avoid DeserializationError
     # when the async EventDispatcherJob runs after the contact has been deleted
     Rails.configuration.dispatcher.dispatch(

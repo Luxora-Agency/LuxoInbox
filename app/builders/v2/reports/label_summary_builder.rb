@@ -52,7 +52,9 @@ class V2::Reports::LabelSummaryBuilder < V2::Reports::BaseSummaryBuilder
   end
 
   def build_conversation_filter
-    conversation_filter = { account_id: account.id }
+    # hidden: false keeps hidden conversations out of the count and metric joins,
+    # matching the visible_to_account exclusion the sibling report builders use.
+    conversation_filter = { account_id: account.id, hidden: false }
     conversation_filter[:created_at] = range if range.present?
 
     conversation_filter
@@ -75,6 +77,7 @@ class V2::Reports::LabelSummaryBuilder < V2::Reports::BaseSummaryBuilder
           taggings: { taggable_type: 'Conversation', context: 'labels' }
         )
       )
+      .where.not(conversation_id: Conversation.hidden_ids_for(account.id))
       .group('tags.name')
       .count
   end

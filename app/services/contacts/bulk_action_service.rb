@@ -40,7 +40,7 @@ class Contacts::BulkActionService
   end
 
   def ids
-    Array(@params[:ids]).compact
+    @account.contacts.visible_to_account.where(id: Array(@params[:ids]).compact).pluck(:id)
   end
 
   def labels_to_add

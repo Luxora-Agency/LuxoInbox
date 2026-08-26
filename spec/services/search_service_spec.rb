@@ -752,5 +752,34 @@ describe SearchService do
         expect(results.first.sender_id).to eq(test_contact.id)
       end
     end
+
+    context 'when contacts are hidden from the account' do
+      let(:search_type) { 'all' }
+      let(:params) { { q: 'Potter' } }
+      let!(:hidden_contact) { create(:contact, name: 'Hidden Potter', email: 'hidden@test.com', account_id: account.id, hidden: true) }
+      let!(:hidden_conversation) { create(:conversation, contact: hidden_contact, inbox: inbox, account: account) }
+      let!(:hidden_message) do
+        create(:message, account: account, inbox: inbox, conversation: hidden_conversation, content: 'Hidden Potter is a wizard')
+      end
+
+      it 'excludes hidden contacts, their conversations and their messages from every tab' do
+        results = search.perform
+
+        expect(results[:contacts]).not_to include(hidden_contact)
+        expect(results[:contacts]).to include(harry)
+        expect(results[:conversations]).not_to include(hidden_conversation)
+        expect(results[:conversations]).to include(conversation)
+        expect(results[:messages]).not_to include(hidden_message)
+        expect(results[:messages]).to include(message)
+      end
+
+      it 'excludes hidden messages for an administrator who skips inbox filtering' do
+        account.account_users.find_by(user: user).update!(role: :administrator)
+
+        results = described_class.new(current_user: user, current_account: account, params: params, search_type: 'Message').perform
+
+        expect(results[:messages]).not_to include(hidden_message)
+      end
+    end
   end
 end

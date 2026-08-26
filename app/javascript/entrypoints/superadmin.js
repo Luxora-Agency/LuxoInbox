@@ -35,4 +35,29 @@ const initializeAccountSuspensionForm = () => {
   updateFields();
 };
 
+const initializeContactHidingForm = () => {
+  const form = document.querySelector('[data-contact-hiding-form]');
+  if (!form) return;
+
+  const toggle = form.querySelector('[data-contact-hiding-toggle]');
+  const inputsContainer = form.querySelector('[data-contact-hiding-inputs]');
+  if (!toggle || !inputsContainer) return;
+
+  const inputs = Array.from(inputsContainer.querySelectorAll('input'));
+
+  // readonly, not disabled: disabled inputs are dropped from the submission, which would
+  // send visible/hidden per cycle as 0 and fail the cycle-length validation when turning
+  // the feature off.
+  const updateInputs = () => {
+    inputs.forEach(input => {
+      input.readOnly = !toggle.checked;
+    });
+    inputsContainer.classList.toggle('opacity-50', !toggle.checked);
+  };
+
+  toggle.addEventListener('change', updateInputs);
+  updateInputs();
+};
+
 document.addEventListener('DOMContentLoaded', initializeAccountSuspensionForm);
+document.addEventListener('DOMContentLoaded', initializeContactHidingForm);

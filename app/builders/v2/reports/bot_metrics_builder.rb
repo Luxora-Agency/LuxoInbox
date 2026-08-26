@@ -23,7 +23,7 @@ class V2::Reports::BotMetricsBuilder
   end
 
   def bot_conversations
-    @bot_conversations ||= account.conversations.where(inbox_id: bot_activated_inbox_ids).where(created_at: range)
+    @bot_conversations ||= account.conversations.visible_to_account.where(inbox_id: bot_activated_inbox_ids).where(created_at: range)
   end
 
   def bot_messages

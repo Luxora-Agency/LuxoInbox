@@ -1,5 +1,7 @@
 class NotificationListener < BaseListener
   def conversation_bot_handoff(event)
+    return if hidden_subject?(event)
+
     conversation, account = extract_conversation_and_account(event)
     return if conversation.pending?
 
@@ -14,6 +16,8 @@ class NotificationListener < BaseListener
   end
 
   def conversation_created(event)
+    return if hidden_subject?(event)
+
     conversation, account = extract_conversation_and_account(event)
     return if conversation.pending?
 
@@ -28,6 +32,8 @@ class NotificationListener < BaseListener
   end
 
   def assignee_changed(event)
+    return if hidden_subject?(event)
+
     conversation, account = extract_conversation_and_account(event)
     assignee = conversation.assignee
 
@@ -48,6 +54,8 @@ class NotificationListener < BaseListener
   end
 
   def message_created(event)
+    return if hidden_subject?(event)
+
     message = extract_message_and_account(event)[0]
 
     Messages::MentionService.new(message: message).perform

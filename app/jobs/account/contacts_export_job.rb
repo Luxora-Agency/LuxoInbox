@@ -3,6 +3,8 @@ class Account::ContactsExportJob < ApplicationJob
 
   LABELS_COLUMN = 'labels'.freeze
   LABELS_DELIMITER = ','.freeze
+  # column_names comes straight from the request, so the hiding flag must never be requestable as a column.
+  NON_EXPORTABLE_COLUMNS = %w[hidden].freeze
 
   def perform(account_id, user_id, column_names, params)
     @account = Account.find(account_id)
@@ -61,9 +63,9 @@ class Account::ContactsExportJob < ApplicationJob
       result = ::Contacts::FilterService.new(@account, @account_user, @params).perform
       result[:contacts]
     elsif @params[:label].present?
-      @account.contacts.resolved_contacts(use_crm_v2: @account.feature_enabled?('crm_v2')).tagged_with(@params[:label], any: true)
+      @account.contacts.visible_to_account.resolved_contacts(use_crm_v2: @account.feature_enabled?('crm_v2')).tagged_with(@params[:label], any: true)
     else
-      @account.contacts.resolved_contacts(use_crm_v2: @account.feature_enabled?('crm_v2'))
+      @account.contacts.visible_to_account.resolved_contacts(use_crm_v2: @account.feature_enabled?('crm_v2'))
     end
   end
 
@@ -72,7 +74,7 @@ class Account::ContactsExportJob < ApplicationJob
 
     # Keep requested header order while allowing the virtual labels column.
     requested_headers.select do |header|
-      header == LABELS_COLUMN || Contact.column_names.include?(header)
+      header == LABELS_COLUMN || (Contact.column_names.include?(header) && NON_EXPORTABLE_COLUMNS.exclude?(header))
     end.uniq
   end
 

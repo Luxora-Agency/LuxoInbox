@@ -1,0 +1,60 @@
+<% content_for(:title) do %>
+  Hidden contacts — <%= @account.name %>
+<% end %>
+
+<header class="flex px-8 py-4 items-center justify-between border-b border-n-weak" role="banner">
+  <h1 class="text-base font-medium leading-6 text-n-slate-12" id="page-title">
+    <%= content_for(:title) %>
+  </h1>
+  <%= link_to "← Back to account", super_admin_account_path(@account), class: "button" %>
+</header>
+
+<section class="main-content__body px-8">
+  <% if @contacts.empty? %>
+    <p class="text-n-slate-11 py-6">No hidden contacts for this account.</p>
+  <% else %>
+    <table aria-labelledby="page-title">
+      <thead>
+        <tr>
+          <th class="cell-label">ID</th>
+          <th class="cell-label">Name</th>
+          <th class="cell-label">Phone</th>
+          <th class="cell-label">Email</th>
+          <th class="cell-label">Hidden since</th>
+          <th class="cell-label">Conversations</th>
+          <th class="cell-label"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @contacts.each do |contact| %>
+          <tr class="js-table-row">
+            <td class="cell-data"><%= contact.id %></td>
+            <td class="cell-data"><%= contact.name.presence || "—" %></td>
+            <td class="cell-data"><%= contact.phone_number.presence || "—" %></td>
+            <td class="cell-data"><%= contact.email.presence || "—" %></td>
+            <td class="cell-data"><%= (contact.hidden_at || contact.created_at).to_fs(:short) %></td>
+            <td class="cell-data">
+              <% if contact.conversations.empty? %>
+                —
+              <% else %>
+                <% contact.conversations.each do |conversation| %>
+                  <%= link_to "##{conversation.display_id}",
+                        super_admin_account_conversation_path(@account, conversation), class: "button" %>
+                <% end %>
+              <% end %>
+            </td>
+            <td class="cell-data">
+              <%= button_to "Unhide", unhide_super_admin_account_hidden_contact_path(@account, contact),
+                    method: :post, class: "button",
+                    data: { confirm: "Make this contact and all their conversations visible to the account?" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="py-4">
+      <%= paginate @contacts if respond_to?(:paginate) %>
+    </div>
+  <% end %>
+</section>

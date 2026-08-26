@@ -73,7 +73,10 @@ class Api::V1::Accounts::WhatsappCallsController < Api::V1::Accounts::BaseContro
   def set_context_from_contact
     @inbox = Current.account.inboxes.find(params[:inbox_id])
     authorize @inbox, :show?
-    @contact = Current.account.contacts.find(params[:contact_id])
+    # Filtered here rather than relying on the authorize below: the builder's
+    # new_conversation is unsaved, so inherit_hidden_from_contact has not run yet
+    # and ConversationPolicy#show? would see hidden == false.
+    @contact = Current.account.contacts.visible_to_account.find(params[:contact_id])
     @conversation = conversation_builder.existing_conversation
     # Authorize the thread the call will land in — after the dial is too late to refuse a ringing call.
     authorize(@conversation || conversation_builder.new_conversation, :show?)

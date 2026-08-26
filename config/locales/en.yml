@@ -624,6 +624,25 @@ en:
         category: 'Category'
         reason: 'Reason'
         empty: 'No suspension history recorded.'
+    contact_hiding:
+      form:
+        enabled: 'Enable contact hiding'
+        visible_per_cycle: 'Visible per cycle (N)'
+        hidden_per_cycle: 'Hidden per cycle (M)'
+        help: 'For every N new inbound contacts that stay visible, the next M are hidden from the account. Cycle length is N + M. Only channel-inbound contacts are affected — contacts created by agents or the API are never hidden. Changing N or M keeps the running counter and re-derives the cycle from the new values.'
+      show:
+        enabled: 'Enabled'
+        disabled: 'Disabled'
+        ratio: '%{hidden} hidden per %{visible} visible'
+        cycle_position: 'Cycle slot %{position} of %{length}'
+        next_hidden: 'next inbound contact will be hidden'
+        next_visible: 'next inbound contact will be visible'
+        inbound_evaluated: 'Inbound contacts evaluated'
+        hidden_total: 'Contacts hidden'
+        unhidden_total: 'Contacts unhidden'
+      errors:
+        cycle_length: 'Visible per cycle + hidden per cycle must be greater than zero'
+        operands_required: 'Set both visible per cycle (N) and hidden per cycle (M) when enabling contact hiding'
     captain_model_overrides:
       form:
         helper_text: 'Leave a model blank to use the YAML default for that AI feature.'

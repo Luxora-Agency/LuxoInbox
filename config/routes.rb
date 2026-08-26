@@ -720,6 +720,9 @@ Rails.application.routes.draw do
         resources :conversations, only: [:index, :show, :update], module: :accounts do
           resources :messages, only: [:create, :update, :destroy], module: :conversations
         end
+        resources :hidden_contacts, only: [:index], module: :accounts do
+          post :unhide, on: :member
+        end
       end
       resources :users, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
         delete :avatar, on: :member, action: :destroy_avatar

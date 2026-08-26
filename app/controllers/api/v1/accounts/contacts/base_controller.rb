@@ -4,6 +4,6 @@ class Api::V1::Accounts::Contacts::BaseController < Api::V1::Accounts::BaseContr
   private
 
   def ensure_contact
-    @contact = Current.account.contacts.find(params[:contact_id])
+    @contact = Current.account.contacts.visible_to_account.find(params[:contact_id])
   end
 end

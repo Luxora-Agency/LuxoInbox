@@ -33,7 +33,7 @@ class AutoAssignment::AssignmentService
   end
 
   def unassigned_conversations(limit)
-    scope = inbox.conversations.unassigned.open
+    scope = inbox.conversations.visible_to_account.unassigned.open
 
     # Skip stale backlog with no activity beyond the age threshold
     policy = inbox.assignment_policy

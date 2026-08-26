@@ -8,6 +8,8 @@ class Conversations::UnreadCounts::Listener < BaseListener
   private_constant :FILTERED_CONVERSATION_UPDATE_KEYS
 
   def message_created(event)
+    return if hidden_subject?(event)
+
     message, = extract_message_and_account(event)
     account = message.account
     return unless account.feature_enabled?('conversation_unread_counts') || account.feature_enabled?(filtered_count_feature_flag)
@@ -21,11 +23,15 @@ class Conversations::UnreadCounts::Listener < BaseListener
   end
 
   def conversation_status_changed(event)
+    return if hidden_subject?(event)
+
     conversation, = extract_conversation_and_account(event)
     refresh_then_invalidate(conversation, event.data[:changed_attributes])
   end
 
   def conversation_updated(event)
+    return if hidden_subject?(event)
+
     conversation, = extract_conversation_and_account(event)
     changed_attributes = event.data[:changed_attributes]
     notify_filtered_count_change(conversation) if filtered_conversation_update_changed?(changed_attributes) && !label_changed?(changed_attributes)
@@ -35,22 +41,30 @@ class Conversations::UnreadCounts::Listener < BaseListener
   end
 
   def conversation_contact_changed(event)
+    return if hidden_subject?(event)
+
     conversation, = extract_conversation_and_account(event)
     invalidate_filtered_conversation(conversation)
     notify_filtered_count_change(conversation)
   end
 
   def assignee_changed(event)
+    return if hidden_subject?(event)
+
     conversation, = extract_conversation_and_account(event)
     refresh_then_invalidate(conversation, event.data[:changed_attributes])
   end
 
   def team_changed(event)
+    return if hidden_subject?(event)
+
     conversation, = extract_conversation_and_account(event)
     refresh_then_invalidate(conversation, event.data[:changed_attributes])
   end
 
   def conversation_mentioned(event)
+    return if hidden_subject?(event)
+
     conversation, = extract_conversation_and_account(event)
     user = event.data[:user]
     filtered_count_invalidator(conversation.account).user_visibility_changed!(user_id: user&.id)
@@ -59,6 +73,7 @@ class Conversations::UnreadCounts::Listener < BaseListener
   def conversation_deleted(event)
     conversation_data = event.data[:conversation_data]&.with_indifferent_access
     return if conversation_data.blank?
+    return if conversation_data[:hidden]
 
     account = Account.find_by(id: conversation_data[:account_id])
     return if account.blank?

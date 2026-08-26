@@ -704,5 +704,33 @@ describe Whatsapp::IncomingMessageService do
         expect(message.message_type).to eq('outgoing')
       end
     end
+
+    context 'when the account hides inbound contacts' do
+      let!(:hiding_policy) do
+        create(:account_contact_hiding_policy, account: whatsapp_channel.inbox.account, visible_per_cycle: 0, hidden_per_cycle: 1)
+      end
+
+      it 'hides the contact created from an inbound message' do
+        described_class.new(inbox: whatsapp_channel.inbox, params: params).perform
+
+        contact_inbox = whatsapp_channel.inbox.contact_inboxes.find_by(source_id: wa_id)
+        expect(contact_inbox.contact.hidden).to be(true)
+        expect(contact_inbox.conversations.last.hidden).to be(true)
+        expect(hiding_policy.reload.inbound_contact_count).to eq(1)
+      end
+
+      it 'never hides a contact created from an outgoing echo and does not consume a slot' do
+        echo_params = {
+          'message_echoes' => [{ 'from' => '15550001111', 'to' => '15559998888', 'id' => 'wamid.echo-hiding',
+                                 'text' => { 'body' => 'business reply' }, 'timestamp' => '1633034394', 'type' => 'text' }]
+        }.with_indifferent_access
+
+        described_class.new(inbox: whatsapp_channel.inbox, params: echo_params, outgoing_echo: true).perform
+
+        contact_inbox = whatsapp_channel.inbox.contact_inboxes.find_by(source_id: '15559998888')
+        expect(contact_inbox.contact.hidden).to be(false)
+        expect(hiding_policy.reload.inbound_contact_count).to eq(0)
+      end
+    end
   end
 end

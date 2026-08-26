@@ -50,6 +50,8 @@ module Enterprise::MessageTemplates::HookExecutionService
   end
 
   def should_process_captain_response?
+    return false if conversation.hidden?
+
     conversation.pending? && message.incoming? && inbox.captain_assistant.present?
   end
 

@@ -1,32 +1,44 @@
 class HookListener < BaseListener
   def message_created(event)
+    return if hidden_subject?(event)
+
     message = extract_message_and_account(event)[0]
 
     execute_hooks(event, message)
   end
 
   def message_updated(event)
+    return if hidden_subject?(event)
+
     message = extract_message_and_account(event)[0]
 
     execute_hooks(event, message)
   end
 
   def contact_created(event)
+    return if hidden_subject?(event)
+
     contact = extract_contact_and_account(event)[0]
     execute_account_hooks(event, contact.account, contact: contact)
   end
 
   def contact_updated(event)
+    return if hidden_subject?(event)
+
     contact = extract_contact_and_account(event)[0]
     execute_account_hooks(event, contact.account, contact: contact)
   end
 
   def conversation_created(event)
+    return if hidden_subject?(event)
+
     conversation = extract_conversation_and_account(event)[0]
     execute_account_hooks(event, conversation.account, conversation: conversation)
   end
 
   def conversation_resolved(event)
+    return if hidden_subject?(event)
+
     conversation = extract_conversation_and_account(event)[0]
     # Only trigger for status changes is resolved
     return unless conversation.status == 'resolved'

@@ -8,7 +8,9 @@ class CallFinder
   end
 
   def perform
-    @calls = @current_account.calls
+    # Applied before filter_by_visibility because account_wide_access? skips that
+    # method entirely for administrators and report_manage custom roles.
+    @calls = @current_account.calls.where.not(conversation_id: Conversation.hidden_ids_for(@current_account.id))
     filter_by_visibility
     filter_by_status
     filter_by_direction

@@ -15,6 +15,7 @@ class V2::Reports::OutgoingMessagesCountBuilder
 
   def base_messages
     account.messages.outgoing.unscope(:order).where(created_at: range)
+           .where.not(conversation_id: Conversation.hidden_ids_for(account.id))
   end
 
   def build_by_agent

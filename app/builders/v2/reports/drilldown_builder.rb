@@ -66,10 +66,12 @@ class V2::Reports::DrilldownBuilder
          .public_send(MESSAGE_METRICS.fetch(metric))
          .includes(:sender, conversation: [:assignee, :contact, :inbox])
          .reorder(created_at: :desc)
+         .where.not(conversation_id: Conversation.hidden_ids_for(account.id))
   end
 
   def conversation_scope
     scope.conversations
+         .visible_to_account
          .where(account_id: account.id, created_at: bucket_range)
          .includes(:assignee, :contact, :inbox)
          .order(created_at: :desc)

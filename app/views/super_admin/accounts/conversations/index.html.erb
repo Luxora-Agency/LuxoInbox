@@ -22,6 +22,7 @@
           <th class="cell-label">Status</th>
           <th class="cell-label">Priority</th>
           <th class="cell-label">Messages</th>
+          <th class="cell-label">Hidden</th>
           <th class="cell-label">Created</th>
           <th class="cell-label"></th>
         </tr>
@@ -35,6 +36,13 @@
             <td class="cell-data"><%= conversation.status %></td>
             <td class="cell-data"><%= conversation.priority || "—" %></td>
             <td class="cell-data"><%= conversation.messages.size %></td>
+            <td class="cell-data">
+              <% if conversation.hidden? %>
+                <span class="px-2 h-4 leading-4 rounded-xl bg-amber-100 text-amber-800 text-xxs uppercase">hidden</span>
+              <% else %>
+                —
+              <% end %>
+            </td>
             <td class="cell-data"><%= conversation.created_at.to_fs(:short) %></td>
             <td class="cell-data">
               <%= link_to "View", super_admin_account_conversation_path(@account, conversation), class: "button" %>

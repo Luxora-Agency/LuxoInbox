@@ -57,6 +57,16 @@ describe Instagram::TestEventService do
         expect(service.perform).to be(false)
       end
 
+      it 'never hides the test contact and does not consume a hiding slot' do
+        inbox
+        policy = create(:account_contact_hiding_policy, account: account, visible_per_cycle: 0, hidden_per_cycle: 1)
+
+        described_class.new(test_messaging).perform
+
+        expect(Contact.last.hidden).to be(false)
+        expect(policy.reload.inbound_contact_count).to eq(0)
+      end
+
       it 'returns nil when no Instagram channel exists' do
         # Delete all inboxes and channels
         Inbox.destroy_all

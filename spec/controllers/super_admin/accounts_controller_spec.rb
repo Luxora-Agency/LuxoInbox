@@ -80,6 +80,31 @@ RSpec.describe 'Super Admin accounts API', type: :request do
         expect(response).to have_http_status(:success)
         expect(assistant_select.at_css('option[value=""]').text.squish).to eq("Use default: #{default_model} (#{default_model_id})")
       end
+
+      it 'renders the contact hiding policy inputs' do
+        sign_in(super_admin, scope: :super_admin)
+
+        get "/super_admin/accounts/#{account.id}/edit"
+
+        expect(response).to have_http_status(:success)
+        expect(response.body).to include('account[contact_hiding_policy][enabled]')
+        expect(response.body).to include('account[contact_hiding_policy][visible_per_cycle]')
+        expect(response.body).to include('account[contact_hiding_policy][hidden_per_cycle]')
+      end
+
+      it 'prefills the contact hiding policy inputs from the persisted policy' do
+        create(:account_contact_hiding_policy, account: account, visible_per_cycle: 5, hidden_per_cycle: 1)
+        sign_in(super_admin, scope: :super_admin)
+
+        get "/super_admin/accounts/#{account.id}/edit"
+
+        document = Nokogiri::HTML(response.body)
+        visible_input = document.at_css('input[name="account[contact_hiding_policy][visible_per_cycle]"]')
+        hidden_input = document.at_css('input[name="account[contact_hiding_policy][hidden_per_cycle]"]')
+
+        expect(visible_input['value']).to eq('5')
+        expect(hidden_input['value']).to eq('1')
+      end
     end
   end
 
@@ -129,6 +154,76 @@ RSpec.describe 'Super Admin accounts API', type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.body).to include('not a valid model for label_suggestion')
         expect(account.reload.captain_models).to eq(existing_captain_models)
+      end
+
+      it 'creates the contact hiding policy without raising on the non-column param' do
+        sign_in(super_admin, scope: :super_admin)
+
+        patch "/super_admin/accounts/#{account.id}",
+              params: {
+                account: {
+                  name: account.name,
+                  locale: account.locale,
+                  status: account.status,
+                  contact_hiding_policy: {
+                    enabled: '1',
+                    visible_per_cycle: '5',
+                    hidden_per_cycle: '1'
+                  }
+                }
+              }
+
+        expect(response).to have_http_status(:redirect)
+        policy = account.reload.contact_hiding_policy
+        expect(policy.enabled).to be(true)
+        expect(policy.visible_per_cycle).to eq(5)
+        expect(policy.hidden_per_cycle).to eq(1)
+      end
+
+      it 'keeps the running counter when the cycle values change' do
+        create(:account_contact_hiding_policy, account: account, visible_per_cycle: 5, hidden_per_cycle: 1)
+        account.contact_hiding_policy.update!(inbound_contact_count: 3)
+        sign_in(super_admin, scope: :super_admin)
+
+        patch "/super_admin/accounts/#{account.id}",
+              params: {
+                account: {
+                  name: account.name,
+                  locale: account.locale,
+                  status: account.status,
+                  contact_hiding_policy: {
+                    enabled: '1',
+                    visible_per_cycle: '1',
+                    hidden_per_cycle: '1'
+                  }
+                }
+              }
+
+        policy = account.reload.contact_hiding_policy
+        expect(policy.inbound_contact_count).to eq(3)
+        expect(policy.cycle_length).to eq(2)
+      end
+
+      it 'rejects a contact hiding policy with a zero length cycle' do
+        sign_in(super_admin, scope: :super_admin)
+
+        patch "/super_admin/accounts/#{account.id}",
+              params: {
+                account: {
+                  name: account.name,
+                  locale: account.locale,
+                  status: account.status,
+                  contact_hiding_policy: {
+                    enabled: '1',
+                    visible_per_cycle: '0',
+                    hidden_per_cycle: '0'
+                  }
+                }
+              }
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to include('must be greater than zero')
+        expect(account.reload.contact_hiding_policy).to be_nil
       end
     end
   end

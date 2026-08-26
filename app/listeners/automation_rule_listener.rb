@@ -16,6 +16,8 @@ class AutomationRuleListener < BaseListener
   end
 
   def message_created(event)
+    return if hidden_subject?(event)
+
     message = event.data[:message]
 
     return if ignore_message_created_event?(event)
@@ -37,6 +39,7 @@ class AutomationRuleListener < BaseListener
   private
 
   def process_conversation_event(event, event_name)
+    return if hidden_subject?(event)
     return if performed_by_automation?(event)
 
     auto_reply_skip_events = %w[conversation_created conversation_opened]

@@ -69,5 +69,24 @@ RSpec.describe ConversationPolicy, type: :policy do
         expect(subject).not_to permit(agent_context, conversation)
       end
     end
+
+    context 'when the conversation is hidden from the account' do
+      let(:inbox) { create(:inbox, account: account) }
+      let(:conversation) { create(:conversation, account: account, inbox: inbox, hidden: true) }
+
+      before { create(:inbox_member, user: agent, inbox: inbox) }
+
+      # Raising RecordNotFound makes the controller render 404, so a hidden
+      # conversation is indistinguishable from an unknown display_id.
+      it 'raises RecordNotFound for an administrator' do
+        expect { described_class.new(administrator_context, conversation).show? }
+          .to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'raises RecordNotFound for an agent with inbox access' do
+        expect { described_class.new(agent_context, conversation).show? }
+          .to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 end

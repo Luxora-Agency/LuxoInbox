@@ -45,6 +45,7 @@ class Conversations::UnreadCounts::Builder
 
   def unread_conversations
     account.conversations
+           .visible_to_account
            .open
            .joins(:messages)
            .merge(Message.incoming.reorder(nil))

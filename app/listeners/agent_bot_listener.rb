@@ -52,6 +52,8 @@ class AgentBotListener < BaseListener
   end
 
   def webwidget_triggered(event)
+    return if hidden_subject?(event)
+
     contact_inbox = event.data[:contact_inbox]
     inbox = contact_inbox.inbox
     event_name = __method__.to_s
@@ -63,6 +65,8 @@ class AgentBotListener < BaseListener
   private
 
   def agent_bots_for(inbox, conversation = nil)
+    return [] if conversation&.hidden?
+
     bots = []
     bots << conversation.assignee_agent_bot if conversation&.assignee_agent_bot.present?
     inbox_bot = active_inbox_agent_bot(inbox)
