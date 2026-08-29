@@ -47,7 +47,7 @@ const requirements = computed(() => {
 
 <template>
   <div
-    class="absolute top-0 z-50 w-64 text-xs rounded-xl px-4 py-4 bg-white/95 dark:bg-n-solid-3 backdrop-blur-sm shadow-xl shadow-n-slate-12/5 dark:shadow-n-slate-1/5 ring-1 ring-n-weak/50 dark:ring-n-weak/30 start-full ms-4"
+    class="absolute top-0 z-50 w-64 rounded-xl border border-white/10 bg-orbis-navy/95 px-4 py-4 font-mono text-xs shadow-2xl backdrop-blur-md start-full ms-4"
   >
     <ul role="list" class="space-y-2">
       <li
@@ -58,13 +58,13 @@ const requirements = computed(() => {
         <Icon
           class="flex-none flex-shrink-0 size-3.5 mt-0.5 transition-colors duration-200"
           :icon="item.met ? 'i-lucide-circle-check-big' : 'i-lucide-circle'"
-          :class="item.met ? 'text-n-teal-10' : 'text-n-slate-9'"
+          :class="item.met ? 'text-orbis-neon' : 'text-orbis-cream/30'"
         />
         <span
           :class="
             item.met
-              ? 'text-n-slate-12 font-medium'
-              : 'text-n-slate-10 font-normal'
+              ? 'text-orbis-cream font-medium'
+              : 'text-orbis-cream/40 font-normal'
           "
           class="transition-all duration-200"
         >

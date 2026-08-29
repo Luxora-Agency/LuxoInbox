@@ -4,6 +4,8 @@ import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import SignupForm from './components/Signup/Form.vue';
 import Icon from 'dashboard/components-next/icon/Icon.vue';
+import OrbisShell from '../../../components/Auth/OrbisShell.vue';
+import OrbisPanel from '../../../components/Auth/OrbisPanel.vue';
 import languages from 'dashboard/i18n';
 
 const store = useStore();
@@ -79,131 +81,104 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="flex min-h-screen w-full">
-    <!-- Left Panel - Branding & Features -->
-    <aside
-      class="hidden lg:flex lg:w-1/2 xl:w-[45%] bg-gradient-to-br from-[#4C1D95] via-[#86198F] to-[#9F1239] relative overflow-hidden"
-    >
-      <!-- Background Pattern -->
+  <OrbisShell
+    :hero-accent="globalConfig.installationName"
+    :hero-title="t('REGISTER.HERO.TITLE')"
+    :hero-description="t('REGISTER.HERO.DESCRIPTION')"
+  >
+    <!-- Hero: logo mark -->
+    <template #hero-top>
       <div
-        class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-40"
-      />
+        class="flex size-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-[4px]"
+      >
+        <img
+          :src="globalConfig.logo"
+          :alt="globalConfig.installationName"
+          class="size-7 object-contain"
+        />
+      </div>
+    </template>
 
-      <!-- Gradient Overlay for depth -->
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
-      />
-
-      <!-- Decorative circles -->
-      <div
-        class="absolute -top-24 -right-24 w-96 h-96 bg-[#E91E8C]/20 rounded-full blur-3xl"
-      />
-      <div
-        class="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-[#9333EA]/20 rounded-full blur-3xl"
-      />
-
-      <!-- Content -->
-      <div class="relative z-10 flex flex-col justify-between p-10 xl:p-14">
-        <!-- Logo -->
-        <div class="flex items-center gap-3">
+    <!-- Hero: feature list -->
+    <template #hero-features>
+      <div class="mt-12 space-y-4">
+        <div class="flex items-center gap-4">
           <div
-            class="flex items-center justify-center size-11 bg-white/20 backdrop-blur-sm rounded-xl"
+            class="flex size-10 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/5"
           >
-            <img
-              :src="globalConfig.logo"
-              :alt="globalConfig.installationName"
-              class="w-7 h-7 object-contain"
-            />
+            <Icon icon="i-lucide-rocket" class="size-[18px] text-orbis-neon" />
           </div>
-          <span class="text-xl font-semibold text-white">
-            {{ globalConfig.installationName }}
+          <span
+            class="font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream/80"
+          >
+            {{ t('REGISTER.HERO.FEATURE_1') }}
           </span>
         </div>
-
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col justify-center py-12">
-          <h1
-            class="text-3xl xl:text-4xl font-bold text-white leading-tight mb-4"
+        <div class="flex items-center gap-4">
+          <div
+            class="flex size-10 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/5"
           >
-            {{ t('REGISTER.HERO.TITLE') }}
-          </h1>
-          <p class="text-lg text-white/80 mb-10 max-w-md">
-            {{ t('REGISTER.HERO.DESCRIPTION') }}
-          </p>
-
-          <!-- Features List -->
-          <div class="space-y-5">
-            <div class="flex items-center gap-4">
-              <div
-                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl"
-              >
-                <Icon icon="i-lucide-rocket" class="size-5 text-white" />
-              </div>
-              <span class="text-white font-medium">
-                {{ t('REGISTER.HERO.FEATURE_1') }}
-              </span>
-            </div>
-            <div class="flex items-center gap-4">
-              <div
-                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl"
-              >
-                <Icon icon="i-lucide-users" class="size-5 text-white" />
-              </div>
-              <span class="text-white font-medium">
-                {{ t('REGISTER.HERO.FEATURE_2') }}
-              </span>
-            </div>
-            <div class="flex items-center gap-4">
-              <div
-                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl"
-              >
-                <Icon icon="i-lucide-sparkles" class="size-5 text-white" />
-              </div>
-              <span class="text-white font-medium">
-                {{ t('REGISTER.HERO.FEATURE_3') }}
-              </span>
-            </div>
+            <Icon icon="i-lucide-users" class="size-[18px] text-orbis-neon" />
           </div>
+          <span
+            class="font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream/80"
+          >
+            {{ t('REGISTER.HERO.FEATURE_2') }}
+          </span>
         </div>
-
-        <!-- Trust Badge -->
-        <div
-          class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-        >
-          <p class="text-white/90 italic mb-4 leading-relaxed">
-            {{ t('REGISTER.HERO.TESTIMONIAL_TEXT') }}
-          </p>
-          <div class="flex items-center gap-3">
-            <div
-              class="size-10 bg-white/20 rounded-full flex items-center justify-center text-white font-semibold text-sm"
-            >
-              {{ t('REGISTER.HERO.TESTIMONIAL_INITIALS') }}
-            </div>
-            <div>
-              <p class="text-white font-medium text-sm">
-                {{ t('REGISTER.HERO.TESTIMONIAL_NAME') }}
-              </p>
-              <p class="text-white/60 text-xs">
-                {{ t('REGISTER.HERO.TESTIMONIAL_ROLE') }}
-              </p>
-            </div>
+        <div class="flex items-center gap-4">
+          <div
+            class="flex size-10 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/5"
+          >
+            <Icon
+              icon="i-lucide-sparkles"
+              class="size-[18px] text-orbis-neon"
+            />
           </div>
+          <span
+            class="font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream/80"
+          >
+            {{ t('REGISTER.HERO.FEATURE_3') }}
+          </span>
         </div>
       </div>
-    </aside>
+    </template>
 
-    <!-- Right Panel - Signup Form -->
-    <section
-      class="flex-1 flex flex-col justify-center items-center p-6 sm:p-10 bg-n-background dark:bg-n-background relative"
-    >
-      <!-- Language Selector (Top Right) -->
+    <!-- Hero: trust badge -->
+    <template #hero-bottom>
+      <OrbisPanel class="p-6">
+        <p class="font-mono text-sm leading-relaxed text-orbis-cream/80">
+          {{ t('REGISTER.HERO.TESTIMONIAL_TEXT') }}
+        </p>
+        <div class="mt-5 flex items-center gap-3">
+          <div
+            class="flex size-10 items-center justify-center rounded-full border border-orbis-neon/30 bg-orbis-neon/10 font-mono text-xs font-semibold text-orbis-neon"
+          >
+            {{ t('REGISTER.HERO.TESTIMONIAL_INITIALS') }}
+          </div>
+          <div>
+            <p class="text-sm font-medium text-orbis-cream">
+              {{ t('REGISTER.HERO.TESTIMONIAL_NAME') }}
+            </p>
+            <p
+              class="font-mono text-[11px] uppercase tracking-[0.14em] text-orbis-cream/45"
+            >
+              {{ t('REGISTER.HERO.TESTIMONIAL_ROLE') }}
+            </p>
+          </div>
+        </div>
+      </OrbisPanel>
+    </template>
+
+    <!-- Language Selector (Top Right) -->
+    <template #top-right>
       <div
         ref="languageDropdownRef"
-        class="absolute top-6 right-6 sm:top-8 sm:right-8"
+        class="absolute top-6 right-6 z-50 sm:top-8 sm:right-8"
       >
         <button
           type="button"
-          class="flex items-center gap-2 px-3 py-2 text-sm text-n-slate-11 hover:text-n-slate-12 hover:bg-n-alpha-2 rounded-lg transition-colors"
+          class="flex items-center gap-2 rounded-lg px-3 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-orbis-cream/55 transition-colors hover:bg-white/5 hover:text-orbis-cream"
           @click="toggleLanguageDropdown"
         >
           <Icon icon="i-lucide-globe" class="size-4" />
@@ -224,17 +199,17 @@ onBeforeUnmount(() => {
         >
           <div
             v-if="showLanguageDropdown"
-            class="absolute right-0 mt-2 w-48 max-h-64 overflow-y-auto bg-white dark:bg-n-solid-3 rounded-xl shadow-lg ring-1 ring-n-weak/50 dark:ring-n-weak/30 py-1 z-50"
+            class="absolute right-0 z-50 mt-2 max-h-64 w-48 overflow-y-auto rounded-xl border border-white/10 bg-orbis-navy/95 py-1 shadow-2xl backdrop-blur-md"
           >
             <button
               v-for="lang in availableLanguages"
               :key="lang.code"
               type="button"
-              class="w-full px-4 py-2 text-left text-sm hover:bg-n-alpha-2 transition-colors"
+              class="w-full px-4 py-2 text-left text-sm transition-colors hover:bg-white/5"
               :class="
                 selectedLocale === lang.code
-                  ? 'text-n-brand font-medium bg-n-brand/5'
-                  : 'text-n-slate-12'
+                  ? 'text-orbis-neon font-medium bg-orbis-neon/5'
+                  : 'text-orbis-cream/75'
               "
               @click="changeLocale(lang.code)"
             >
@@ -243,45 +218,48 @@ onBeforeUnmount(() => {
           </div>
         </Transition>
       </div>
+    </template>
 
-      <!-- Mobile Logo -->
-      <div class="lg:hidden mb-8 text-center">
-        <img
-          :src="globalConfig.logo"
-          :alt="globalConfig.installationName"
-          class="h-10 mx-auto mb-4 dark:hidden"
-        />
-        <img
-          v-if="globalConfig.logoDark"
-          :src="globalConfig.logoDark"
-          :alt="globalConfig.installationName"
-          class="hidden h-10 mx-auto mb-4 dark:block"
-        />
-      </div>
+    <!-- Mobile Logo -->
+    <div class="mb-8 text-center lg:hidden">
+      <img
+        v-if="globalConfig.logoDark"
+        :src="globalConfig.logoDark"
+        :alt="globalConfig.installationName"
+        class="mx-auto mb-4 h-10"
+      />
+      <img
+        v-else
+        :src="globalConfig.logo"
+        :alt="globalConfig.installationName"
+        class="mx-auto mb-4 h-10"
+      />
+    </div>
 
-      <!-- Signup Form Container -->
-      <div class="w-full max-w-md">
-        <!-- Header -->
-        <div class="text-center mb-8">
-          <h2
-            class="text-2xl sm:text-3xl font-bold tracking-tight text-n-slate-12 mb-2"
+    <!-- Signup Form Container -->
+    <OrbisPanel class="w-full max-w-md p-8 sm:p-10">
+      <!-- Header -->
+      <div class="mb-8">
+        <h2
+          class="font-anton text-3xl uppercase leading-none tracking-[0.01em] text-orbis-cream sm:text-4xl"
+        >
+          {{ t('REGISTER.GET_STARTED') }}
+        </h2>
+        <p
+          class="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-orbis-cream/45"
+        >
+          {{ t('REGISTER.HAVE_AN_ACCOUNT') }}
+          <router-link
+            to="/app/login"
+            class="text-orbis-neon transition-colors hover:text-orbis-neon/70"
           >
-            {{ t('REGISTER.GET_STARTED') }}
-          </h2>
-          <p class="text-n-slate-11">
-            {{ t('REGISTER.HAVE_AN_ACCOUNT') }}
-            <router-link
-              to="/app/login"
-              class="text-n-brand hover:text-n-brand/80 font-semibold transition-colors"
-            >
-              {{ t('LOGIN.SUBMIT') }}
-            </router-link>
-          </p>
-        </div>
-
-        <!-- Signup Form -->
-        <SignupForm />
+            {{ t('LOGIN.SUBMIT') }}
+          </router-link>
+        </p>
       </div>
-    </section>
-  </main>
+
+      <!-- Signup Form -->
+      <SignupForm />
+    </OrbisPanel>
+  </OrbisShell>
 </template>

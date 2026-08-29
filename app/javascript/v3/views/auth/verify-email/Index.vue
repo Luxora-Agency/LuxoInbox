@@ -6,6 +6,7 @@ import { useStore } from 'vuex';
 import { useAlert } from 'dashboard/composables';
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
 import NextButton from 'dashboard/components-next/button/Button.vue';
+import OrbisPanel from '../../../components/Auth/OrbisPanel.vue';
 import { resendConfirmation } from '../../../api/auth';
 
 const props = defineProps({
@@ -70,16 +71,21 @@ const onCaptchaError = () => {
 
 <template>
   <main
-    class="flex flex-col w-full min-h-screen py-20 bg-n-brand/5 dark:bg-n-background sm:px-6 lg:px-8"
+    class="relative flex flex-col w-full min-h-screen py-20 bg-orbis-navy text-orbis-cream antialiased sm:px-6 lg:px-8"
   >
-    <section
-      class="bg-white shadow sm:mx-auto mt-11 sm:w-full sm:max-w-lg dark:bg-n-solid-2 p-11 sm:shadow-lg sm:rounded-lg"
+    <div
+      class="pointer-events-none absolute inset-0 z-0 opacity-[0.05] mix-blend-overlay bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22140%22%20height%3D%22140%22%3E%3Cfilter%20id%3D%22g%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.85%22%20numOctaves%3D%224%22%20stitchTiles%3D%22stitch%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22140%22%20height%3D%22140%22%20filter%3D%22url(%23g)%22%2F%3E%3C%2Fsvg%3E')]"
+    />
+    <OrbisPanel
+      class="relative z-10 sm:mx-auto mt-11 sm:w-full sm:max-w-lg p-8 sm:p-11"
     >
       <div class="mb-6">
-        <h2 class="text-2xl font-semibold text-n-slate-12">
+        <h2
+          class="font-anton text-3xl uppercase leading-none tracking-[0.01em] text-orbis-cream"
+        >
           {{ $t('REGISTER.VERIFY_EMAIL.TITLE') }}
         </h2>
-        <p class="mt-2 text-sm text-n-slate-11">
+        <p class="mt-3 font-mono text-xs leading-relaxed text-orbis-cream/45">
           {{ $t('REGISTER.VERIFY_EMAIL.DESCRIPTION', { email }) }}
         </p>
       </div>
@@ -99,12 +105,12 @@ const onCaptchaError = () => {
           lg
           type="button"
           data-testid="resend_email_button"
-          class="w-full"
+          class="w-full !rounded-xl bg-gradient-to-r from-[#b724ff] to-[#7c3aed] font-mono !text-sm uppercase tracking-[0.16em] !text-white transition-transform duration-200 hover:enabled:scale-[1.02]"
           :label="$t('REGISTER.VERIFY_EMAIL.RESEND')"
           :is-loading="isResendingEmail"
           @click="handleResendEmail"
         />
       </div>
-    </section>
+    </OrbisPanel>
   </main>
 </template>

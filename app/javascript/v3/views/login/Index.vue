@@ -21,6 +21,8 @@ import Icon from 'dashboard/components-next/icon/Icon.vue';
 import NextButton from 'dashboard/components-next/button/Button.vue';
 import MfaVerification from 'dashboard/components/auth/MfaVerification.vue';
 import SessionLimitOverlay from 'dashboard/components/auth/SessionLimitOverlay.vue';
+import OrbisShell from '../../components/Auth/OrbisShell.vue';
+import OrbisPanel from '../../components/Auth/OrbisPanel.vue';
 
 const ERROR_MESSAGES = {
   'no-account-found': 'LOGIN.OAUTH.NO_ACCOUNT_FOUND',
@@ -66,6 +68,8 @@ export default {
     MfaVerification,
     SessionLimitOverlay,
     Icon,
+    OrbisShell,
+    OrbisPanel,
   },
   props: {
     ssoAuthToken: { type: String, default: '' },
@@ -328,131 +332,101 @@ export default {
 </script>
 
 <template>
-  <main class="flex min-h-screen w-full">
-    <!-- Left Panel - Branding & Features -->
-    <aside
-      class="hidden lg:flex lg:w-1/2 xl:w-[45%] bg-gradient-to-br from-[#4C1D95] via-[#86198F] to-[#9F1239] relative overflow-hidden"
-    >
-      <!-- Background Pattern -->
+  <OrbisShell
+    :hero-accent="globalConfig.installationName"
+    :hero-title="$t('LOGIN.HERO.TITLE')"
+    :hero-description="$t('LOGIN.HERO.DESCRIPTION')"
+  >
+    <!-- Hero: logo mark -->
+    <template #hero-top>
       <div
-        class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-40"
-      />
+        class="flex size-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-[4px]"
+      >
+        <img
+          :src="globalConfig.logo"
+          :alt="globalConfig.installationName"
+          class="size-7 object-contain"
+        />
+      </div>
+    </template>
 
-      <!-- Gradient Overlay for depth -->
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
-      />
-
-      <!-- Decorative circles -->
-      <div
-        class="absolute -top-24 -right-24 w-96 h-96 bg-[#E91E8C]/20 rounded-full blur-3xl"
-      />
-      <div
-        class="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-[#9333EA]/20 rounded-full blur-3xl"
-      />
-
-      <!-- Content -->
-      <div class="relative z-10 flex flex-col justify-between p-10 xl:p-14">
-        <!-- Logo -->
-        <div class="flex items-center gap-3">
+    <!-- Hero: feature list -->
+    <template #hero-features>
+      <div class="mt-12 space-y-4">
+        <div class="flex items-center gap-4">
           <div
-            class="flex items-center justify-center size-11 bg-white/20 backdrop-blur-sm rounded-xl"
+            class="flex size-10 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/5"
           >
-            <img
-              :src="globalConfig.logo"
-              :alt="globalConfig.installationName"
-              class="w-7 h-7 object-contain"
-            />
+            <Icon icon="i-lucide-inbox" class="size-[18px] text-orbis-neon" />
           </div>
-          <span class="text-xl font-semibold text-white">
-            {{ globalConfig.installationName }}
+          <span
+            class="font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream/80"
+          >
+            {{ $t('LOGIN.HERO.FEATURE_1') }}
           </span>
         </div>
-
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col justify-center py-12">
-          <h1
-            class="text-3xl xl:text-4xl font-bold text-white leading-tight mb-4"
+        <div class="flex items-center gap-4">
+          <div
+            class="flex size-10 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/5"
           >
-            {{ $t('LOGIN.HERO.TITLE') }}
-          </h1>
-          <p class="text-lg text-white/80 mb-10 max-w-md">
-            {{ $t('LOGIN.HERO.DESCRIPTION') }}
-          </p>
-
-          <!-- Features List -->
-          <div class="space-y-5">
-            <div class="flex items-center gap-4">
-              <div
-                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl"
-              >
-                <Icon icon="i-lucide-inbox" class="size-5 text-white" />
-              </div>
-              <span class="text-white font-medium">
-                {{ $t('LOGIN.HERO.FEATURE_1') }}
-              </span>
-            </div>
-            <div class="flex items-center gap-4">
-              <div
-                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl"
-              >
-                <Icon icon="i-lucide-bot" class="size-5 text-white" />
-              </div>
-              <span class="text-white font-medium">
-                {{ $t('LOGIN.HERO.FEATURE_2') }}
-              </span>
-            </div>
-            <div class="flex items-center gap-4">
-              <div
-                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl"
-              >
-                <Icon icon="i-lucide-zap" class="size-5 text-white" />
-              </div>
-              <span class="text-white font-medium">
-                {{ $t('LOGIN.HERO.FEATURE_3') }}
-              </span>
-            </div>
+            <Icon icon="i-lucide-bot" class="size-[18px] text-orbis-neon" />
           </div>
+          <span
+            class="font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream/80"
+          >
+            {{ $t('LOGIN.HERO.FEATURE_2') }}
+          </span>
         </div>
-
-        <!-- Testimonial -->
-        <div
-          class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10"
-        >
-          <p class="text-white/90 italic mb-4 leading-relaxed">
-            {{ $t('LOGIN.HERO.TESTIMONIAL_TEXT') }}
-          </p>
-          <div class="flex items-center gap-3">
-            <div
-              class="size-10 bg-white/20 rounded-full flex items-center justify-center text-white font-semibold text-sm"
-            >
-              {{ $t('LOGIN.HERO.TESTIMONIAL_INITIALS') }}
-            </div>
-            <div>
-              <p class="text-white font-medium text-sm">
-                {{ $t('LOGIN.HERO.TESTIMONIAL_NAME') }}
-              </p>
-              <p class="text-white/60 text-xs">
-                {{ $t('LOGIN.HERO.TESTIMONIAL_ROLE') }}
-              </p>
-            </div>
+        <div class="flex items-center gap-4">
+          <div
+            class="flex size-10 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/5"
+          >
+            <Icon icon="i-lucide-zap" class="size-[18px] text-orbis-neon" />
           </div>
+          <span
+            class="font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream/80"
+          >
+            {{ $t('LOGIN.HERO.FEATURE_3') }}
+          </span>
         </div>
       </div>
-    </aside>
+    </template>
 
-    <!-- Right Panel - Login Form -->
-    <section
-      class="flex-1 flex flex-col justify-center items-center p-6 sm:p-10 bg-n-background dark:bg-n-background relative"
-    >
-      <!-- Language Selector (Top Right) -->
+    <!-- Hero: testimonial -->
+    <template #hero-bottom>
+      <OrbisPanel class="p-6">
+        <p class="font-mono text-sm leading-relaxed text-orbis-cream/80">
+          {{ $t('LOGIN.HERO.TESTIMONIAL_TEXT') }}
+        </p>
+        <div class="mt-5 flex items-center gap-3">
+          <div
+            class="flex size-10 items-center justify-center rounded-full border border-orbis-neon/30 bg-orbis-neon/10 font-mono text-xs font-semibold text-orbis-neon"
+          >
+            {{ $t('LOGIN.HERO.TESTIMONIAL_INITIALS') }}
+          </div>
+          <div>
+            <p class="text-sm font-medium text-orbis-cream">
+              {{ $t('LOGIN.HERO.TESTIMONIAL_NAME') }}
+            </p>
+            <p
+              class="font-mono text-[11px] uppercase tracking-[0.14em] text-orbis-cream/45"
+            >
+              {{ $t('LOGIN.HERO.TESTIMONIAL_ROLE') }}
+            </p>
+          </div>
+        </div>
+      </OrbisPanel>
+    </template>
+
+    <!-- Language Selector (Top Right) -->
+    <template #top-right>
       <div
         ref="languageDropdown"
-        class="absolute top-6 right-6 sm:top-8 sm:right-8"
+        class="absolute top-6 right-6 z-50 sm:top-8 sm:right-8"
       >
         <button
           type="button"
-          class="flex items-center gap-2 px-3 py-2 text-sm text-n-slate-11 hover:text-n-slate-12 hover:bg-n-alpha-2 rounded-lg transition-colors"
+          class="flex items-center gap-2 rounded-lg px-3 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-orbis-cream/55 transition-colors hover:bg-white/5 hover:text-orbis-cream"
           @click="toggleLanguageDropdown"
         >
           <Icon icon="i-lucide-globe" class="size-4" />
@@ -473,17 +447,17 @@ export default {
         >
           <div
             v-if="showLanguageDropdown"
-            class="absolute right-0 mt-2 w-48 max-h-64 overflow-y-auto bg-white dark:bg-n-solid-3 rounded-xl shadow-lg ring-1 ring-n-weak/50 dark:ring-n-weak/30 py-1 z-50"
+            class="absolute right-0 z-50 mt-2 max-h-64 w-48 overflow-y-auto rounded-xl border border-white/10 bg-orbis-navy/95 py-1 shadow-2xl backdrop-blur-md"
           >
             <button
               v-for="lang in availableLanguages"
               :key="lang.code"
               type="button"
-              class="w-full px-4 py-2 text-left text-sm hover:bg-n-alpha-2 transition-colors"
+              class="w-full px-4 py-2 text-left text-sm transition-colors hover:bg-white/5"
               :class="
                 selectedLocale === lang.code
-                  ? 'text-n-brand font-medium bg-n-brand/5'
-                  : 'text-n-slate-12'
+                  ? 'text-orbis-neon font-medium bg-orbis-neon/5'
+                  : 'text-orbis-cream/75'
               "
               @click="changeLocale(lang.code)"
             >
@@ -492,155 +466,163 @@ export default {
           </div>
         </Transition>
       </div>
+    </template>
 
-      <!-- Mobile Logo -->
-      <div class="lg:hidden mb-8 text-center">
-        <img
-          :src="globalConfig.logo"
-          :alt="globalConfig.installationName"
-          class="h-10 mx-auto mb-4 dark:hidden"
-        />
-        <img
-          v-if="globalConfig.logoDark"
-          :src="globalConfig.logoDark"
-          :alt="globalConfig.installationName"
-          class="hidden h-10 mx-auto mb-4 dark:block"
-        />
-      </div>
-
-      <!-- Session Limit -->
-      <div v-if="sessionsLimitReached" class="w-full max-w-md">
-        <SessionLimitOverlay
-          :sessions="limitedSessions"
-          @revoke="handleSessionRevoke"
-          @revoke-all="handleSessionRevokeAll"
-          @cancel="handleSessionLimitCancel"
-        />
-      </div>
-
-      <!-- MFA Verification -->
-      <div v-else-if="mfaRequired" class="w-full max-w-md">
-        <MfaVerification
-          :mfa-token="mfaToken"
-          @verified="handleMfaVerified"
-          @cancel="handleMfaCancel"
-        />
-      </div>
-
-      <!-- Login Form Container -->
-      <div
+    <!-- Mobile Logo -->
+    <div class="mb-8 text-center lg:hidden">
+      <img
+        v-if="globalConfig.logoDark"
+        :src="globalConfig.logoDark"
+        :alt="globalConfig.installationName"
+        class="mx-auto mb-4 h-10"
+      />
+      <img
         v-else
-        class="w-full max-w-md"
-        :class="{ 'animate-wiggle': loginApi.hasErrored }"
-      >
-        <!-- Header -->
-        <div class="text-center mb-8">
-          <h2
-            class="text-2xl sm:text-3xl font-bold tracking-tight text-n-slate-12 mb-2"
-          >
-            {{ replaceInstallationName($t('LOGIN.TITLE')) }}
-          </h2>
-          <p class="text-n-slate-11">
-            {{ $t('LOGIN.SUBTITLE') }}
-          </p>
-        </div>
+        :src="globalConfig.logo"
+        :alt="globalConfig.installationName"
+        class="mx-auto mb-4 h-10"
+      />
+    </div>
 
-        <div v-if="!email">
-          <!-- OAuth Buttons -->
-          <div v-if="showGoogleOAuth || showSamlLogin" class="space-y-3 mb-6">
-            <GoogleOAuthButton v-if="showGoogleOAuth" />
-            <router-link
-              v-if="showSamlLogin"
-              to="/app/login/sso"
-              class="flex justify-center w-full px-4 py-3.5 items-center bg-n-background dark:bg-n-solid-3 rounded-xl ring-1 ring-inset ring-n-weak hover:ring-n-slate-7 hover:bg-n-alpha-2 dark:hover:bg-n-alpha-2 transition-all duration-200"
-            >
-              <Icon
-                icon="i-lucide-shield-check"
-                class="size-5 text-n-slate-11"
-              />
-              <span class="ml-2.5 text-base font-medium text-n-slate-12">
-                {{ $t('LOGIN.SAML.LABEL') }}
-              </span>
-            </router-link>
+    <!-- Session Limit -->
+    <div v-if="sessionsLimitReached" class="w-full max-w-md">
+      <SessionLimitOverlay
+        :sessions="limitedSessions"
+        @revoke="handleSessionRevoke"
+        @revoke-all="handleSessionRevokeAll"
+        @cancel="handleSessionLimitCancel"
+      />
+    </div>
 
-            <SimpleDivider
-              :label="$t('COMMON.OR')"
-              bg="bg-n-background dark:bg-n-background"
-              class="uppercase"
-            />
-          </div>
+    <!-- MFA Verification -->
+    <div v-else-if="mfaRequired" class="w-full max-w-md">
+      <MfaVerification
+        :mfa-token="mfaToken"
+        @verified="handleMfaVerified"
+        @cancel="handleMfaCancel"
+      />
+    </div>
 
-          <!-- Email/Password Form -->
-          <form class="space-y-5" @submit.prevent="submitFormLogin">
-            <FormInput
-              v-model="credentials.email"
-              name="email_address"
-              type="text"
-              icon="mail"
-              data-testid="email_input"
-              :tabindex="1"
-              required
-              :label="$t('LOGIN.EMAIL.LABEL')"
-              :placeholder="$t('LOGIN.EMAIL.PLACEHOLDER')"
-              :has-error="v$.credentials.email.$error"
-              @input="v$.credentials.email.$touch"
-            />
-            <FormInput
-              v-model="credentials.password"
-              type="password"
-              name="password"
-              icon="lock-closed"
-              data-testid="password_input"
-              required
-              :tabindex="2"
-              :label="$t('LOGIN.PASSWORD.LABEL')"
-              :placeholder="$t('LOGIN.PASSWORD.PLACEHOLDER')"
-              :has-error="v$.credentials.password.$error"
-              @input="v$.credentials.password.$touch"
-            >
-              <p v-if="!globalConfig.disableUserProfileUpdate">
-                <router-link
-                  to="auth/reset/password"
-                  class="text-sm text-n-brand hover:text-n-brand/80 font-medium transition-colors"
-                  tabindex="4"
-                >
-                  {{ $t('LOGIN.FORGOT_PASSWORD') }}
-                </router-link>
-              </p>
-            </FormInput>
-
-            <NextButton
-              lg
-              type="submit"
-              data-testid="submit_button"
-              class="w-full"
-              :tabindex="3"
-              :label="$t('LOGIN.SUBMIT')"
-              :disabled="loginApi.showLoading"
-              :is-loading="loginApi.showLoading"
-            />
-          </form>
-
-          <!-- Signup Link -->
-          <p
-            v-if="showSignupLink"
-            class="mt-8 text-center text-sm text-n-slate-11"
-          >
-            {{ $t('LOGIN.NO_ACCOUNT') }}
-            <router-link
-              to="auth/signup"
-              class="text-n-brand hover:text-n-brand/80 font-semibold transition-colors"
-            >
-              {{ $t('LOGIN.CREATE_NEW_ACCOUNT') }}
-            </router-link>
-          </p>
-        </div>
-
-        <!-- Loading State -->
-        <div v-else class="flex items-center justify-center py-16">
-          <Spinner color-scheme="primary" size="" />
-        </div>
+    <!-- Login Form Container -->
+    <OrbisPanel
+      v-else
+      class="w-full max-w-md p-8 sm:p-10"
+      :class="{ 'animate-wiggle': loginApi.hasErrored }"
+    >
+      <!-- Header -->
+      <div class="mb-8">
+        <h2
+          class="font-anton text-3xl uppercase leading-none tracking-[0.01em] text-orbis-cream sm:text-4xl"
+        >
+          {{ replaceInstallationName($t('LOGIN.TITLE')) }}
+        </h2>
+        <p
+          class="mt-3 font-mono text-xs uppercase tracking-[0.16em] text-orbis-cream/45"
+        >
+          {{ $t('LOGIN.SUBTITLE') }}
+        </p>
       </div>
-    </section>
-  </main>
+
+      <div v-if="!email">
+        <!-- OAuth Buttons -->
+        <div v-if="showGoogleOAuth || showSamlLogin" class="mb-6 space-y-3">
+          <GoogleOAuthButton v-if="showGoogleOAuth" />
+          <router-link
+            v-if="showSamlLogin"
+            to="/app/login/sso"
+            class="flex w-full items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 transition-colors duration-200 hover:border-white/25 hover:bg-white/10"
+          >
+            <Icon
+              icon="i-lucide-shield-check"
+              class="size-5 text-orbis-cream/60"
+            />
+            <span
+              class="ml-2.5 font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream"
+            >
+              {{ $t('LOGIN.SAML.LABEL') }}
+            </span>
+          </router-link>
+
+          <SimpleDivider
+            :label="$t('COMMON.OR')"
+            bg="bg-orbis-navy"
+            class="uppercase [&_span]:font-mono [&_span]:text-[11px] [&_span]:tracking-[0.2em] [&_span]:text-orbis-cream/40"
+          />
+        </div>
+
+        <!-- Email/Password Form -->
+        <form
+          class="space-y-5 [&_label]:font-mono [&_label]:text-[11px] [&_label]:uppercase [&_label]:tracking-[0.18em] [&_label]:text-orbis-cream/70 [&_label.text-n-ruby-11]:!text-orbis-danger [&_.pointer-events-none]:text-orbis-cream/35 [&_input]:rounded-xl [&_input]:bg-white/5 [&_input]:text-orbis-cream [&_input]:placeholder:text-orbis-cream/30 [&_input:not(.error)]:outline-white/15 [&_input:not(.error):hover]:outline-white/30 [&_input:not(.error):focus]:outline-orbis-neon [&_input:not(.error):focus]:ring-orbis-neon/15 [&_input.error]:outline-orbis-danger [&_input.error:hover]:outline-orbis-danger [&_input.error:focus]:outline-orbis-danger [&_input.error:focus]:ring-orbis-danger/15 [&_button[aria-pressed]]:text-orbis-cream/45 [&_button[aria-pressed]:hover]:text-orbis-cream"
+          @submit.prevent="submitFormLogin"
+        >
+          <FormInput
+            v-model="credentials.email"
+            name="email_address"
+            type="text"
+            icon="mail"
+            data-testid="email_input"
+            :tabindex="1"
+            required
+            :label="$t('LOGIN.EMAIL.LABEL')"
+            :placeholder="$t('LOGIN.EMAIL.PLACEHOLDER')"
+            :has-error="v$.credentials.email.$error"
+            @input="v$.credentials.email.$touch"
+          />
+          <FormInput
+            v-model="credentials.password"
+            type="password"
+            name="password"
+            icon="lock-closed"
+            data-testid="password_input"
+            required
+            :tabindex="2"
+            :label="$t('LOGIN.PASSWORD.LABEL')"
+            :placeholder="$t('LOGIN.PASSWORD.PLACEHOLDER')"
+            :has-error="v$.credentials.password.$error"
+            @input="v$.credentials.password.$touch"
+          >
+            <p v-if="!globalConfig.disableUserProfileUpdate">
+              <router-link
+                to="auth/reset/password"
+                class="font-mono text-[11px] uppercase tracking-[0.14em] text-orbis-neon transition-colors hover:text-orbis-neon/70"
+                tabindex="4"
+              >
+                {{ $t('LOGIN.FORGOT_PASSWORD') }}
+              </router-link>
+            </p>
+          </FormInput>
+
+          <NextButton
+            lg
+            type="submit"
+            data-testid="submit_button"
+            class="w-full !rounded-xl bg-gradient-to-r from-[#b724ff] to-[#7c3aed] font-mono !text-sm uppercase tracking-[0.16em] !text-white transition-transform duration-200 hover:enabled:scale-[1.02]"
+            :tabindex="3"
+            :label="$t('LOGIN.SUBMIT')"
+            :disabled="loginApi.showLoading"
+            :is-loading="loginApi.showLoading"
+          />
+        </form>
+
+        <!-- Signup Link -->
+        <p
+          v-if="showSignupLink"
+          class="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.14em] text-orbis-cream/45"
+        >
+          {{ $t('LOGIN.NO_ACCOUNT') }}
+          <router-link
+            to="auth/signup"
+            class="text-orbis-neon transition-colors hover:text-orbis-neon/70"
+          >
+            {{ $t('LOGIN.CREATE_NEW_ACCOUNT') }}
+          </router-link>
+        </p>
+      </div>
+
+      <!-- Loading State -->
+      <div v-else class="flex items-center justify-center py-16">
+        <Spinner color-scheme="primary" size="" />
+      </div>
+    </OrbisPanel>
+  </OrbisShell>
 </template>

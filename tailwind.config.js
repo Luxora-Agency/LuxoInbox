@@ -43,6 +43,8 @@ const tailwindConfig = {
         sans: defaultSansFonts,
         inter: ['Inter', ...defaultSansFonts],
         interDisplay: ['InterDisplay', ...defaultSansFonts],
+        anton: ['Anton', ...defaultSansFonts],
+        condiment: ['Condiment', 'cursive'],
       },
       fontWeight: {
         420: '420',
