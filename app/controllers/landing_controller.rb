@@ -75,6 +75,9 @@ class LandingController < ActionController::Base
     @portal = Portal.find_by(custom_domain: request.host)
     return if @portal.nil?
 
+    # The portal footers read branding from @global_config; same keys the
+    # public portal base controller loads.
+    @global_config = GlobalConfig.get('LOGO_THUMBNAIL', 'BRAND_NAME', 'BRAND_URL', 'INSTALLATION_NAME')
     @locale = @portal.default_locale
     request.variant = :documentation if @portal.layout == 'documentation'
     load_home_data
