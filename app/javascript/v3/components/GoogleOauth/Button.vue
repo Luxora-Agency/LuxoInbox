@@ -33,10 +33,12 @@ export default {
   <div class="flex flex-col">
     <a
       :href="getGoogleAuthUrl()"
-      class="inline-flex justify-center w-full px-4 py-3.5 bg-n-background dark:bg-n-solid-3 items-center rounded-xl ring-1 ring-inset ring-n-weak dark:ring-n-weak hover:ring-n-slate-7 dark:hover:ring-n-slate-7 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-n-brand/20 focus:ring-offset-2 focus:ring-offset-n-background transition-all duration-200"
+      class="inline-flex w-full items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 backdrop-blur-[4px] transition-colors duration-200 hover:border-white/25 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-orbis-neon/30"
     >
       <span class="i-logos-google-icon h-5 w-5" />
-      <span class="ml-2.5 text-base font-medium text-n-slate-12">
+      <span
+        class="ml-2.5 font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream"
+      >
         <slot>{{ $t('LOGIN.OAUTH.GOOGLE_LOGIN') }}</slot>
       </span>
     </a>

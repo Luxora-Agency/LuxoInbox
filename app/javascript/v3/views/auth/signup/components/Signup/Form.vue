@@ -118,7 +118,9 @@ const onCaptchaError = () => {
 </script>
 
 <template>
-  <div class="flex-1">
+  <div
+    class="flex-1 [&_label]:font-mono [&_label]:text-[11px] [&_label]:uppercase [&_label]:tracking-[0.18em] [&_label]:text-orbis-cream/70 [&_label.text-n-ruby-11]:!text-orbis-danger [&_.pointer-events-none]:text-orbis-cream/35 [&_input]:rounded-xl [&_input]:bg-white/5 [&_input]:text-orbis-cream [&_input]:placeholder:text-orbis-cream/30 [&_input:not(.error)]:outline-white/15 [&_input:not(.error):hover]:outline-white/30 [&_input:not(.error):focus]:outline-orbis-neon [&_input:not(.error):focus]:ring-orbis-neon/15 [&_input.error]:outline-orbis-danger [&_input.error:hover]:outline-orbis-danger [&_input.error:focus]:outline-orbis-danger [&_input.error:focus]:ring-orbis-danger/15 [&_button[aria-pressed]]:text-orbis-cream/45 [&_button[aria-pressed]:hover]:text-orbis-cream"
+  >
     <form class="space-y-4" @submit.prevent="submit">
       <FormInput
         v-model="credentials.email"
@@ -175,7 +177,7 @@ const onCaptchaError = () => {
         lg
         type="submit"
         data-testid="submit_button"
-        class="w-full font-medium mt-2"
+        class="w-full mt-2 !rounded-xl bg-gradient-to-r from-[#b724ff] to-[#7c3aed] font-mono !text-sm uppercase tracking-[0.16em] !text-white transition-transform duration-200 hover:enabled:scale-[1.02]"
         :label="$t('REGISTER.SUBMIT')"
         :disabled="isSignupInProgress || !isFormValid"
         :is-loading="isSignupInProgress"
@@ -185,7 +187,7 @@ const onCaptchaError = () => {
       {{ $t('REGISTER.OAUTH.GOOGLE_SIGNUP') }}
     </GoogleOAuthButton>
     <p
-      class="text-sm mt-6 mb-0 text-n-slate-11 leading-relaxed [&>a]:text-n-brand [&>a]:font-medium [&>a]:hover:text-n-brand/80 [&>a]:transition-colors"
+      class="text-xs mt-6 mb-0 font-mono leading-relaxed text-orbis-cream/45 [&>a]:text-orbis-neon [&>a]:font-medium [&>a]:hover:text-orbis-neon/70 [&>a]:transition-colors"
       v-html="termsLink"
     />
   </div>

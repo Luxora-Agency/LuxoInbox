@@ -10,6 +10,8 @@ import { useAlert } from 'dashboard/composables';
 import FormInput from '../../components/Form/Input.vue';
 import NextButton from 'dashboard/components-next/button/Button.vue';
 import Icon from 'dashboard/components-next/icon/Icon.vue';
+import OrbisShell from '../../components/Auth/OrbisShell.vue';
+import OrbisPanel from '../../components/Auth/OrbisPanel.vue';
 
 const props = defineProps({
   authError: {
@@ -69,203 +71,179 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="flex min-h-screen w-full">
-    <!-- Left Panel - Branding -->
-    <aside
-      class="hidden lg:flex lg:w-1/2 xl:w-[45%] bg-gradient-to-br from-[#4C1D95] via-[#86198F] to-[#9F1239] relative overflow-hidden"
-    >
-      <!-- Background Pattern -->
+  <OrbisShell
+    :hero-accent="globalConfig.installationName"
+    :hero-title="t('LOGIN.SAML.HERO.TITLE')"
+    :hero-description="t('LOGIN.SAML.HERO.DESCRIPTION')"
+  >
+    <!-- Hero: logo mark -->
+    <template #hero-top>
       <div
-        class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.05%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-40"
-      />
-
-      <!-- Gradient Overlay for depth -->
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
-      />
-
-      <!-- Decorative circles -->
-      <div
-        class="absolute -top-24 -right-24 w-96 h-96 bg-[#E91E8C]/20 rounded-full blur-3xl"
-      />
-      <div
-        class="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-[#9333EA]/20 rounded-full blur-3xl"
-      />
-
-      <!-- Content -->
-      <div class="relative z-10 flex flex-col justify-between p-10 xl:p-14">
-        <!-- Logo -->
-        <div class="flex items-center gap-3">
-          <div
-            class="flex items-center justify-center size-11 bg-white/20 backdrop-blur-sm rounded-xl"
-          >
-            <img
-              :src="globalConfig.logo"
-              :alt="globalConfig.installationName"
-              class="w-7 h-7 object-contain"
-            />
-          </div>
-          <span class="text-xl font-semibold text-white">
-            {{ globalConfig.installationName }}
-          </span>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex-1 flex flex-col justify-center py-12">
-          <div
-            class="flex items-center justify-center size-16 bg-white/10 backdrop-blur-sm rounded-2xl mb-6"
-          >
-            <Icon icon="i-lucide-shield-check" class="size-8 text-white" />
-          </div>
-          <h1
-            class="text-3xl xl:text-4xl font-bold text-white leading-tight mb-4"
-          >
-            {{ t('LOGIN.SAML.HERO.TITLE') }}
-          </h1>
-          <p class="text-lg text-white/80 mb-10 max-w-md">
-            {{ t('LOGIN.SAML.HERO.DESCRIPTION') }}
-          </p>
-
-          <!-- Features List -->
-          <div class="space-y-5">
-            <div class="flex items-center gap-4">
-              <div
-                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl"
-              >
-                <Icon icon="i-lucide-key-round" class="size-5 text-white" />
-              </div>
-              <span class="text-white font-medium">
-                {{ t('LOGIN.SAML.HERO.FEATURE_1') }}
-              </span>
-            </div>
-            <div class="flex items-center gap-4">
-              <div
-                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl"
-              >
-                <Icon icon="i-lucide-building-2" class="size-5 text-white" />
-              </div>
-              <span class="text-white font-medium">
-                {{ t('LOGIN.SAML.HERO.FEATURE_2') }}
-              </span>
-            </div>
-            <div class="flex items-center gap-4">
-              <div
-                class="flex items-center justify-center size-10 bg-white/10 backdrop-blur-sm rounded-xl"
-              >
-                <Icon icon="i-lucide-lock" class="size-5 text-white" />
-              </div>
-              <span class="text-white font-medium">
-                {{ t('LOGIN.SAML.HERO.FEATURE_3') }}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Security Badge -->
-        <div
-          class="bg-white/10 backdrop-blur-sm rounded-2xl p-5 border border-white/10 flex items-center gap-4"
-        >
-          <div
-            class="size-12 bg-white/20 rounded-xl flex items-center justify-center"
-          >
-            <Icon icon="i-lucide-badge-check" class="size-6 text-white" />
-          </div>
-          <div>
-            <p class="text-white font-medium text-sm">
-              {{ t('LOGIN.SAML.HERO.SECURITY_TITLE') }}
-            </p>
-            <p class="text-white/60 text-xs">
-              {{ t('LOGIN.SAML.HERO.SECURITY_DESC') }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Right Panel - SSO Form -->
-    <section
-      class="flex-1 flex flex-col justify-center items-center p-6 sm:p-10 bg-n-background dark:bg-n-background"
-    >
-      <!-- Mobile Logo -->
-      <div class="lg:hidden mb-8 text-center">
+        class="flex size-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-[4px]"
+      >
         <img
           :src="globalConfig.logo"
           :alt="globalConfig.installationName"
-          class="h-10 mx-auto mb-4 dark:hidden"
-        />
-        <img
-          v-if="globalConfig.logoDark"
-          :src="globalConfig.logoDark"
-          :alt="globalConfig.installationName"
-          class="hidden h-10 mx-auto mb-4 dark:block"
+          class="size-7 object-contain"
         />
       </div>
+    </template>
 
-      <!-- SSO Form Container -->
-      <div
-        class="w-full max-w-md"
-        :class="{ 'animate-wiggle': loginApi.hasErrored }"
-      >
-        <!-- Header -->
-        <div class="text-center mb-8">
+    <!-- Hero: feature list -->
+    <template #hero-features>
+      <div class="mt-12 space-y-4">
+        <div class="flex items-center gap-4">
           <div
-            class="inline-flex items-center justify-center size-14 bg-n-brand/10 dark:bg-n-brand/20 rounded-2xl mb-4"
+            class="flex size-10 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/5"
           >
-            <Icon icon="i-lucide-shield-check" class="size-7 text-n-brand" />
+            <Icon
+              icon="i-lucide-key-round"
+              class="size-[18px] text-orbis-neon"
+            />
           </div>
-          <h2
-            class="text-2xl sm:text-3xl font-bold tracking-tight text-n-slate-12 mb-2"
+          <span
+            class="font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream/80"
           >
-            {{ t('LOGIN.SAML.TITLE') }}
-          </h2>
-          <p class="text-n-slate-11">
-            {{ t('LOGIN.SAML.SUBTITLE') }}
+            {{ t('LOGIN.SAML.HERO.FEATURE_1') }}
+          </span>
+        </div>
+        <div class="flex items-center gap-4">
+          <div
+            class="flex size-10 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/5"
+          >
+            <Icon
+              icon="i-lucide-building-2"
+              class="size-[18px] text-orbis-neon"
+            />
+          </div>
+          <span
+            class="font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream/80"
+          >
+            {{ t('LOGIN.SAML.HERO.FEATURE_2') }}
+          </span>
+        </div>
+        <div class="flex items-center gap-4">
+          <div
+            class="flex size-10 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/5"
+          >
+            <Icon icon="i-lucide-lock" class="size-[18px] text-orbis-neon" />
+          </div>
+          <span
+            class="font-mono text-xs uppercase tracking-[0.14em] text-orbis-cream/80"
+          >
+            {{ t('LOGIN.SAML.HERO.FEATURE_3') }}
+          </span>
+        </div>
+      </div>
+    </template>
+
+    <!-- Hero: security badge -->
+    <template #hero-bottom>
+      <OrbisPanel class="flex items-center gap-4 p-5">
+        <div
+          class="flex size-12 flex-none items-center justify-center rounded-xl border border-white/10 bg-white/5"
+        >
+          <Icon icon="i-lucide-badge-check" class="size-6 text-orbis-neon" />
+        </div>
+        <div>
+          <p class="text-sm font-medium text-orbis-cream">
+            {{ t('LOGIN.SAML.HERO.SECURITY_TITLE') }}
+          </p>
+          <p
+            class="font-mono text-[11px] uppercase tracking-[0.14em] text-orbis-cream/45"
+          >
+            {{ t('LOGIN.SAML.HERO.SECURITY_DESC') }}
           </p>
         </div>
+      </OrbisPanel>
+    </template>
 
-        <!-- SSO Form -->
-        <form class="space-y-5" method="POST" action="/api/v1/auth/saml_login">
-          <FormInput
-            v-model="credentials.email"
-            name="email"
-            type="text"
-            icon="mail"
-            :tabindex="1"
-            required
-            :label="t('LOGIN.SAML.WORK_EMAIL.LABEL')"
-            :placeholder="t('LOGIN.SAML.WORK_EMAIL.PLACEHOLDER')"
-            :has-error="v$.credentials.email.$error"
-            @input="v$.credentials.email.$touch"
-          />
-          <input
-            type="hidden"
-            class="h-0"
-            name="authenticity_token"
-            :value="csrfToken"
-          />
-          <input type="hidden" class="h-0" name="target" :value="target" />
-          <NextButton
-            lg
-            type="submit"
-            class="w-full"
-            :tabindex="2"
-            :label="t('LOGIN.SAML.SUBMIT')"
-            :disabled="loginApi.showLoading"
-            :is-loading="loginApi.showLoading"
-          />
-        </form>
+    <!-- Mobile Logo -->
+    <div class="mb-8 text-center lg:hidden">
+      <img
+        v-if="globalConfig.logoDark"
+        :src="globalConfig.logoDark"
+        :alt="globalConfig.installationName"
+        class="mx-auto mb-4 h-10"
+      />
+      <img
+        v-else
+        :src="globalConfig.logo"
+        :alt="globalConfig.installationName"
+        class="mx-auto mb-4 h-10"
+      />
+    </div>
 
-        <!-- Back to Login -->
-        <p class="mt-8 text-center text-sm text-n-slate-11">
-          <router-link
-            to="/app/login"
-            class="text-n-brand hover:text-n-brand/80 font-semibold transition-colors inline-flex items-center gap-1.5"
-          >
-            <Icon icon="i-lucide-arrow-left" class="size-4" />
-            {{ t('LOGIN.SAML.BACK_TO_LOGIN') }}
-          </router-link>
+    <!-- SSO Form Container -->
+    <OrbisPanel
+      class="w-full max-w-md p-8 sm:p-10"
+      :class="{ 'animate-wiggle': loginApi.hasErrored }"
+    >
+      <!-- Header -->
+      <div class="mb-8">
+        <div
+          class="mb-5 inline-flex size-12 items-center justify-center rounded-xl border border-orbis-neon/25 bg-orbis-neon/10"
+        >
+          <Icon icon="i-lucide-shield-check" class="size-6 text-orbis-neon" />
+        </div>
+        <h2
+          class="font-anton text-3xl uppercase leading-none tracking-[0.01em] text-orbis-cream sm:text-4xl"
+        >
+          {{ t('LOGIN.SAML.TITLE') }}
+        </h2>
+        <p
+          class="mt-3 font-mono text-xs uppercase tracking-[0.16em] text-orbis-cream/45"
+        >
+          {{ t('LOGIN.SAML.SUBTITLE') }}
         </p>
       </div>
-    </section>
-  </main>
+
+      <!-- SSO Form -->
+      <form
+        class="space-y-5 [&_label]:font-mono [&_label]:text-[11px] [&_label]:uppercase [&_label]:tracking-[0.18em] [&_label]:text-orbis-cream/70 [&_label.text-n-ruby-11]:!text-orbis-danger [&_.pointer-events-none]:text-orbis-cream/35 [&_input]:rounded-xl [&_input]:bg-white/5 [&_input]:text-orbis-cream [&_input]:placeholder:text-orbis-cream/30 [&_input:not(.error)]:outline-white/15 [&_input:not(.error):hover]:outline-white/30 [&_input:not(.error):focus]:outline-orbis-neon [&_input:not(.error):focus]:ring-orbis-neon/15 [&_input.error]:outline-orbis-danger [&_input.error:hover]:outline-orbis-danger [&_input.error:focus]:outline-orbis-danger [&_input.error:focus]:ring-orbis-danger/15"
+        method="POST"
+        action="/api/v1/auth/saml_login"
+      >
+        <FormInput
+          v-model="credentials.email"
+          name="email"
+          type="text"
+          icon="mail"
+          :tabindex="1"
+          required
+          :label="t('LOGIN.SAML.WORK_EMAIL.LABEL')"
+          :placeholder="t('LOGIN.SAML.WORK_EMAIL.PLACEHOLDER')"
+          :has-error="v$.credentials.email.$error"
+          @input="v$.credentials.email.$touch"
+        />
+        <input
+          type="hidden"
+          class="h-0"
+          name="authenticity_token"
+          :value="csrfToken"
+        />
+        <input type="hidden" class="h-0" name="target" :value="target" />
+        <NextButton
+          lg
+          type="submit"
+          class="w-full !rounded-xl bg-gradient-to-r from-[#b724ff] to-[#7c3aed] font-mono !text-sm uppercase tracking-[0.16em] !text-white transition-transform duration-200 hover:enabled:scale-[1.02]"
+          :tabindex="2"
+          :label="t('LOGIN.SAML.SUBMIT')"
+          :disabled="loginApi.showLoading"
+          :is-loading="loginApi.showLoading"
+        />
+      </form>
+
+      <!-- Back to Login -->
+      <p class="mt-8 text-center">
+        <router-link
+          to="/app/login"
+          class="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-orbis-neon transition-colors hover:text-orbis-neon/70"
+        >
+          <Icon icon="i-lucide-arrow-left" class="size-4" />
+          {{ t('LOGIN.SAML.BACK_TO_LOGIN') }}
+        </router-link>
+      </p>
+    </OrbisPanel>
+  </OrbisShell>
 </template>

@@ -105,6 +105,15 @@ export const colors = {
     900: violet.violet12,
   },
 
+  // Orbis auth-screen palette (v3 auth pages only, single fixed dark look)
+  orbis: {
+    navy: '#010828',
+    'navy-deep': '#00040f',
+    cream: '#EFF4FF',
+    neon: '#6FFF00',
+    danger: '#FF4D6D',
+  },
+
   // next design system color
   n: {
     slate: {

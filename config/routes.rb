@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   if ActiveModel::Type::Boolean.new.cast(ENV.fetch('CW_API_ONLY_SERVER', false))
     root to: 'api#index'
   else
-    root to: 'dashboard#index'
+    # The public marketing page owns "/"; the product still lives under "/app".
+    root to: 'landing#index'
+    post '/landing/wompi_session', to: 'landing#wompi_session'
 
     get '/app', to: 'dashboard#index'
     get '/app/*params', to: 'dashboard#index'
