@@ -41,7 +41,10 @@ $header-height: 5.6rem;
 $woot-logo-padding: $space-large $space-two;
 
 // Colors
-$color-woot: #1f93ff;
+// Orbis lime fill accent (matches theme/colors.js woot-500 / n.brand). Pair
+// with $color-woot-contrast for legible text on top of it.
+$color-woot: #6fff00;
+$color-woot-contrast: #010828;
 $color-gray: #6e6f73;
 $color-light-gray: #747677;
 $color-border: #e0e6ed;

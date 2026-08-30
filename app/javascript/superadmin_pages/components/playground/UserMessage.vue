@@ -11,7 +11,7 @@ defineProps({
   <div class="w-full mb-4 flex items-center justify-end">
     <div
       v-dompurify-html="message"
-      class="px-4 py-3 bg-woot-400 text-white text-sm rounded-md inline-block"
+      class="px-4 py-3 bg-woot-400 text-slate-900 text-sm rounded-md inline-block"
     />
   </div>
 </template>

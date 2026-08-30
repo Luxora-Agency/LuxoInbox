@@ -7,7 +7,7 @@ input[type='submit']:not(.reset-base),
   background-color: $color-woot;
   border: 0;
   border-radius: $base-border-radius;
-  color: $white;
+  color: $color-woot-contrast;
   cursor: pointer;
   display: inline-flex;
   font-size: $font-size-small;
@@ -23,7 +23,7 @@ input[type='submit']:not(.reset-base),
 
   &:hover {
     background-color: mix($black, $color-woot, 20%);
-    color: $white;
+    color: $color-woot-contrast;
   }
 
   &:focus {
