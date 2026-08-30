@@ -62,7 +62,7 @@ export function usePopoverState() {
     activePopover.value = null;
   };
 
-  const scheduleClose = (delay = 150) => {
+  const scheduleClose = (delay = 250) => {
     clearTimeout(globalCloseTimeout);
     globalCloseTimeout = setTimeout(() => {
       closeActivePopover();
@@ -80,6 +80,17 @@ export function usePopoverState() {
     scheduleClose,
     cancelClose,
   };
+}
+
+// Section headings are presentational rows inside a group's children list. Drop
+// the ones whose items were all filtered out so no heading is left dangling.
+export function dropEmptySections(items) {
+  return items.filter((item, index) => {
+    if (!item.section) return true;
+
+    const next = items[index + 1];
+    return Boolean(next) && !next.section;
+  });
 }
 
 export function useSidebarContext() {
@@ -151,6 +162,7 @@ export function useSidebarContext() {
     resolvePath,
     resolvePermissions,
     resolveFeatureFlag,
+    resolveInstallationType,
     isAllowed,
   };
 }

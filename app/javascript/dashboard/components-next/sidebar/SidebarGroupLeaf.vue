@@ -16,7 +16,8 @@ const props = defineProps({
   thinTreeLine: { type: Boolean, default: false },
 });
 
-const { resolvePermissions, resolveFeatureFlag } = useSidebarContext();
+const { resolvePermissions, resolveFeatureFlag, resolveInstallationType } =
+  useSidebarContext();
 
 const shouldRenderComponent = computed(() => {
   return typeof props.component === 'function' || isVNode(props.component);
@@ -32,6 +33,7 @@ const TREE_CONNECTOR =
   <Policy
     :permissions="resolvePermissions(to)"
     :feature-flag="resolveFeatureFlag(to)"
+    :installation-types="resolveInstallationType(to)"
     as="li"
     class="py-0.5 ps-2 ms-3 relative text-n-slate-11 min-w-0"
     :class="{
@@ -44,11 +46,17 @@ const TREE_CONNECTOR =
       :is="to ? 'router-link' : 'div'"
       :to="to"
       :title="label"
-      class="flex h-8 items-center gap-2 px-2 py-1 rounded-xl transition-all duration-150 ease-out hover:bg-n-alpha-2 hover:text-n-slate-12 group min-w-0"
+      :aria-current="active ? 'page' : undefined"
+      class="flex relative h-9 items-center gap-2 px-2 py-1 rounded-xl transition-all duration-150 ease-out hover:bg-n-alpha-2 hover:text-n-slate-12 group min-w-0"
       :class="{
-        'text-n-slate-12 bg-n-brand/10 font-medium active': active,
+        'text-n-blue-11 bg-n-brand/10 font-medium active': active,
       }"
     >
+      <span
+        v-if="active"
+        aria-hidden="true"
+        class="absolute inset-y-1 start-0 w-0.5 rounded-full bg-n-blue-11"
+      />
       <component
         :is="component"
         v-if="shouldRenderComponent"

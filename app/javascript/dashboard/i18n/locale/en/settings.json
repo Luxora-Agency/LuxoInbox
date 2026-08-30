@@ -322,6 +322,15 @@
   },
   "SIDEBAR": {
     "NO_ITEMS": "No items",
+    "COLLAPSE": "Collapse sidebar",
+    "EXPAND": "Expand sidebar",
+    "SECTIONS": {
+      "WORKSPACE": "Workspace",
+      "PRODUCTIVITY": "Productivity",
+      "AI": "AI",
+      "DATA": "Data",
+      "ACCOUNT": "Account"
+    },
     "CURRENTLY_VIEWING_ACCOUNT": "Currently viewing:",
     "SWITCH": "Switch",
     "INBOX_VIEW": "Inbox View",

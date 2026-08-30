@@ -25,7 +25,7 @@ export function useSidebarKeyboardShortcuts(toggleShortcutModalFn) {
       action: () => navigateToRoute('home'),
     },
     'Alt+KeyV': {
-      action: () => navigateToRoute('contacts_dashboard'),
+      action: () => navigateToRoute('contacts_dashboard_index'),
     },
     'Alt+KeyR': {
       action: () => navigateToRoute('account_overview_reports'),

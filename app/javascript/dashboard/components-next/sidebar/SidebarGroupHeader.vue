@@ -21,25 +21,43 @@ const dynamicCount = useMapGetter(props.getterKeys.count);
 const count = computed(() =>
   dynamicCount.value > 99 ? '99+' : dynamicCount.value
 );
+
+// Without `to` the header renders as a div[role=button], which browsers do not
+// activate from the keyboard, so it needs the key handling a button would give.
+const handleKeydown = event => {
+  if (props.to) return;
+
+  event.preventDefault();
+  emit('toggle');
+};
 </script>
 
 <template>
   <component
     :is="to ? 'router-link' : 'div'"
-    class="flex items-center gap-2 px-2 py-1.5 rounded-xl h-9 min-w-0 transition-all duration-150 ease-out group"
-    role="button"
+    class="flex relative items-center gap-2 px-2 py-1.5 rounded-xl h-10 min-w-0 transition-all duration-150 ease-out group"
+    :role="to ? undefined : 'button'"
+    :tabindex="to ? undefined : 0"
     draggable="false"
     :to="to"
     :title="label"
+    :aria-current="isActive && to ? 'page' : undefined"
+    :aria-expanded="expandable ? isExpanded : undefined"
     :class="{
-      'text-n-slate-12 bg-n-brand/10 font-medium shadow-sm':
-        isActive && !hasActiveChild,
+      'text-n-blue-11 bg-n-brand/10 font-medium': isActive && !hasActiveChild,
       'text-n-slate-12 font-medium': hasActiveChild,
       'text-n-slate-11 hover:bg-n-alpha-2 hover:text-n-slate-12':
         !isActive && !hasActiveChild,
     }"
     @click.stop="emit('toggle')"
+    @keydown.enter="handleKeydown"
+    @keydown.space="handleKeydown"
   >
+    <span
+      v-if="isActive || hasActiveChild"
+      aria-hidden="true"
+      class="absolute inset-y-1 start-0 w-0.5 rounded-full bg-n-blue-11"
+    />
     <div v-if="icon" class="relative flex items-center gap-2">
       <Icon
         v-if="icon"
@@ -80,9 +98,15 @@ const count = computed(() =>
     </div>
     <span
       v-if="expandable"
-      v-show="isExpanded"
-      class="i-lucide-chevron-up size-3 transition-transform"
+      class="grid flex-shrink-0 place-content-center rounded-md size-6 text-n-slate-10"
       @click.stop="emit('toggle')"
-    />
+    >
+      <!-- Mirrored in RTL so it points inward; the expanded rotation flips with
+      it so the open state still points down. -->
+      <span
+        class="i-lucide-chevron-right size-3 transition-transform duration-150 ease-out motion-reduce:transition-none rtl:-scale-x-100"
+        :class="{ 'rotate-90 rtl:-rotate-90': isExpanded }"
+      />
+    </span>
   </component>
 </template>

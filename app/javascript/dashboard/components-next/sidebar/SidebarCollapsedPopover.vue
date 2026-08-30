@@ -2,11 +2,12 @@
 import { computed, ref, onMounted, nextTick } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useRouter } from 'vue-router';
-import { useSidebarContext } from './provider';
+import { useSidebarContext, dropEmptySections } from './provider';
 import { useMapGetter } from 'dashboard/composables/store';
 import Icon from 'next/icon/Icon.vue';
 import TeleportWithDirection from 'dashboard/components-next/TeleportWithDirection.vue';
 import SidebarUnreadBadge from './SidebarUnreadBadge.vue';
+import SidebarSectionHeading from './SidebarSectionHeading.vue';
 import SidebarSortMenu from './SidebarSortMenu.vue';
 
 const props = defineProps({
@@ -68,12 +69,15 @@ const transition = computed(() =>
 );
 
 const accessibleChildren = computed(() => {
-  return props.children.filter(child => {
+  const children = props.children.filter(child => {
+    if (child.section) return true;
     if (child.children) {
       return child.children.some(subChild => isAllowed(subChild.to));
     }
     return child.to && isAllowed(child.to);
   });
+
+  return dropEmptySections(children);
 });
 
 onMounted(async () => {
@@ -132,8 +136,10 @@ onMounted(async () => {
           class="m-0 p-0 list-none max-h-[400px] overflow-y-auto no-scrollbar"
         >
           <template v-for="child in accessibleChildren" :key="child.name">
+            <!-- Section heading -->
+            <SidebarSectionHeading v-if="child.section" :label="child.label" />
             <!-- SubGroup with children -->
-            <li v-if="child.children" class="group/sidebar-section py-0.5">
+            <li v-else-if="child.children" class="group/sidebar-section py-0.5">
               <div
                 class="flex items-center rounded-lg text-n-slate-11 hover:bg-n-alpha-2 transition-colors duration-150 ease-out"
               >
@@ -182,14 +188,21 @@ onMounted(async () => {
                     class="py-0.5"
                   >
                     <button
-                      class="flex items-center gap-2 px-2 py-1.5 w-full rounded-lg text-sm text-left rtl:text-right transition-colors duration-150 ease-out"
+                      class="flex relative items-center gap-2 px-2 py-1.5 w-full rounded-lg text-sm text-left rtl:text-right transition-colors duration-150 ease-out"
                       :class="{
-                        'text-n-slate-12 bg-n-alpha-2': isActive(subChild),
+                        'text-n-blue-11 bg-n-brand/10 font-medium':
+                          isActive(subChild),
                         'text-n-slate-11 hover:bg-n-alpha-2':
                           !isActive(subChild),
                       }"
+                      :aria-current="isActive(subChild) ? 'page' : undefined"
                       @click="navigateAndClose(subChild.to)"
                     >
+                      <span
+                        v-if="isActive(subChild)"
+                        aria-hidden="true"
+                        class="absolute inset-y-1 start-0 w-0.5 rounded-full bg-n-blue-11"
+                      />
                       <component
                         :is="renderIcon(subChild.icon).component"
                         v-if="subChild.icon"
@@ -206,13 +219,19 @@ onMounted(async () => {
             <!-- Direct child item -->
             <li v-else class="py-0.5">
               <button
-                class="flex items-center gap-2 px-2 py-1.5 w-full rounded-lg text-sm text-left rtl:text-right transition-colors duration-150 ease-out"
+                class="flex relative items-center gap-2 px-2 py-1.5 w-full rounded-lg text-sm text-left rtl:text-right transition-colors duration-150 ease-out"
                 :class="{
-                  'text-n-slate-12 bg-n-alpha-2': isActive(child),
+                  'text-n-blue-11 bg-n-brand/10 font-medium': isActive(child),
                   'text-n-slate-11 hover:bg-n-alpha-2': !isActive(child),
                 }"
+                :aria-current="isActive(child) ? 'page' : undefined"
                 @click="navigateAndClose(child.to)"
               >
+                <span
+                  v-if="isActive(child)"
+                  aria-hidden="true"
+                  class="absolute inset-y-1 start-0 w-0.5 rounded-full bg-n-blue-11"
+                />
                 <component
                   :is="renderIcon(child.icon).component"
                   v-if="child.icon"

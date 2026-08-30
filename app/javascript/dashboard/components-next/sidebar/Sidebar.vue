@@ -11,6 +11,8 @@ import { useSidebarKeyboardShortcuts } from './useSidebarKeyboardShortcuts';
 import { vOnClickOutside } from '@vueuse/components';
 import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 import { useWindowSize, useEventListener } from '@vueuse/core';
+import { LOCAL_STORAGE_KEYS } from 'dashboard/constants/localStorage';
+import { LocalStorage } from 'shared/helpers/localStorage';
 
 import Button from 'dashboard/components-next/button/Button.vue';
 import SidebarGroup from './SidebarGroup.vue';
@@ -126,11 +128,51 @@ const toggleShortcutModalFn = show => {
 
 useSidebarKeyboardShortcuts(toggleShortcutModalFn);
 
+const expandedGroupKey = LOCAL_STORAGE_KEYS.SIDEBAR_EXPANDED_GROUP;
+
+const getExpandedGroups = () => {
+  const expandedGroups = LocalStorage.get(expandedGroupKey);
+  return expandedGroups &&
+    typeof expandedGroups === 'object' &&
+    !Array.isArray(expandedGroups)
+    ? expandedGroups
+    : {};
+};
+
 const expandedItem = ref(null);
 
 const setExpandedItem = name => {
-  expandedItem.value = expandedItem.value === name ? null : name;
+  const nextItem = expandedItem.value === name ? null : name;
+  expandedItem.value = nextItem;
+
+  if (!accountId.value) return;
+
+  const storageKey = String(accountId.value);
+  if (nextItem) {
+    LocalStorage.updateJsonStore(expandedGroupKey, storageKey, nextItem);
+  } else {
+    LocalStorage.deleteFromJsonStore(expandedGroupKey, storageKey);
+  }
 };
+
+// Restore the last group the user opened. This runs before the groups mount, so
+// the group holding the active route can still claim the slot afterwards — it
+// writes the ref directly and leaves the stored preference untouched.
+watch(
+  accountId,
+  currentAccountId => {
+    if (!currentAccountId || expandedItem.value) return;
+
+    expandedItem.value = getExpandedGroups()[currentAccountId] ?? null;
+  },
+  { immediate: true }
+);
+
+useEventListener(window, 'storage', event => {
+  if (event.key !== expandedGroupKey || !accountId.value) return;
+
+  expandedItem.value = getExpandedGroups()[accountId.value] ?? null;
+});
 
 const {
   sidebarWidth,
@@ -199,10 +241,29 @@ const onResizeEnd = () => {
   }
 };
 
-const onResizeHandleDoubleClick = () => {
+const toggleCollapse = () => {
   if (isCollapsed.value) snapToExpanded();
   else snapToCollapsed();
 };
+
+const railPlacement = computed(() => (isRTL.value ? 'left' : 'right'));
+
+const collapseTooltip = computed(() => ({
+  content: isEffectivelyCollapsed.value
+    ? t('SIDEBAR.EXPAND')
+    : t('SIDEBAR.COLLAPSE'),
+  placement: railPlacement.value,
+}));
+
+const searchTooltip = computed(() => ({
+  content: t('COMBOBOX.SEARCH_PLACEHOLDER'),
+  placement: railPlacement.value,
+}));
+
+const composeTooltip = computed(() => ({
+  content: t('NEW_CONVERSATION.TITLE'),
+  placement: railPlacement.value,
+}));
 
 // Support both mouse and touch events
 useEventListener(document, 'mousemove', onResizeMove);
@@ -235,6 +296,11 @@ const unattendedUnreadCount = useMapGetter(
 );
 const getFolderUnreadCount = useMapGetter(
   'conversationUnreadCounts/getFolderUnreadCount'
+);
+// The rail collapses the Channels subtree into one icon, so the group carries
+// the reauthorization warning that would otherwise only live on the inbox leaf.
+const hasReauthorizationAlert = computed(() =>
+  inboxes.value.some(inbox => inbox.reauthorization_required)
 );
 const teams = useMapGetter('teams/getMyTeams');
 const contactCustomViews = useMapGetter('customViews/getContactCustomViews');
@@ -375,6 +441,10 @@ const menuItems = computed(() => {
       name: 'Conversation',
       label: t('SIDEBAR.CONVERSATIONS'),
       icon: 'i-lucide-message-circle',
+      getterKeys: {
+        count: 'conversationUnreadCounts/getAllUnreadCount',
+      },
+      hasAlert: hasReauthorizationAlert.value,
       children: [
         {
           name: 'All',
@@ -482,7 +552,10 @@ const menuItems = computed(() => {
             label: label.title,
             badgeCount: getLabelUnreadCount.value(label.id),
             icon: h('span', {
-              class: `size-[8px] rounded-sm`,
+              // `!size` because the leaf renderers pass a `size-4` class down
+              // onto the icon slot, and `size-4` outranks `size-2.5` in the
+              // generated stylesheet.
+              class: '!size-2.5 rounded-full ring-1 ring-inset ring-n-weak',
               style: { backgroundColor: label.color },
             }),
             to: accountScopedRoute('label_conversations', {
@@ -636,7 +709,7 @@ const menuItems = computed(() => {
             name: `${label.title}-${label.id}`,
             label: label.title,
             icon: h('span', {
-              class: `size-[8px] rounded-sm`,
+              class: '!size-2.5 rounded-full ring-1 ring-inset ring-n-weak',
               style: { backgroundColor: label.color },
             }),
             to: accountScopedRoute(
@@ -656,18 +729,12 @@ const menuItems = computed(() => {
       name: 'Companies',
       label: t('SIDEBAR.COMPANIES'),
       icon: 'i-lucide-building-2',
-      children: [
-        {
-          name: 'All Companies',
-          label: t('SIDEBAR.ALL_COMPANIES'),
-          to: accountScopedRoute(
-            'companies_dashboard_index',
-            {},
-            { page: 1, search: undefined }
-          ),
-          activeOn: ['companies_dashboard_index', 'companies_dashboard_show'],
-        },
-      ],
+      to: accountScopedRoute(
+        'companies_dashboard_index',
+        {},
+        { page: 1, search: undefined }
+      ),
+      activeOn: ['companies_dashboard_index', 'companies_dashboard_show'],
     },
     {
       name: 'Reports',
@@ -777,17 +844,16 @@ const menuItems = computed(() => {
       icon: 'i-lucide-bolt',
       children: [
         {
+          name: 'Settings Section Workspace',
+          label: t('SIDEBAR.SECTIONS.WORKSPACE'),
+          section: true,
+        },
+        {
           name: 'Settings Account Settings',
           label: t('SIDEBAR.ACCOUNT_SETTINGS'),
           icon: 'i-lucide-briefcase',
           to: accountScopedRoute('general_settings_index'),
         },
-        // {
-        //   name: 'Settings Captain',
-        //   label: t('SIDEBAR.CAPTAIN_AI'),
-        //   icon: 'i-woot-captain',
-        //   to: accountScopedRoute('captain_settings_index'),
-        // },
         {
           name: 'Settings Agents',
           label: t('SIDEBAR.AGENTS'),
@@ -810,6 +876,67 @@ const menuItems = computed(() => {
           ],
           to: accountScopedRoute('settings_teams_list'),
         },
+        {
+          name: 'Settings Inboxes',
+          label: t('SIDEBAR.INBOXES'),
+          icon: 'i-lucide-inbox',
+          activeOn: [
+            'settings_inbox_list',
+            'settings_inbox_show',
+            'settings_inbox_new',
+            'settings_inbox_finish',
+            'settings_inboxes_page_channel',
+            'settings_inboxes_add_agents',
+          ],
+          to: accountScopedRoute('settings_inbox_list'),
+        },
+        {
+          name: 'Settings Labels',
+          label: t('SIDEBAR.LABELS'),
+          icon: 'i-lucide-tags',
+          to: accountScopedRoute('labels_list'),
+        },
+        {
+          name: 'Settings Custom Roles',
+          label: t('SIDEBAR.CUSTOM_ROLES'),
+          icon: 'i-lucide-shield-plus',
+          to: accountScopedRoute('custom_roles_list'),
+        },
+        {
+          name: 'Settings Section Productivity',
+          label: t('SIDEBAR.SECTIONS.PRODUCTIVITY'),
+          section: true,
+        },
+        {
+          name: 'Settings Macros',
+          label: t('SIDEBAR.MACROS'),
+          icon: 'i-lucide-toy-brick',
+          to: accountScopedRoute('macros_wrapper'),
+        },
+        {
+          name: 'Settings Canned Responses',
+          label: t('SIDEBAR.CANNED_RESPONSES'),
+          icon: 'i-lucide-message-square-quote',
+          to: accountScopedRoute('canned_list'),
+        },
+        {
+          name: 'Settings Templates',
+          label: t('SIDEBAR.WHATSAPP_TEMPLATES'),
+          icon: 'i-lucide-layout-template',
+          to: accountScopedRoute('settings_templates'),
+        },
+        {
+          name: 'Settings Automation',
+          label: t('SIDEBAR.AUTOMATION'),
+          icon: 'i-lucide-repeat',
+          to: accountScopedRoute('automation_list'),
+        },
+        {
+          name: 'Conversation Workflow',
+          label: t('SIDEBAR.CONVERSATION_WORKFLOW'),
+          icon: 'i-lucide-workflow',
+          to: accountScopedRoute('conversation_workflow_index'),
+        },
         ...(hasAdvancedAssignment.value
           ? [
               {
@@ -830,43 +957,22 @@ const menuItems = computed(() => {
             ]
           : []),
         {
-          name: 'Settings Inboxes',
-          label: t('SIDEBAR.INBOXES'),
-          icon: 'i-lucide-inbox',
-          activeOn: [
-            'settings_inbox_list',
-            'settings_inbox_show',
-            'settings_inbox_new',
-            'settings_inbox_finish',
-            'settings_inboxes_page_channel',
-            'settings_inboxes_add_agents',
-          ],
-          to: accountScopedRoute('settings_inbox_list'),
+          name: 'Settings Sla',
+          label: t('SIDEBAR.SLA'),
+          icon: 'i-lucide-clock-alert',
+          to: accountScopedRoute('sla_list'),
         },
         {
-          name: 'Settings Templates',
-          label: t('SIDEBAR.WHATSAPP_TEMPLATES'),
-          icon: 'i-lucide-layout-template',
-          to: accountScopedRoute('settings_templates'),
+          name: 'Settings Section AI',
+          label: t('SIDEBAR.SECTIONS.AI'),
+          section: true,
         },
-        {
-          name: 'Settings Labels',
-          label: t('SIDEBAR.LABELS'),
-          icon: 'i-lucide-tags',
-          to: accountScopedRoute('labels_list'),
-        },
-        {
-          name: 'Settings Custom Attributes',
-          label: t('SIDEBAR.CUSTOM_ATTRIBUTES'),
-          icon: 'i-lucide-code',
-          to: accountScopedRoute('attributes_list'),
-        },
-        {
-          name: 'Settings Automation',
-          label: t('SIDEBAR.AUTOMATION'),
-          icon: 'i-lucide-repeat',
-          to: accountScopedRoute('automation_list'),
-        },
+        // {
+        //   name: 'Settings Captain',
+        //   label: t('SIDEBAR.CAPTAIN_AI'),
+        //   icon: 'i-woot-captain',
+        //   to: accountScopedRoute('captain_settings_index'),
+        // },
         {
           name: 'Settings Agent Bots',
           label: t('SIDEBAR.AGENT_BOTS'),
@@ -874,16 +980,15 @@ const menuItems = computed(() => {
           to: accountScopedRoute('agent_bots'),
         },
         {
-          name: 'Settings Macros',
-          label: t('SIDEBAR.MACROS'),
-          icon: 'i-lucide-toy-brick',
-          to: accountScopedRoute('macros_wrapper'),
+          name: 'Settings Section Data',
+          label: t('SIDEBAR.SECTIONS.DATA'),
+          section: true,
         },
         {
-          name: 'Settings Canned Responses',
-          label: t('SIDEBAR.CANNED_RESPONSES'),
-          icon: 'i-lucide-message-square-quote',
-          to: accountScopedRoute('canned_list'),
+          name: 'Settings Custom Attributes',
+          label: t('SIDEBAR.CUSTOM_ATTRIBUTES'),
+          icon: 'i-lucide-code',
+          to: accountScopedRoute('attributes_list'),
         },
         {
           name: 'Settings Integrations',
@@ -908,22 +1013,9 @@ const menuItems = computed(() => {
           to: accountScopedRoute('auditlogs_list'),
         },
         {
-          name: 'Settings Custom Roles',
-          label: t('SIDEBAR.CUSTOM_ROLES'),
-          icon: 'i-lucide-shield-plus',
-          to: accountScopedRoute('custom_roles_list'),
-        },
-        {
-          name: 'Settings Sla',
-          label: t('SIDEBAR.SLA'),
-          icon: 'i-lucide-clock-alert',
-          to: accountScopedRoute('sla_list'),
-        },
-        {
-          name: 'Conversation Workflow',
-          label: t('SIDEBAR.CONVERSATION_WORKFLOW'),
-          icon: 'i-lucide-workflow',
-          to: accountScopedRoute('conversation_workflow_index'),
+          name: 'Settings Section Account',
+          label: t('SIDEBAR.SECTIONS.ACCOUNT'),
+          section: true,
         },
         {
           name: 'Settings Security',
@@ -960,12 +1052,28 @@ const menuItems = computed(() => {
       {
         'shadow-xl md:shadow-none': isMobileSidebarOpen,
         'ltr:-translate-x-full rtl:translate-x-full': !isMobileSidebarOpen,
-        'transition-transform duration-200 ease-out md:transition-[width]':
+        'transition-transform duration-200 ease-out md:transition-[width] motion-reduce:transition-none':
           !isResizing,
       },
     ]"
     :style="isMobile ? undefined : { width: `${sidebarWidth}px` }"
   >
+    <!-- Scrim behind the mobile drawer, teleported so the drawer's own
+    transform never becomes its containing block -->
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition-opacity duration-200 ease-out motion-reduce:transition-none"
+        enter-from-class="opacity-0"
+        leave-active-class="transition-opacity duration-200 ease-out motion-reduce:transition-none"
+        leave-to-class="opacity-0"
+      >
+        <div
+          v-if="isMobile && isMobileSidebarOpen"
+          class="fixed inset-0 z-30 bg-black/40 backdrop-blur-[2px]"
+          @click="closeMobileSidebar"
+        />
+      </Transition>
+    </Teleport>
     <section
       class="grid"
       :class="isEffectivelyCollapsed ? 'mt-3 mb-6 gap-4' : 'mt-1 mb-4 gap-2'"
@@ -973,7 +1081,7 @@ const menuItems = computed(() => {
       <div
         class="flex gap-2 items-center min-w-0"
         :class="{
-          'justify-center px-1': isEffectivelyCollapsed,
+          'flex-col justify-center px-1': isEffectivelyCollapsed,
           'px-2': !isEffectivelyCollapsed,
         }"
       >
@@ -993,6 +1101,22 @@ const menuItems = computed(() => {
             @show-create-account-modal="emit('showCreateAccountModal')"
           />
         </template>
+        <button
+          v-tooltip="collapseTooltip"
+          type="button"
+          class="hidden flex-shrink-0 place-content-center rounded-lg transition-colors duration-150 ease-out motion-reduce:transition-none md:grid size-8 text-n-slate-10 hover:bg-n-alpha-2 hover:text-n-slate-12"
+          :aria-label="collapseTooltip.content"
+          @click="toggleCollapse"
+        >
+          <span
+            class="size-4 rtl:-scale-x-100"
+            :class="
+              isEffectivelyCollapsed
+                ? 'i-lucide-panel-left-open'
+                : 'i-lucide-panel-left-close'
+            "
+          />
+        </button>
       </div>
       <div
         class="flex gap-2"
@@ -1012,16 +1136,17 @@ const menuItems = computed(() => {
             {{ t('COMBOBOX.SEARCH_PLACEHOLDER') }}
           </span>
           <span
-            class="hidden tracking-wide pointer-events-none select-none text-n-slate-10"
+            class="flex-shrink-0 px-1 font-mono text-[10px] tracking-wide rounded border pointer-events-none select-none border-n-weak bg-n-alpha-1 text-n-slate-11"
           >
             {{ searchShortcut }}
           </span>
         </RouterLink>
         <RouterLink
           v-else
+          v-tooltip="searchTooltip"
           :to="{ name: 'search' }"
+          :aria-label="t('COMBOBOX.SEARCH_PLACEHOLDER')"
           class="flex items-center justify-center size-8 rounded-xl outline outline-1 outline-n-weak/70 bg-n-alpha-1 transition-all duration-150 ease-out hover:bg-n-alpha-2 hover:outline-n-brand/30 dark:hover:bg-n-slate-9/30 group"
-          :title="t('COMBOBOX.SEARCH_PLACEHOLDER')"
         >
           <span
             class="i-lucide-search size-4 text-n-slate-11 group-hover:text-n-blue-11 transition-colors"
@@ -1030,6 +1155,7 @@ const menuItems = computed(() => {
         <ComposeConversation align="start">
           <template #trigger="{ isOpen }">
             <Button
+              v-tooltip="composeTooltip"
               icon="i-lucide-pen-line"
               color="slate"
               size="sm"
@@ -1095,7 +1221,7 @@ const menuItems = computed(() => {
       class="hidden md:block absolute top-0 h-full w-1.5 cursor-col-resize z-40 ltr:right-0 rtl:left-0 group"
       @mousedown="onResizeStart"
       @touchstart="onResizeStart"
-      @dblclick="onResizeHandleDoubleClick"
+      @dblclick="toggleCollapse"
     >
       <div
         class="absolute top-0 h-full w-0.5 ltr:right-0 rtl:left-0 bg-transparent group-hover:bg-gradient-to-b group-hover:from-n-blue-7 group-hover:via-n-blue-9 group-hover:to-n-blue-10 transition-all duration-200 rounded-full"
