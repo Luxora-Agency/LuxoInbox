@@ -27,6 +27,12 @@ const { t } = useI18n();
 const { accountId, currentAccount } = useAccount();
 const currentUser = useMapGetter('getCurrentUser');
 const globalConfig = useMapGetter('globalConfig/get');
+const isRTL = useMapGetter('accounts/isRTL');
+
+const collapsedTooltip = computed(() => ({
+  content: currentAccount.value.name,
+  placement: isRTL.value ? 'left' : 'right',
+}));
 
 const userAccounts = useMapGetter('getUserAccounts');
 
@@ -56,9 +62,10 @@ const emitNewAccount = () => {
       <!-- Collapsed view: Logo trigger -->
       <button
         v-if="isCollapsed"
+        v-tooltip="collapsedTooltip"
+        :aria-label="currentAccount.name"
         class="grid flex-shrink-0 place-content-center p-2 rounded-lg cursor-pointer hover:bg-n-alpha-1"
         :class="{ 'bg-n-alpha-1': isOpen }"
-        :title="currentAccount.name"
         @click="toggle"
       >
         <Logo class="size-7" />

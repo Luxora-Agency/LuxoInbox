@@ -6,11 +6,12 @@ vi.mock('../provider', () => ({
   useSidebarContext: () => ({
     resolvePermissions: () => [],
     resolveFeatureFlag: () => '',
+    resolveInstallationType: () => [],
   }),
 }));
 
 const PolicyStub = {
-  props: ['as', 'permissions', 'featureFlag'],
+  props: ['as', 'permissions', 'featureFlag', 'installationTypes'],
   template: '<li><slot /></li>',
 };
 

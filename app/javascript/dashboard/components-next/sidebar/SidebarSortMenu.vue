@@ -168,8 +168,8 @@ onBeforeUnmount(clearCloseTimer);
 <template>
   <div
     ref="triggerRef"
-    class="relative invisible flex-shrink-0 opacity-0 pointer-events-none transition-opacity duration-150 group-hover/sidebar-section:visible group-hover/sidebar-section:opacity-100 group-hover/sidebar-section:pointer-events-auto"
-    :class="{ '!visible !opacity-100 !pointer-events-auto': isOpen }"
+    class="relative flex-shrink-0 opacity-0 pointer-events-none transition-opacity duration-150 motion-reduce:transition-none group-hover/sidebar-section:opacity-100 group-hover/sidebar-section:pointer-events-auto focus-within:opacity-100 focus-within:pointer-events-auto"
+    :class="{ '!opacity-100 !pointer-events-auto': isOpen }"
     @mouseenter="handleTriggerEnter"
     @mouseleave="handleTriggerLeave"
   >
