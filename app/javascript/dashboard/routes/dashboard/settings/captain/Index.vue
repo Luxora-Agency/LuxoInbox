@@ -110,7 +110,7 @@ onMounted(() => {
       />
     </template>
     <template #body>
-      <div v-if="captainEnabled" class="flex flex-col gap-1">
+      <div v-if="captainEnabled" class="flex flex-col gap-5">
         <!-- Model Configuration Section -->
         <SectionLayout
           :title="t('CAPTAIN_SETTINGS.MODEL_CONFIG.TITLE')"
@@ -134,7 +134,6 @@ onMounted(() => {
         <SectionLayout
           :title="t('CAPTAIN_SETTINGS.FEATURES.TITLE')"
           :description="t('CAPTAIN_SETTINGS.FEATURES.DESCRIPTION')"
-          with-border
         >
           <div class="grid gap-4">
             <FeatureToggle

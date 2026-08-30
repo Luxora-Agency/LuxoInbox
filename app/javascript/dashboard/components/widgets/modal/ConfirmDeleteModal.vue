@@ -72,9 +72,9 @@ export default {
         :placeholder="confirmPlaceHolderText"
         @blur="v$.value.$touch"
       />
-      <div class="flex items-center justify-end gap-2">
+      <div class="flex flex-wrap items-center justify-end gap-2">
         <NextButton
-          faded
+          ghost
           slate
           type="reset"
           :label="rejectText"

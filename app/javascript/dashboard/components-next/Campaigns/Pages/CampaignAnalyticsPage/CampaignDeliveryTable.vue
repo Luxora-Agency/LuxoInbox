@@ -78,12 +78,15 @@ const isEmpty = computed(() => props.deliveries.length === 0);
     >
       <Spinner />
     </div>
+    <!-- BaseTable ships its own card chrome; this panel already is a card, so
+         flatten the nested one. -->
     <div
       v-else
       class="overflow-x-auto [&_th:first-child]:ps-5 [&_td:first-child]:ps-5 [&_th:last-child]:pe-5 [&_td:last-child]:pe-5"
       :class="{ 'border-t border-n-weak': isEmpty }"
     >
       <BaseTable
+        flat
         :headers="headers"
         :items="deliveries"
         :no-data-message="noDataMessage"

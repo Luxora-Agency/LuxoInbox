@@ -154,11 +154,22 @@ export default {
         "
         @blur="v$.description.$touch"
       />
-      <div class="w-full flex items-center gap-2">
-        <input v-model="state.allowAutoAssign" type="checkbox" :value="true" />
-        <label for="conversation_creation">
-          {{ $t('TEAMS_SETTINGS.FORM.AUTO_ASSIGN.LABEL') }}
-        </label>
+      <div class="w-full flex items-start gap-2">
+        <input
+          id="team-auto-assign"
+          v-model="state.allowAutoAssign"
+          type="checkbox"
+          :value="true"
+          class="mt-1"
+        />
+        <div class="flex flex-col gap-1 min-w-0">
+          <label for="team-auto-assign" class="text-heading-3 text-n-slate-12">
+            {{ $t('TEAMS_SETTINGS.FORM.AUTO_ASSIGN.LABEL') }}
+          </label>
+          <p class="mb-0 max-w-prose text-label-small text-n-slate-11">
+            {{ $t('TEAMS_SETTINGS.FORM.AUTO_ASSIGN.HELP') }}
+          </p>
+        </div>
       </div>
       <div class="flex flex-row justify-end gap-2 py-2 px-0 w-full">
         <div class="w-full">

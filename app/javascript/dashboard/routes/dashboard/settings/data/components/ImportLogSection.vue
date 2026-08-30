@@ -87,12 +87,10 @@ defineEmits(['toggle', 'download']);
           >
             {{ emptyMessage }}
           </p>
+          <!-- BaseTable ships its own card chrome; this section already is a
+               card, so flatten the nested one. -->
           <div v-else class="overflow-x-auto">
-            <BaseTable
-              class="[&_td:first-child]:ps-4 [&_th:first-child]:ps-4 [&_th]:text-n-slate-11 [&_thead]:border-t-0"
-              :headers="headers"
-              :items="items"
-            >
+            <BaseTable flat :headers="headers" :items="items">
               <template #row="{ items: rows }">
                 <slot name="row" :items="rows" />
               </template>

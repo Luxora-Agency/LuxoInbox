@@ -157,13 +157,12 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col w-full max-w-2xl ltr:mr-auto rtl:ml-auto">
+  <div class="flex flex-col gap-5 w-full max-w-2xl ltr:mr-auto rtl:ml-auto">
     <BaseSettingsHeader :title="$t('GENERAL_SETTINGS.TITLE')" />
-    <div class="flex-grow flex-shrink min-w-0 mt-3">
+    <div class="flex-grow flex-shrink min-w-0">
       <SectionLayout
         :title="$t('GENERAL_SETTINGS.FORM.GENERAL_SECTION.TITLE')"
         :description="$t('GENERAL_SETTINGS.FORM.GENERAL_SECTION.NOTE')"
-        class="!pt-0"
       >
         <form
           v-if="!uiFlags.isFetchingItem"

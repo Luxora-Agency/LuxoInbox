@@ -15,7 +15,7 @@
       "TITLE": "Manage agents in your team",
       "DESC": "You can add/remove agents to/in your team.",
       "NAME": "Name",
-      "EMAIL": "EMAIL",
+      "EMAIL": "Email",
       "STATUS": "Status",
       "ACTIONS": "Actions",
       "VERIFIED": "Verified",
@@ -29,36 +29,36 @@
       "FORM": {
         "NAME": {
           "LABEL": "Agent Name",
-          "PLACEHOLDER": "Please enter a name of the agent"
+          "PLACEHOLDER": "e.g. Jane Doe"
         },
         "AGENT_TYPE": {
           "LABEL": "Role",
-          "PLACEHOLDER": "Please select a role",
+          "PLACEHOLDER": "Select a role",
           "ERROR": "Role is required"
         },
         "EMAIL": {
           "LABEL": "Email Address",
-          "PLACEHOLDER": "Please enter an email address of the agent"
+          "PLACEHOLDER": "e.g. jane{'@'}example.com"
         },
         "SUBMIT": "Add Agent"
       },
       "API": {
         "SUCCESS_MESSAGE": "Agent added successfully",
-        "EXIST_MESSAGE": "Agent email already in use, Please try another email address",
-        "ERROR_MESSAGE": "Could not connect to Woot Server, Please try again later"
+        "EXIST_MESSAGE": "That email address is already in use. Please try another one.",
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       }
     },
     "DELETE": {
       "BUTTON_TEXT": "Delete",
       "API": {
         "SUCCESS_MESSAGE": "Agent deleted successfully",
-        "ERROR_MESSAGE": "Could not connect to Woot Server, Please try again later"
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       },
       "CONFIRM": {
         "TITLE": "Confirm Deletion",
-        "MESSAGE": "Are you sure to delete ",
-        "YES": "Yes, Delete ",
-        "NO": "No, Keep "
+        "MESSAGE": "Are you sure you want to delete",
+        "YES": "Yes, delete",
+        "NO": "No, keep"
       }
     },
     "EDIT": {
@@ -66,20 +66,20 @@
       "FORM": {
         "NAME": {
           "LABEL": "Agent Name",
-          "PLACEHOLDER": "Please enter a name of the agent"
+          "PLACEHOLDER": "e.g. Jane Doe"
         },
         "AGENT_TYPE": {
           "LABEL": "Role",
-          "PLACEHOLDER": "Please select a role",
+          "PLACEHOLDER": "Select a role",
           "ERROR": "Role is required"
         },
         "EMAIL": {
           "LABEL": "Email Address",
-          "PLACEHOLDER": "Please enter an email address of the agent"
+          "PLACEHOLDER": "e.g. jane{'@'}example.com"
         },
         "AGENT_AVAILABILITY": {
           "LABEL": "Availability",
-          "PLACEHOLDER": "Please select an availability status",
+          "PLACEHOLDER": "Select an availability status",
           "ERROR": "Availability is required"
         },
         "SUBMIT": "Edit Agent"
@@ -88,13 +88,13 @@
       "CANCEL_BUTTON_TEXT": "Cancel",
       "API": {
         "SUCCESS_MESSAGE": "Agent updated successfully",
-        "ERROR_MESSAGE": "Could not connect to Woot Server, Please try again later"
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       },
       "PASSWORD_RESET": {
         "ADMIN_RESET_BUTTON": "Reset Password",
         "ADMIN_SUCCESS_MESSAGE": "An email with reset password instructions has been sent to the agent",
         "SUCCESS_MESSAGE": "Agent password reset successfully",
-        "ERROR_MESSAGE": "Could not connect to Woot Server, Please try again later"
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       }
     },
     "SEARCH_PLACEHOLDER": "Search agents...",

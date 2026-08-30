@@ -76,10 +76,11 @@ onMounted(() => {
       @mousedown="handleMouseDown"
     >
       <div
-        class="relative max-h-full overflow-auto bg-n-alpha-3 shadow-md modal-container rtl:text-right skip-context-menu"
+        class="relative bg-n-alpha-3 shadow-md modal-container rtl:text-right skip-context-menu"
         :class="{
-          'rounded-xl w-[37.5rem]': !fullWidth,
-          'items-center rounded-none flex h-full justify-center w-full':
+          'flex flex-col overflow-hidden rounded-2xl border border-n-weak w-full max-w-[37.5rem] mx-4 max-h-[90dvh]':
+            !fullWidth,
+          'items-center overflow-auto rounded-none flex h-full justify-center w-full max-h-full':
             fullWidth,
           [size]: true,
         }"
@@ -94,7 +95,12 @@ onMounted(() => {
           class="absolute z-10 ltr:right-2 rtl:left-2 top-2"
           @click="close"
         />
-        <slot />
+        <!-- Scrolling lives on this wrapper so the absolutely pinned close
+             button stays in view. `contents` keeps the full-width layout
+             byte-identical by removing the wrapper from the box tree. -->
+        <div :class="fullWidth ? 'contents' : 'flex-1 min-h-0 overflow-auto'">
+          <slot />
+        </div>
       </div>
     </div>
   </transition>
@@ -106,19 +112,24 @@ onMounted(() => {
 
   .modal-container {
     &.medium {
-      @apply max-w-[80%] w-[56.25rem];
+      @apply w-full max-w-[56.25rem];
+    }
+
+    // Nested so it outranks the `max-w-[37.5rem]` utility on the container.
+    &.modal-big {
+      @apply w-full max-w-none;
     }
 
     // .content-box {
     //   @apply h-auto p-0;
     // }
     .content {
-      @apply p-8;
+      @apply p-6 sm:p-8;
     }
 
     form,
     .modal-content {
-      @apply pt-4 pb-8 px-8 self-center;
+      @apply pt-4 pb-6 px-6 sm:pb-8 sm:px-8 self-center;
 
       a {
         @apply p-4;
@@ -131,15 +142,11 @@ onMounted(() => {
   }
 }
 
-.modal-big {
-  @apply w-full;
-}
-
 .modal-mask.right-aligned {
   @apply justify-end;
 
   .modal-container {
-    @apply rounded-none h-full w-[30rem];
+    @apply rounded-none border-0 h-full max-h-none mx-0 w-full max-w-[30rem];
   }
 }
 

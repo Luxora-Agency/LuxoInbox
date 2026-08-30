@@ -666,10 +666,10 @@
       "AVATAR_DELETE_BUTTON_TEXT": "Delete Avatar",
       "CONFIRM": {
         "TITLE": "Confirm Deletion",
-        "MESSAGE": "Are you sure to delete ",
+        "MESSAGE": "Are you sure you want to delete",
         "PLACE_HOLDER": "Please type {inboxName} to confirm",
-        "YES": "Yes, Delete ",
-        "NO": "No, Keep "
+        "YES": "Yes, delete",
+        "NO": "No, keep"
       },
       "API": {
         "SUCCESS_MESSAGE": "Inbox deleted successfully",

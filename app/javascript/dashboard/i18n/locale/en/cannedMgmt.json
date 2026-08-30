@@ -26,19 +26,19 @@
       "FORM": {
         "SHORT_CODE": {
           "LABEL": "Short code",
-          "PLACEHOLDER": "Please enter a short code.",
+          "PLACEHOLDER": "e.g. thanks",
           "ERROR": "Short Code is required."
         },
         "CONTENT": {
           "LABEL": "Message",
-          "PLACEHOLDER": "Please write the message you want to save as a template to use later.",
+          "PLACEHOLDER": "Write the reply you want to reuse",
           "ERROR": "Message is required."
         },
         "SUBMIT": "Submit"
       },
       "API": {
         "SUCCESS_MESSAGE": "Canned response added successfully.",
-        "ERROR_MESSAGE": "Could not connect to Woot server. Please try again."
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       }
     },
     "EDIT": {
@@ -47,12 +47,12 @@
       "FORM": {
         "SHORT_CODE": {
           "LABEL": "Short code",
-          "PLACEHOLDER": "Please enter a shortcode.",
+          "PLACEHOLDER": "e.g. thanks",
           "ERROR": "Short code is required."
         },
         "CONTENT": {
           "LABEL": "Message",
-          "PLACEHOLDER": "Please write the message you want to save as a template to use later.",
+          "PLACEHOLDER": "Write the reply you want to reuse",
           "ERROR": "Message is required."
         },
         "SUBMIT": "Submit"
@@ -60,20 +60,20 @@
       "BUTTON_TEXT": "Edit",
       "API": {
         "SUCCESS_MESSAGE": "Canned response is updated successfully.",
-        "ERROR_MESSAGE": "Could not connect to Woot server. Please try again."
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       }
     },
     "DELETE": {
       "BUTTON_TEXT": "Delete",
       "API": {
         "SUCCESS_MESSAGE": "Canned response deleted successfully.",
-        "ERROR_MESSAGE": "Could not connect to Woot server. Please try again."
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       },
       "CONFIRM": {
         "TITLE": "Confirm deletion",
-        "MESSAGE": "Are you sure to delete ",
-        "YES": "Yes, delete ",
-        "NO": "No, keep "
+        "MESSAGE": "Are you sure you want to delete",
+        "YES": "Yes, delete",
+        "NO": "No, keep"
       }
     }
   }

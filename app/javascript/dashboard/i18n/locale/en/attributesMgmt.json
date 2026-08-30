@@ -38,16 +38,16 @@
         },
         "MODEL": {
           "LABEL": "Applies to",
-          "PLACEHOLDER": "Please select one",
+          "PLACEHOLDER": "Select one",
           "ERROR": "Model is required"
         },
         "TYPE": {
           "LABEL": "Type",
-          "PLACEHOLDER": "Please select a type",
+          "PLACEHOLDER": "Select a type",
           "ERROR": "Type is required",
           "LIST": {
             "LABEL": "List Values",
-            "PLACEHOLDER": "Please enter value and press enter key",
+            "PLACEHOLDER": "Type a value and press Enter",
             "ERROR": "Must have at least one value"
           }
         },
@@ -59,11 +59,11 @@
         },
         "REGEX_PATTERN": {
           "LABEL": "Regex Pattern",
-          "PLACEHOLDER": "Please enter custom attribute regex pattern. (Optional)"
+          "PLACEHOLDER": "Regex pattern (optional)"
         },
         "REGEX_CUE": {
           "LABEL": "Regex Cue",
-          "PLACEHOLDER": "Please enter regex pattern hint. (Optional)"
+          "PLACEHOLDER": "Regex hint (optional)"
         },
         "ENABLE_REGEX": {
           "LABEL": "Enable regex validation"
@@ -85,10 +85,10 @@
         "ERROR_MESSAGE": "Couldn't delete the custom attribute. Try again."
       },
       "CONFIRM": {
-        "TITLE": "Are you sure want to delete - {attributeName}",
+        "TITLE": "Are you sure you want to delete {attributeName}?",
         "PLACE_HOLDER": "Please type {attributeName} to confirm",
         "MESSAGE": "Deleting will remove the custom attribute",
-        "YES": "Delete ",
+        "YES": "Delete",
         "NO": "Cancel"
       }
     },
@@ -98,7 +98,7 @@
       "TYPE": {
         "LIST": {
           "LABEL": "List Values",
-          "PLACEHOLDER": "Please enter values and press enter key"
+          "PLACEHOLDER": "Type a value and press Enter"
         }
       },
       "API": {
@@ -129,11 +129,11 @@
       },
       "REGEX_PATTERN": {
         "LABEL": "Regex Pattern",
-        "PLACEHOLDER": "Please enter custom attribute regex pattern. (Optional)"
+        "PLACEHOLDER": "Regex pattern (optional)"
       },
       "REGEX_CUE": {
         "LABEL": "Regex Cue",
-        "PLACEHOLDER": "Please enter regex pattern hint. (Optional)"
+        "PLACEHOLDER": "Regex hint (optional)"
       },
       "ENABLE_REGEX": {
         "LABEL": "Enable regex validation"

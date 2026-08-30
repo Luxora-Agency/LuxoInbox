@@ -1,42 +1,55 @@
-<script>
+<script setup>
+import { computed, nextTick, ref } from 'vue';
+import { vOnClickOutside } from '@vueuse/components';
+import { useDropdownPosition } from 'dashboard/composables/useDropdownPosition';
 import SLAPopoverCard from 'dashboard/components/widgets/conversation/components/SLAPopoverCard.vue';
+import TeleportWithDirection from 'dashboard/components-next/TeleportWithDirection.vue';
 import NextButton from 'dashboard/components-next/button/Button.vue';
 
-export default {
-  components: {
-    SLAPopoverCard,
-    NextButton,
+defineProps({
+  slaEvents: {
+    type: Array,
+    default: () => [],
   },
-  props: {
-    slaEvents: {
-      type: Array,
-      default: () => [],
-    },
-  },
+});
 
-  data() {
-    return {
-      showSlaPopoverCard: false,
-    };
-  },
+const triggerRef = ref(null);
+const popoverRef = ref(null);
+const showSlaPopoverCard = ref(false);
 
-  methods: {
-    closeSlaEvents() {
-      this.showSlaPopoverCard = false;
-    },
-    openSlaEvents() {
-      this.showSlaPopoverCard = !this.showSlaPopoverCard;
-    },
-  },
+// The table scrolls sideways, so any ancestor-positioned card gets clipped.
+// Teleport it to the body and pin it to the viewport next to the trigger.
+const { fixedPosition, updatePosition } = useDropdownPosition(
+  triggerRef,
+  popoverRef,
+  showSlaPopoverCard
+);
+
+const popoverStyle = computed(() => {
+  const { maxHeight, ...rest } = fixedPosition.value.style;
+  return {
+    ...rest,
+    // Keep the card's own 24rem cap while staying inside the viewport.
+    maxHeight: maxHeight ? `min(24rem, ${maxHeight})` : '24rem',
+    zIndex: 9999,
+  };
+});
+
+const closeSlaEvents = () => {
+  showSlaPopoverCard.value = false;
+};
+
+const openSlaEvents = async () => {
+  showSlaPopoverCard.value = !showSlaPopoverCard.value;
+  if (!showSlaPopoverCard.value) return;
+  await nextTick();
+  updatePosition();
 };
 </script>
 
 <template>
-  <div
-    v-on-clickaway="closeSlaEvents"
-    class="flex items-center col-span-2 text-n-slate-11 justify-end"
-  >
-    <div class="relative">
+  <div class="flex items-center col-span-2 text-n-slate-11 justify-end">
+    <div ref="triggerRef">
       <NextButton
         link
         slate
@@ -44,11 +57,16 @@ export default {
         :label="$t('SLA_REPORTS.TABLE.VIEW_DETAILS')"
         @click="openSlaEvents"
       />
+    </div>
+    <TeleportWithDirection to="body">
       <SLAPopoverCard
         v-if="showSlaPopoverCard"
+        ref="popoverRef"
+        v-on-click-outside="[closeSlaEvents, { ignore: [triggerRef] }]"
+        position="fixed"
         :sla-missed-events="slaEvents"
-        class="right-0"
+        :style="popoverStyle"
       />
-    </div>
+    </TeleportWithDirection>
   </div>
 </template>

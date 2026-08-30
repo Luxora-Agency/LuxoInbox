@@ -100,9 +100,9 @@
       },
       "CONFIRM": {
         "TITLE": "Confirm Deletion",
-        "MESSAGE": "Are you sure you want to delete ",
-        "YES": "Yes, Delete ",
-        "NO": "No, Keep "
+        "MESSAGE": "Are you sure you want to delete",
+        "YES": "Yes, delete",
+        "NO": "No, keep"
       }
     },
     "EVENTS": {

@@ -177,13 +177,13 @@ onMounted(() => {
       :button-text="$t('INBOX_MGMT.FINISH.BUTTON_TEXT')"
     >
       <div class="w-full text-center">
-        <div class="my-4 mx-auto max-w-[70%]">
+        <div class="my-4 mx-auto w-full max-w-xl">
           <woot-code
             v-if="currentInbox.web_widget_script"
             :script="currentInbox.web_widget_script"
           />
         </div>
-        <div class="w-[50%] max-w-[50%] ml-[25%]">
+        <div class="w-full max-w-xl mx-auto">
           <woot-code
             v-if="isATwilioWhatsAppChannel"
             lang="html"
@@ -192,7 +192,7 @@ onMounted(() => {
         </div>
         <div
           v-if="shouldShowWhatsAppWebhookDetails"
-          class="w-[50%] max-w-[50%] ml-[25%]"
+          class="w-full max-w-xl mx-auto"
         >
           <p class="mt-8 font-medium text-n-slate-11">
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.API_CALLBACK.WEBHOOK_URL') }}
@@ -210,14 +210,14 @@ onMounted(() => {
             :script="currentInbox.provider_config.webhook_verify_token"
           />
         </div>
-        <div class="w-[50%] max-w-[50%] ml-[25%]">
+        <div class="w-full max-w-xl mx-auto">
           <woot-code
             v-if="isALineChannel"
             lang="html"
             :script="currentInbox.callback_webhook_url"
           />
         </div>
-        <div class="w-[50%] max-w-[50%] ml-[25%]">
+        <div class="w-full max-w-xl mx-auto">
           <woot-code
             v-if="isASmsInbox"
             lang="html"

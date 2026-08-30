@@ -53,7 +53,9 @@ const helpURL = getHelpUrlForFeature(props.featureName);
       class="flex items-center justify-between w-full gap-4 min-h-8 mb-2"
     >
       <slot name="title">
-        <h1 class="text-heading-1 text-n-slate-12">
+        <h1
+          class="text-xl font-semibold tracking-[-0.01em] text-n-slate-12 min-w-0"
+        >
           {{ title }}
         </h1>
       </slot>
@@ -64,7 +66,7 @@ const helpURL = getHelpUrlForFeature(props.featureName);
     >
       <p
         v-if="description || $slots.description"
-        class="mb-0 line-clamp-5 sm:line-clamp-none max-w-3xl text-body-main"
+        class="mb-0 line-clamp-5 sm:line-clamp-none max-w-prose text-sm leading-relaxed"
       >
         <slot name="description">{{ description }}</slot>
       </p>
@@ -74,7 +76,7 @@ const helpURL = getHelpUrlForFeature(props.featureName);
           :href="helpURL"
           target="_blank"
           rel="noopener noreferrer"
-          class="items-center hidden gap-1 text-sm font-medium sm:inline-flex w-fit text-n-blue-11 hover:underline mb-2"
+          class="items-center hidden gap-1 text-sm font-medium sm:inline-flex w-fit text-n-blue-11 hover:underline mb-2 transition-colors duration-150 ease-out motion-reduce:transition-none"
         >
           {{ linkText }}
           <Icon
@@ -87,7 +89,7 @@ const helpURL = getHelpUrlForFeature(props.featureName);
   </div>
   <div
     v-if="searchPlaceholder || slots.actions || slots.tabs"
-    class="gap-3 flex flex-wrap sm:flex-nowrap justify-between sm:mt-4 min-w-0"
+    class="gap-3 flex flex-wrap items-center sm:flex-nowrap justify-between mt-3 sm:mt-4 min-w-0"
   >
     <div
       v-if="slots.tabs || searchPlaceholder"
@@ -101,7 +103,7 @@ const helpURL = getHelpUrlForFeature(props.featureName);
         v-if="searchPlaceholder"
         v-model="searchQuery"
         :placeholder="searchPlaceholder"
-        class="group w-56 min-w-0 hidden sm:flex [&>input]:ltr:!pl-8 [&>input]:rtl:!pr-8 [&>input]:!rounded-[0.625rem]"
+        class="group w-56 min-w-0 hidden sm:flex [&>input]:ltr:!pl-8 [&>input]:rtl:!pr-8 [&>input]:!rounded-xl [&>input]:!bg-n-alpha-1 [&>input]:outline-n-weak/70"
         size="sm"
         type="search"
       >
@@ -113,10 +115,7 @@ const helpURL = getHelpUrlForFeature(props.featureName);
         </template>
       </Input>
     </div>
-    <div
-      class="flex items-center gap-3 shrink-0"
-      :class="{ 'flex-row-reverse sm:flex-row': !slots.tabs }"
-    >
+    <div class="flex items-center gap-3 shrink-0 w-full justify-end sm:w-auto">
       <slot name="count" />
       <div
         v-if="slots.count && slots.actions"

@@ -228,9 +228,9 @@ export default {
 </script>
 
 <template>
-  <div class="grid max-w-2xl ltr:mr-auto rtl:ml-auto">
+  <div class="grid gap-5 max-w-2xl ltr:mr-auto rtl:ml-auto">
     <BaseSettingsHeader :title="$t('PROFILE_SETTINGS.TITLE')" description="" />
-    <SectionLayout title="" description="" class="!pt-0">
+    <SectionLayout title="" description="">
       <div class="flex flex-col gap-6">
         <UserProfilePicture
           :src="avatarUrl"
@@ -248,7 +248,6 @@ export default {
       </div>
     </SectionLayout>
     <SectionLayout
-      with-border
       :title="$t('PROFILE_SETTINGS.FORM.INTERFACE_SECTION.TITLE')"
       :description="
         replaceInstallationName(
@@ -274,7 +273,6 @@ export default {
       </div>
     </SectionLayout>
     <SectionLayout
-      with-border
       :title="$t('PROFILE_SETTINGS.FORM.MESSAGE_SIGNATURE_SECTION.TITLE')"
       :description="$t('PROFILE_SETTINGS.FORM.MESSAGE_SIGNATURE_SECTION.NOTE')"
     >
@@ -284,7 +282,6 @@ export default {
       />
     </SectionLayout>
     <SectionLayout
-      with-border
       :title="$t('PROFILE_SETTINGS.FORM.SEND_MESSAGE.TITLE')"
       :description="$t('PROFILE_SETTINGS.FORM.SEND_MESSAGE.NOTE')"
     >
@@ -316,7 +313,6 @@ export default {
     </SectionLayout>
     <SectionLayout
       v-if="!globalConfig.disableUserProfileUpdate"
-      with-border
       :title="$t('PROFILE_SETTINGS.FORM.PASSWORD_SECTION.TITLE')"
       description=""
     >
@@ -324,14 +320,12 @@ export default {
     </SectionLayout>
     <SectionLayout
       v-if="isMfaEnabled"
-      with-border
       :title="$t('PROFILE_SETTINGS.FORM.SECURITY_SECTION.TITLE')"
       :description="$t('PROFILE_SETTINGS.FORM.SECURITY_SECTION.NOTE')"
     >
       <MfaSettingsCard />
     </SectionLayout>
     <SectionLayout
-      with-border
       :title="$t('PROFILE_SETTINGS.FORM.SESSIONS_SECTION.TITLE')"
       :description="$t('PROFILE_SETTINGS.FORM.SESSIONS_SECTION.NOTE')"
     >
@@ -339,7 +333,6 @@ export default {
     </SectionLayout>
     <Policy :permissions="audioNotificationPermissions">
       <SectionLayout
-        with-border
         :title="$t('PROFILE_SETTINGS.FORM.AUDIO_NOTIFICATIONS_SECTION.TITLE')"
         :description="
           $t('PROFILE_SETTINGS.FORM.AUDIO_NOTIFICATIONS_SECTION.NOTE')
@@ -350,7 +343,6 @@ export default {
     </Policy>
     <Policy :permissions="notificationPermissions">
       <SectionLayout
-        with-border
         :title="$t('PROFILE_SETTINGS.FORM.NOTIFICATIONS.TITLE')"
         description=""
       >
@@ -358,7 +350,6 @@ export default {
       </SectionLayout>
     </Policy>
     <SectionLayout
-      with-border
       :title="$t('PROFILE_SETTINGS.FORM.ACCESS_TOKEN.TITLE')"
       :description="accessTokenDescription"
     >

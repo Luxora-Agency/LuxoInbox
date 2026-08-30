@@ -43,12 +43,12 @@
     "FORM": {
       "NAME": {
         "LABEL": "Name",
-        "PLACEHOLDER": "Please enter a name.",
+        "PLACEHOLDER": "e.g. Billing specialist",
         "ERROR": "Name is required."
       },
       "DESCRIPTION": {
         "LABEL": "Description",
-        "PLACEHOLDER": "Please enter a description.",
+        "PLACEHOLDER": "e.g. Can view and reply to billing conversations",
         "ERROR": "Description is required."
       },
       "PERMISSIONS": {
@@ -57,7 +57,7 @@
       },
       "CANCEL_BUTTON_TEXT": "Cancel",
       "API": {
-        "ERROR_MESSAGE": "Could not connect to Woot server. Please try again."
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       }
     },
     "ADD": {
@@ -81,13 +81,13 @@
       "BUTTON_TEXT": "Delete",
       "API": {
         "SUCCESS_MESSAGE": "Custom role deleted successfully.",
-        "ERROR_MESSAGE": "Could not connect to Woot server. Please try again."
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       },
       "CONFIRM": {
         "TITLE": "Confirm deletion",
-        "MESSAGE": "Are you sure to delete ",
-        "YES": "Yes, delete ",
-        "NO": "No, keep "
+        "MESSAGE": "Are you sure you want to delete",
+        "YES": "Yes, delete",
+        "NO": "No, keep"
       }
     }
   }

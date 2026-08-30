@@ -18,17 +18,17 @@
         "ACCOUNT": "Disconnect"
       },
       "MESSAGE": {
-        "INBOX": "Are you sure to delete?",
-        "ACCOUNT": "Are you sure to disconnect?"
+        "INBOX": "Are you sure you want to delete this?",
+        "ACCOUNT": "Are you sure you want to disconnect this?"
       },
       "CONFIRM_BUTTON_TEXT": {
-        "INBOX": "Yes, Delete",
-        "ACCOUNT": "Yes, Disconnect"
+        "INBOX": "Yes, delete",
+        "ACCOUNT": "Yes, disconnect"
       },
       "CANCEL_BUTTON_TEXT": "Cancel",
       "API": {
         "SUCCESS_MESSAGE": "Hook deleted successfully",
-        "ERROR_MESSAGE": "Could not connect to Woot Server, Please try again later"
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       }
     },
     "LIST": {
@@ -51,7 +51,7 @@
       },
       "API": {
         "SUCCESS_MESSAGE": "Integration hook added successfully",
-        "ERROR_MESSAGE": "Could not connect to Woot Server, Please try again later"
+        "ERROR_MESSAGE": "Could not reach the server. Please try again."
       }
     },
     "CONNECT": {
