@@ -27,24 +27,40 @@ class LandingController < ActionController::Base
     }
   ].freeze
 
+  PAGE_ACTIONS = %i[index caracteristicas precios contacto terminos privacidad pago].freeze
+
   # The marketing page is public and stateless. It carries no session-bound form, so the
   # Wompi session endpoint is posted to by an anonymous visitor without a CSRF token.
   skip_forgery_protection
 
-  layout false
+  layout 'landing'
 
   # A help center portal on its own domain answers at "/" too. Root used to be
   # DashboardController#index, which rendered the portal there; the marketing
-  # page only owns "/" on the installation's own domain.
-  around_action :switch_locale, only: [:index]
+  # page only owns "/" on the installation's own domain, and the subpages
+  # redirect back to the portal home on a custom domain.
+  around_action :switch_locale, only: PAGE_ACTIONS
   before_action :render_help_center_if_custom_domain, only: [:index]
+  before_action :redirect_custom_domain_to_root, only: PAGE_ACTIONS - [:index]
+  before_action :set_wompi_public_key, only: PAGE_ACTIONS
 
   def index
     @plans = PLANS
-    # Wompi's public key is safe to ship to the browser; landing.js uses its prefix to pick
-    # the sandbox or production API when resolving the transaction Wompi redirects back with.
-    @wompi_public_key = ENV.fetch('WOMPI_PUBLIC_KEY', '')
   end
+
+  def caracteristicas; end
+
+  def precios
+    @plans = PLANS
+  end
+
+  def contacto; end
+
+  def terminos; end
+
+  def privacidad; end
+
+  def pago; end
 
   def wompi_session
     plan = PLANS.find { |candidate| candidate[:id] == params[:plan_id] }
@@ -63,16 +79,32 @@ class LandingController < ActionController::Base
       amount_in_cents: amount_in_cents,
       currency: CURRENCY,
       signature: Digest::SHA256.hexdigest("#{reference}#{amount_in_cents}#{CURRENCY}#{integrity_secret}"),
-      redirect_url: root_url
+      redirect_url: pago_url
     }
   end
 
   private
 
-  def render_help_center_if_custom_domain
-    return if request.host == URI.parse(ENV.fetch('FRONTEND_URL', '')).host
+  # Wompi's public key is safe to ship to the browser; the landing layout embeds it and
+  # landing.js uses its prefix to pick the sandbox or production API when resolving the
+  # transaction Wompi redirects back with.
+  def set_wompi_public_key
+    @wompi_public_key = ENV.fetch('WOMPI_PUBLIC_KEY', '')
+  end
 
-    @portal = Portal.find_by(custom_domain: request.host)
+  def portal_for_custom_domain
+    return @portal_for_custom_domain if defined?(@portal_for_custom_domain)
+
+    @portal_for_custom_domain =
+      if request.host == URI.parse(ENV.fetch('FRONTEND_URL', '')).host
+        nil
+      else
+        Portal.find_by(custom_domain: request.host)
+      end
+  end
+
+  def render_help_center_if_custom_domain
+    @portal = portal_for_custom_domain
     return if @portal.nil?
 
     # The portal footers read branding from @global_config; same keys the
@@ -82,5 +114,11 @@ class LandingController < ActionController::Base
     request.variant = :documentation if @portal.layout == 'documentation'
     load_home_data
     render 'public/api/v1/portals/show', layout: 'portal', portal: @portal
+  end
+
+  # A help center custom domain owns the whole host: marketing subpages never
+  # answer there, only the portal home at "/".
+  def redirect_custom_domain_to_root
+    redirect_to root_path if portal_for_custom_domain.present?
   end
 end

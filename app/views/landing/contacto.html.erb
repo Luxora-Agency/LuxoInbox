@@ -1,0 +1,39 @@
+<% content_for :page_title, 'Contacto — LuxoInbox' %>
+<% content_for :meta_description, 'Escríbenos a hola@luxoinbox.com o crea tu cuenta y empieza a usar LuxoInbox hoy mismo.' %>
+<main>
+  <%= render 'nav' %>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero__kicker fade-up fade-up-1">Contacto</p>
+      <div class="page-hero__heading-wrap">
+        <h1 class="page-hero__heading fade-up fade-up-2">Hablemos.</h1>
+        <span class="accent page-hero__accent fade-up fade-up-3">Estamos para ti</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <div class="container">
+      <div class="contact__grid">
+        <article class="contact-card liquid-glass fade-up fade-up-2">
+          <span class="contact-card__icon" aria-hidden="true"><%= landing_icon(:mail) %></span>
+          <h2 class="contact-card__title">Escríbenos</h2>
+          <p class="contact-card__text">Cuéntanos qué necesitas: dudas sobre planes, canales o migración desde otra herramienta. Te respondemos lo antes posible.</p>
+          <a class="contact-card__cta" href="mailto:hola@luxoinbox.com">hola@luxoinbox.com</a>
+        </article>
+
+        <article class="contact-card liquid-glass fade-up fade-up-3">
+          <span class="contact-card__icon" aria-hidden="true"><%= landing_icon(:chevron_right) %></span>
+          <h2 class="contact-card__title">Empieza ya</h2>
+          <p class="contact-card__text">No necesitas hablar con nadie para arrancar. Crea tu cuenta en minutos y conecta tu primer canal hoy mismo.</p>
+          <a class="contact-card__cta" href="/app/auth/signup">Crear mi cuenta</a>
+        </article>
+      </div>
+
+      <p class="contact__note">Horario de atención: lunes a viernes, 8:00–18:00 (GMT-5, hora de Colombia).</p>
+    </div>
+  </section>
+</main>
+
+<%= render 'footer' %>

@@ -1,0 +1,55 @@
+<% content_for :page_title, 'Características — LuxoInbox' %>
+<% content_for :meta_description, 'Bandeja omnicanal, colaboración en equipo, automatizaciones, reportes, centro de ayuda y seguridad. Todo lo que incluye LuxoInbox.' %>
+<%
+  feature_cards = [
+    { label: 'Canales', title: 'Omnicanal',
+      text: 'WhatsApp, Instagram, Facebook, correo y chat web. Cada mensaje llega a la misma bandeja, sin importar por dónde escriba tu cliente.' },
+    { label: 'Equipo', title: 'Bandeja unificada y colaboración',
+      text: 'Asigna conversaciones, deja notas privadas y organiza equipos para que nadie responda dos veces ni un cliente quede esperando.' },
+    { label: 'Velocidad', title: 'Automatizaciones',
+      text: 'Reglas, macros y respuestas rápidas para resolver lo repetitivo en segundos y dedicar el tiempo a lo que de verdad importa.' },
+    { label: 'Datos', title: 'Reportes y CSAT',
+      text: 'Métricas en vivo de conversaciones, tiempos de respuesta y satisfacción del cliente para decidir con datos, no con intuición.' },
+    { label: 'Autoservicio', title: 'Centro de ayuda',
+      text: 'Publica un portal de autoservicio con artículos y guías para que tus clientes resuelvan solos las preguntas frecuentes.' },
+    { label: 'Confianza', title: 'Seguridad y control',
+      text: 'Roles, permisos y auditoría para controlar quién ve qué dentro de tu operación de soporte.' }
+  ]
+%>
+<main>
+  <%= render 'nav' %>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero__kicker fade-up fade-up-1">Características</p>
+      <div class="page-hero__heading-wrap">
+        <h1 class="page-hero__heading fade-up fade-up-2">Una bandeja. Todos tus canales.</h1>
+        <span class="accent page-hero__accent fade-up fade-up-3">Sin perder mensajes</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <div class="features__grid">
+        <% feature_cards.each_with_index do |card, index| %>
+          <article class="feature-card liquid-glass fade-up fade-up-<%= (index % 3) + 2 %>">
+            <p class="feature-card__label"><%= format('%02d', index + 1) %> · <%= card[:label] %></p>
+            <h2 class="feature-card__title"><%= card[:title] %></h2>
+            <p class="feature-card__text"><%= card[:text] %></p>
+          </article>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container cta-band__inner">
+      <span class="accent cta-band__accent">Da el salto</span>
+      <a class="cta-band__link" href="/precios">Mira los planes.</a>
+      <p class="cta-band__line">Elige el tuyo y empieza hoy.</p>
+    </div>
+  </section>
+</main>
+
+<%= render 'footer' %>

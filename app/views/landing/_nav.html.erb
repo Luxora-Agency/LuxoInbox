@@ -1,0 +1,55 @@
+<%
+  home = local_assigns.fetch(:variant, :subpage) == :home
+
+  # The home page scrolls to its own sections; subpages link back with absolute paths.
+  nav_links = if home
+                [
+                  { label: 'INICIO', href: '#home' },
+                  { label: 'PRODUCTO', href: '#about' },
+                  { label: 'CARACTERÍSTICAS', href: '/caracteristicas' },
+                  { label: 'PLANES', href: '#collection' },
+                  { label: 'COMPRAR', href: '#collection-grid' }
+                ]
+              else
+                [
+                  { label: 'INICIO', href: '/' },
+                  { label: 'PRODUCTO', href: '/#about' },
+                  { label: 'CARACTERÍSTICAS', href: '/caracteristicas' },
+                  { label: 'PLANES', href: '/precios' },
+                  { label: 'COMPRAR', href: '/#collection-grid' }
+                ]
+              end
+
+  # Anchor links belong to the page being scrolled; only plain paths can be "current".
+  nav_links.each { |link| link[:active] = !link[:href].include?('#') && current_page?(link[:href]) }
+%>
+<header class="container hero__header<%= ' fade-up fade-up-1' if home %>">
+  <a href="<%= home ? '#home' : '/' %>" class="hero__logo">LuxoInbox</a>
+
+  <nav class="nav liquid-glass">
+    <ul class="nav__list">
+      <% nav_links.each do |link| %>
+        <li><a class="nav__link<%= ' is-active' if link[:active] %>" href="<%= link[:href] %>"><%= link[:label] %></a></li>
+      <% end %>
+      <li><a class="nav__link" id="session-link" data-session-link href="/app/login">INGRESAR</a></li>
+    </ul>
+  </nav>
+
+  <button type="button" class="menu-toggle liquid-glass" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu"><%= landing_icon(:menu) %></button>
+</header>
+
+<div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="container mobile-menu__header">
+    <a href="<%= home ? '#home' : '/' %>" class="hero__logo">LuxoInbox</a>
+    <button type="button" class="menu-toggle mobile-menu__close liquid-glass" aria-label="Cerrar menú"><%= landing_icon(:close) %></button>
+  </div>
+
+  <nav class="container mobile-menu__nav" aria-label="Navegación principal">
+    <ul class="mobile-menu__list">
+      <% nav_links.each do |link| %>
+        <li><a class="mobile-menu__link<%= ' is-active' if link[:active] %>" href="<%= link[:href] %>"><%= link[:label] %></a></li>
+      <% end %>
+      <li><a class="mobile-menu__link" data-session-link href="/app/login">INGRESAR</a></li>
+    </ul>
+  </nav>
+</div>

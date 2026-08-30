@@ -1,0 +1,18 @@
+<% price = "#{format_cop(plan[:price_in_cents])} / MES" %>
+<article class="plan-card liquid-glass">
+  <div class="plan-card__media">
+    <video class="plan-card__video" src="<%= plan[:video] %>" autoplay loop muted playsinline></video>
+
+    <div class="plan-card__bar liquid-glass">
+      <div class="plan-card__text">
+        <p class="plan-card__name"><%= plan[:name] %></p>
+        <p class="plan-card__meta">
+          Agentes incluidos: <span class="plan-card__agents"><%= plan[:agents] %></span>
+        </p>
+        <p class="plan-card__meta"><%= price %></p>
+      </div>
+
+      <button type="button" class="plan-card__buy" data-plan-id="<%= plan[:id] %>" data-plan-name="<%= plan[:name] %>" data-plan-price="<%= format_cop(plan[:price_in_cents]) %>" aria-label="Contratar el plan <%= plan[:name] %> por <%= price %>"><%= landing_icon(:chevron_right) %></button>
+    </div>
+  </div>
+</article>

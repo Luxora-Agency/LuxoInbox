@@ -165,6 +165,11 @@ class Rack::Attack
     req.ip if req.path_without_extensions == '/api/v1/accounts' && req.post?
   end
 
+  ## Prevent abuse of the landing checkout signing endpoint (anonymous, CSRF exempt)
+  throttle('landing/wompi_session/ip', limit: 10, period: 1.minute) do |req|
+    req.ip if req.path_without_extensions == '/landing/wompi_session' && req.post?
+  end
+
   ##-----------------------------------------------##
 
   ###-----------------------------------------------###

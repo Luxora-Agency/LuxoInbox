@@ -1,0 +1,39 @@
+<%
+  page_title = content_for?(:page_title) ? yield(:page_title) : 'LuxoInbox — Todas tus conversaciones en una sola bandeja'
+  page_description = content_for?(:meta_description) ? yield(:meta_description) : 'LuxoInbox - WhatsApp, Instagram y correo en una sola bandeja para atender a tus clientes.'
+
+  # The Host header is client-controlled, so the canonical origin comes from the
+  # configured FRONTEND_URL whenever the installation sets one.
+  frontend_url = ENV['FRONTEND_URL'].presence
+  canonical_base = frontend_url ? URI.join(frontend_url, '/').to_s.chomp('/') : request.base_url
+  canonical_url = "#{canonical_base}#{request.path}"
+%><!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/landing/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="<%= page_description %>" />
+    <title><%= page_title %></title>
+    <link rel="canonical" href="<%= canonical_url %>" />
+    <meta property="og:title" content="<%= page_title %>" />
+    <meta property="og:description" content="<%= page_description %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= canonical_url %>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Condiment&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/landing/landing.css" />
+    <%# Only the pages that list plans open the Wompi checkout. %>
+    <% if @plans.present? %>
+      <script src="https://checkout.wompi.co/widget.js" defer></script>
+    <% end %>
+    <script src="/landing/landing.js" defer></script>
+    <%= yield :head %>
+  </head>
+  <body data-wompi-public-key="<%= @wompi_public_key %>">
+    <%= yield %>
+    <div id="toast-root"></div>
+    <div class="texture-overlay" aria-hidden="true"></div>
+  </body>
+</html>

@@ -35,6 +35,14 @@ describe 'Landing', type: :request do
       end
     end
 
+    it 'redirects the payer back to the payment result page' do
+      with_modified_env WOMPI_PUBLIC_KEY: public_key, WOMPI_INTEGRITY_SECRET: integrity_secret do
+        post '/landing/wompi_session', params: { plan_id: 'crecimiento' }
+
+        expect(response.parsed_body['redirect_url']).to eq('http://www.example.com/pago')
+      end
+    end
+
     it 'ignores an amount supplied by the client' do
       with_modified_env WOMPI_PUBLIC_KEY: public_key, WOMPI_INTEGRITY_SECRET: integrity_secret do
         post '/landing/wompi_session', params: { plan_id: 'emprendedor', amount_in_cents: 100 }
