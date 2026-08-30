@@ -118,7 +118,7 @@ onMounted(() => {
     </div>
     <form class="flex flex-col" @submit.prevent="updateInbox">
       <div v-if="preChatFormEnabled">
-        <div class="w-full">
+        <div class="w-full overflow-x-auto">
           <table
             class="min-w-full table-auto outline outline-1 -outline-offset-1 outline-n-weak rounded-xl"
           >

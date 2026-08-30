@@ -10,7 +10,7 @@ defineProps({
 
 <template>
   <td
-    class="py-3 ltr:pr-4 rtl:pl-4 text-body-main"
+    class="px-4 py-3 text-body-main"
     :class="{
       'text-start': align === 'start',
       'text-center': align === 'center',

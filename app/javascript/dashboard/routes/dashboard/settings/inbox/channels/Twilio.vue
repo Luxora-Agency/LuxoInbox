@@ -168,7 +168,7 @@ export default {
       </label>
     </div>
 
-    <div class="max-w-[65%] w-full messagingServiceHelptext">
+    <div class="w-full max-w-prose messagingServiceHelptext">
       <label for="useMessagingService">
         <input
           id="useMessagingService"
@@ -198,7 +198,7 @@ export default {
         }}</span>
       </label>
     </div>
-    <div class="max-w-[65%] w-full messagingServiceHelptext">
+    <div class="w-full max-w-prose messagingServiceHelptext">
       <label for="useAPIKey">
         <input
           id="useAPIKey"

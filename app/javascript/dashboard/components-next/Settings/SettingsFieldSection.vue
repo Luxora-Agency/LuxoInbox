@@ -27,7 +27,7 @@ defineProps({
       <div class="col-span-1 lg:col-span-2 invisible" />
       <p
         v-if="helpText"
-        class="mt-1.5 col-span-1 lg:col-span-6 text-label-small text-n-slate-11 ltr:ml-1 rtl:mr-1"
+        class="mt-1.5 col-span-1 lg:col-span-6 max-w-prose text-label-small leading-relaxed text-n-slate-11 ltr:ml-1 rtl:mr-1"
       >
         {{ helpText }}
       </p>

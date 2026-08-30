@@ -79,7 +79,7 @@
       },
       "LANGUAGE": {
         "LABEL": "Site language",
-        "PLACEHOLDER": "Your account name",
+        "PLACEHOLDER": "Select a language",
         "ERROR": ""
       },
       "DOMAIN": {

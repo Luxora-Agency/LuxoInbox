@@ -10,6 +10,13 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  // `fixed` lets a caller teleport the card out of a clipping ancestor and
+  // place it against the viewport instead of a positioned parent.
+  position: {
+    type: String,
+    default: 'absolute',
+    validator: value => ['absolute', 'fixed'].includes(value),
+  },
 });
 
 const { SLA_MISS_TYPES } = wootConstants;
@@ -41,7 +48,8 @@ const toggleShowAllNRT = () => {
 
 <template>
   <div
-    class="absolute flex flex-col items-start border-n-strong bg-n-solid-3 w-96 backdrop-blur-[100px] px-6 py-5 z-50 shadow rounded-xl gap-4 max-h-96 overflow-auto"
+    :class="position"
+    class="flex flex-col items-start border-n-strong bg-n-solid-3 w-96 backdrop-blur-[100px] px-6 py-5 z-50 shadow rounded-xl gap-4 max-h-96 overflow-auto"
   >
     <span class="text-sm font-medium text-n-slate-12">
       {{ $t('SLA.EVENTS.TITLE') }}

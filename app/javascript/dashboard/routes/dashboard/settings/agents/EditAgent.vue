@@ -204,8 +204,8 @@ const resetPassword = async () => {
         </label>
       </div>
 
-      <div class="flex flex-row justify-start w-full gap-2 px-0 py-2">
-        <div class="w-[50%] ltr:text-left rtl:text-right">
+      <div class="flex flex-row flex-wrap justify-start w-full gap-2 px-0 py-2">
+        <div class="flex-1 min-w-0 ltr:text-left rtl:text-right">
           <Button
             v-if="provider !== 'saml'"
             ghost
@@ -216,7 +216,7 @@ const resetPassword = async () => {
             @click.prevent="resetPassword"
           />
         </div>
-        <div class="w-[50%] flex justify-end items-center gap-2">
+        <div class="flex flex-1 flex-wrap justify-end items-center gap-2">
           <Button
             faded
             slate

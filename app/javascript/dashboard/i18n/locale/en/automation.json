@@ -25,7 +25,7 @@
         },
         "EVENT": {
           "LABEL": "Event",
-          "PLACEHOLDER": "Please select one",
+          "PLACEHOLDER": "Select one",
           "ERROR": "Event is required"
         },
         "RUN_TYPE": {
@@ -101,9 +101,9 @@
       "CANCEL_BUTTON_TEXT": "Cancel",
       "CONFIRM": {
         "TITLE": "Confirm Deletion",
-        "MESSAGE": "Are you sure to delete ",
-        "YES": "Yes, Delete ",
-        "NO": "No, Keep "
+        "MESSAGE": "Are you sure you want to delete",
+        "YES": "Yes, delete",
+        "NO": "No, keep"
       },
       "API": {
         "SUCCESS_MESSAGE": "Automation rule deleted successfully",

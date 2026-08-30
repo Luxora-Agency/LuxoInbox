@@ -99,7 +99,7 @@
         "TITLE": "Are you sure you want to delete the team?",
         "PLACE_HOLDER": "Please type {teamName} to confirm",
         "MESSAGE": "Deleting the team will remove the team assignment from the conversations assigned to this team.",
-        "YES": "Delete ",
+        "YES": "Delete",
         "NO": "Cancel"
       }
     },
@@ -116,7 +116,8 @@
         "PLACEHOLDER": "Short description about this team."
       },
       "AUTO_ASSIGN": {
-        "LABEL": "Allow auto assign for this team."
+        "LABEL": "Automatically assign conversations to agents in this team",
+        "HELP": "New conversations assigned to this team are distributed among its available agents."
       },
       "SUBMIT_CREATE": "Create team"
     }

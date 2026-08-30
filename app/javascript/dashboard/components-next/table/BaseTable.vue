@@ -18,6 +18,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // Drops the card chrome so the table can sit inside a card of its own.
+  flat: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const hasHeaderSlot = computed(() => !!props.headers.length);
@@ -27,14 +32,17 @@ const showHeaders = computed(
 </script>
 
 <template>
-  <div class="w-full">
-    <table class="min-w-full table-auto divide-y divide-n-weak">
-      <thead v-if="showHeaders" class="border-t border-n-weak">
-        <tr>
+  <div
+    class="w-full overflow-x-auto"
+    :class="flat ? '' : 'rounded-xl border border-n-weak bg-n-solid-1'"
+  >
+    <table class="min-w-full table-auto">
+      <thead v-if="showHeaders" class="bg-n-alpha-1">
+        <tr class="border-b border-n-weak">
           <th
             v-for="(header, index) in headers"
             :key="index"
-            class="py-4 ltr:pr-4 rtl:pl-4 text-start text-heading-3 text-n-slate-12 capitalize"
+            class="px-4 py-3 text-start font-mono text-[11px] font-medium uppercase tracking-wide text-n-slate-11 whitespace-nowrap"
           >
             <slot :name="`header-${index}`" :header="header">
               {{ header }}
@@ -42,7 +50,7 @@ const showHeaders = computed(
           </th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-n-weak text-n-slate-11">
+      <tbody class="text-n-slate-11">
         <template v-if="items.length">
           <slot name="row" :items="items" />
         </template>

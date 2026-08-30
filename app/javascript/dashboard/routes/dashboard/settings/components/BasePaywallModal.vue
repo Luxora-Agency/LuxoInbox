@@ -32,7 +32,7 @@ const { isAdmin } = useAdmin();
 
 <template>
   <div
-    class="flex flex-col max-w-md px-6 py-6 border shadow bg-n-solid-1 rounded-xl border-n-weak"
+    class="flex flex-col w-full max-w-md p-5 sm:p-6 border bg-n-solid-1 rounded-2xl border-n-weak"
   >
     <div class="flex items-center w-full gap-2 mb-4">
       <span
@@ -49,9 +49,9 @@ const { isAdmin } = useAdmin();
     </div>
     <p
       v-dompurify-html="$t(`${featurePrefix}.${i18nKey}.AVAILABLE_ON`)"
-      class="text-sm font-normal text-n-slate-11"
+      class="text-sm font-normal leading-relaxed text-n-slate-11"
     />
-    <p class="text-sm font-normal text-n-slate-11">
+    <p class="text-sm font-normal leading-relaxed text-n-slate-11">
       {{ $t(`${featurePrefix}.${i18nKey}.UPGRADE_PROMPT`) }}
       <span v-if="isOnChatwootCloud && !isAdmin">
         {{ $t('GENERAL_SETTINGS.LIMIT_MESSAGES.NON_ADMIN') }}
@@ -61,7 +61,7 @@ const { isAdmin } = useAdmin();
       </span>
     </p>
     <template v-if="isOnChatwootCloud && isAdmin">
-      <ButtonV4 blue solid md @click="emit('upgrade')">
+      <ButtonV4 blue solid md class="mt-5 w-full" @click="emit('upgrade')">
         {{ $t(`${featurePrefix}.PAYWALL.UPGRADE_NOW`) }}
       </ButtonV4>
       <span class="mt-2 text-xs tracking-tight text-center text-n-slate-11">
@@ -69,7 +69,7 @@ const { isAdmin } = useAdmin();
       </span>
     </template>
     <template v-else-if="!isOnChatwootCloud && isSuperAdmin">
-      <a href="/super_admin" class="block w-full">
+      <a href="/super_admin" class="block w-full mt-5">
         <ButtonV4 solid blue md class="w-full">
           {{ $t(`${featurePrefix}.PAYWALL.UPGRADE_NOW`) }}
         </ButtonV4>
