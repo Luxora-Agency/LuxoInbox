@@ -42,7 +42,7 @@ export default {
         icon="checkmark-circle"
         type="solid"
         size="24"
-        class="text-n-brand"
+        class="text-n-blue-11"
       />
     </div>
     <div

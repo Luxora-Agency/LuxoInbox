@@ -191,7 +191,7 @@ const openRecord = () => {
   <article
     role="link"
     tabindex="0"
-    class="cursor-pointer rounded-md border border-n-weak bg-n-solid-2 p-3 hover:bg-n-alpha-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-n-brand"
+    class="cursor-pointer rounded-md border border-n-weak bg-n-solid-2 p-3 hover:bg-n-alpha-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-n-blue-11"
     @click="openRecord"
     @keydown.enter.self.prevent="openRecord"
     @keydown.space.self.prevent="openRecord"

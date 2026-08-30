@@ -140,7 +140,7 @@ blockquote {
 }
 
 .button {
-  @apply appearance-none bg-n-brand border border-solid border-n-brand text-white cursor-pointer inline-block text-sm h-10 leading-none outline-none outline-0 py-1 px-4 text-center no-underline select-none align-middle whitespace-nowrap;
+  @apply appearance-none bg-n-brand border border-solid border-n-brand text-orbis-navy cursor-pointer inline-block text-sm h-10 leading-none outline-none outline-0 py-1 px-4 text-center no-underline select-none align-middle whitespace-nowrap;
 
   &:focus,
   &:hover {

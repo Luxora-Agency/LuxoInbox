@@ -59,7 +59,7 @@ const TREE_CONNECTOR =
           <Icon
             :icon="icon"
             class="size-4 inline-block transition-colors"
-            :class="{ 'text-n-brand': active }"
+            :class="{ 'text-n-blue-11': active }"
           />
         </span>
         <div class="flex-1 truncate min-w-0 text-sm">{{ label }}</div>

@@ -101,7 +101,7 @@ defineExpose({ dialogRef, onSuccess, open });
           :label="t('DIALOG.BUTTONS.CANCEL')"
           variant="link"
           type="reset"
-          class="h-10 hover:!no-underline hover:text-n-brand"
+          class="h-10 hover:!no-underline hover:text-n-blue-11"
           @click="closeDialog"
         />
         <Button

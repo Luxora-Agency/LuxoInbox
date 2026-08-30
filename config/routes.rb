@@ -17,6 +17,12 @@ Rails.application.routes.draw do
     # The public marketing page owns "/"; the product still lives under "/app".
     root to: 'landing#index'
     post '/landing/wompi_session', to: 'landing#wompi_session'
+    get '/caracteristicas', to: 'landing#caracteristicas', as: 'caracteristicas'
+    get '/precios', to: 'landing#precios', as: 'precios'
+    get '/contacto', to: 'landing#contacto', as: 'contacto'
+    get '/terminos', to: 'landing#terminos', as: 'terminos'
+    get '/privacidad', to: 'landing#privacidad', as: 'privacidad'
+    get '/pago', to: 'landing#pago', as: 'pago'
 
     get '/app', to: 'dashboard#index'
     get '/app/*params', to: 'dashboard#index'

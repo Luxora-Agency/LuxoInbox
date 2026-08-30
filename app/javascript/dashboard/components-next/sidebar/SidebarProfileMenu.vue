@@ -152,7 +152,7 @@ const allowedMenuItems = computed(() => {
         />
         <div v-if="!isCollapsed" class="min-w-0">
           <div
-            class="text-sm font-medium leading-4 truncate text-n-slate-12 group-hover:text-n-brand transition-colors"
+            class="text-sm font-medium leading-4 truncate text-n-slate-12 group-hover:text-n-blue-11 transition-colors"
           >
             {{ currentUser.available_name }}
           </div>

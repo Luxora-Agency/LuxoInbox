@@ -82,11 +82,11 @@ export default {
 <style lang="scss" scoped>
 .file {
   .icon-wrap {
-    @apply text-[2.5rem] text-n-brand leading-none ltr:ml-1 rtl:mr-1 ltr:mr-2 rtl:ml-2;
+    @apply text-[2.5rem] text-woot-700 leading-none ltr:ml-1 rtl:mr-1 ltr:mr-2 rtl:ml-2;
   }
 
   .download {
-    @apply text-n-brand font-medium p-0 m-0 text-xs no-underline;
+    @apply text-woot-700 font-medium p-0 m-0 text-xs no-underline;
   }
 }
 </style>

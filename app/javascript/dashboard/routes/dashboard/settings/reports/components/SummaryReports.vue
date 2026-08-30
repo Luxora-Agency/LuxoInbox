@@ -223,7 +223,7 @@ defineExpose({ downloadReports });
         v-if="isLoading"
         class="absolute inset-0 flex justify-center pt-[12.5rem] bg-n-solid-1/70 rounded-xl pointer-events-none"
       >
-        <Spinner :size="32" class="text-n-brand" />
+        <Spinner :size="32" class="text-n-blue-11" />
       </div>
     </Transition>
   </div>

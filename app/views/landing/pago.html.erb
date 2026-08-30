@@ -1,0 +1,20 @@
+<% content_for :page_title, 'Resultado del pago — LuxoInbox' %>
+<% content_for :meta_description, 'Verificación del estado de tu pago de LuxoInbox procesado con Wompi.' %>
+<%# A payment receipt is per-transaction and has nothing to index. %>
+<% content_for :head do %>
+  <meta name="robots" content="noindex" />
+<% end %>
+<main>
+  <%= render 'nav' %>
+
+  <section class="pago">
+    <div class="container pago__inner">
+      <div id="pago-result" class="pago__panel liquid-glass fade-up fade-up-2" aria-live="polite">
+        <h1 class="pago__title">Verificando tu pago…</h1>
+        <p class="pago__detail">Estamos consultando el estado de tu transacción con Wompi. Esto toma solo unos segundos.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%= render 'footer' %>

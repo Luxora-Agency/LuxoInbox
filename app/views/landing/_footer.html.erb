@@ -1,0 +1,45 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <a class="footer__wordmark" href="/">LuxoInbox</a>
+      <p class="footer__tagline">Todas tus conversaciones en una sola bandeja.</p>
+    </div>
+
+    <div class="footer__columns">
+      <div class="footer__column">
+        <p class="footer__title">Producto</p>
+        <ul class="footer__list">
+          <li><a class="footer__link" href="/caracteristicas">Características</a></li>
+          <li><a class="footer__link" href="/precios">Planes</a></li>
+          <li><a class="footer__link" href="/app/auth/signup">Empieza hoy</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__column">
+        <p class="footer__title">Soporte</p>
+        <ul class="footer__list">
+          <li><a class="footer__link" href="/contacto">Contacto</a></li>
+          <li><a class="footer__link" href="mailto:hola@luxoinbox.com">Escríbenos</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__column">
+        <p class="footer__title">Legal</p>
+        <ul class="footer__list">
+          <li><a class="footer__link" href="/terminos">Términos</a></li>
+          <li><a class="footer__link" href="/privacidad">Privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">© <%= Time.zone.now.year %> Luxora Devs</p>
+
+      <div class="footer__social">
+        <% landing_social_links.each do |link| %>
+          <a class="footer__social-link" href="<%= link[:href] %>" target="_blank" rel="noreferrer" aria-label="<%= link[:label] %>"><%= landing_icon(link[:icon]) %></a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</footer>

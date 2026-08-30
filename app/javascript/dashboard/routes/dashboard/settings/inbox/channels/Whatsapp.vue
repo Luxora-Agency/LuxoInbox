@@ -177,7 +177,7 @@ const requestEmbeddedSignupAccess = () => {
               <template #link>
                 <a
                   href="#"
-                  class="underline text-n-brand"
+                  class="underline text-n-blue-11"
                   @click.prevent="handleManualLinkClick"
                 >
                   {{

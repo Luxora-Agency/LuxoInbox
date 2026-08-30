@@ -227,7 +227,7 @@ const handleSave = () => {
       <div
         v-for="platform in visiblePlatformDetails"
         :key="platform.key"
-        class="flex items-center h-10 gap-1.5 px-3 rounded-lg outline outline-1 outline-n-weak focus-within:outline-n-brand"
+        class="flex items-center h-10 gap-1.5 px-3 rounded-lg outline outline-1 outline-n-weak focus-within:outline-n-blue-11"
       >
         <Icon :icon="platform.icon" class="size-4 shrink-0 text-n-slate-11" />
         <span class="text-sm shrink-0 text-n-slate-10">{{

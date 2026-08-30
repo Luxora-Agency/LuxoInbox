@@ -44,7 +44,7 @@ const emailMetaClass = computed(() =>
 
 const varaintBaseMap = {
   [MESSAGE_VARIANTS.AGENT]:
-    'bg-gradient-to-br from-woot-500 to-woot-600 text-white shadow-lg shadow-woot-500/25',
+    'bg-gradient-to-br from-woot-500 to-woot-600 text-orbis-navy [--slate-12:1_8_40] [--slate-11:26_61_8] [--slate-10:42_100_5] [--blue-11:26_61_8] shadow-lg shadow-woot-500/25',
   [MESSAGE_VARIANTS.PRIVATE]:
     'bg-amber-100/90 dark:bg-amber-500/20 backdrop-blur-sm text-amber-900 dark:text-amber-200 border border-amber-200/50 dark:border-amber-500/30 [&_.prosemirror-mention-node]:font-semibold',
   [MESSAGE_VARIANTS.USER]:
@@ -52,9 +52,9 @@ const varaintBaseMap = {
   [MESSAGE_VARIANTS.ACTIVITY]:
     'bg-n-slate-2/50 dark:bg-n-solid-3/50 text-n-slate-11 text-sm',
   [MESSAGE_VARIANTS.BOT]:
-    'bg-gradient-to-br from-woot-400 to-woot-600 text-white shadow-lg shadow-woot-500/25',
+    'bg-gradient-to-br from-woot-400 to-woot-600 text-orbis-navy [--slate-12:1_8_40] [--slate-11:26_61_8] [--slate-10:42_100_5] [--blue-11:26_61_8] shadow-lg shadow-woot-500/25',
   [MESSAGE_VARIANTS.TEMPLATE]:
-    'bg-gradient-to-br from-woot-400 to-woot-600 text-white shadow-lg shadow-woot-500/25',
+    'bg-gradient-to-br from-woot-400 to-woot-600 text-orbis-navy [--slate-12:1_8_40] [--slate-11:26_61_8] [--slate-10:42_100_5] [--blue-11:26_61_8] shadow-lg shadow-woot-500/25',
   [MESSAGE_VARIANTS.ERROR]:
     'bg-red-100/90 dark:bg-red-500/20 backdrop-blur-sm text-red-900 dark:text-red-200 border border-red-200/50 dark:border-red-500/30',
   [MESSAGE_VARIANTS.EMAIL]: 'w-full',

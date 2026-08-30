@@ -230,7 +230,7 @@ export default {
           v-model="searchCountry"
           type="text"
           :placeholder="$t('GENERAL.PHONE_INPUT.PLACEHOLDER')"
-          class="!h-8 !mb-0 !text-sm !outline-n-brand dark:!outline-n-brand"
+          class="!h-8 !mb-0 !text-sm !outline-n-blue-11"
           @input="onSearchCountry"
         />
       </div>

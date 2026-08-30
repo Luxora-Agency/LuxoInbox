@@ -106,7 +106,7 @@ const onCardClick = e => {
     <div class="flex flex-col w-full gap-1 min-w-0">
       <div class="flex items-center justify-between h-6 gap-2">
         <h4
-          class="text-base font-medium truncate text-n-slate-12 group-hover:text-n-brand transition-colors duration-200"
+          class="text-base font-medium truncate text-n-slate-12 group-hover:text-n-blue-11 transition-colors duration-200"
         >
           {{ currentContactName }}
         </h4>
@@ -118,7 +118,7 @@ const onCardClick = e => {
           >
             <Icon
               :icon="inboxIcon"
-              class="flex-shrink-0 text-n-slate-11 size-3 group-hover:text-n-brand transition-colors duration-200"
+              class="flex-shrink-0 text-n-slate-11 size-3 group-hover:text-n-blue-11 transition-colors duration-200"
             />
           </div>
           <span class="text-sm text-n-slate-10">

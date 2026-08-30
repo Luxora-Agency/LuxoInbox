@@ -150,7 +150,7 @@ onMounted(() => {
           >
             <span
               class="text-center"
-              :class="{ 'text-n-brand': page == currentPage }"
+              :class="{ 'text-n-blue-11': page == currentPage }"
             >
               {{ page }}
             </span>

@@ -92,7 +92,7 @@ const formattedSummary = computed(
     <div
       v-else
       v-dompurify-html="formattedSummary"
-      class="max-w-none prose prose-p:text-lg prose-p:leading-relaxed prose-p:mt-0 prose-p:mb-3 last:prose-p:mb-0 prose-strong:font-bold prose-strong:tabular-nums prose-strong:text-n-brand text-n-slate-12"
+      class="max-w-none prose prose-p:text-lg prose-p:leading-relaxed prose-p:mt-0 prose-p:mb-3 last:prose-p:mb-0 prose-strong:font-bold prose-strong:tabular-nums prose-strong:text-n-blue-11 text-n-slate-12"
     />
   </div>
 </template>

@@ -52,7 +52,7 @@ defineProps({
     <Icon
       v-if="variant === 'label-assigned'"
       icon="i-lucide-check"
-      class="flex-shrink-0 size-3.5 text-n-brand group-hover:text-white"
+      class="flex-shrink-0 size-3.5 text-n-blue-11 group-hover:text-orbis-navy"
     />
   </div>
 </template>
@@ -67,7 +67,7 @@ defineProps({
   }
 
   &:hover {
-    @apply bg-n-brand text-white;
+    @apply bg-n-brand text-orbis-navy;
   }
 }
 

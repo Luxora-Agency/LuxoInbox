@@ -30,14 +30,14 @@ const handleChange = event => {
       :indeterminate="indeterminate"
       type="checkbox"
       :disabled="disabled"
-      class="peer absolute inset-0 z-10 h-4 w-4 disabled:opacity-50 appearance-none rounded-md border border-n-slate-6 ring-transparent transition-all duration-200 ease-out checked:border-n-brand checked:bg-n-brand dark:border-gray-600 dark:checked:border-n-brand indeterminate:border-n-brand indeterminate:bg-n-brand hover:enabled:bg-n-alpha-2 hover:enabled:border-n-brand/50 focus:ring-2 focus:ring-n-brand/20 cursor-pointer"
+      class="peer absolute inset-0 z-10 h-4 w-4 disabled:opacity-50 appearance-none rounded-md border border-n-slate-6 ring-transparent transition-all duration-200 ease-out checked:border-n-blue-11 checked:bg-n-brand dark:border-gray-600 dark:checked:border-n-blue-11 indeterminate:border-n-blue-11 indeterminate:bg-n-brand hover:enabled:bg-n-alpha-2 hover:enabled:border-n-blue-8/50 focus:ring-2 focus:ring-n-brand/20 cursor-pointer"
       @change="handleChange"
     />
     <!-- Checkmark SVG -->
     <svg
       viewBox="0 0 14 14"
       fill="none"
-      class="pointer-events-none absolute w-3.5 h-3.5 z-20 stroke-white opacity-0 peer-checked:opacity-100 transition-opacity duration-200 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      class="pointer-events-none absolute w-3.5 h-3.5 z-20 stroke-orbis-navy opacity-0 peer-checked:opacity-100 transition-opacity duration-200 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
     >
       <path
         d="M3 8L6 11L11 3.5"
@@ -50,7 +50,7 @@ const handleChange = event => {
     <svg
       viewBox="0 0 14 14"
       fill="none"
-      class="pointer-events-none absolute w-3.5 h-3.5 z-20 stroke-white opacity-0 peer-indeterminate:opacity-100 transition-opacity duration-200 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      class="pointer-events-none absolute w-3.5 h-3.5 z-20 stroke-orbis-navy opacity-0 peer-indeterminate:opacity-100 transition-opacity duration-200 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
     >
       <path
         d="M3 7L11 7"

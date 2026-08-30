@@ -80,7 +80,7 @@ defineExpose({ conversationListRef });
       />
     </Virtualizer>
     <div v-if="isLoading" class="flex justify-center my-4">
-      <Spinner class="text-n-brand" />
+      <Spinner class="text-n-blue-11" />
     </div>
     <p v-else-if="showEndOfListMessage" class="p-4 text-center text-n-slate-11">
       {{ $t('CHAT_LIST.EOF') }}

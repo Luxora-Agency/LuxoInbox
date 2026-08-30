@@ -29,18 +29,18 @@
     --iris-11: 87 83 198;
     --iris-12: 39 41 98;
 
-    --blue-1: 255 252 254;
-    --blue-2: 254 247 252;
-    --blue-3: 253 232 247;
-    --blue-4: 251 216 241;
-    --blue-5: 247 197 235;
-    --blue-6: 240 157 213;
-    --blue-7: 230 122 192;
-    --blue-8: 215 89 167;
-    --blue-9: 233 30 140;
-    --blue-10: 216 27 127;
-    --blue-11: 196 24 114;
-    --blue-12: 100 12 58;
+    --blue-1: 249 255 244;
+    --blue-2: 243 254 233;
+    --blue-3: 232 252 213;
+    --blue-4: 217 248 188;
+    --blue-5: 199 241 160;
+    --blue-6: 178 229 132;
+    --blue-7: 150 210 100;
+    --blue-8: 116 190 55;
+    --blue-9: 111 255 0;
+    --blue-10: 95 224 0;
+    --blue-11: 52 122 0;
+    --blue-12: 26 61 8;
 
     --ruby-1: 255 252 253;
     --ruby-2: 255 247 248;
@@ -112,20 +112,20 @@
     --surface-2: 255 255 255;
     --surface-active: 255 255 255;
     --background-input-box: 0, 0, 0, 0.03;
-    --text-blue: 1 22 44;
+    --text-blue: 26 61 8;
     --text-purple: 2 4 49;
     --text-amber: 37 24 1;
     --border-container: 236 236 236;
     --border-strong: 226 227 231;
     --border-weak: 234 234 234;
-    --border-blue-strong: 89 17 100;
+    --border-blue-strong: 61 143 0;
     --solid-1: 255 255 255;
     --solid-2: 255 255 255;
     --solid-3: 255 255 255;
     --solid-active: 255 255 255;
     --solid-amber: 255 228 181;
-    --solid-blue: 251 216 241;
-    --solid-blue-2: 251 253 255;
+    --solid-blue: 217 248 188;
+    --solid-blue-2: 251 255 247;
     --solid-iris: 230 231 255;
     --solid-purple: 230 231 255;
     --solid-red: 254 200 201;
@@ -143,7 +143,7 @@
     --alpha-3: 255, 255, 255, 0.96;
     --black-alpha-1: 0, 0, 0, 0.12;
     --black-alpha-2: 0, 0, 0, 0.04;
-    --border-blue: 233, 30, 140, 0.5;
+    --border-blue: 111, 255, 0, 0.5;
     --white-alpha: 255, 255, 255, 0.8;
 
     // Voice call widget - light mode
@@ -154,19 +154,19 @@
   }
 
   .dark {
-    // slate
-    --slate-1: 17 17 19;
-    --slate-2: 24 25 27;
-    --slate-3: 33 34 37;
-    --slate-4: 39 42 45;
-    --slate-5: 46 49 53;
-    --slate-6: 54 58 63;
-    --slate-7: 67 72 78;
-    --slate-8: 90 97 105;
-    --slate-9: 105 110 119;
-    --slate-10: 119 123 132;
-    --slate-11: 176 180 186;
-    --slate-12: 237 238 240;
+    // slate (Orbis navy)
+    --slate-1: 1 8 40;
+    --slate-2: 6 14 52;
+    --slate-3: 13 22 66;
+    --slate-4: 19 29 78;
+    --slate-5: 26 37 92;
+    --slate-6: 34 46 108;
+    --slate-7: 45 58 126;
+    --slate-8: 62 76 152;
+    --slate-9: 90 104 178;
+    --slate-10: 108 122 194;
+    --slate-11: 168 180 224;
+    --slate-12: 239 244 255;
 
     --iris-1: 19 19 30;
     --iris-2: 23 22 37;
@@ -181,18 +181,18 @@
     --iris-11: 158 177 255;
     --iris-12: 224 223 254;
 
-    --blue-1: 28 13 22;
-    --blue-2: 38 19 30;
-    --blue-3: 63 23 48;
-    --blue-4: 85 24 62;
-    --blue-5: 103 30 74;
-    --blue-6: 123 40 89;
-    --blue-7: 148 55 107;
-    --blue-8: 178 72 127;
-    --blue-9: 233 30 140;
-    --blue-10: 240 77 163;
-    --blue-11: 247 127 189;
-    --blue-12: 253 228 240;
+    --blue-1: 11 18 6;
+    --blue-2: 15 25 8;
+    --blue-3: 19 40 10;
+    --blue-4: 24 53 10;
+    --blue-5: 31 66 13;
+    --blue-6: 40 81 17;
+    --blue-7: 52 100 21;
+    --blue-8: 66 126 24;
+    --blue-9: 111 255 0;
+    --blue-10: 133 255 40;
+    --blue-11: 158 255 82;
+    --blue-12: 222 255 194;
 
     --ruby-1: 25 17 19;
     --ruby-2: 30 21 23;
@@ -233,18 +233,18 @@
     --teal-11: 11 216 182;
     --teal-12: 173 240 221;
 
-    --gray-1: 17 17 17;
-    --gray-2: 25 25 25;
-    --gray-3: 34 34 34;
-    --gray-4: 42 42 42;
-    --gray-5: 49 49 49;
-    --gray-6: 58 58 58;
-    --gray-7: 72 72 72;
-    --gray-8: 96 96 96;
-    --gray-9: 110 110 110;
-    --gray-10: 123 123 123;
-    --gray-11: 180 180 180;
-    --gray-12: 238 238 238;
+    --gray-1: 1 8 40;
+    --gray-2: 6 14 52;
+    --gray-3: 13 22 66;
+    --gray-4: 19 29 78;
+    --gray-5: 26 37 92;
+    --gray-6: 34 46 108;
+    --gray-7: 45 58 126;
+    --gray-8: 62 76 152;
+    --gray-9: 90 104 178;
+    --gray-10: 108 122 194;
+    --gray-11: 168 180 224;
+    --gray-12: 239 244 255;
 
     --violet-1: 20 17 31;
     --violet-2: 27 21 37;
@@ -259,49 +259,49 @@
     --violet-11: 169 153 236;
     --violet-12: 226 221 254;
 
-    --background-color: 28 29 32;
-    --surface-1: 20 21 23;
-    --surface-2: 22 23 26;
-    --surface-active: 53 57 66;
+    --background-color: 10 18 58;
+    --surface-1: 4 11 46;
+    --surface-2: 6 14 52;
+    --surface-active: 34 46 108;
     --background-input-box: 255, 255, 255, 0.02;
-    --text-blue: 213 234 255;
+    --text-blue: 222 255 194;
     --text-purple: 232 233 254;
     --text-amber: 255 247 234;
-    --border-strong: 46 45 50;
-    --border-weak: 31 31 37;
-    --border-blue-strong: 245 169 252;
-    --solid-1: 23 23 26;
-    --solid-2: 29 30 36;
-    --solid-3: 44 45 54;
-    --solid-active: 53 57 66;
+    --border-strong: 26 37 92;
+    --border-weak: 12 20 62;
+    --border-blue-strong: 158 255 82;
+    --solid-1: 6 14 52;
+    --solid-2: 13 22 66;
+    --solid-3: 26 37 92;
+    --solid-active: 34 46 108;
     --solid-amber: 56 50 41;
-    --solid-blue: 85 24 62;
-    --solid-blue-2: 26 29 35;
+    --solid-blue: 24 53 10;
+    --solid-blue-2: 9 17 56;
     --solid-iris: 38 42 101;
     --solid-purple: 51 51 107;
     --solid-red: 90 33 34;
     --solid-amber-button: 255 221 141;
-    --card-color: 28 30 34;
+    --card-color: 11 19 60;
     --overlay: 0, 0, 0, 0.4;
     --overlay-avatar: 0, 0, 0, 0.05;
-    --button-color: 42 43 51;
+    --button-color: 22 33 85;
     --button-hover-color: 0, 0, 0, 0.15;
-    --label-background: 36 38 45;
+    --label-background: 17 27 74;
     --label-border: 255, 255, 255, 0.03;
 
-    --alpha-1: 35, 36, 42, 0.8;
-    --alpha-2: 147, 153, 176, 0.12;
-    --alpha-3: 33, 34, 38, 0.95;
+    --alpha-1: 14, 23, 68, 0.8;
+    --alpha-2: 138, 151, 209, 0.12;
+    --alpha-3: 13, 22, 66, 0.95;
     --black-alpha-1: 0, 0, 0, 0.3;
     --black-alpha-2: 0, 0, 0, 0.2;
-    --border-blue: 233, 30, 140, 0.5;
+    --border-blue: 111, 255, 0, 0.5;
     --border-container: 255, 255, 255, 0;
     --white-alpha: 255, 255, 255, 0.1;
 
     // Voice call widget - dark mode
-    --call-widget: 50, 53, 61, 1;
+    --call-widget: 13, 22, 66, 1;
     --call-widget-border: 255, 255, 255, 0.07;
-    --call-widget-text: 237, 238, 240, 1;
+    --call-widget-text: 239, 244, 255, 1;
     --call-widget-sub-text: 173, 177, 184, 1;
   }
 }

@@ -129,7 +129,7 @@ onMounted(() => store.dispatch('getCannedResponse'));
     <template #preview="{ item }">
       <div
         v-dompurify-html="formatMessage(item?.resolved || '')"
-        class="px-4 py-3 prose prose-bubble !max-w-none prose-a:text-n-brand"
+        class="px-4 py-3 prose prose-bubble !max-w-none prose-a:text-n-blue-11"
       />
     </template>
   </CaretAnchoredPicker>

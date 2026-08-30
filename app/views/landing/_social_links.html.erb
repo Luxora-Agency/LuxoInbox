@@ -1,0 +1,14 @@
+<% variant = local_assigns.fetch(:variant, :inline) %>
+<% if variant == :stack %>
+  <div class="social-stack liquid-glass">
+    <% landing_social_links.each do |link| %>
+      <a class="social-stack__link" href="<%= link[:href] %>" target="_blank" rel="noreferrer" aria-label="<%= link[:label] %>"><%= landing_icon(link[:icon]) %></a>
+    <% end %>
+  </div>
+<% else %>
+  <div class="social-buttons social-buttons--<%= variant %> fade-up fade-up-4">
+    <% landing_social_links.each do |link| %>
+      <a class="social-button liquid-glass" href="<%= link[:href] %>" target="_blank" rel="noreferrer" aria-label="<%= link[:label] %>"><%= landing_icon(link[:icon]) %></a>
+    <% end %>
+  </div>
+<% end %>

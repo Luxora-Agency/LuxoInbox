@@ -154,8 +154,7 @@ onMounted(() => {
         {
           'cursor-not-allowed opacity-50 !bg-n-alpha-black2 disabled:border-n-weak dark:disabled:border-n-weak':
             disabled,
-          'border-n-brand dark:border-n-brand ring-4 ring-n-brand/10':
-            isFocused,
+          'border-n-blue-11 ring-4 ring-n-brand/10': isFocused,
           'hover:border-n-slate-6 dark:hover:border-n-slate-6 border-n-weak dark:border-n-weak':
             !isFocused && messageType !== 'error',
           'border-n-ruby-8 dark:border-n-ruby-8 hover:border-n-ruby-9 dark:hover:border-n-ruby-9':

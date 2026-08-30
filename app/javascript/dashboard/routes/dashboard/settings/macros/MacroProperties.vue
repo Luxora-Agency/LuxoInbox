@@ -105,7 +105,7 @@ export default {
             <Icon
               v-if="macroVisibility === 'global'"
               icon="i-lucide-circle-check-big"
-              class="text-n-brand size-4"
+              class="text-n-blue-11 size-4"
             />
           </div>
           <p
@@ -129,7 +129,7 @@ export default {
             <Icon
               v-if="macroVisibility === 'personal'"
               icon="i-lucide-circle-check-big"
-              class="text-n-brand size-4"
+              class="text-n-blue-11 size-4"
             />
           </div>
           <p class="text-n-slate-11 text-label-small">

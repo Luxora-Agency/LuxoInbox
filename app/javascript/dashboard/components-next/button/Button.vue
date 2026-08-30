@@ -102,10 +102,10 @@ const STYLE_CONFIG = {
   colors: {
     blue: {
       solid:
-        'bg-n-brand text-white hover:enabled:brightness-110 focus-visible:brightness-110 outline-transparent',
+        'bg-n-brand text-orbis-navy hover:enabled:brightness-110 focus-visible:brightness-110 outline-transparent',
       faded:
         'bg-n-brand/10 text-n-blue-11 hover:enabled:bg-n-brand/20 focus-visible:bg-n-brand/20 outline-transparent',
-      outline: 'text-n-blue-11 outline-n-brand',
+      outline: 'text-n-blue-11 outline-n-blue-8',
       ghost:
         'text-n-blue-11 hover:enabled:bg-n-alpha-2 focus-visible:bg-n-alpha-2 outline-transparent',
       link: 'text-n-blue-11 hover:enabled:underline focus-visible:underline outline-transparent',
@@ -156,14 +156,14 @@ const STYLE_CONFIG = {
     },
     brand: {
       solid:
-        'bg-gradient-to-r from-[#4C1D95] via-[#86198F] to-[#9F1239] text-white shadow-lg shadow-purple-500/25 hover:enabled:shadow-xl hover:enabled:shadow-purple-500/30 hover:enabled:scale-[1.02] focus-visible:shadow-xl focus-visible:shadow-purple-500/30 outline-transparent',
+        'bg-n-brand text-orbis-navy shadow-lg shadow-n-brand/25 hover:enabled:shadow-xl hover:enabled:shadow-n-brand/30 hover:enabled:scale-[1.02] focus-visible:shadow-xl focus-visible:shadow-n-brand/30 outline-transparent',
       faded:
-        'bg-n-brand/10 text-n-brand hover:enabled:bg-n-brand/20 focus-visible:bg-n-brand/20 outline-transparent',
+        'bg-n-brand/10 text-n-blue-11 hover:enabled:bg-n-brand/20 focus-visible:bg-n-brand/20 outline-transparent',
       outline:
-        'text-n-brand outline-n-brand hover:enabled:bg-n-brand/10 focus-visible:bg-n-brand/10',
-      link: 'text-n-brand hover:enabled:underline focus-visible:underline outline-transparent',
+        'text-n-blue-11 outline-n-blue-8 hover:enabled:bg-n-brand/10 focus-visible:bg-n-brand/10',
+      link: 'text-n-blue-11 hover:enabled:underline focus-visible:underline outline-transparent',
       ghost:
-        'text-n-brand hover:enabled:bg-n-brand/10 focus-visible:bg-n-brand/10 outline-transparent',
+        'text-n-blue-11 hover:enabled:bg-n-brand/10 focus-visible:bg-n-brand/10 outline-transparent',
     },
   },
   sizes: {
