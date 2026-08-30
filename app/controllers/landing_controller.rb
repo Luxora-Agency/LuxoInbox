@@ -12,18 +12,26 @@ class LandingController < ActionController::Base
 
   # The price of every plan lives here and only here: the browser posts a plan id,
   # never an amount, so a tampered client cannot buy a plan for one peso.
+  #
+  # Enterprise has no price_in_cents: it isn't sold through Wompi, so its card
+  # links to /contacto instead. wompi_session guards on a nil price explicitly
+  # so it can never reach the signature math.
   PLANS = [
     {
-      id: 'emprendedor', name: 'EMPRENDEDOR', agents: 3, price_in_cents: 8_990_000,
+      id: 'starter', name: 'STARTER', agents: 5, price_in_cents: 31_990_000,
       video: "#{CDN}/hf_20260331_053923_22c0a6a5-313c-474c-85ff-3b50d25e944a.mp4"
     },
     {
-      id: 'crecimiento', name: 'CRECIMIENTO', agents: 10, price_in_cents: 18_990_000,
+      id: 'growth', name: 'GROWTH', agents: 10, price_in_cents: 63_990_000, featured: true,
       video: "#{CDN}/hf_20260331_054411_511c1b7a-fb2f-42ef-bf6c-32c0b1a06e79.mp4"
     },
     {
-      id: 'empresarial', name: 'EMPRESARIAL', agents: 25, price_in_cents: 38_990_000,
+      id: 'advanced', name: 'ADVANCED', agents: '10 (ampliables)', price_in_cents: 111_990_000,
       video: "#{CDN}/hf_20260331_055427_ac7035b5-9f3b-4289-86fc-941b2432317d.mp4"
+    },
+    {
+      id: 'enterprise', name: 'ENTERPRISE', agents: 'Ilimitados', price_in_cents: nil,
+      video: ABOUT_VIDEO
     }
   ].freeze
 
@@ -64,7 +72,9 @@ class LandingController < ActionController::Base
 
   def wompi_session
     plan = PLANS.find { |candidate| candidate[:id] == params[:plan_id] }
-    return render json: { error: 'Plan no encontrado' }, status: :not_found if plan.nil?
+    # Enterprise (and any future non-purchasable plan) has no price_in_cents:
+    # treat it the same as an unknown plan id instead of letting nil reach the signature math.
+    return render json: { error: 'Plan no encontrado' }, status: :not_found if plan.nil? || plan[:price_in_cents].nil?
 
     public_key = ENV.fetch('WOMPI_PUBLIC_KEY', '').presence
     integrity_secret = ENV.fetch('WOMPI_INTEGRITY_SECRET', '').presence

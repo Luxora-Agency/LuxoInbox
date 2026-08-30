@@ -16,8 +16,10 @@ describe 'Landing pages', type: :request do
       get '/precios'
 
       expect(response).to have_http_status(:success)
-      expect(response.body).to include('EMPRENDEDOR')
-      expect(response.body).to include('$ 89.900 COP')
+      expect(response.body).to include('GROWTH')
+      expect(response.body).to include('$ 639.900 COP')
+      expect(response.body).to include('A LA MEDIDA')
+      expect(response.body).to include('MÁS POPULAR')
       expect(response.body).to include('Preguntas frecuentes')
     end
 

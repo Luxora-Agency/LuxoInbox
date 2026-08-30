@@ -1,10 +1,44 @@
 <% content_for :page_title, 'Planes y precios — LuxoInbox' %>
 <% content_for :meta_description, 'Planes mensuales en pesos colombianos, con pago seguro vía Wompi: tarjetas, PSE y Nequi. Sin permanencia mínima.' %>
 <%
-  plan_details = {
-    'emprendedor' => { channels: 'WhatsApp, correo y chat web', support: 'Soporte por correo' },
-    'crecimiento' => { channels: 'WhatsApp, Instagram, Facebook, correo y chat web', support: 'Soporte prioritario por correo y chat' },
-    'empresarial' => { channels: 'Todos los canales, sin límites', support: 'Soporte dedicado con acompañamiento' }
+  plan_pitches = {
+    'starter' => 'Para equipos que arrancan.',
+    'growth' => 'El favorito para crecer.',
+    'advanced' => 'Control y escala.',
+    'enterprise' => 'Usuarios ilimitados y límites a tu medida.'
+  }
+
+  plan_features = {
+    'starter' => [
+      '5 agentes incluidos',
+      'Bandeja de equipo y notas internas',
+      'Canales de chat web y correo',
+      'App móvil',
+      'Respuestas rápidas',
+      'Reportes básicos',
+      'Autenticación en dos pasos (2FA)'
+    ],
+    'growth' => [
+      'Todo lo de Starter',
+      'Todos los canales: WhatsApp, Instagram, Facebook, correo y chat web',
+      'Difusiones y campañas',
+      'Automatizaciones y macros',
+      'Reportes avanzados y CSAT',
+      'API para desarrolladores'
+    ],
+    'advanced' => [
+      'Todo lo de Growth',
+      'Múltiples cuentas y espacios de trabajo',
+      'SSO / SAML',
+      'Webhooks y solicitudes HTTP en automatizaciones',
+      'Roles personalizados y auditoría',
+      'SLA y atributos requeridos'
+    ],
+    'enterprise' => [
+      'Usuarios ilimitados',
+      'Límites a tu medida',
+      'Soporte dedicado'
+    ]
   }
 
   faqs = [
@@ -12,6 +46,8 @@
       answer: 'A través de Wompi, la pasarela de pagos colombiana: tarjetas de crédito y débito, PSE y Nequi. El cobro es mensual y se procesa en pesos colombianos.' },
     { question: '¿Puedo cambiar de plan?',
       answer: 'Sí. Puedes subir o bajar de plan cuando quieras y el cambio aplica desde tu siguiente ciclo de facturación.' },
+    { question: '¿Puedo agregar más agentes?',
+      answer: 'Sí, cada plan permite agentes adicionales; escríbenos y lo activamos por un cargo mensual por agente.' },
     { question: '¿Hay permanencia mínima?',
       answer: 'No. Los planes son mensuales y puedes cancelar en cualquier momento, sin penalidades ni cobros adicionales.' },
     { question: '¿Qué pasa cuando vence mi plan?',
@@ -19,7 +55,7 @@
     { question: '¿Facturan en pesos colombianos?',
       answer: 'Sí. Todos los precios están en COP y el cobro se hace en Colombia, sin sorpresas por tasa de cambio.' },
     { question: '¿Qué soporte incluye mi plan?',
-      answer: 'Todos los planes incluyen soporte por correo. Los planes Crecimiento y Empresarial suman canales prioritarios y acompañamiento en la configuración.' }
+      answer: 'Todos los planes incluyen soporte por correo, y el plan Enterprise suma soporte dedicado con acompañamiento.' }
   ]
 %>
 <main>
@@ -51,21 +87,15 @@
         <% @plans.each do |plan| %>
           <article class="compare-card liquid-glass">
             <h3 class="compare-card__name"><%= plan[:name] %></h3>
-            <p class="compare-card__price"><%= format_cop(plan[:price_in_cents]) %> / MES</p>
+            <p class="compare-card__pitch"><%= plan_pitches[plan[:id]] %></p>
+            <p class="compare-card__price">
+              <%= plan[:price_in_cents].present? ? "#{format_cop(plan[:price_in_cents])} / MES" : 'A LA MEDIDA' %>
+            </p>
 
             <ul class="compare-card__list">
-              <li class="compare-card__item">
-                <span class="compare-card__term">Agentes</span>
-                <%= plan[:agents] %> agentes incluidos
-              </li>
-              <li class="compare-card__item">
-                <span class="compare-card__term">Canales</span>
-                <%= plan_details[plan[:id]][:channels] %>
-              </li>
-              <li class="compare-card__item">
-                <span class="compare-card__term">Soporte</span>
-                <%= plan_details[plan[:id]][:support] %>
-              </li>
+              <% plan_features[plan[:id]].each do |feature| %>
+                <li class="compare-card__item"><%= feature %></li>
+              <% end %>
             </ul>
           </article>
         <% end %>

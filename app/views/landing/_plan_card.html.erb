@@ -1,6 +1,13 @@
-<% price = "#{format_cop(plan[:price_in_cents])} / MES" %>
+<%
+  purchasable = plan[:price_in_cents].present?
+  price = purchasable ? "#{format_cop(plan[:price_in_cents])} / MES" : 'A LA MEDIDA'
+%>
 <article class="plan-card liquid-glass">
   <div class="plan-card__media">
+    <% if plan[:featured] %>
+      <span class="plan-card__badge liquid-glass">MÁS POPULAR</span>
+    <% end %>
+
     <video class="plan-card__video" src="<%= plan[:video] %>" autoplay loop muted playsinline></video>
 
     <div class="plan-card__bar liquid-glass">
@@ -9,10 +16,14 @@
         <p class="plan-card__meta">
           Agentes incluidos: <span class="plan-card__agents"><%= plan[:agents] %></span>
         </p>
-        <p class="plan-card__meta"><%= price %></p>
+        <p class="plan-card__meta plan-card__meta--price<%= purchasable ? '' : ' plan-card__meta--custom' %>"><%= price %></p>
       </div>
 
-      <button type="button" class="plan-card__buy" data-plan-id="<%= plan[:id] %>" data-plan-name="<%= plan[:name] %>" data-plan-price="<%= format_cop(plan[:price_in_cents]) %>" aria-label="Contratar el plan <%= plan[:name] %> por <%= price %>"><%= landing_icon(:chevron_right) %></button>
+      <% if purchasable %>
+        <button type="button" class="plan-card__buy" data-plan-id="<%= plan[:id] %>" data-plan-name="<%= plan[:name] %>" data-plan-price="<%= format_cop(plan[:price_in_cents]) %>" aria-label="Contratar el plan <%= plan[:name] %> por <%= price %>"><%= landing_icon(:chevron_right) %></button>
+      <% else %>
+        <a href="<%= contacto_path %>" class="plan-card__talk" aria-label="Hablemos sobre el plan <%= plan[:name] %>"><%= landing_icon(:chevron_right) %></a>
+      <% end %>
     </div>
   </div>
 </article>

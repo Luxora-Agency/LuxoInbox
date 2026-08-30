@@ -247,6 +247,7 @@ a {
   line-height: 1.05;
   text-transform: uppercase;
   color: var(--cream);
+  text-shadow: 0 2px 8px rgba(1, 8, 40, 0.6), 0 10px 40px rgba(1, 8, 40, 0.5);
 }
 
 .hero__accent {
@@ -340,7 +341,7 @@ a {
 
 .about__accent {
   position: absolute;
-  bottom: -28px;
+  bottom: -34px;
   right: 0;
   transform: rotate(3deg);
   font-size: 36px;
@@ -374,8 +375,8 @@ a {
 }
 
 .about__column .manifesto {
-  color: var(--night);
-  opacity: 0.1;
+  color: var(--cream);
+  opacity: 0.12;
 }
 
 /* --------------------------------------------------------------------------
@@ -499,6 +500,7 @@ a {
   gap: 16px;
   border-radius: 20px;
   padding: 16px 20px;
+  background: rgba(1, 8, 40, 0.55);
 }
 
 .plan-card__text {
@@ -523,7 +525,7 @@ a {
   font-size: 11px;
   line-height: 1;
   text-transform: uppercase;
-  color: rgba(239, 244, 255, 0.7);
+  color: rgba(239, 244, 255, 0.92);
 }
 
 .plan-card__agents {
@@ -603,6 +605,7 @@ a {
   font-weight: 400;
   text-transform: uppercase;
   color: var(--cream);
+  text-shadow: 0 2px 8px rgba(1, 8, 40, 0.6), 0 10px 40px rgba(1, 8, 40, 0.5);
 }
 
 .cta__link {
@@ -754,7 +757,7 @@ a {
   }
 
   .about__accent {
-    bottom: -40px;
+    bottom: -52px;
     font-size: 52px;
   }
 
@@ -895,8 +898,8 @@ a {
   }
 
   .about__accent {
-    bottom: -56px;
-    right: -32px;
+    bottom: -84px;
+    right: -16px;
     font-size: 68px;
   }
 
@@ -947,7 +950,7 @@ a {
   }
 
   .collection__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .cta__inner {
@@ -991,6 +994,10 @@ a {
 
   .social-buttons--rail {
     right: 48px;
+  }
+
+  .collection__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -1482,6 +1489,63 @@ body.mobile-menu-open {
   margin-top: 0;
 }
 
+/* Growth is the highlighted plan: a small liquid-glass pill sits on the
+   card's media, above the video and the info bar. */
+.plan-card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-family: var(--font-grotesk);
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--neon);
+}
+
+/* The price never wraps: "$ 1.119.900 COP / MES" reads as one line. */
+.plan-card__meta--price {
+  white-space: nowrap;
+}
+
+/* Enterprise has no price: its price row reads "A LA MEDIDA" in the display
+   font instead of the mono price format. */
+.plan-card__meta--custom {
+  font-family: var(--font-grotesk);
+  font-size: 14px;
+  color: var(--neon);
+}
+
+/* Enterprise isn't purchasable: its card links to /contacto instead of
+   opening the Wompi widget. landing.js only binds .plan-card__buy, so this
+   is a distinct class styled to match. */
+.plan-card__talk {
+  display: flex;
+  height: 48px;
+  width: 48px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  cursor: pointer;
+  background-image: linear-gradient(to bottom right, #b724ff, #7c3aed);
+  color: #fff;
+  box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.5), 0 4px 6px -4px rgba(168, 85, 247, 0.5);
+  transition: transform 0.3s;
+}
+
+.plan-card__talk:hover {
+  transform: scale(1.1);
+}
+
+.plan-card__talk svg {
+  height: 22px;
+  width: 22px;
+}
+
 .compare {
   background-color: var(--night);
   padding-block: 64px;
@@ -1519,6 +1583,14 @@ body.mobile-menu-open {
   color: var(--cream);
 }
 
+.compare-card__pitch {
+  margin: 8px 0 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(239, 244, 255, 0.6);
+}
+
 .compare-card__price {
   margin: 12px 0 0;
   font-family: var(--font-mono);
@@ -1531,27 +1603,26 @@ body.mobile-menu-open {
 .compare-card__list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
   margin: 28px 0 0;
   padding: 0;
   list-style: none;
 }
 
 .compare-card__item {
+  position: relative;
+  padding-left: 22px;
   font-family: var(--font-mono);
   font-size: 13px;
-  line-height: 1.625;
+  line-height: 1.5;
   color: var(--cream);
 }
 
-.compare-card__term {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 11px;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(239, 244, 255, 0.5);
+.compare-card__item::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
+  color: var(--neon);
 }
 
 @media (min-width: 640px) {
@@ -1566,7 +1637,13 @@ body.mobile-menu-open {
   }
 
   .compare__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .compare__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
