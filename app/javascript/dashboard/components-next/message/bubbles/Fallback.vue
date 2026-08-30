@@ -26,7 +26,7 @@ const title = computed(
       :href="url"
       target="_blank"
       rel="noopener noreferrer"
-      class="block max-w-[320px] truncate text-sm text-n-brand underline"
+      class="block max-w-[320px] truncate text-sm text-n-blue-11 underline"
     >
       {{ title }}
     </a>

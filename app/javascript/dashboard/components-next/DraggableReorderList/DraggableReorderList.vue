@@ -324,7 +324,7 @@ onBeforeUnmount(() => {
         <div
           v-if="isDragging && keyOf(item) === keyOf(dragged)"
           :style="{ height: `${dragHeight}px` }"
-          class="border-2 border-dashed rounded-2xl border-n-brand/50 bg-n-brand/5"
+          class="border-2 border-dashed rounded-2xl border-n-blue-8/50 bg-n-brand/5"
         />
         <slot v-else name="item" :item="item" :index="index" />
       </li>
@@ -349,7 +349,7 @@ onBeforeUnmount(() => {
         class="fixed top-0 left-0 z-50 flex items-center justify-center transition-all duration-150 border rounded-full pointer-events-none size-9 backdrop-blur-sm"
         :class="
           activeEdge === edge.dir
-            ? 'scale-110 border-n-brand bg-n-brand/20 text-n-brand shadow-md'
+            ? 'scale-110 border-n-blue-8 bg-n-brand/20 text-n-blue-11 shadow-md'
             : 'opacity-70 border-n-weak/60 bg-n-solid-1/70 text-n-slate-10'
         "
       >

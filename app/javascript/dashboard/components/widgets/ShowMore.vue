@@ -37,7 +37,7 @@ const toggleShowMore = () => {
     {{ textToBeDisplayed }}
     <button
       v-if="text.length > limit"
-      class="text-n-brand !p-0 !border-0 align-top"
+      class="text-n-blue-11 !p-0 !border-0 align-top"
       @click.stop="toggleShowMore"
     >
       {{ buttonLabel }}

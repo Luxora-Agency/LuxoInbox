@@ -51,7 +51,7 @@ const onClickSetView = (type, mode) => {
     <div class="flex items-center gap-1">
       <button
         v-if="firstButtonLabel"
-        class="p-0 text-sm font-medium text-center text-n-slate-12 hover:text-n-brand"
+        class="p-0 text-sm font-medium text-center text-n-slate-12 hover:text-n-blue-11"
         @click.stop="onClickSetView(calendarType, viewMode)"
       >
         {{ firstButtonLabel }}
@@ -59,7 +59,7 @@ const onClickSetView = (type, mode) => {
       <button
         v-if="buttonLabel"
         class="p-0 text-sm font-medium text-center text-n-slate-12"
-        :class="{ 'hover:text-n-brand': viewMode }"
+        :class="{ 'hover:text-n-blue-11': viewMode }"
         @click.stop="onClickSetView(calendarType, YEAR)"
       >
         {{ buttonLabel }}

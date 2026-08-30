@@ -1,6 +1,4 @@
 const {
-  blue,
-  blueDark,
   green,
   greenDark,
   yellow,
@@ -11,24 +9,23 @@ const {
   redDark,
   violet,
   violetDark,
-  pink,
-  pinkDark,
 } = require('@radix-ui/colors');
 
 export const colors = {
+  // Orbis lime scale (light ramp hexes, 500 = brand neon)
   woot: {
-    25: pink.pink2,
-    50: pink.pink3,
-    75: pink.pink4,
-    100: pink.pink5,
-    200: pink.pink7,
-    300: pink.pink8,
-    400: pinkDark.pink11,
-    500: pinkDark.pink10,
-    600: pinkDark.pink9,
-    700: pinkDark.pink8,
-    800: pinkDark.pink6,
-    900: pinkDark.pink2,
+    25: '#F9FFF4',
+    50: '#F3FEE9',
+    75: '#E8FCD5',
+    100: '#D9F8BC',
+    200: '#C7F1A0',
+    300: '#B2E584',
+    400: '#96D264',
+    500: '#6FFF00',
+    600: '#5FE000',
+    700: '#3D8F00',
+    800: '#2A6405',
+    900: '#1A3D08',
   },
   green: {
     50: greenDark.green12,
@@ -105,7 +102,8 @@ export const colors = {
     900: violet.violet12,
   },
 
-  // Orbis auth-screen palette (v3 auth pages only, single fixed dark look)
+  // Orbis palette: fixed brand values used by the v3 auth pages and as accents
+  // across the dashboard and super admin (navy fills, lime highlights)
   orbis: {
     navy: '#010828',
     'navy-deep': '#00040f',
@@ -237,7 +235,7 @@ export const colors = {
     },
 
     black: '#000000',
-    brand: '#E91E8C',
+    brand: '#6FFF00',
     portal: 'var(--dynamic-portal-color)',
     'portal-soft': 'var(--dynamic-portal-color-soft)',
     'portal-faint': 'var(--dynamic-portal-color-faint)',

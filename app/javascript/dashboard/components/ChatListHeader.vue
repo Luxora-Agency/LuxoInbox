@@ -65,7 +65,7 @@ const toggleConversationLayout = () => {
       <div
         class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-woot-500 to-woot-600 shadow-lg shadow-woot-500/25"
       >
-        <span class="i-lucide-messages-square text-white size-5" />
+        <span class="i-lucide-messages-square text-orbis-navy size-5" />
       </div>
       <div class="flex flex-col min-w-0">
         <div class="flex items-center gap-2">

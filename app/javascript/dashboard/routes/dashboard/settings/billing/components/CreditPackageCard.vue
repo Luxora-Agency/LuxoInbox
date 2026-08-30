@@ -58,7 +58,9 @@ const formatAmount = (amount, currency) => {
       v-if="isPopular"
       class="absolute -top-3 left-4 px-3 py-1 text-xs font-medium rounded"
       :class="
-        isSelected ? 'bg-woot-500 text-white' : 'bg-n-solid-3 text-n-slate-11'
+        isSelected
+          ? 'bg-woot-500 text-orbis-navy'
+          : 'bg-n-solid-3 text-n-slate-11'
       "
     >
       {{ $t('BILLING_SETTINGS.TOPUP.POPULAR') }}
@@ -68,7 +70,7 @@ const formatAmount = (amount, currency) => {
       class="absolute top-4 right-4 flex items-center justify-center w-6 h-6 rounded-full bg-woot-500"
     >
       <svg
-        class="w-4 h-4 text-white"
+        class="w-4 h-4 text-orbis-navy"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

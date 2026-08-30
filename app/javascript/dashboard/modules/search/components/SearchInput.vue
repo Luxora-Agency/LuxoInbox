@@ -86,7 +86,7 @@ onUnmounted(() => {
   <div
     class="rounded-xl transition-[border-bottom] duration-[0.2s] ease-[ease-in-out] relative flex items-start flex-col border border-solid bg-n-solid-1 divide-y divide-n-strong"
     :class="{
-      'border-n-brand': isInputFocused,
+      'border-n-blue-11': isInputFocused,
       'border-n-strong': !isInputFocused,
     }"
   >

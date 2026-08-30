@@ -274,7 +274,7 @@ onMounted(() => {
             <div
               class="absolute inset-0 rounded-full bg-gradient-to-r from-woot-500 to-violet-500 blur-xl opacity-30 animate-pulse"
             />
-            <Spinner class="text-n-brand" />
+            <Spinner class="text-n-blue-11" />
           </div>
           <span class="text-xs text-n-slate-11">
             {{ t('INBOX.LIST.LOADING') }}

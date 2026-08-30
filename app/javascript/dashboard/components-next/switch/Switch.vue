@@ -19,7 +19,7 @@ const updateValue = () => {
 <template>
   <button
     type="button"
-    class="group relative h-5 rounded-full w-9 flex-shrink-0 select-none focus:outline-none focus:ring-2 focus:ring-n-brand/20 focus:ring-offset-n-slate-2 focus:ring-offset-2 transition-all duration-200 ease-out"
+    class="group relative h-5 rounded-full w-9 flex-shrink-0 select-none focus:outline-none focus:ring-2 focus:ring-n-blue-11/20 focus:ring-offset-n-slate-2 focus:ring-offset-2 transition-all duration-200 ease-out"
     :class="modelValue ? 'bg-n-brand' : 'bg-n-slate-6'"
     role="switch"
     :aria-checked="modelValue"
@@ -35,7 +35,8 @@ const updateValue = () => {
       "
     >
       <span
-        class="block h-4 w-4 rounded-full bg-n-background shadow-md transition-[width] duration-[180ms] ease-in-out group-active:w-[22px]"
+        class="block h-4 w-4 rounded-full shadow-md transition-[width] duration-[180ms] ease-in-out group-active:w-[22px]"
+        :class="modelValue ? 'bg-orbis-navy' : 'bg-n-background'"
       />
     </span>
   </button>

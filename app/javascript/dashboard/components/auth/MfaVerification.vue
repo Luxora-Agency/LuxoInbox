@@ -150,7 +150,7 @@ const handleTryAnotherMethod = () => {
         <div
           class="inline-flex items-center justify-center size-14 bg-n-brand/10 dark:bg-n-brand/20 rounded-2xl mb-4"
         >
-          <Icon icon="i-lucide-shield-check" class="size-7 text-n-brand" />
+          <Icon icon="i-lucide-shield-check" class="size-7 text-n-blue-11" />
         </div>
         <h2
           class="text-2xl sm:text-3xl font-semibold tracking-tight text-n-slate-12"
@@ -202,7 +202,7 @@ const handleTryAnotherMethod = () => {
               maxlength="1"
               pattern="[0-9]"
               inputmode="numeric"
-              class="w-12 h-12 text-center text-lg font-semibold rounded-xl bg-n-alpha-black2 text-n-slate-12 placeholder:text-n-slate-10 outline outline-1 outline-n-weak hover:outline-n-slate-7 focus:outline-n-brand focus:ring-4 focus:ring-n-brand/10 transition-all duration-200"
+              class="w-12 h-12 text-center text-lg font-semibold rounded-xl bg-n-alpha-black2 text-n-slate-12 placeholder:text-n-slate-10 outline outline-1 outline-n-weak hover:outline-n-slate-7 focus:outline-n-blue-11 focus:ring-4 focus:ring-n-brand/10 transition-all duration-200"
               @input="handleOtpInput(i)"
               @keydown.left.prevent="focusInput(i - 1)"
               @keydown.right.prevent="focusInput(i + 1)"

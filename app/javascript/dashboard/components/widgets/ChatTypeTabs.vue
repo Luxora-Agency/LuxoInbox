@@ -66,7 +66,7 @@ useKeyboardEvents(keyboardEvents);
           class="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 rounded-full text-xs font-semibold"
           :class="[
             index === activeTabIndex
-              ? 'bg-woot-500 text-white'
+              ? 'bg-woot-500 text-orbis-navy'
               : 'bg-n-slate-3 dark:bg-n-solid-1 text-n-slate-10',
           ]"
         >

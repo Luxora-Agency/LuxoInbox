@@ -200,7 +200,7 @@ const onDragEnd = () => {
             class="flex items-center gap-2 px-2 py-1.5 transition-colors rounded-lg cursor-grab group/row"
             :class="
               index === dragIndex
-                ? 'opacity-40 bg-n-alpha-3 ring-1 ring-inset ring-n-brand'
+                ? 'opacity-40 bg-n-alpha-3 ring-1 ring-inset ring-n-blue-8'
                 : 'bg-n-alpha-2 hover:bg-n-alpha-3'
             "
             @dragstart="onDragStart(index)"

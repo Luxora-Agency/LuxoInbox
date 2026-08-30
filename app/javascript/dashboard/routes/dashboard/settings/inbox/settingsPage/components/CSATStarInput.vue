@@ -13,7 +13,7 @@ const emit = defineEmits(['update']);
 
 const selectionClass = computed(() => {
   return props.selected
-    ? 'bg-n-brand/5 outline-n-brand'
+    ? 'bg-n-brand/5 outline-n-blue-11'
     : 'bg-n-alpha-black2 outline-n-weak';
 });
 </script>

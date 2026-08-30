@@ -244,7 +244,7 @@ onUnmounted(() => {
           <input
             v-model="inboxName"
             type="text"
-            class="w-full px-3 py-2 text-sm border rounded-lg border-n-weak bg-n-alpha-1 text-n-slate-12 focus:outline-none focus:ring-2 focus:ring-n-brand"
+            class="w-full px-3 py-2 text-sm border rounded-lg border-n-weak bg-n-alpha-1 text-n-slate-12 focus:outline-none focus:ring-2 focus:ring-n-blue-11"
             :placeholder="$t('INBOX_MGMT.ADD.WHATSAPP.INBOX_NAME.PLACEHOLDER')"
           />
         </div>
@@ -327,7 +327,7 @@ onUnmounted(() => {
             </span>
           </div>
           <button
-            class="text-sm text-n-brand hover:underline"
+            class="text-sm text-n-blue-11 hover:underline"
             @click="refreshQRCode"
           >
             {{ $t('INBOX_MGMT.ADD.WHATSAPP.EVOLUTION.REFRESH_QR') }}

@@ -46,8 +46,8 @@ const count = computed(() =>
         :icon="icon"
         class="size-4 transition-colors"
         :class="{
-          'text-n-brand': isActive && !hasActiveChild,
-          'group-hover:text-n-brand': !isActive && !hasActiveChild,
+          'text-n-blue-11': isActive && !hasActiveChild,
+          'group-hover:text-n-blue-11': !isActive && !hasActiveChild,
         }"
       />
       <span
@@ -71,7 +71,7 @@ const count = computed(() =>
         v-if="dynamicCount && !expandable"
         class="inline-grid h-5 min-w-5 place-items-center rounded-full px-1 text-xxs font-medium leading-3 flex-shrink-0 transition-colors"
         :class="{
-          'text-white bg-n-brand': isActive,
+          'text-orbis-navy bg-n-brand': isActive,
           'text-n-slate-11 bg-n-alpha-2': !isActive,
         }"
       >

@@ -227,7 +227,7 @@ watch(
           />
         </span>
         <span
-          class="rounded-full text-xxs font-semibold h-4 leading-4 ltr:ml-auto rtl:mr-auto mt-1 min-w-[1rem] px-1.5 py-0 text-center text-white bg-gradient-to-r from-woot-500 to-violet-500 shadow-lg shadow-woot-500/30"
+          class="rounded-full text-xxs font-semibold h-4 leading-4 ltr:ml-auto rtl:mr-auto mt-1 min-w-[1rem] px-1.5 py-0 text-center bg-n-brand text-orbis-navy shadow-lg shadow-woot-500/30"
           :class="hasUnread ? 'block' : 'hidden'"
         >
           {{ unreadCount > 9 ? '9+' : unreadCount }}

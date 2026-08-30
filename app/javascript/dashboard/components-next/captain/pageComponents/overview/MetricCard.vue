@@ -29,7 +29,7 @@ const onActivate = () => {
     class="flex flex-col gap-3 p-5 group bg-n-solid-1"
     :class="
       clickable
-        ? 'cursor-pointer transition-colors hover:bg-n-slate-2/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-n-brand'
+        ? 'cursor-pointer transition-colors hover:bg-n-slate-2/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-n-blue-11'
         : ''
     "
     :role="clickable ? 'button' : undefined"

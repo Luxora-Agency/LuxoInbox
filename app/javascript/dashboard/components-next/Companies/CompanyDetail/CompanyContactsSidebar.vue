@@ -301,7 +301,7 @@ const handleContactSelect = contactId => {
         >
           <button
             type="button"
-            class="flex items-center flex-1 min-w-0 !p-0 gap-3 text-start rounded-lg transition-colors text-n-slate-12 hover:text-n-blue-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-brand focus-visible:ring-offset-2 focus-visible:ring-offset-n-background"
+            class="flex items-center flex-1 min-w-0 !p-0 gap-3 text-start rounded-lg transition-colors text-n-slate-12 hover:text-n-blue-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-blue-11 focus-visible:ring-offset-2 focus-visible:ring-offset-n-background"
             @click="openContact(contact.id)"
           >
             <Avatar

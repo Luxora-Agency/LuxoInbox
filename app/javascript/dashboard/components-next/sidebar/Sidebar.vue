@@ -1004,7 +1004,7 @@ const menuItems = computed(() => {
           class="flex gap-2 items-center px-3 py-1.5 w-full h-8 rounded-xl outline outline-1 outline-n-weak/70 bg-n-alpha-1 hover:bg-n-alpha-2 hover:outline-n-brand/30 focus:outline-n-brand/50 transition-all duration-150 ease-out group"
         >
           <span
-            class="flex-shrink-0 i-lucide-search size-4 text-n-slate-10 group-hover:text-n-brand transition-colors"
+            class="flex-shrink-0 i-lucide-search size-4 text-n-slate-10 group-hover:text-n-blue-11 transition-colors"
           />
           <span
             class="flex-grow text-start text-n-slate-10 group-hover:text-n-slate-11 transition-colors"
@@ -1024,7 +1024,7 @@ const menuItems = computed(() => {
           :title="t('COMBOBOX.SEARCH_PLACEHOLDER')"
         >
           <span
-            class="i-lucide-search size-4 text-n-slate-11 group-hover:text-n-brand transition-colors"
+            class="i-lucide-search size-4 text-n-slate-11 group-hover:text-n-blue-11 transition-colors"
           />
         </RouterLink>
         <ComposeConversation align="start">
@@ -1098,9 +1098,9 @@ const menuItems = computed(() => {
       @dblclick="onResizeHandleDoubleClick"
     >
       <div
-        class="absolute top-0 h-full w-0.5 ltr:right-0 rtl:left-0 bg-transparent group-hover:bg-gradient-to-b group-hover:from-[#4C1D95] group-hover:via-[#86198F] group-hover:to-[#9F1239] transition-all duration-200 rounded-full"
+        class="absolute top-0 h-full w-0.5 ltr:right-0 rtl:left-0 bg-transparent group-hover:bg-gradient-to-b group-hover:from-n-blue-7 group-hover:via-n-blue-9 group-hover:to-n-blue-10 transition-all duration-200 rounded-full"
         :class="{
-          'bg-gradient-to-b from-[#4C1D95] via-[#86198F] to-[#9F1239]':
+          'bg-gradient-to-b from-n-blue-7 via-n-blue-9 to-n-blue-10':
             isResizing,
         }"
       />

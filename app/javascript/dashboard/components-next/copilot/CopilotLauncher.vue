@@ -60,7 +60,7 @@ const toggleSidebar = () => {
       <Button
         icon="i-woot-captain"
         no-animation
-        class="!rounded-full !bg-gradient-to-br !from-n-brand/90 !to-[#9F1239]/90 !text-white text-xl transition-all duration-200 ease-out hover:scale-105 hover:brightness-110"
+        class="!rounded-full !bg-gradient-to-br !from-woot-500/90 !to-woot-600/90 !text-orbis-navy text-xl transition-all duration-200 ease-out hover:scale-105 hover:brightness-110"
         lg
         @click="toggleSidebar"
       />

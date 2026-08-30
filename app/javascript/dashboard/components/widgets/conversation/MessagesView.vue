@@ -506,7 +506,7 @@ export default {
           <li
             class="min-h-[4rem] flex flex-shrink-0 flex-grow-0 items-center flex-auto justify-center max-w-full mt-0 mr-0 mb-1 ml-0 relative first:mt-auto last:mb-0"
           >
-            <Spinner v-if="shouldShowSpinner" class="text-n-brand" />
+            <Spinner v-if="shouldShowSpinner" class="text-n-blue-11" />
           </li>
         </transition>
         <ReferralBubble v-if="referralData" :referral="referralData" />
@@ -517,7 +517,7 @@ export default {
           class="list-none flex justify-center items-center"
         >
           <span
-            class="shadow-lg rounded-full bg-n-brand text-white text-xs font-medium my-2.5 mx-auto px-2.5 py-1.5"
+            class="shadow-lg rounded-full bg-n-brand text-orbis-navy text-xs font-medium my-2.5 mx-auto px-2.5 py-1.5"
           >
             {{ unreadMessageLabel }}
           </span>

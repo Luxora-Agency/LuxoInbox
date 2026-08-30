@@ -38,7 +38,7 @@ defineProps({
       >
         <a
           :href="`/app/accounts/${$route.params.accountId}/conversations/${conversationId}`"
-          class="flex items-center text-xs gap-0.5 hover:text-n-brand hover:underline"
+          class="flex items-center text-xs gap-0.5 hover:text-n-blue-11 hover:underline"
           target="_blank"
           rel="noopener noreferrer nofollow"
         >

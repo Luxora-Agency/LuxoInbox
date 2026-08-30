@@ -121,7 +121,11 @@ export default {
 <style lang="scss" scoped>
 .banner {
   &.primary {
-    @apply bg-n-brand;
+    @apply bg-n-brand text-orbis-navy dark:text-orbis-navy;
+
+    a {
+      @apply text-orbis-navy;
+    }
   }
 
   &.secondary {
