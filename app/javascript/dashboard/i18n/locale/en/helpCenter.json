@@ -853,7 +853,7 @@
       "CONFIRM_BUTTON_LABEL": "Create",
       "NAME": {
         "LABEL": "Name",
-        "PLACEHOLDER": "User Guide | LuxoInbox",
+        "PLACEHOLDER": "User Guide {'|'} LuxoInbox",
         "MESSAGE": "Choose an name for your portal.",
         "ERROR": "Name is required"
       },

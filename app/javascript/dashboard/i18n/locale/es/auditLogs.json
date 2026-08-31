@@ -19,7 +19,7 @@
     },
     "API": {
       "SUCCESS_MESSAGE": "Registros de auditoria cargados satisfactoriamente",
-      "ERROR_MESSAGE": "No se pudo conectar al servidor Woot, por favor inténtalo de nuevo más tarde"
+      "ERROR_MESSAGE": "No se pudo conectar al servidor de LuxoInbox, por favor inténtalo de nuevo más tarde"
     },
     "DEFAULT_USER": "Sistema",
     "AUTOMATION_RULE": {

@@ -15,9 +15,9 @@ export default defineConfig({
     darkClass: 'dark',
     title: '@luxoinbox/design',
     logo: {
-      square: './design-system/images/logo-thumbnail.svg',
-      light: './design-system/images/logo.png',
-      dark: './design-system/images/logo-dark.png',
+      square: './public/brand-assets/logo_thumbnail.svg',
+      light: './public/brand-assets/logo.svg',
+      dark: './public/brand-assets/logo_dark.svg',
     },
   },
   defaultStoryProps: {

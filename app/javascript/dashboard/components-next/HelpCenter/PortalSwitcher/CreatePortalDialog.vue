@@ -109,7 +109,7 @@ const handleDialogConfirm = async () => {
     slug: state.slug,
     custom_domain: state.domain,
     blob_id: state.avatarBlobId || null,
-    color: '#6FFF00', // The default color is set to the Orbis brand lime
+    color: '#010828', // The default color is set to the Orbis brand navy
   };
   await createPortal(portal);
 };

@@ -36,28 +36,28 @@
         }
       },
       "INTERFACE_SECTION": {
-        "TITLE": "Interface",
+        "TITLE": "Interfaz",
         "NOTE": "Personaliza la apariencia de tu panel de LuxoInbox.",
         "FONT_SIZE": {
-          "TITLE": "Font size",
-          "NOTE": "Adjust the text size across the dashboard based on your preference.",
-          "UPDATE_SUCCESS": "Your font settings have been updated successfully",
-          "UPDATE_ERROR": "There is an error while updating the font settings, please try again",
+          "TITLE": "Tamaño de letra",
+          "NOTE": "Ajusta el tamaño del texto en todo el panel según tu preferencia.",
+          "UPDATE_SUCCESS": "Tu configuración de letra se actualizó correctamente",
+          "UPDATE_ERROR": "Ocurrió un error al actualizar la configuración de letra, inténtalo de nuevo",
           "OPTIONS": {
-            "SMALLER": "Smaller",
-            "SMALL": "Small",
+            "SMALLER": "Más pequeño",
+            "SMALL": "Pequeño",
             "DEFAULT": "Predeterminado",
-            "LARGE": "Large",
-            "LARGER": "Larger",
-            "EXTRA_LARGE": "Extra Large"
+            "LARGE": "Grande",
+            "LARGER": "Más grande",
+            "EXTRA_LARGE": "Extra grande"
           }
         },
         "LANGUAGE": {
-          "TITLE": "Preferred Language",
-          "NOTE": "Choose the language you want to use.",
-          "UPDATE_SUCCESS": "Your Language settings have been updated successfully",
-          "UPDATE_ERROR": "There is an error while updating the language settings, please try again",
-          "USE_ACCOUNT_DEFAULT": "Use account default"
+          "TITLE": "Idioma preferido",
+          "NOTE": "Elige el idioma que quieres usar.",
+          "UPDATE_SUCCESS": "Tu configuración de idioma se actualizó correctamente",
+          "UPDATE_ERROR": "Ocurrió un error al actualizar la configuración de idioma, inténtalo de nuevo",
+          "USE_ACCOUNT_DEFAULT": "Usar el predeterminado de la cuenta"
         }
       },
       "MESSAGE_SIGNATURE_SECTION": {
@@ -671,8 +671,8 @@
       },
       "COPY_SUCCESS": "Código copiado al portapapeles con éxito",
       "SP_ENTITY_ID": {
-        "LABEL": "SP Entity ID",
-        "HELP": "Unique identifier for this application as a service provider (auto-generated).",
+        "LABEL": "ID de entidad del SP",
+        "HELP": "Identificador único de esta aplicación como proveedor de servicios (se genera automáticamente).",
         "TOOLTIP": "Identificador único de LuxoInbox como proveedor de servicios: configúralo en los ajustes de tu IdP"
       },
       "IDP_ENTITY_ID": {
@@ -774,7 +774,7 @@
     "API": {
       "SUCCESS_MESSAGE": "Cuenta creada con éxito",
       "EXIST_MESSAGE": "La cuenta ya existe",
-      "ERROR_MESSAGE": "No se pudo conectar al servidor Woot, por favor inténtelo de nuevo más tarde"
+      "ERROR_MESSAGE": "No se pudo conectar al servidor de LuxoInbox, por favor inténtelo de nuevo más tarde"
     },
     "FORM": {
       "NAME": {

@@ -49,7 +49,7 @@ defineProps({
         >
           <svg
             aria-hidden="true"
-            class="absolute w-[34rem] max-w-[150%] h-auto pointer-events-none -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 text-n-slate-6"
+            class="absolute w-[34rem] max-w-[150%] h-auto pointer-events-none -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 text-n-slate-7"
             viewBox="0 0 320 320"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +57,7 @@ defineProps({
             <g
               stroke="currentColor"
               stroke-width="1"
-              opacity="0.35"
+              opacity="0.5"
               transform="rotate(-28 160 160)"
             >
               <ellipse cx="160" cy="160" rx="160" ry="65" />

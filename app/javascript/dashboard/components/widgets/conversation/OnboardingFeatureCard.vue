@@ -29,11 +29,11 @@ defineProps({
   >
     <div class="flex-1 flex items-center justify-center">
       <div
-        class="relative flex items-center justify-center w-full h-36 overflow-hidden rounded-lg bg-n-solid-2"
+        class="relative flex items-center justify-center w-full h-36 overflow-hidden border rounded-lg bg-n-solid-2 border-n-weak"
       >
         <svg
           aria-hidden="true"
-          class="absolute inset-0 w-full h-full pointer-events-none text-n-slate-6"
+          class="absolute inset-0 w-full h-full pointer-events-none text-n-slate-7"
           viewBox="0 0 240 144"
           fill="none"
           preserveAspectRatio="xMidYMid slice"
@@ -55,9 +55,13 @@ defineProps({
           </g>
         </svg>
         <span
-          class="relative grid rounded-xl size-14 place-content-center bg-orbis-navy"
+          class="relative grid rounded-xl size-14 place-content-center bg-orbis-navy ring-1 ring-n-weak"
         >
-          <span :class="icon" class="size-7 text-orbis-neon" />
+          <span
+            :class="icon"
+            aria-hidden="true"
+            class="size-7 text-orbis-neon"
+          />
         </span>
       </div>
     </div>
