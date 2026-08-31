@@ -11,12 +11,12 @@ class SuperAdmin::InstanceStatusesController < SuperAdmin::ApplicationController
 
   def chatwoot_edition
     @metrics['LuxoInbox edition'] = if ChatwootApp.enterprise?
-                                     'Enterprise'
-                                   elsif ChatwootApp.custom?
-                                     'Custom'
-                                   else
-                                     'Community'
-                                   end
+                                      'Enterprise'
+                                    elsif ChatwootApp.custom?
+                                      'Custom'
+                                    else
+                                      'Community'
+                                    end
   end
 
   def instance_meta
