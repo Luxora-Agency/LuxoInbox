@@ -4,6 +4,9 @@ class AutoAssignment::AssignmentService
   def perform_bulk_assignment(limit: 100)
     return 0 unless inbox.auto_assignment_v2_enabled?
     return 0 unless inbox.enable_auto_assignment?
+    # A linked-but-disabled policy is a paused inbox, not a fallback to defaults.
+    # An inbox with no policy at all keeps the stock behaviour.
+    return 0 if inbox.assignment_policy && !inbox.assignment_policy.enabled?
 
     conversations = unassigned_conversations(limit).to_a
     return 0 if conversations.empty?
@@ -36,8 +39,7 @@ class AutoAssignment::AssignmentService
     scope = inbox.conversations.visible_to_account.unassigned.open
 
     # Skip stale backlog with no activity beyond the age threshold
-    policy = inbox.assignment_policy
-    scope = apply_age_exclusions(scope, age_exclusion_hours(policy))
+    scope = apply_age_exclusions(scope, age_exclusion_hours)
 
     # Apply conversation priority using assignment policy if available
     scope = if policy&.longest_waiting?
@@ -49,7 +51,7 @@ class AutoAssignment::AssignmentService
     scope.limit(limit)
   end
 
-  def age_exclusion_hours(policy)
+  def age_exclusion_hours
     return policy.exclude_older_than_hours if policy
 
     AssignmentPolicy::DEFAULT_EXCLUDE_OLDER_THAN_HOURS
@@ -107,7 +109,7 @@ class AutoAssignment::AssignmentService
   # Atomically claim the row so two bulk runs that overlap (the in-flight gate
   # is best-effort and can lapse on TTL) can't both assign the same conversation.
   def claim_and_assign(conversation, agent)
-    Current.executed_by = inbox.assignment_policy || inbox
+    Current.executed_by = policy || inbox
 
     Conversation.transaction do
       locked = inbox.conversations
@@ -138,6 +140,10 @@ class AutoAssignment::AssignmentService
 
   def round_robin_selector
     @round_robin_selector ||= AutoAssignment::RoundRobinSelector.new(inbox: inbox)
+  end
+
+  def policy
+    @policy ||= inbox.active_assignment_policy
   end
 end
 
