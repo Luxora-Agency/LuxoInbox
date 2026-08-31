@@ -807,278 +807,349 @@
   "ASSIGNMENT_POLICY": {
     "INDEX": {
       "HEADER": {
-        "TITLE": "Agent assignment",
-        "DESCRIPTION": "Define policies to effectively manage workload and route conversations based on the needs of inboxes and agents. Learn more here"
+        "TITLE": "Asignación de agentes",
+        "DESCRIPTION": "Define políticas para gestionar la carga de trabajo y enrutar las conversaciones según las necesidades de las bandejas de entrada y los agentes. Conoce más aquí"
       },
       "ASSIGNMENT_POLICY": {
-        "TITLE": "Assignment policy",
-        "DESCRIPTION": "Manage how conversations get assigned in inboxes.",
+        "TITLE": "Política de asignación",
+        "DESCRIPTION": "Gestiona cómo se asignan las conversaciones en las bandejas de entrada.",
         "FEATURES": [
-          "Assign by conversations evenly or by available capacity",
-          "Add fair distribution rules to avoid overloading any agent",
-          "Add inboxes to a policy - one policy per inbox"
+          "Asigna las conversaciones de forma equitativa o según la capacidad disponible",
+          "Agrega reglas de distribución justa para no sobrecargar a ningún agente",
+          "Agrega bandejas de entrada a una política: una política por bandeja de entrada"
         ]
       },
       "AGENT_CAPACITY_POLICY": {
-        "TITLE": "Agent capacity policy",
-        "DESCRIPTION": "Manage workload for agents.",
+        "TITLE": "Política de capacidad de agentes",
+        "DESCRIPTION": "Gestiona la carga de trabajo de los agentes.",
         "FEATURES": [
-          "Define maximum conversations per inbox",
-          "Create exceptions based on labels and time",
-          "Add agents to a policy - one policy per agent"
+          "Define el máximo de conversaciones por bandeja de entrada",
+          "Crea excepciones según etiquetas y tiempo",
+          "Agrega agentes a una política: una política por agente"
         ]
       }
     },
     "AGENT_ASSIGNMENT_POLICY": {
       "INDEX": {
         "HEADER": {
-          "TITLE": "Assignment policy",
-          "CREATE_POLICY": "New policy"
+          "TITLE": "Política de asignación",
+          "CREATE_POLICY": "Nueva política"
         },
         "CARD": {
-          "ORDER": "Order",
+          "ORDER": "Orden",
           "PRIORITY": "Prioridad",
-          "ACTIVE": "Activo",
-          "INACTIVE": "Inactive",
-          "POPOVER": "Added inboxes",
+          "ACTIVE": "Activa",
+          "INACTIVE": "Inactiva",
+          "POPOVER": "Bandejas de entrada agregadas",
           "EDIT": "Editar"
         },
-        "NO_RECORDS_FOUND": "No assignment policies found"
+        "NO_RECORDS_FOUND": "No se encontraron políticas de asignación"
       },
       "CREATE": {
         "HEADER": {
-          "TITLE": "Create assignment policy"
+          "TITLE": "Crear política de asignación"
         },
-        "CREATE_BUTTON": "Create policy",
+        "CREATE_BUTTON": "Crear política",
         "API": {
-          "SUCCESS_MESSAGE": "Assignment policy created successfully",
-          "ERROR_MESSAGE": "Failed to create assignment policy",
-          "INBOX_LINKED": "Inbox has been linked to the policy"
+          "SUCCESS_MESSAGE": "Política de asignación creada correctamente",
+          "ERROR_MESSAGE": "No se pudo crear la política de asignación",
+          "INBOX_LINKED": "La bandeja de entrada se vinculó a la política"
         }
       },
       "EDIT": {
         "HEADER": {
-          "TITLE": "Edit assignment policy"
+          "TITLE": "Editar política de asignación"
         },
-        "EDIT_BUTTON": "Update policy",
+        "EDIT_BUTTON": "Actualizar política",
         "CONFIRM_ADD_INBOX_DIALOG": {
-          "TITLE": "Add inbox",
-          "DESCRIPTION": "{inboxName} inbox is already linked to another policy. Are you sure you want to link it to this policy? It will be unlinked from the other policy.",
-          "CONFIRM_BUTTON_LABEL": "Continue",
+          "TITLE": "Agregar bandeja de entrada",
+          "DESCRIPTION": "La bandeja de entrada {inboxName} ya está vinculada a otra política. ¿Seguro que quieres vincularla a esta política? Se desvinculará de la otra.",
+          "CONFIRM_BUTTON_LABEL": "Continuar",
           "CANCEL_BUTTON_LABEL": "Cancelar"
         },
         "INBOX_LINK_PROMPT": {
-          "TITLE": "Link inbox to policy",
-          "DESCRIPTION": "Would you like to link this inbox to the assignment policy?",
-          "LINK_BUTTON": "Link inbox",
-          "CANCEL_BUTTON": "Skip"
+          "TITLE": "Vincular bandeja de entrada a la política",
+          "DESCRIPTION": "¿Quieres vincular esta bandeja de entrada a la política de asignación?",
+          "LINK_BUTTON": "Vincular bandeja",
+          "CANCEL_BUTTON": "Omitir"
         },
         "API": {
-          "SUCCESS_MESSAGE": "Assignment policy updated successfully",
-          "ERROR_MESSAGE": "Failed to update assignment policy"
+          "SUCCESS_MESSAGE": "Política de asignación actualizada correctamente",
+          "ERROR_MESSAGE": "No se pudo actualizar la política de asignación"
         },
         "INBOX_API": {
           "ADD": {
-            "SUCCESS_MESSAGE": "Inbox added to policy successfully",
-            "ERROR_MESSAGE": "Failed to add inbox to policy"
+            "SUCCESS_MESSAGE": "Bandeja de entrada agregada a la política correctamente",
+            "ERROR_MESSAGE": "No se pudo agregar la bandeja de entrada a la política"
           },
           "REMOVE": {
-            "SUCCESS_MESSAGE": "Inbox removed from policy successfully",
-            "ERROR_MESSAGE": "Failed to remove inbox from policy"
+            "SUCCESS_MESSAGE": "Bandeja de entrada eliminada de la política correctamente",
+            "ERROR_MESSAGE": "No se pudo eliminar la bandeja de entrada de la política"
           }
         }
       },
       "FORM": {
         "NAME": {
-          "LABEL": "Policy name:",
-          "PLACEHOLDER": "Enter policy name"
+          "LABEL": "Nombre de la política:",
+          "PLACEHOLDER": "Ingresa el nombre de la política",
+          "ERROR": "Ingresa un nombre para la política"
         },
         "DESCRIPTION": {
           "LABEL": "Descripción:",
-          "PLACEHOLDER": "Introducir descripción"
+          "PLACEHOLDER": "Ingresa una descripción",
+          "ERROR": "Ingresa una descripción"
         },
         "STATUS": {
           "LABEL": "Estado:",
-          "PLACEHOLDER": "Seleccionar estado",
-          "ACTIVE": "Policy is active",
-          "INACTIVE": "Policy is inactive"
+          "PLACEHOLDER": "Selecciona un estado",
+          "ACTIVE": "La política está activa",
+          "INACTIVE": "La política está inactiva"
         },
         "ASSIGNMENT_ORDER": {
-          "LABEL": "Assignment order",
+          "LABEL": "Orden de asignación",
           "ROUND_ROBIN": {
             "LABEL": "Round robin",
-            "DESCRIPTION": "Assign conversations evenly among agents."
+            "DESCRIPTION": "Asigna las conversaciones de forma equitativa entre los agentes."
           },
           "BALANCED": {
-            "LABEL": "Balanced",
-            "DESCRIPTION": "Assign conversations based on available capacity.",
-            "PREMIUM_MESSAGE": "Upgrade to access balanced assignment and agent capacity management.",
+            "LABEL": "Balanceado",
+            "DESCRIPTION": "Asigna las conversaciones según la capacidad disponible.",
+            "PREMIUM_MESSAGE": "Mejora tu plan para acceder a la asignación balanceada y a la gestión de capacidad de agentes.",
             "PREMIUM_BADGE": "Premium"
           }
         },
         "ASSIGNMENT_PRIORITY": {
-          "LABEL": "Assignment priority",
+          "LABEL": "Prioridad de asignación",
           "EARLIEST_CREATED": {
-            "LABEL": "Earliest created",
-            "DESCRIPTION": "The conversation that was created first gets assigned first."
+            "LABEL": "La creada primero",
+            "DESCRIPTION": "La conversación creada primero se asigna primero."
           },
           "LONGEST_WAITING": {
-            "LABEL": "Longest waiting",
-            "DESCRIPTION": "The conversation waiting the longest gets assigned first."
+            "LABEL": "Mayor tiempo de espera",
+            "DESCRIPTION": "La conversación que lleva más tiempo esperando se asigna primero."
           }
         },
         "FAIR_DISTRIBUTION": {
-          "LABEL": "Fair distribution policy",
+          "LABEL": "Política de distribución justa",
           "DESCRIPTION": "Limita las conversaciones por agente dentro de una ventana de tiempo para evitar sobrecargas. Por defecto es 100 por hora.",
-          "INPUT_MAX": "Assign max",
-          "DURATION": "Conversations per agent in every"
+          "INPUT_MAX": "Asignar máximo",
+          "DURATION": "Conversaciones por agente cada",
+          "INPUT_MIN_ERROR": "El límite debe ser de al menos {min}.",
+          "WINDOW_MIN_ERROR": "La ventana debe ser de al menos {min} minutos."
         },
         "EXCLUDE_OLDER_THAN": {
           "LABEL": "Saltar conversaciones obsoletas",
           "DESCRIPTION": "Saltar conversaciones no asignadas más antiguas que esto. Por defecto es 7 días; borrar para desactivar."
         },
         "INBOXES": {
-          "LABEL": "Added inboxes",
-          "DESCRIPTION": "Add inboxes for which this policy will be applicable.",
-          "ADD_BUTTON": "Add inbox",
+          "LABEL": "Bandejas de entrada agregadas",
+          "DESCRIPTION": "Agrega las bandejas de entrada a las que se aplicará esta política.",
+          "ADD_BUTTON": "Agregar bandeja",
           "DROPDOWN": {
-            "SEARCH_PLACEHOLDER": "Search and select inboxes to add",
-            "ADD_BUTTON": "Añadir"
+            "SEARCH_PLACEHOLDER": "Busca y selecciona las bandejas de entrada que quieres agregar",
+            "ADD_BUTTON": "Agregar"
           },
-          "EMPTY_STATE": "No inboxes added to this policy, add an inbox to get started",
+          "EMPTY_STATE": "Esta política no tiene bandejas de entrada; agrega una para empezar",
           "API": {
-            "SUCCESS_MESSAGE": "Inbox successfully added to policy",
-            "ERROR_MESSAGE": "Failed to add inbox to policy"
+            "SUCCESS_MESSAGE": "Bandeja de entrada agregada a la política correctamente",
+            "ERROR_MESSAGE": "No se pudo agregar la bandeja de entrada a la política"
           }
         }
       },
       "DELETE_POLICY": {
-        "SUCCESS_MESSAGE": "Assignment policy deleted successfully",
-        "ERROR_MESSAGE": "Failed to delete assignment policy"
+        "SUCCESS_MESSAGE": "Política de asignación eliminada correctamente",
+        "ERROR_MESSAGE": "No se pudo eliminar la política de asignación"
       }
     },
     "AGENT_CAPACITY_POLICY": {
       "INDEX": {
         "HEADER": {
-          "TITLE": "Agent capacity",
-          "CREATE_POLICY": "New policy"
+          "TITLE": "Capacidad de agentes",
+          "CREATE_POLICY": "Nueva política"
         },
         "CARD": {
-          "POPOVER": "Added agents",
+          "POPOVER": "Agentes agregados",
           "EDIT": "Editar"
         },
-        "NO_RECORDS_FOUND": "No agent capacity policies found"
+        "NO_RECORDS_FOUND": "No se encontraron políticas de capacidad de agentes"
       },
       "CREATE": {
         "HEADER": {
-          "TITLE": "Create agent capacity policy"
+          "TITLE": "Crear política de capacidad de agentes"
         },
-        "CREATE_BUTTON": "Create policy",
+        "CREATE_BUTTON": "Crear política",
         "API": {
-          "SUCCESS_MESSAGE": "Agent capacity policy created successfully",
-          "ERROR_MESSAGE": "Failed to create agent capacity policy"
+          "SUCCESS_MESSAGE": "Política de capacidad de agentes creada correctamente",
+          "ERROR_MESSAGE": "No se pudo crear la política de capacidad de agentes"
         }
       },
       "EDIT": {
         "HEADER": {
-          "TITLE": "Edit agent capacity policy"
+          "TITLE": "Editar política de capacidad de agentes"
         },
-        "EDIT_BUTTON": "Update policy",
+        "EDIT_BUTTON": "Actualizar política",
         "CONFIRM_ADD_AGENT_DIALOG": {
-          "TITLE": "Add agent",
-          "DESCRIPTION": "{agentName} is already linked to another policy. Are you sure you want to link it to this policy? It will be unlinked from the other policy.",
-          "CONFIRM_BUTTON_LABEL": "Continue",
+          "TITLE": "Agregar agente",
+          "DESCRIPTION": "{agentName} ya está vinculado a otra política. ¿Seguro que quieres vincularlo a esta política? Se desvinculará de la otra.",
+          "CONFIRM_BUTTON_LABEL": "Continuar",
           "CANCEL_BUTTON_LABEL": "Cancelar"
         },
         "API": {
-          "SUCCESS_MESSAGE": "Agent capacity policy updated successfully",
-          "ERROR_MESSAGE": "Failed to update agent capacity policy"
+          "SUCCESS_MESSAGE": "Política de capacidad de agentes actualizada correctamente",
+          "ERROR_MESSAGE": "No se pudo actualizar la política de capacidad de agentes"
         },
         "AGENT_API": {
           "ADD": {
-            "SUCCESS_MESSAGE": "Agent added to policy successfully",
-            "ERROR_MESSAGE": "Failed to add agent to policy"
+            "SUCCESS_MESSAGE": "Agente agregado a la política correctamente",
+            "ERROR_MESSAGE": "No se pudo agregar el agente a la política"
           },
           "REMOVE": {
-            "SUCCESS_MESSAGE": "Agent removed from policy successfully",
-            "ERROR_MESSAGE": "Failed to remove agent from policy"
+            "SUCCESS_MESSAGE": "Agente eliminado de la política correctamente",
+            "ERROR_MESSAGE": "No se pudo eliminar el agente de la política"
           }
         },
         "INBOX_LIMIT_API": {
           "ADD": {
-            "SUCCESS_MESSAGE": "Inbox limit added successfully",
-            "ERROR_MESSAGE": "Failed to add inbox limit"
+            "SUCCESS_MESSAGE": "Límite de la bandeja de entrada agregado correctamente",
+            "ERROR_MESSAGE": "No se pudo agregar el límite de la bandeja de entrada"
           },
           "UPDATE": {
-            "SUCCESS_MESSAGE": "Inbox limit updated successfully",
-            "ERROR_MESSAGE": "Failed to update inbox limit"
+            "SUCCESS_MESSAGE": "Límite de la bandeja de entrada actualizado correctamente",
+            "ERROR_MESSAGE": "No se pudo actualizar el límite de la bandeja de entrada"
           },
           "DELETE": {
-            "SUCCESS_MESSAGE": "Inbox limit deleted successfully",
-            "ERROR_MESSAGE": "Failed to delete inbox limit"
+            "SUCCESS_MESSAGE": "Límite de la bandeja de entrada eliminado correctamente",
+            "ERROR_MESSAGE": "No se pudo eliminar el límite de la bandeja de entrada"
           }
         }
       },
       "FORM": {
         "NAME": {
-          "LABEL": "Policy name:",
-          "PLACEHOLDER": "Enter policy name"
+          "LABEL": "Nombre de la política:",
+          "PLACEHOLDER": "Ingresa el nombre de la política",
+          "ERROR": "Ingresa un nombre para la política"
         },
         "DESCRIPTION": {
           "LABEL": "Descripción:",
-          "PLACEHOLDER": "Introducir descripción"
+          "PLACEHOLDER": "Ingresa una descripción",
+          "ERROR": "Ingresa una descripción"
         },
         "INBOX_CAPACITY_LIMIT": {
-          "LABEL": "Inbox capacity limits",
-          "ADD_BUTTON": "Add inbox",
+          "LABEL": "Límites de capacidad por bandeja de entrada",
+          "ADD_BUTTON": "Agregar bandeja",
           "FIELD": {
-            "SELECT_INBOX": "Select inbox",
-            "MAX_CONVERSATIONS": "Max conversations",
-            "SET_LIMIT": "Set limit"
+            "SELECT_INBOX": "Selecciona una bandeja de entrada",
+            "MAX_CONVERSATIONS": "Máximo de conversaciones",
+            "SET_LIMIT": "Definir límite"
           },
-          "EMPTY_STATE": "No inbox limit set"
+          "EMPTY_STATE": "No hay límites por bandeja de entrada definidos"
         },
         "EXCLUSION_RULES": {
-          "LABEL": "Exclusion rules",
-          "DESCRIPTION": "Conversations that satisfy the following conditions would not count towards agent capacity",
+          "LABEL": "Reglas de exclusión",
+          "DESCRIPTION": "Las conversaciones que cumplan estas condiciones no cuentan para la capacidad del agente",
           "TAGS": {
-            "LABEL": "Exclude conversations tagged with specific labels",
-            "ADD_TAG": "add tag",
+            "LABEL": "Excluir conversaciones con etiquetas específicas",
+            "ADD_TAG": "Agregar etiqueta",
             "DROPDOWN": {
-              "SEARCH_PLACEHOLDER": "Search and select tags to add"
+              "SEARCH_PLACEHOLDER": "Busca y selecciona las etiquetas que quieres agregar"
             },
-            "EMPTY_STATE": "No tags added to this policy."
+            "EMPTY_STATE": "Esta política no tiene etiquetas."
           },
           "DURATION": {
-            "LABEL": "Exclude conversations older than a specified duration",
-            "PLACEHOLDER": "Set time"
+            "LABEL": "Excluir conversaciones más antiguas que la duración indicada",
+            "PLACEHOLDER": "Definir tiempo"
           }
         },
         "USERS": {
-          "LABEL": "Assigned agents",
-          "DESCRIPTION": "Add agents for which this policy will be applicable.",
-          "ADD_BUTTON": "Add agent",
+          "LABEL": "Agentes asignados",
+          "DESCRIPTION": "Agrega los agentes a los que se aplicará esta política.",
+          "ADD_BUTTON": "Agregar agente",
           "DROPDOWN": {
-            "SEARCH_PLACEHOLDER": "Search and select agents to add",
-            "ADD_BUTTON": "Añadir"
+            "SEARCH_PLACEHOLDER": "Busca y selecciona los agentes que quieres agregar",
+            "ADD_BUTTON": "Agregar"
           },
-          "EMPTY_STATE": "No agents added",
+          "EMPTY_STATE": "No hay agentes agregados",
           "API": {
-            "SUCCESS_MESSAGE": "Agent successfully added to policy",
-            "ERROR_MESSAGE": "Failed to add agent to policy"
+            "SUCCESS_MESSAGE": "Agente agregado a la política correctamente",
+            "ERROR_MESSAGE": "No se pudo agregar el agente a la política"
           }
         }
       },
       "DELETE_POLICY": {
-        "SUCCESS_MESSAGE": "Agent capacity policy deleted successfully",
-        "ERROR_MESSAGE": "Failed to delete agent capacity policy"
+        "SUCCESS_MESSAGE": "Política de capacidad de agentes eliminada correctamente",
+        "ERROR_MESSAGE": "No se pudo eliminar la política de capacidad de agentes"
       }
     },
     "DELETE_POLICY": {
-      "TITLE": "Delete policy",
-      "DESCRIPTION": "Are you sure you want to delete this policy? This action cannot be undone.",
+      "TITLE": "Eliminar política",
+      "DESCRIPTION": "¿Seguro que quieres eliminar esta política? Esta acción no se puede deshacer.",
       "CONFIRM_BUTTON_LABEL": "Eliminar",
       "CANCEL_BUTTON_LABEL": "Cancelar"
+    },
+    "FLOW": {
+      "TITLE": "Cómo asigna esta política",
+      "DESCRIPTION": "Cada conversación sin asignar de una bandeja de entrada vinculada pasa por estos pasos.",
+      "CAPTION": "Así se decide quién atiende cada conversación",
+      "LEGEND": "Paso final",
+      "PAUSED": "Política pausada: no se asignan conversaciones",
+      "INACTIVE_NOTE": "No aplica con tu configuración",
+      "NARRATION": {
+        "STEP": "{title}: {value}",
+        "STEP_INACTIVE": "{title}: {value} — {note}"
+      },
+      "CATEGORY": {
+        "ENTRY": "Entrada",
+        "FILTER": "Filtro",
+        "ORDER": "Orden",
+        "TEAM": "Equipo",
+        "LIMIT": "Límite",
+        "CAPACITY": "Cupo",
+        "ASSIGNMENT": "Asignación"
+      },
+      "EDGE": {
+        "UNASSIGNED": "Sin asignar",
+        "STILL_VALID": "Las que siguen vigentes",
+        "IN_ORDER": "En orden",
+        "TEAM_ONLY": "Solo agentes del equipo",
+        "WITHIN_LIMIT": "Dentro del límite",
+        "WITH_CAPACITY": "Con cupo disponible"
+      },
+      "INCOMING": {
+        "TITLE": "Conversación entrante",
+        "VALUE": "Sin asignar y abierta"
+      },
+      "EXCLUDE_OLDER": {
+        "TITLE": "Saltar las obsoletas",
+        "VALUE": "Se saltan después de {duration}",
+        "VALUE_EMPTY": "Sin límite de antigüedad"
+      },
+      "PRIORITY": {
+        "TITLE": "Ordenar por prioridad",
+        "EARLIEST_CREATED": "Primero la creada antes",
+        "LONGEST_WAITING": "Primero la que más espera"
+      },
+      "TEAM_FILTER": {
+        "TITLE": "Filtro de equipo",
+        "VALUE": "Solo agentes del equipo de la conversación"
+      },
+      "FAIR_DISTRIBUTION": {
+        "TITLE": "Límite de distribución justa",
+        "VALUE": "{limit} por agente cada {window}"
+      },
+      "CAPACITY": {
+        "TITLE": "Chequeo de capacidad",
+        "VALUE": "Agentes por debajo de su límite de bandeja de entrada"
+      },
+      "ASSIGN": {
+        "TITLE": "Asignación al agente",
+        "ROUND_ROBIN": "Round robin · por turnos",
+        "BALANCED": "Balanceado · al agente con menos carga"
+      },
+      "DURATION": {
+        "MINUTES": "{count} min",
+        "HOURS": "{count} h",
+        "DAYS": "{count} d"
+      }
     }
   }
 }

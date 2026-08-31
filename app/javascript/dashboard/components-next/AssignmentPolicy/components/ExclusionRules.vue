@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import AddDataDropdown from 'dashboard/components-next/AssignmentPolicy/components/AddDataDropdown.vue';
 import LabelItem from 'dashboard/components-next/label/LabelItem.vue';
@@ -23,14 +23,17 @@ const excludeOlderThanMinutes = defineModel('excludeOlderThanMinutes', {
   default: null,
 });
 
-// Duration limits: 1 minute to 999 days (in minutes)
-const MIN_DURATION_MINUTES = 1;
+// The policy stores whole hours, so anything under an hour cannot round-trip
+const MIN_DURATION_MINUTES = 60;
 const MAX_DURATION_MINUTES = 1438560; // 999 days * 24 hours * 60 minutes
 
 const { t } = useI18n();
 
 const hoveredLabel = ref(null);
-const windowUnit = ref(DURATION_UNITS.MINUTES);
+const windowUnit = ref(DURATION_UNITS.HOURS);
+
+// The policy rounds to whole hours, so minutes is not an option the storage can round-trip
+const DURATION_UNIT_OPTIONS = [DURATION_UNITS.HOURS, DURATION_UNITS.DAYS];
 
 const addedTags = computed(() =>
   props.tagsList
@@ -46,11 +49,20 @@ const filteredTags = computed(() =>
 
 const detectUnit = minutes => {
   const m = Number(minutes) || 0;
-  if (m === 0) return DURATION_UNITS.MINUTES;
-  if (m % (24 * 60) === 0) return DURATION_UNITS.DAYS;
-  if (m % 60 === 0) return DURATION_UNITS.HOURS;
-  return DURATION_UNITS.MINUTES;
+  return m && m % (24 * 60) === 0 ? DURATION_UNITS.DAYS : DURATION_UNITS.HOURS;
 };
+
+// Writes we made ourselves must not trigger a unit re-detect, or the field would jump
+// units under the user mid-edit
+const lastLocalValue = ref(undefined);
+
+const durationInMinutes = computed({
+  get: () => excludeOlderThanMinutes.value,
+  set(value) {
+    lastLocalValue.value = value;
+    excludeOlderThanMinutes.value = value;
+  },
+});
 
 const onClickAddTag = tag => {
   excludedLabels.value = [...excludedLabels.value, tag.name];
@@ -62,9 +74,19 @@ const onClickRemoveTag = tag => {
   );
 };
 
-onMounted(() => {
-  windowUnit.value = detectUnit(excludeOlderThanMinutes.value);
-});
+// The policy loads after mount on the edit page, and a parent reset can swap one real
+// value for another, so re-pick the unit on every change that did not come from this
+// component's own input
+watch(
+  excludeOlderThanMinutes,
+  value => {
+    if (value === lastLocalValue.value) return;
+
+    lastLocalValue.value = value;
+    windowUnit.value = detectUnit(value);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -136,10 +158,11 @@ onMounted(() => {
       <div
         class="flex items-center gap-2 flex-1 [&>select]:!bg-n-alpha-2 [&>select]:!outline-none [&>select]:hover:brightness-110"
       >
-        <!-- allow 10 mins to 999 days -->
+        <!-- allow 1 hour to 999 days -->
         <DurationInput
           v-model:unit="windowUnit"
-          v-model:model-value="excludeOlderThanMinutes"
+          v-model:model-value="durationInMinutes"
+          :units="DURATION_UNIT_OPTIONS"
           :min="MIN_DURATION_MINUTES"
           :max="MAX_DURATION_MINUTES"
         />

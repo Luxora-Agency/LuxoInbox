@@ -8,6 +8,7 @@ import { useAlert } from 'dashboard/composables';
 import Breadcrumb from 'dashboard/components-next/breadcrumb/Breadcrumb.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
 import SettingsLayout from 'dashboard/routes/dashboard/settings/SettingsLayout.vue';
+import BaseSettingsHeader from 'dashboard/routes/dashboard/settings/components/BaseSettingsHeader.vue';
 import AssignmentPolicyCard from 'dashboard/components-next/AssignmentPolicy/AssignmentPolicyCard/AssignmentPolicyCard.vue';
 import ConfirmDeletePolicyDialog from './components/ConfirmDeletePolicyDialog.vue';
 
@@ -96,15 +97,33 @@ onMounted(() => {
     "
   >
     <template #header>
-      <div class="flex items-center gap-2 w-full justify-between min-h-10">
-        <Breadcrumb :items="breadcrumbItems" @click="handleBreadcrumbClick" />
-        <Button icon="i-lucide-plus" md @click="onClickCreatePolicy">
-          {{
-            $t(
-              'ASSIGNMENT_POLICY.AGENT_ASSIGNMENT_POLICY.INDEX.HEADER.CREATE_POLICY'
-            )
-          }}
-        </Button>
+      <div class="flex flex-col w-full">
+        <Breadcrumb
+          :items="breadcrumbItems"
+          class="mb-2"
+          @click="handleBreadcrumbClick"
+        />
+        <BaseSettingsHeader
+          :title="
+            $t('ASSIGNMENT_POLICY.AGENT_ASSIGNMENT_POLICY.INDEX.HEADER.TITLE')
+          "
+          :description="
+            $t('ASSIGNMENT_POLICY.INDEX.ASSIGNMENT_POLICY.DESCRIPTION')
+          "
+        >
+          <template #actions>
+            <Button
+              icon="i-lucide-plus"
+              size="sm"
+              :label="
+                $t(
+                  'ASSIGNMENT_POLICY.AGENT_ASSIGNMENT_POLICY.INDEX.HEADER.CREATE_POLICY'
+                )
+              "
+              @click="onClickCreatePolicy"
+            />
+          </template>
+        </BaseSettingsHeader>
       </div>
     </template>
     <template #body>

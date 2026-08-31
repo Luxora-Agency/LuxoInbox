@@ -131,7 +131,11 @@ onMounted(() => {
       :type="type"
       :placeholder="placeholder"
       :disabled="disabled"
-      :min="['date', 'datetime-local', 'time'].includes(type) ? min : undefined"
+      :min="
+        ['date', 'datetime-local', 'time', 'number'].includes(type)
+          ? min
+          : undefined
+      "
       :max="
         ['date', 'datetime-local', 'time', 'number'].includes(type)
           ? max

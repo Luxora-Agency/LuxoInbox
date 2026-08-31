@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore, useMapGetter } from 'dashboard/composables/store';
 import { useRoute, useRouter } from 'vue-router';
@@ -15,6 +15,14 @@ import SettingsLayout from 'dashboard/routes/dashboard/settings/SettingsLayout.v
 import AssignmentPolicyForm from 'dashboard/routes/dashboard/settings/assignmentPolicy/pages/components/AgentAssignmentPolicyForm.vue';
 import ConfirmInboxDialog from 'dashboard/routes/dashboard/settings/assignmentPolicy/pages/components/ConfirmInboxDialog.vue';
 import InboxLinkDialog from 'dashboard/routes/dashboard/settings/assignmentPolicy/pages/components/InboxLinkDialog.vue';
+
+// Keeps the flow-diagram library out of the settings bundle until this page renders
+const AssignmentPolicyFlowDiagram = defineAsyncComponent(
+  () =>
+    import(
+      'dashboard/routes/dashboard/settings/assignmentPolicy/pages/components/AssignmentPolicyFlowDiagram.vue'
+    )
+);
 
 const BASE_KEY = 'ASSIGNMENT_POLICY.AGENT_ASSIGNMENT_POLICY';
 
@@ -102,7 +110,7 @@ const inboxList = computed(() =>
 const formData = computed(() => ({
   name: selectedPolicy.value?.name || '',
   description: selectedPolicy.value?.description || '',
-  enabled: true,
+  enabled: selectedPolicy.value?.enabled ?? true,
   assignmentOrder: selectedPolicy.value?.assignmentOrder || ROUND_ROBIN,
   conversationPriority:
     selectedPolicy.value?.conversationPriority || EARLIEST_CREATED,
@@ -223,6 +231,11 @@ const handleConfirmAddInbox = async inboxId => {
   }
 };
 
+// Mirrors the form's working copy so the diagram explains what is on screen,
+// not only what has been saved
+const liveFormState = ref(null);
+const diagramState = computed(() => liveFormState.value || formData.value);
+
 const handleSubmit = async formState => {
   try {
     await store.dispatch('assignmentPolicies/update', {
@@ -265,6 +278,15 @@ watch(routeId, fetchPolicyData, { immediate: true });
     </template>
 
     <template #body>
+      <AssignmentPolicyFlowDiagram
+        class="mb-6"
+        :enabled="diagramState.enabled"
+        :assignment-order="diagramState.assignmentOrder"
+        :conversation-priority="diagramState.conversationPriority"
+        :fair-distribution-limit="diagramState.fairDistributionLimit"
+        :fair-distribution-window="diagramState.fairDistributionWindow"
+        :exclude-older-than-hours="diagramState.excludeOlderThanHours"
+      />
       <AssignmentPolicyForm
         :key="routeId"
         mode="EDIT"
@@ -275,6 +297,7 @@ watch(routeId, fetchPolicyData, { immediate: true });
         :is-loading="uiFlags.isUpdating"
         :is-inbox-loading="inboxUiFlags.isFetching"
         @submit="handleSubmit"
+        @change="liveFormState = $event"
         @add-inbox="handleAddInbox"
         @delete-inbox="handleDeleteInbox"
         @navigate-to-inbox="handleNavigateToInbox"

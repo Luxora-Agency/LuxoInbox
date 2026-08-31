@@ -1,15 +1,27 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Input from 'dashboard/components-next/input/Input.vue';
 import DurationInput from 'dashboard/components-next/input/DurationInput.vue';
 import { DURATION_UNITS } from 'dashboard/components-next/input/constants';
+import {
+  DEFAULT_FAIR_DISTRIBUTION_LIMIT,
+  MIN_FAIR_DISTRIBUTION_LIMIT,
+  MAX_FAIR_DISTRIBUTION_LIMIT,
+} from 'dashboard/routes/dashboard/settings/assignmentPolicy/constants';
+
+const emit = defineEmits(['validationChange']);
 
 const { t } = useI18n();
 
+// The window is stored in seconds but edited in minutes; 10 minutes is the shortest
+// window the input offers and the shortest one worth rate limiting on
+const MIN_WINDOW_MINUTES = 10;
+const MAX_WINDOW_MINUTES = 1438560; // 999 days
+
 const fairDistributionLimit = defineModel('fairDistributionLimit', {
   type: Number,
-  default: 100,
+  default: DEFAULT_FAIR_DISTRIBUTION_LIMIT,
   set(value) {
     return Number(value) || 0;
   },
@@ -26,7 +38,12 @@ const fairDistributionWindow = defineModel('fairDistributionWindow', {
   },
 });
 
-const windowUnit = ref(DURATION_UNITS.MINUTES);
+// Owned by the parent form so the chosen unit survives a re-render and never
+// leaks onto the DOM as a stray attribute
+const windowUnit = defineModel('windowUnit', {
+  type: String,
+  default: DURATION_UNITS.MINUTES,
+});
 
 // Convert seconds to minutes for DurationInput
 const windowInMinutes = computed({
@@ -34,22 +51,49 @@ const windowInMinutes = computed({
     return Math.floor((fairDistributionWindow.value || 0) / 60);
   },
   set(minutes) {
-    fairDistributionWindow.value = minutes * 60;
+    fairDistributionWindow.value = (Number(minutes) || 0) * 60;
   },
 });
 
-// Detect unit based on minutes (converted from seconds)
-const detectUnit = minutes => {
-  const m = Number(minutes) || 0;
-  if (m === 0) return DURATION_UNITS.MINUTES;
-  if (m % (24 * 60) === 0) return DURATION_UNITS.DAYS;
-  if (m % 60 === 0) return DURATION_UNITS.HOURS;
-  return DURATION_UNITS.MINUTES;
-};
+// A cap of zero or less would starve every agent, so it is never a valid policy
+const isLimitValid = computed(
+  () => Number(fairDistributionLimit.value) >= MIN_FAIR_DISTRIBUTION_LIMIT
+);
 
-onMounted(() => {
-  windowUnit.value = detectUnit(windowInMinutes.value);
-});
+// Anything shorter than the input's own floor cannot be saved, so block the submit
+// instead of letting the backend reject it
+const isWindowValid = computed(
+  () => windowInMinutes.value >= MIN_WINDOW_MINUTES
+);
+
+const limitErrorMessage = computed(() =>
+  isLimitValid.value
+    ? ''
+    : t(
+        'ASSIGNMENT_POLICY.AGENT_ASSIGNMENT_POLICY.FORM.FAIR_DISTRIBUTION.INPUT_MIN_ERROR',
+        { min: MIN_FAIR_DISTRIBUTION_LIMIT }
+      )
+);
+
+const windowErrorMessage = computed(() =>
+  isWindowValid.value
+    ? ''
+    : t(
+        'ASSIGNMENT_POLICY.AGENT_ASSIGNMENT_POLICY.FORM.FAIR_DISTRIBUTION.WINDOW_MIN_ERROR',
+        { min: MIN_WINDOW_MINUTES }
+      )
+);
+
+watch(
+  [isLimitValid, isWindowValid],
+  () => {
+    emit('validationChange', {
+      isValid: isLimitValid.value && isWindowValid.value,
+      section: 'fairDistribution',
+    });
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -68,8 +112,10 @@ onMounted(() => {
         <Input
           v-model="fairDistributionLimit"
           type="number"
-          placeholder="100"
-          max="100000"
+          :placeholder="`${DEFAULT_FAIR_DISTRIBUTION_LIMIT}`"
+          :max="`${MAX_FAIR_DISTRIBUTION_LIMIT}`"
+          :message="limitErrorMessage"
+          :message-type="isLimitValid ? 'info' : 'error'"
           class="w-full"
         />
       </div>
@@ -84,16 +130,23 @@ onMounted(() => {
         }}
       </label>
 
-      <div
-        class="flex items-center gap-2 flex-1 [&>select]:!bg-n-alpha-2 [&>select]:!outline-none [&>select]:hover:brightness-110"
-      >
-        <!-- allow 10 mins to 999 days (in minutes) -->
-        <DurationInput
-          v-model:model-value="windowInMinutes"
-          v-model:unit="windowUnit"
-          :min="10"
-          :max="1438560"
-        />
+      <div class="flex flex-col gap-1 flex-1">
+        <div
+          class="flex items-center gap-2 [&>select]:!bg-n-alpha-2 [&>select]:!outline-none [&>select]:hover:brightness-110"
+        >
+          <DurationInput
+            v-model:model-value="windowInMinutes"
+            v-model:unit="windowUnit"
+            :min="MIN_WINDOW_MINUTES"
+            :max="MAX_WINDOW_MINUTES"
+          />
+        </div>
+        <p
+          v-if="windowErrorMessage"
+          class="mb-0 text-label-small text-n-ruby-9"
+        >
+          {{ windowErrorMessage }}
+        </p>
       </div>
     </div>
   </div>

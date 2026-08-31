@@ -32,6 +32,14 @@ defineProps({
     type: String,
     default: '',
   },
+  nameError: {
+    type: String,
+    default: '',
+  },
+  descriptionError: {
+    type: String,
+    default: '',
+  },
 });
 
 const emit = defineEmits(['validationChange']);
@@ -60,6 +68,10 @@ const v$ = useVuelidate(validationRules, { policyName, description });
 
 const isValid = computed(() => !v$.value.$invalid);
 
+// Only complain once the field has been visited, so a fresh form isn't red on arrival
+const hasNameError = computed(() => v$.value.policyName.$error);
+const hasDescriptionError = computed(() => v$.value.description.$error);
+
 watch(
   isValid,
   () => {
@@ -79,6 +91,8 @@ watch(
       <WithLabel
         :label="nameLabel"
         name="policyName"
+        :has-error="hasNameError"
+        :error-message="nameError"
         class="flex items-center w-full [&>label]:min-w-[120px]"
       >
         <div class="flex-1">
@@ -86,6 +100,7 @@ watch(
             v-model="policyName"
             type="text"
             :placeholder="namePlaceholder"
+            @blur="v$.policyName.$touch()"
           />
         </div>
       </WithLabel>
@@ -96,6 +111,8 @@ watch(
       <WithLabel
         :label="descriptionLabel"
         name="description"
+        :has-error="hasDescriptionError"
+        :error-message="descriptionError"
         class="flex items-center w-full [&>label]:min-w-[120px]"
       >
         <div class="flex-1">
@@ -103,6 +120,7 @@ watch(
             v-model="description"
             type="text"
             :placeholder="descriptionPlaceholder"
+            @blur="v$.description.$touch()"
           />
         </div>
       </WithLabel>
