@@ -55,11 +55,11 @@ RSpec.describe UserSessionTrackingService do
       context 'when the UA is okhttp (Android Chatwoot Mobile)' do
         let(:ua) { 'okhttp/4.9.2' }
 
-        it 'labels the session as Chatwoot Mobile on Android', :aggregate_failures do
+        it 'labels the session as LuxoInbox Mobile on Android', :aggregate_failures do
           service.create_or_update!
 
           session = user.user_sessions.last
-          expect(session.browser_name).to eq('Chatwoot Mobile')
+          expect(session.browser_name).to eq('LuxoInbox Mobile')
           expect(session.browser_version).to be_nil
           expect(session.platform_name).to eq('Android')
           expect(session.platform_version).to be_nil
@@ -71,11 +71,11 @@ RSpec.describe UserSessionTrackingService do
       context 'when the UA is CFNetwork (iOS Chatwoot Mobile)' do
         let(:ua) { 'Chatwoot/3759 CFNetwork/3886.100.1 Darwin/27.0.0' }
 
-        it 'labels the session as Chatwoot Mobile on iPhone', :aggregate_failures do
+        it 'labels the session as LuxoInbox Mobile on iPhone', :aggregate_failures do
           service.create_or_update!
 
           session = user.user_sessions.last
-          expect(session.browser_name).to eq('Chatwoot Mobile')
+          expect(session.browser_name).to eq('LuxoInbox Mobile')
           expect(session.browser_version).to be_nil
           expect(session.platform_name).to eq('iPhone')
           expect(session.platform_version).to be_nil
@@ -198,7 +198,7 @@ RSpec.describe UserSessionTrackingService do
           service.create_or_update!
 
           session = user.user_sessions.last
-          expect(session.browser_name).to eq('Chatwoot Mobile')
+          expect(session.browser_name).to eq('LuxoInbox Mobile')
           expect(session.platform_name).to eq('Android')
           expect(session.platform_version).to be_nil
           expect(session.device_name).to eq('Android')
