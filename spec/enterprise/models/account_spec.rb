@@ -11,24 +11,52 @@ RSpec.describe Account, type: :model do
     it { is_expected.to have_many(:custom_roles).dependent(:destroy_async) }
   end
 
-  describe '#selected_feature_flags=' do
-    it 'keeps advanced assignment enabled when assignment v2 is selected for a business account' do
-      account = build(:account, custom_attributes: { 'plan_name' => 'Business' })
+  describe 'advanced assignment invariant' do
+    let(:account) { create(:account) }
 
-      account.selected_feature_flags = [:feature_assignment_v2]
+    it 'enables assignment v2 alongside advanced assignment' do
+      account.selected_feature_flags = [:feature_advanced_assignment]
+      account.save!
 
-      expect(account).to be_feature_assignment_v2
       expect(account).to be_feature_advanced_assignment
+      expect(account).to be_feature_assignment_v2
     end
 
-    it 'disables advanced assignment when assignment v2 is not selected' do
-      account = build(:account, custom_attributes: { 'plan_name' => 'Business' })
+    it 'does not enable advanced assignment when only assignment v2 is selected' do
+      account.selected_feature_flags = [:feature_assignment_v2]
+      account.save!
+
+      expect(account).to be_feature_assignment_v2
+      expect(account).not_to be_feature_advanced_assignment
+    end
+
+    it 'disables both flags when neither is selected' do
       account.enable_features(:assignment_v2, :advanced_assignment)
 
       account.selected_feature_flags = []
+      account.save!
 
       expect(account).not_to be_feature_assignment_v2
       expect(account).not_to be_feature_advanced_assignment
+    end
+
+    it 'ignores the pricing plan stored in custom attributes' do
+      account.custom_attributes = { 'plan_name' => 'Business' }
+
+      account.selected_feature_flags = [:feature_assignment_v2]
+      account.save!
+
+      expect(account).not_to be_feature_advanced_assignment
+    end
+
+    it 'repairs the pair on any save path, not only a feature flag form submit' do
+      account.enable_features(:advanced_assignment)
+      account.disable_features(:assignment_v2)
+
+      account.update!(name: 'Renamed account')
+
+      expect(account.reload).to be_feature_advanced_assignment
+      expect(account).to be_feature_assignment_v2
     end
   end
 

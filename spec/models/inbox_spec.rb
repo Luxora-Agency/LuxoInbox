@@ -416,4 +416,27 @@ RSpec.describe Inbox do
       end
     end
   end
+
+  describe '#active_assignment_policy' do
+    let(:account) { create(:account) }
+    let(:inbox) { create(:inbox, account: account) }
+    let(:assignment_policy) { create(:assignment_policy, account: account) }
+
+    it 'returns the linked policy when it is enabled' do
+      create(:inbox_assignment_policy, inbox: inbox, assignment_policy: assignment_policy)
+
+      expect(inbox.reload.active_assignment_policy).to eq(assignment_policy)
+    end
+
+    it 'returns nil when the linked policy is disabled' do
+      assignment_policy.update!(enabled: false)
+      create(:inbox_assignment_policy, inbox: inbox, assignment_policy: assignment_policy)
+
+      expect(inbox.reload.active_assignment_policy).to be_nil
+    end
+
+    it 'returns nil when no policy is linked' do
+      expect(inbox.active_assignment_policy).to be_nil
+    end
+  end
 end

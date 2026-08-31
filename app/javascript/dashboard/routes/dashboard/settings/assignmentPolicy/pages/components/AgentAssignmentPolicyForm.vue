@@ -2,6 +2,7 @@
 import { computed, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+import { useDebounceFn } from '@vueuse/core';
 import { useMapGetter } from 'dashboard/composables/store';
 import BaseInfo from 'dashboard/components-next/AssignmentPolicy/components/BaseInfo.vue';
 import RadioCard from 'dashboard/components-next/radioCard/RadioCard.vue';
@@ -62,14 +63,16 @@ const props = defineProps({
 });
 const emit = defineEmits([
   'submit',
+  'change',
   'addInbox',
   'deleteInbox',
   'navigateToInbox',
-  'validationChange',
 ]);
 // Duration limits for the stale-conversation threshold: 1 hour to 999 days (in minutes)
 const MIN_EXCLUSION_MINUTES = 60;
 const MAX_EXCLUSION_MINUTES = 1438560;
+// The threshold is stored in whole hours, so minutes would not round-trip
+const EXCLUSION_UNIT_OPTIONS = [DURATION_UNITS.HOURS, DURATION_UNITS.DAYS];
 
 const { t } = useI18n();
 const route = useRoute();
@@ -92,11 +95,18 @@ const state = reactive({
   excludeOlderThanHours: DEFAULT_EXCLUDE_OLDER_THAN_HOURS,
 });
 
-const validationState = ref({
-  isValid: false,
+// Every section that can block submission reports here; the form is valid once all agree
+const sectionValidity = reactive({
+  baseInfo: false,
+  fairDistribution: true,
 });
 
+const isFormValid = computed(() =>
+  Object.values(sectionValidity).every(Boolean)
+);
+
 const exclusionUnit = ref(DURATION_UNITS.DAYS);
+const windowUnit = ref(DURATION_UNITS.HOURS);
 
 // DurationInput works in minutes; the policy stores hours, so bridge the two
 const excludeOlderThanMinutes = computed({
@@ -178,9 +188,12 @@ const buttonLabel = computed(() =>
   t(`${BASE_KEY}.${props.mode.toUpperCase()}.${props.mode}_BUTTON`)
 );
 
-const handleValidationChange = validation => {
-  validationState.value = validation;
-  emit('validationChange', validation);
+const statusHint = computed(() =>
+  t(`${BASE_KEY}.FORM.STATUS.${state.enabled ? 'ACTIVE' : 'INACTIVE'}`)
+);
+
+const handleValidationChange = ({ isValid, section }) => {
+  sectionValidity[section] = isValid;
 };
 
 const resetForm = () => {
@@ -206,14 +219,33 @@ const detectExclusionUnit = hours => {
     hours && hours % 24 !== 0 ? DURATION_UNITS.HOURS : DURATION_UNITS.DAYS;
 };
 
+// Same idea for the fair-distribution window, which the policy stores in seconds
+const detectWindowUnit = seconds => {
+  const minutes = Math.floor((Number(seconds) || 0) / 60);
+  if (minutes && minutes % (24 * 60) === 0) {
+    windowUnit.value = DURATION_UNITS.DAYS;
+  } else if (minutes && minutes % 60 === 0) {
+    windowUnit.value = DURATION_UNITS.HOURS;
+  } else {
+    windowUnit.value = DURATION_UNITS.MINUTES;
+  }
+};
+
 watch(
   () => props.initialData,
   newData => {
     Object.assign(state, newData);
     detectExclusionUnit(newData.excludeOlderThanHours);
+    detectWindowUnit(newData.fairDistributionWindow);
   },
   { immediate: true, deep: true }
 );
+
+// Surface the working copy so the page can explain the pipeline with live values.
+// Debounced so the diagram is not rebuilt on every keystroke.
+const emitChange = useDebounceFn(() => emit('change', { ...state }), 150);
+
+watch(state, emitChange, { immediate: true });
 
 defineExpose({
   resetForm,
@@ -226,10 +258,15 @@ defineExpose({
       <BaseInfo
         v-model:policy-name="state.name"
         v-model:description="state.description"
+        v-model:enabled="state.enabled"
         :name-label="t(`${BASE_KEY}.FORM.NAME.LABEL`)"
         :name-placeholder="t(`${BASE_KEY}.FORM.NAME.PLACEHOLDER`)"
         :description-label="t(`${BASE_KEY}.FORM.DESCRIPTION.LABEL`)"
         :description-placeholder="t(`${BASE_KEY}.FORM.DESCRIPTION.PLACEHOLDER`)"
+        :status-label="t(`${BASE_KEY}.FORM.STATUS.LABEL`)"
+        :status-placeholder="statusHint"
+        :name-error="t(`${BASE_KEY}.FORM.NAME.ERROR`)"
+        :description-error="t(`${BASE_KEY}.FORM.DESCRIPTION.ERROR`)"
         @validation-change="handleValidationChange"
       />
 
@@ -274,7 +311,8 @@ defineExpose({
         <FairDistribution
           v-model:fair-distribution-limit="state.fairDistributionLimit"
           v-model:fair-distribution-window="state.fairDistributionWindow"
-          v-model:window-unit="state.windowUnit"
+          v-model:window-unit="windowUnit"
+          @validation-change="handleValidationChange"
         />
       </div>
 
@@ -293,6 +331,7 @@ defineExpose({
           <DurationInput
             v-model:unit="exclusionUnit"
             v-model:model-value="excludeOlderThanMinutes"
+            :units="EXCLUSION_UNIT_OPTIONS"
             :min="MIN_EXCLUSION_MINUTES"
             :max="MAX_EXCLUSION_MINUTES"
           />
@@ -303,7 +342,7 @@ defineExpose({
     <Button
       type="submit"
       :label="buttonLabel"
-      :disabled="!validationState.isValid || isLoading"
+      :disabled="!isFormValid || isLoading"
       :is-loading="isLoading"
     />
 

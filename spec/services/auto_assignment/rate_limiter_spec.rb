@@ -28,11 +28,20 @@ RSpec.describe AutoAssignment::RateLimiter do
       it 'returns true' do
         expect(rate_limiter.within_limit?).to be true
       end
+
+      it 'falls back to the default limit of 5' do
+        allow(rate_limiter).to receive(:current_count).and_return(4)
+        expect(rate_limiter.within_limit?).to be true
+
+        allow(rate_limiter).to receive(:current_count).and_return(5)
+        expect(rate_limiter.within_limit?).to be false
+      end
     end
 
     context 'when rate limiting is enabled' do
       let(:assignment_policy) do
         instance_double(AssignmentPolicy,
+                        enabled?: true,
                         fair_distribution_limit: 5,
                         fair_distribution_window: 3600)
       end
@@ -69,6 +78,7 @@ RSpec.describe AutoAssignment::RateLimiter do
     context 'when rate limiting is enabled' do
       let(:assignment_policy) do
         instance_double(AssignmentPolicy,
+                        enabled?: true,
                         fair_distribution_limit: 5,
                         fair_distribution_window: 3600)
       end
@@ -103,6 +113,7 @@ RSpec.describe AutoAssignment::RateLimiter do
     context 'when rate limiting is enabled' do
       let(:assignment_policy) do
         instance_double(AssignmentPolicy,
+                        enabled?: true,
                         fair_distribution_limit: 5,
                         fair_distribution_window: 3600)
       end
@@ -124,6 +135,7 @@ RSpec.describe AutoAssignment::RateLimiter do
     context 'with custom window' do
       let(:assignment_policy) do
         instance_double(AssignmentPolicy,
+                        enabled?: true,
                         fair_distribution_limit: 10,
                         fair_distribution_window: 7200)
       end
@@ -146,6 +158,7 @@ RSpec.describe AutoAssignment::RateLimiter do
     context 'without custom window' do
       let(:assignment_policy) do
         instance_double(AssignmentPolicy,
+                        enabled?: true,
                         fair_distribution_limit: 10,
                         fair_distribution_window: nil)
       end

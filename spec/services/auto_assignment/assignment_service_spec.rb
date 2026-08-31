@@ -135,14 +135,82 @@ RSpec.describe AutoAssignment::AssignmentService do
       end
     end
 
-    context 'when auto assignment is disabled' do
-      before { assignment_policy.update!(enabled: false) }
+    context 'when the linked policy is disabled' do
+      let(:rate_limiter) { instance_double(AutoAssignment::RateLimiter) }
 
-      it 'returns 0 without processing' do
-        assigned_count = service.perform_bulk_assignment(limit: 10)
+      before do
+        assignment_policy.update!(enabled: false)
+        allow(OnlineStatusTracker).to receive(:get_available_users).and_return({ agent.id.to_s => 'online' })
+
+        round_robin_selector = instance_double(AutoAssignment::RoundRobinSelector)
+        allow(AutoAssignment::RoundRobinSelector).to receive(:new).and_return(round_robin_selector)
+        allow(round_robin_selector).to receive(:select_agent).and_return(agent)
+
+        allow(AutoAssignment::RateLimiter).to receive(:new).and_return(rate_limiter)
+        allow(rate_limiter).to receive(:within_limit?).and_return(true)
+        allow(rate_limiter).to receive(:track_assignment)
+      end
+
+      it 'pauses assignment for the inbox instead of falling back to defaults' do
+        conv = create(:conversation, inbox: inbox, status: 'open')
+        conv.update!(assignee_id: nil)
+
+        assigned_count = service.perform_bulk_assignment(limit: 1)
 
         expect(assigned_count).to eq(0)
-        expect(conversation.reload.assignee).to be_nil
+        expect(conv.reload.assignee).to be_nil
+      end
+
+      it 'resumes assigning once the policy is re-enabled' do
+        conv = create(:conversation, inbox: inbox, status: 'open')
+        conv.update!(assignee_id: nil)
+
+        assignment_policy.update!(enabled: true)
+        inbox.reload
+
+        assigned_count = service.perform_bulk_assignment(limit: 1)
+
+        expect(assigned_count).to eq(1)
+        expect(conv.reload.assignee).to eq(agent)
+      end
+    end
+
+    context 'when the inbox has no assignment policy at all' do
+      let(:rate_limiter) { instance_double(AutoAssignment::RateLimiter) }
+
+      before do
+        inbox.inbox_assignment_policy.destroy!
+        inbox.reload
+        allow(OnlineStatusTracker).to receive(:get_available_users).and_return({ agent.id.to_s => 'online' })
+
+        round_robin_selector = instance_double(AutoAssignment::RoundRobinSelector)
+        allow(AutoAssignment::RoundRobinSelector).to receive(:new).and_return(round_robin_selector)
+        allow(round_robin_selector).to receive(:select_agent).and_return(agent)
+
+        allow(AutoAssignment::RateLimiter).to receive(:new).and_return(rate_limiter)
+        allow(rate_limiter).to receive(:within_limit?).and_return(true)
+        allow(rate_limiter).to receive(:track_assignment)
+      end
+
+      it 'keeps assigning with the no-policy defaults' do
+        conv = create(:conversation, inbox: inbox, status: 'open')
+        conv.update!(assignee_id: nil)
+
+        assigned_count = service.perform_bulk_assignment(limit: 1)
+
+        expect(assigned_count).to eq(1)
+        expect(conv.reload.assignee).to eq(agent)
+      end
+
+      it 'attributes the assignment to the inbox instead of the policy' do
+        conv = create(:conversation, inbox: inbox, status: 'open')
+        conv.update!(assignee_id: nil)
+
+        allow(Current).to receive(:executed_by=)
+
+        service.perform_bulk_assignment(limit: 1)
+
+        expect(Current).to have_received(:executed_by=).with(inbox)
       end
     end
 

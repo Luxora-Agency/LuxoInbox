@@ -2,7 +2,6 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getInboxIconByType } from 'dashboard/helper/inbox';
-import { formatToTitleCase } from 'dashboard/helper/commons';
 
 import Button from 'dashboard/components-next/button/Button.vue';
 import CardLayout from 'dashboard/components-next/CardLayout.vue';
@@ -17,6 +16,7 @@ const props = defineProps({
   assignedInboxCount: { type: Number, default: 0 },
   inboxes: { type: Array, default: () => [] },
   isFetchingInboxes: { type: Boolean, default: false },
+  enabled: { type: Boolean, default: true },
 });
 
 const emit = defineEmits(['edit', 'delete', 'fetchInboxes']);
@@ -38,13 +38,32 @@ const inboxes = computed(() => {
   });
 });
 
-const order = computed(() => {
-  return formatToTitleCase(props.assignmentOrder);
-});
+const FORM_KEY = 'ASSIGNMENT_POLICY.AGENT_ASSIGNMENT_POLICY.FORM';
 
-const priority = computed(() => {
-  return formatToTitleCase(props.conversationPriority);
-});
+// The API returns raw enum values; reuse the form's translated option labels
+const order = computed(() =>
+  props.assignmentOrder
+    ? t(
+        `${FORM_KEY}.ASSIGNMENT_ORDER.${props.assignmentOrder.toUpperCase()}.LABEL`
+      )
+    : ''
+);
+
+const priority = computed(() =>
+  props.conversationPriority
+    ? t(
+        `${FORM_KEY}.ASSIGNMENT_PRIORITY.${props.conversationPriority.toUpperCase()}.LABEL`
+      )
+    : ''
+);
+
+// A paused policy stops assigning without losing its inbox links, so the state has to be
+// visible from the list, not only from inside the form
+const statusLabel = computed(() =>
+  t(
+    `ASSIGNMENT_POLICY.AGENT_ASSIGNMENT_POLICY.INDEX.CARD.${props.enabled ? 'ACTIVE' : 'INACTIVE'}`
+  )
+);
 
 const handleEdit = () => {
   emit('edit', props.id);
@@ -68,6 +87,16 @@ const handleFetchInboxes = () => {
           <h3 class="text-heading-2 text-n-slate-12 line-clamp-1">
             {{ name }}
           </h3>
+          <span
+            class="flex-shrink-0 px-2 py-0.5 rounded-full text-label-small"
+            :class="
+              enabled
+                ? 'bg-n-blue-9/10 text-n-blue-11'
+                : 'bg-n-alpha-2 text-n-slate-11'
+            "
+          >
+            {{ statusLabel }}
+          </span>
           <CardPopover
             :title="
               t('ASSIGNMENT_POLICY.AGENT_ASSIGNMENT_POLICY.INDEX.CARD.POPOVER')

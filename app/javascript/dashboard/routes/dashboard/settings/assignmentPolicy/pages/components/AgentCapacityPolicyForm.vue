@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseInfo from 'dashboard/components-next/AssignmentPolicy/components/BaseInfo.vue';
 import DataTable from 'dashboard/components-next/AssignmentPolicy/components/DataTable.vue';
@@ -69,7 +69,6 @@ const emit = defineEmits([
   'submit',
   'addUser',
   'deleteUser',
-  'validationChange',
   'deleteInboxLimit',
   'addInboxLimit',
   'updateInboxLimit',
@@ -89,17 +88,33 @@ const state = reactive({
   inboxCapacityLimits: [],
 });
 
-const validationState = ref({
-  isValid: false,
+// Every section that can block submission reports here; the form is valid once all agree
+const sectionValidity = reactive({
+  baseInfo: false,
+});
+
+const isFormValid = computed(() =>
+  Object.values(sectionValidity).every(Boolean)
+);
+
+// ExclusionRules works in minutes, the policy stores hours, so bridge the two
+const excludeOlderThanMinutes = computed({
+  get() {
+    const hours = state.exclusionRules.excludeOlderThanHours;
+    return hours == null ? null : hours * 60;
+  },
+  set(minutes) {
+    state.exclusionRules.excludeOlderThanHours =
+      minutes == null ? null : Math.round(minutes / 60);
+  },
 });
 
 const buttonLabel = computed(() =>
   t(`${BASE_KEY}.${props.mode.toUpperCase()}.${props.mode}_BUTTON`)
 );
 
-const handleValidationChange = validation => {
-  validationState.value = validation;
-  emit('validationChange', validation);
+const handleValidationChange = ({ isValid, section }) => {
+  sectionValidity[section] = isValid;
 };
 
 const handleDeleteInboxLimit = id => {
@@ -153,20 +168,20 @@ defineExpose({
         :name-placeholder="t(`${BASE_KEY}.FORM.NAME.PLACEHOLDER`)"
         :description-label="t(`${BASE_KEY}.FORM.DESCRIPTION.LABEL`)"
         :description-placeholder="t(`${BASE_KEY}.FORM.DESCRIPTION.PLACEHOLDER`)"
+        :name-error="t(`${BASE_KEY}.FORM.NAME.ERROR`)"
+        :description-error="t(`${BASE_KEY}.FORM.DESCRIPTION.ERROR`)"
         @validation-change="handleValidationChange"
       />
       <ExclusionRules
         v-model:excluded-labels="state.exclusionRules.excludedLabels"
-        v-model:exclude-older-than-minutes="
-          state.exclusionRules.excludeOlderThanHours
-        "
+        v-model:exclude-older-than-minutes="excludeOlderThanMinutes"
         :tags-list="labelList"
       />
     </div>
     <Button
       type="submit"
       :label="buttonLabel"
-      :disabled="!validationState.isValid || isLoading"
+      :disabled="!isFormValid || isLoading"
       :is-loading="isLoading"
     />
 

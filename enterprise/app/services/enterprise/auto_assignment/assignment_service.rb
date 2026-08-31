@@ -1,18 +1,6 @@
 module Enterprise::AutoAssignment::AssignmentService
   private
 
-  # Override assignment config to use policy if available
-  def assignment_config
-    return super unless policy
-
-    {
-      'conversation_priority' => policy.conversation_priority,
-      'fair_distribution_limit' => policy.fair_distribution_limit,
-      'fair_distribution_window' => policy.fair_distribution_window,
-      'balanced' => policy.balanced?
-    }.compact
-  end
-
   # Extend agent finding to add capacity checks
   def find_available_agent(conversation = nil)
     agents = filter_agents_by_team(inbox.available_agents, conversation)
@@ -39,16 +27,8 @@ module Enterprise::AutoAssignment::AssignmentService
       account.account_users.joins(:agent_capacity_policy).exists?
   end
 
-  def round_robin_selector
-    @round_robin_selector ||= AutoAssignment::RoundRobinSelector.new(inbox: inbox)
-  end
-
   def balanced_selector
     @balanced_selector ||= Enterprise::AutoAssignment::BalancedSelector.new(inbox: inbox)
-  end
-
-  def policy
-    @policy ||= inbox.assignment_policy
   end
 
   def account
@@ -60,7 +40,7 @@ module Enterprise::AutoAssignment::AssignmentService
     scope = inbox.conversations.visible_to_account.unassigned.open
 
     # First apply the assignment policy's age exclusion (defaults to 7 days)
-    scope = apply_age_exclusions(scope, age_exclusion_hours(policy))
+    scope = apply_age_exclusions(scope, age_exclusion_hours)
 
     # Then apply the capacity policy's exclusion rules (labels and age)
     scope = apply_exclusion_rules(scope)

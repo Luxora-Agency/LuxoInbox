@@ -4,6 +4,12 @@ module Enterprise::Account
   # Remove once every account is migrated to V2.
   CAPTAIN_V2_DEFAULT_ELIGIBLE = 'captain_v2_default_eligible'.freeze
 
+  def self.prepended(base)
+    # Every write path has to honour the advanced_assignment dependency: the super admin UI,
+    # billing reconciliation, the platform API and the default-feature bootstrap all save here.
+    base.before_save :sync_assignment_features
+  end
+
   class << self
     def captain_document_sync_intervals
       parse_captain_document_sync_intervals(InstallationConfig.find_by(name: 'CAPTAIN_DOCUMENT_AUTO_SYNC_INTERVALS')&.value)
@@ -26,12 +32,6 @@ module Enterprise::Account
   # TODO: Remove this when we upgrade administrate gem to the latest version
   # this is a temporary method since current administrate doesn't support virtual attributes
   def manually_managed_features; end
-
-  # Auto-sync advanced_assignment with assignment_v2 when features are bulk-updated via admin UI
-  def selected_feature_flags=(features)
-    super
-    sync_assignment_features
-  end
 
   def mark_for_deletion(reason = 'manual_deletion')
     reason = reason.to_s == 'manual_deletion' ? 'manual_deletion' : 'inactivity'
@@ -114,18 +114,13 @@ module Enterprise::Account
     end
   end
 
+  # LuxoInbox fork: premium toggles are per-account and not tied to a pricing plan, so the only
+  # invariant we enforce is the dependency itself — advanced_assignment is inert unless the v2
+  # assignment pipeline actually runs (Inbox#auto_assignment_v2_enabled?). Enabling advanced
+  # therefore pulls assignment_v2 in with it. advanced_assignment is never force-disabled here;
+  # only an explicit unchecked box (handled by Featurable#selected_feature_flags=) turns it off.
+  # Runs on every save (see .prepended) so no write path can persist a broken pair.
   def sync_assignment_features
-    if feature_enabled?('assignment_v2')
-      # Enable advanced_assignment for Business/Enterprise plans
-      send('feature_advanced_assignment=', true) if business_or_enterprise_plan?
-    else
-      # Disable advanced_assignment when assignment_v2 is disabled
-      send('feature_advanced_assignment=', false)
-    end
-  end
-
-  def business_or_enterprise_plan?
-    plan_name = custom_attributes['plan_name']
-    %w[Business Enterprise].include?(plan_name)
+    enable_features('assignment_v2') if feature_enabled?('advanced_assignment')
   end
 end

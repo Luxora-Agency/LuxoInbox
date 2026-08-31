@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, defineAsyncComponent, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore, useMapGetter } from 'dashboard/composables/store';
 import { useRoute, useRouter } from 'vue-router';
@@ -9,6 +9,14 @@ import Breadcrumb from 'dashboard/components-next/breadcrumb/Breadcrumb.vue';
 import SettingsLayout from 'dashboard/routes/dashboard/settings/SettingsLayout.vue';
 import AssignmentPolicyForm from 'dashboard/routes/dashboard/settings/assignmentPolicy/pages/components/AgentAssignmentPolicyForm.vue';
 
+// Keeps the flow-diagram library out of the settings bundle until this page renders
+const AssignmentPolicyFlowDiagram = defineAsyncComponent(
+  () =>
+    import(
+      'dashboard/routes/dashboard/settings/assignmentPolicy/pages/components/AssignmentPolicyFlowDiagram.vue'
+    )
+);
+
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
@@ -16,6 +24,9 @@ const { t } = useI18n();
 
 const formRef = ref(null);
 const uiFlags = useMapGetter('assignmentPolicies/getUIFlags');
+
+// Mirrors the form's working copy so the diagram explains what is on screen
+const liveFormState = ref({});
 
 const inboxIdFromQuery = computed(() => {
   const id = route.query.inboxId;
@@ -96,11 +107,21 @@ const handleSubmit = async formState => {
     </template>
 
     <template #body>
+      <AssignmentPolicyFlowDiagram
+        class="mb-6"
+        :enabled="liveFormState.enabled ?? true"
+        :assignment-order="liveFormState.assignmentOrder"
+        :conversation-priority="liveFormState.conversationPriority"
+        :fair-distribution-limit="liveFormState.fairDistributionLimit"
+        :fair-distribution-window="liveFormState.fairDistributionWindow"
+        :exclude-older-than-hours="liveFormState.excludeOlderThanHours"
+      />
       <AssignmentPolicyForm
         ref="formRef"
         mode="CREATE"
         :is-loading="uiFlags.isCreating"
         @submit="handleSubmit"
+        @change="liveFormState = $event"
       />
     </template>
   </SettingsLayout>

@@ -207,6 +207,13 @@ class Inbox < ApplicationRecord
     account.feature_enabled?('assignment_v2')
   end
 
+  # The linked policy as config readers see it. Disabling a policy pauses assignment for its
+  # inboxes (AutoAssignment::AssignmentService bails out before this is ever consulted), so this
+  # only ever answers "which settings are in force", never "should we assign".
+  def active_assignment_policy
+    assignment_policy if assignment_policy&.enabled?
+  end
+
   # Callers (Reauthorizable) only invoke this on a real transition, so the previous
   # value is always the inverse of the new boolean value.
   def dispatch_reauthorization_event(reauthorization_required)
