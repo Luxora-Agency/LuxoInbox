@@ -10,13 +10,13 @@ class SuperAdmin::InstanceStatusesController < SuperAdmin::ApplicationController
   end
 
   def chatwoot_edition
-    @metrics['Chatwoot edition'] = if ChatwootApp.enterprise?
-                                     'Enterprise'
-                                   elsif ChatwootApp.custom?
-                                     'Custom'
-                                   else
-                                     'Community'
-                                   end
+    @metrics['LuxoInbox edition'] = if ChatwootApp.enterprise?
+                                      'Enterprise'
+                                    elsif ChatwootApp.custom?
+                                      'Custom'
+                                    else
+                                      'Community'
+                                    end
   end
 
   def instance_meta
@@ -26,7 +26,7 @@ class SuperAdmin::InstanceStatusesController < SuperAdmin::ApplicationController
   end
 
   def chatwoot_version
-    @metrics['Chatwoot version'] = Chatwoot.config[:version]
+    @metrics['LuxoInbox version'] = Chatwoot.config[:version]
   end
 
   def sha

@@ -7,8 +7,14 @@ import {
 } from '../widget/constants/sdkEvents';
 import { dispatchWindowEvent } from 'shared/helpers/CustomEventHelper';
 
+// Orbis mark: orbit ring (drawn as an annulus so the non-zero fill rule punches
+// the hole), planet core and satellite dot, all in the 240x240 icon viewBox.
+// It is a single filled path because the launcher styles the icon via `path { fill }`.
 export const bubbleSVG =
-  'M240.808 240.808H122.123C56.6994 240.808 3.45695 187.562 3.45695 122.122C3.45695 56.7031 56.6994 3.45697 122.124 3.45697C187.566 3.45697 240.808 56.7031 240.808 122.122V240.808Z';
+  'M213.04 70.53A105.375 46.875 -28 1 1 26.96 169.47A105.375 46.875 -28 1 1 213.04 70.53Z' +
+  'M201.78 76.52A92.625 34.125 -28 1 0 38.22 163.48A92.625 34.125 -28 1 0 201.78 76.52Z' +
+  'M73.5 120A46.5 46.5 0 1 1 166.5 120A46.5 46.5 0 1 1 73.5 120Z' +
+  'M176.25 70.5A20.25 20.25 0 1 1 216.75 70.5A20.25 20.25 0 1 1 176.25 70.5Z';
 
 export const body = document.getElementsByTagName('body')[0];
 export const widgetHolder = document.createElement('div');

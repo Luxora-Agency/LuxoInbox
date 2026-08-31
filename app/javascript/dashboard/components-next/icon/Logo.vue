@@ -16,25 +16,28 @@ const globalConfig = useMapGetter('globalConfig/get');
     v-else
     v-once
     v-bind="attrs"
+    class="text-orbis-cream"
     width="16"
     height="16"
-    viewBox="0 0 16 16"
+    viewBox="0 0 32 32"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <defs>
-      <linearGradient id="fuchsia-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#E91E8C" />
-        <stop offset="100%" stop-color="#C41872" />
-      </linearGradient>
-    </defs>
-    <rect width="16" height="16" rx="4" fill="url(#fuchsia-grad)" />
-    <path
-      d="M4 5.5C4 4.94772 4.44772 4.5 5 4.5H11C11.5523 4.5 12 4.94772 12 5.5V9.5C12 10.0523 11.5523 10.5 11 10.5H9L7 12.5V10.5H5C4.44772 10.5 4 10.0523 4 9.5V5.5Z"
-      fill="white"
-    />
-    <circle cx="6" cy="7.5" r="0.75" fill="#E91E8C" />
-    <circle cx="8" cy="7.5" r="0.75" fill="#E91E8C" />
-    <circle cx="10" cy="7.5" r="0.75" fill="#E91E8C" />
+    <rect width="32" height="32" rx="7" fill="#010828" />
+    <g transform="translate(1.6 1.6) scale(0.9)">
+      <circle cx="16" cy="16" r="6.2" fill="currentColor" />
+      <ellipse
+        cx="16"
+        cy="16"
+        rx="13.2"
+        ry="5.4"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.7"
+        opacity="0.85"
+        transform="rotate(-28 16 16)"
+      />
+      <circle cx="26.2" cy="9.4" r="2.7" fill="#6FFF00" />
+    </g>
   </svg>
 </template>

@@ -85,7 +85,7 @@ class UserSessionTrackingService
     return attrs unless hit
 
     attrs.merge(
-      browser_name: 'Chatwoot Mobile',
+      browser_name: 'LuxoInbox Mobile',
       browser_version: nil,
       platform_name: hit[:platform],
       platform_version: nil,

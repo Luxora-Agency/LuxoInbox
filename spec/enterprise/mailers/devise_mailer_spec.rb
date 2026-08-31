@@ -51,7 +51,7 @@ RSpec.describe 'Devise::Mailer' do
 
         it 'mentions SSO invitation' do
           expect(mail_body).to include("You're invited to join #{account.name}")
-          expect(mail_body).to include("#{inviter_val.name} invited you to access the #{account.name} workspace on Chatwoot.")
+          expect(mail_body).to include("#{inviter_val.name} invited you to access the #{account.name} workspace on LuxoInbox.")
         end
 
         it 'explains SSO authentication' do

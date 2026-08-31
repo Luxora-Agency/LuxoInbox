@@ -33,7 +33,7 @@
       "LEARN_MORE": "Aprenda más sobre webhooks",
       "PAYWALL": {
         "TITLE": "Los webhooks están disponibles en planes de pago",
-        "AVAILABLE_ON": "Usa webhooks para recibir eventos en tiempo real de tu cuenta de Chatwoot.",
+        "AVAILABLE_ON": "Usa webhooks para recibir eventos en tiempo real de tu cuenta.",
         "UPGRADE_PROMPT": "Actualice a Startups, Business, o Enterprise planea usar webhooks.",
         "UPGRADE_NOW": "Actualizar ahora",
         "CANCEL_ANYTIME": "Cambie o cancele su plan en cualquier momento."

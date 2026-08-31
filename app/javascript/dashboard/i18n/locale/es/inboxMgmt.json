@@ -50,7 +50,7 @@
         "PICK_NAME": "Elija un nombre para su bandeja de entrada",
         "PICK_A_VALUE": "Elija un valor",
         "CREATE_INBOX": "Crear bandeja de entrada",
-        "RESTRICTED_WARNING": "La creación de bandejas de entrada de Facebook no está disponible temporalmente debido a un problema en la API de Meta, no de Chatwoot. Estamos colaborando estrechamente con Meta para resolverlo cuanto antes.",
+        "RESTRICTED_WARNING": "La creación de bandejas de entrada de Facebook no está disponible temporalmente debido a un problema en la API de Meta, no de nuestro lado. Estamos colaborando estrechamente con Meta para resolverlo cuanto antes.",
         "STATUS_LINK": "Ver actualizaciones de estado"
       },
       "INSTAGRAM": {
@@ -61,8 +61,8 @@
         "ERROR_AUTH": "There was an error connecting to Instagram, please try again",
         "NEW_INBOX_SUGGESTION": "This Instagram account was previously linked to a different inbox and has now been migrated here. All new messages will appear here. The old inbox will no longer be able to send or receive messages for this account.",
         "DUPLICATE_INBOX_BANNER": "This Instagram account was migrated to the new Instagram channel inbox. You won’t be able to send/receive Instagram messages from this inbox anymore.",
-        "RESTRICTED_WARNING": "La creación de bandejas de entrada de Instagram no está disponible temporalmente debido a un problema en la API de Meta, no de Chatwoot. Estamos colaborando estrechamente con Meta para resolverlo cuanto antes.",
-        "SETTINGS_RESTRICTED_WARNING": "La mensajería de Instagram está afectada actualmente por un problema de la API de Meta, no por un problema de Chatwoot. Algunos mensajes o acciones pueden retrasarse o no estar disponibles. Estamos colaborando estrechamente con Meta para resolverlo lo antes posible.",
+        "RESTRICTED_WARNING": "La creación de bandejas de entrada de Instagram no está disponible temporalmente debido a un problema en la API de Meta, no de nuestro lado. Estamos colaborando estrechamente con Meta para resolverlo cuanto antes.",
+        "SETTINGS_RESTRICTED_WARNING": "La mensajería de Instagram está afectada actualmente por un problema de la API de Meta, no por un problema de nuestro lado. Algunos mensajes o acciones pueden retrasarse o no estar disponibles. Estamos colaborando estrechamente con Meta para resolverlo lo antes posible.",
         "STATUS_LINK": "Ver actualizaciones de estado"
       },
       "TIKTOK": {
@@ -329,17 +329,17 @@
           "MANUAL_LINK_TEXT": "flujo de configuración manual",
           "ACCESS_REQUEST": {
             "TITLE": "Configuración rápida con Meta",
-            "DESCRIPTION": "Conecta un número nuevo o uno existente de la aplicación WhatsApp Business sin configuración manual. Para solicitar esta opción, cuéntanos a qué se dedica tu empresa, cómo usarás WhatsApp y qué cuenta de Chatwoot necesita acceso.",
+            "DESCRIPTION": "Conecta un número nuevo o uno existente de la aplicación WhatsApp Business sin configuración manual. Para solicitar esta opción, cuéntanos a qué se dedica tu empresa, cómo usarás WhatsApp y qué cuenta necesita acceso.",
             "FOOTNOTE": "Revisaremos tu solicitud y te informaremos si podemos habilitar esta opción. También puedes continuar con la configuración manual que aparece a continuación.",
             "BUTTON": "Solicitar acceso"
           },
-          "RESTRICTED_WARNING": "WhatsApp Embedded Signup no está disponible temporalmente debido a un problema en la API de Meta, no de Chatwoot. Puedes usar la configuración manual para los números compatibles con la API de Cloud. Estamos colaborando estrechamente con Meta para resolverlo cuanto antes.",
+          "RESTRICTED_WARNING": "WhatsApp Embedded Signup no está disponible temporalmente debido a un problema en la API de Meta, no de nuestro lado. Puedes usar la configuración manual para los números compatibles con la API de Cloud. Estamos colaborando estrechamente con Meta para resolverlo cuanto antes.",
           "STATUS_LINK": "Ver actualizaciones de estado",
           "CALLING_ENABLE_FAILED": "Tu bandeja de entrada de WhatsApp está lista, pero las llamadas de voz no se pudieron activar — este número aún no está inscrito en la API de llamadas empresariales de WhatsApp. Llega a Meta o a tu proveedor de soluciones empresariales de WhatsApp a bordo, luego enciende la llamada desde la configuración de las llamadas de la bandeja de entrada."
         },
         "API": {
           "ERROR_MESSAGE": "No pudimos guardar el canal de WhatsApp",
-          "MANUAL_RESTRICTION_WARNING": "WhatsApp Embedded Signup no está disponible temporalmente debido a un problema en la API de Meta, no de Chatwoot. La configuración manual solo funciona con números que ya estén conectados a la API de WhatsApp Cloud. Los números que usan la coexistencia con la aplicación WhatsApp Business todavía no son compatibles con este proceso. Estamos colaborando estrechamente con Meta para resolver el problema cuanto antes. Gracias por tu paciencia.",
+          "MANUAL_RESTRICTION_WARNING": "WhatsApp Embedded Signup no está disponible temporalmente debido a un problema en la API de Meta, no de nuestro lado. La configuración manual solo funciona con números que ya estén conectados a la API de WhatsApp Cloud. Los números que usan la coexistencia con la aplicación WhatsApp Business todavía no son compatibles con este proceso. Estamos colaborando estrechamente con Meta para resolver el problema cuanto antes. Gracias por tu paciencia.",
           "STATUS_LINK": "Ver actualizaciones de estado"
         }
       },
@@ -903,7 +903,7 @@
       "WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_ADD_TITLE": "Añadir token de administración empresarial",
       "WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_REPLACE_TITLE": "Sustituir token de administración empresarial",
       "WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_CONFIGURED": "Token de administración empresarial configurado",
-      "WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_UPDATE_SUBHEADER": "Proporciona un token con acceso a esta cuenta de WhatsApp Business cuando Chatwoot no pueda recuperar sus plantillas de mensajes. Chatwoot solo usa este token para sincronizar plantillas.",
+      "WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_UPDATE_SUBHEADER": "Proporciona un token con acceso a esta cuenta de WhatsApp Business cuando no se puedan recuperar sus plantillas de mensajes. El token solo se usa para sincronizar plantillas.",
       "WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_UPDATE_PLACEHOLDER": "Introduce el token de administración empresarial",
       "WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_ADD_BUTTON": "Añadir",
       "WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_REPLACE_BUTTON": "Sustituir",
@@ -1343,7 +1343,7 @@
         "USER_MESSAGE": "Hola",
         "AGENT_MESSAGE": "Hola"
       },
-      "BRANDING_TEXT": "Desarrollado por Chatwoot",
+      "BRANDING_TEXT": "Desarrollado por LuxoInbox",
       "SCRIPT_SETTINGS": "\n      window.chatwootSettings = {options};"
     },
     "EMAIL_PROVIDERS": {

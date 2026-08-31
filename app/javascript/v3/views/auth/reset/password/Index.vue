@@ -140,7 +140,7 @@ const submit = () => {
         class="flex size-12 items-center justify-center rounded-xl border border-white/10 bg-white/5 backdrop-blur-[4px]"
       >
         <img
-          :src="globalConfig.logo"
+          :src="globalConfig.logoThumbnail"
           :alt="globalConfig.installationName"
           class="size-7 object-contain"
         />
