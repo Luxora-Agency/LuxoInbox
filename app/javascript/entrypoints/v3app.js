@@ -1,7 +1,9 @@
 import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
+import VueDOMPurifyHTML from 'vue-dompurify-html';
 
 import i18nMessages from 'dashboard/i18n';
+import { domPurifyConfig } from 'shared/helpers/HTMLSanitizer';
 import * as Sentry from '@sentry/vue';
 import {
   initializeAnalyticsEvents,
@@ -27,6 +29,7 @@ const app = createApp(App);
 app.use(i18n);
 app.use(store);
 app.use(router);
+app.use(VueDOMPurifyHTML, domPurifyConfig);
 
 // Vue.use(VueRouter);
 // Vue.use(VueI18n);

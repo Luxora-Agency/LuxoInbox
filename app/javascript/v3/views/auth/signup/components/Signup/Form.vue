@@ -188,7 +188,7 @@ const onCaptchaError = () => {
     </GoogleOAuthButton>
     <p
       class="text-xs mt-6 mb-0 font-mono leading-relaxed text-orbis-cream/45 [&>a]:text-orbis-neon [&>a]:font-medium [&>a]:hover:text-orbis-neon/70 [&>a]:transition-colors"
-      v-html="termsLink"
+      v-dompurify-html="termsLink"
     />
   </div>
 </template>
