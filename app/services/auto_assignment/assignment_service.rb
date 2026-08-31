@@ -2,11 +2,7 @@ class AutoAssignment::AssignmentService
   pattr_initialize [:inbox!]
 
   def perform_bulk_assignment(limit: 100)
-    return 0 unless inbox.auto_assignment_v2_enabled?
-    return 0 unless inbox.enable_auto_assignment?
-    # A linked-but-disabled policy is a paused inbox, not a fallback to defaults.
-    # An inbox with no policy at all keeps the stock behaviour.
-    return 0 if inbox.assignment_policy && !inbox.assignment_policy.enabled?
+    return 0 unless assignment_active?
 
     conversations = unassigned_conversations(limit).to_a
     return 0 if conversations.empty?
@@ -20,6 +16,14 @@ class AutoAssignment::AssignmentService
   end
 
   private
+
+  # A linked-but-disabled policy is a paused inbox, not a fallback to defaults.
+  # An inbox with no policy at all keeps the stock behaviour.
+  def assignment_active?
+    inbox.auto_assignment_v2_enabled? &&
+      inbox.enable_auto_assignment? &&
+      (inbox.assignment_policy.nil? || inbox.assignment_policy.enabled?)
+  end
 
   def perform_for_conversation(conversation)
     return false unless assignable?(conversation)
