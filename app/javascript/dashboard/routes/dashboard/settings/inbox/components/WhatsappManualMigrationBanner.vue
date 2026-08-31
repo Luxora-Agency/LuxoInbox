@@ -7,15 +7,12 @@ import Icon from 'dashboard/components-next/icon/Icon.vue';
 const emit = defineEmits(['start']);
 const { t } = useI18n();
 
-const WHATSAPP_MANUAL_MIGRATION_GUIDE_URL = 'https://chwt.app/migrate-whatsapp';
-
 const copy = computed(() => ({
   title: t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_MANUAL_MIGRATION.BANNER.TITLE'),
   description: t(
     'INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_MANUAL_MIGRATION.BANNER.DESCRIPTION'
   ),
   start: t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_MANUAL_MIGRATION.BANNER.START'),
-  guide: t('INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_MANUAL_MIGRATION.BANNER.GUIDE'),
 }));
 </script>
 
@@ -28,17 +25,7 @@ const copy = computed(() => ({
       />
       <div class="flex flex-col gap-0.5">
         <span class="font-medium text-n-blue-12">{{ copy.title }}</span>
-        <span>
-          {{ copy.description }}
-          <a
-            :href="WHATSAPP_MANUAL_MIGRATION_GUIDE_URL"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="underline link underline-offset-2"
-          >
-            {{ copy.guide }}
-          </a>
-        </span>
+        <span>{{ copy.description }}</span>
       </div>
     </div>
   </Banner>

@@ -23,8 +23,6 @@ const emit = defineEmits(['reconnect']);
 const { t } = useI18n();
 const { replaceInstallationName } = useBranding();
 
-const WHATSAPP_MANUAL_MIGRATION_GUIDE_URL = 'https://chwt.app/migrate-whatsapp';
-
 const dialogRef = ref(null);
 const currentStep = ref(0);
 
@@ -48,9 +46,6 @@ const copy = computed(() => ({
   ),
   actionRequiredDescription: t(
     `INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_MANUAL_MIGRATION.DIALOG.ACTION_REQUIRED_DESCRIPTION`
-  ),
-  guideLink: t(
-    `INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_MANUAL_MIGRATION.DIALOG.GUIDE_LINK`
   ),
   preservedTitle: t(
     `INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_MANUAL_MIGRATION.DIALOG.PRESERVED_TITLE`
@@ -178,7 +173,6 @@ const steps = computed(() => [
 const currentStepDetails = computed(() => steps.value[currentStep.value]);
 const isFirstStep = computed(() => currentStep.value === 0);
 const isLastStep = computed(() => currentStep.value === steps.value.length - 1);
-const guideUrl = WHATSAPP_MANUAL_MIGRATION_GUIDE_URL;
 const hasBusinessDetails = computed(
   () => form.value.wabaId.trim() && form.value.phoneNumberId.trim()
 );
@@ -354,16 +348,6 @@ defineExpose({ open, close });
                 </p>
               </div>
             </div>
-
-            <a
-              :href="guideUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-sm font-medium text-n-blue-11 hover:underline"
-            >
-              {{ copy.guideLink }}
-              <Icon icon="i-lucide-external-link" class="size-3.5" />
-            </a>
           </section>
 
           <section v-else-if="currentStep === 1" class="grid gap-4">
