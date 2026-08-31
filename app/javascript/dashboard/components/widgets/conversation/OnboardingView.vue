@@ -45,32 +45,28 @@ const greetingMessage = computed(() => {
       </p>
     </div>
     <OnboardingFeatureCard
-      image-src="/dashboard/images/onboarding/omnichannel-inbox.png"
-      image-alt="Omnichannel"
+      icon="i-lucide-inbox"
       to="settings_inbox_new"
       :title="$t('ONBOARDING.ALL_CONVERSATION.TITLE')"
       :description="$t('ONBOARDING.ALL_CONVERSATION.DESCRIPTION')"
       :link-text="$t('ONBOARDING.ALL_CONVERSATION.NEW_LINK')"
     />
     <OnboardingFeatureCard
-      image-src="/dashboard/images/onboarding/teams.png"
-      image-alt="Teams"
+      icon="i-lucide-users"
       to="settings_teams_new"
       :title="$t('ONBOARDING.TEAM_MEMBERS.TITLE')"
       :description="$t('ONBOARDING.TEAM_MEMBERS.DESCRIPTION')"
       :link-text="$t('ONBOARDING.TEAM_MEMBERS.NEW_LINK')"
     />
     <OnboardingFeatureCard
-      image-src="/dashboard/images/onboarding/canned-responses.png"
-      image-alt="Canned responses"
+      icon="i-lucide-zap"
       to="canned_list"
       :title="$t('ONBOARDING.CANNED_RESPONSES.TITLE')"
       :description="$t('ONBOARDING.CANNED_RESPONSES.DESCRIPTION')"
       :link-text="$t('ONBOARDING.CANNED_RESPONSES.NEW_LINK')"
     />
     <OnboardingFeatureCard
-      image-src="/dashboard/images/onboarding/labels.png"
-      image-alt="Labels"
+      icon="i-lucide-tags"
       to="labels_list"
       :title="$t('ONBOARDING.LABELS.TITLE')"
       :description="$t('ONBOARDING.LABELS.DESCRIPTION')"
