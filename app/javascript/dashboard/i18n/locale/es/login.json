@@ -1,6 +1,9 @@
 {
   "LOGIN": {
-    "TITLE": "Iniciar sesión en Chatwoot",
+    "TITLE": "Bienvenido de nuevo",
+    "SUBTITLE": "Introduce tus credenciales para acceder a tu cuenta",
+    "NO_ACCOUNT": "¿No tienes una cuenta?",
+    "LANGUAGE_SELECTOR": "Idioma",
     "EMAIL": {
       "LABEL": "E-mail",
       "PLACEHOLDER": "ejemplo{'@'}nombredeempresa.com",
@@ -12,7 +15,7 @@
     },
     "API": {
       "SUCCESS_MESSAGE": "Inicio de sesión exitoso",
-      "ERROR_MESSAGE": "No se pudo conectar al servidor Woot, por favor inténtalo de nuevo más tarde",
+      "ERROR_MESSAGE": "No se pudo conectar al servidor de LuxoInbox, por favor inténtalo de nuevo más tarde",
       "UNAUTH": "Nombre de usuario / Contraseña incorrecto. Inténtelo de nuevo"
     },
     "OAUTH": {
@@ -23,18 +26,38 @@
     "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
     "CREATE_NEW_ACCOUNT": "Crear nueva cuenta",
     "SUBMIT": "Iniciar sesión",
+    "HERO": {
+      "TITLE": "Conecta todos tus canales en un solo lugar",
+      "DESCRIPTION": "WhatsApp, Instagram, Facebook, correo electrónico, SMS y más. Gestiona todas las conversaciones con tus clientes desde LuxoInbox.",
+      "FEATURE_1": "Bandeja de entrada omnicanal unificada",
+      "FEATURE_2": "Agentes de IA integrados",
+      "FEATURE_3": "Automatizaciones y flujos de trabajo",
+      "TESTIMONIAL_TEXT": "\"LuxoInbox nos ayudó a reducir el tiempo de respuesta en un 60 % y a aumentar las conversiones en un 40 %.\"",
+      "TESTIMONIAL_NAME": "Sarah Johnson",
+      "TESTIMONIAL_ROLE": "Head of Support, TechCorp",
+      "TESTIMONIAL_INITIALS": "SJ"
+    },
     "SAML": {
-      "LABEL": "Login via SSO",
-      "TITLE": "Initiate Single Sign-on (SSO)",
-      "SUBTITLE": "Enter your work email to access your organization",
-      "BACK_TO_LOGIN": "Login via Password",
+      "LABEL": "Continuar con SSO",
+      "TITLE": "Inicio de sesión único (SSO)",
+      "SUBTITLE": "Introduce tu correo corporativo para acceder a tu organización",
+      "BACK_TO_LOGIN": "Volver al inicio de sesión",
       "WORK_EMAIL": {
-        "LABEL": "Work Email",
-        "PLACEHOLDER": "Enter your work email"
+        "LABEL": "Correo corporativo",
+        "PLACEHOLDER": "ejemplo{'@'}nombredeempresa.com"
       },
-      "SUBMIT": "Continue with SSO",
+      "SUBMIT": "Continuar con SSO",
       "API": {
-        "ERROR_MESSAGE": "SSO authentication failed. Please check your credentials and try again."
+        "ERROR_MESSAGE": "Falló la autenticación con SSO. Revisa tus credenciales e inténtalo de nuevo."
+      },
+      "HERO": {
+        "TITLE": "Seguridad de nivel empresarial",
+        "DESCRIPTION": "Accede a tu espacio de trabajo de LuxoInbox de forma segura con el proveedor de identidad de tu organización.",
+        "FEATURE_1": "Autenticación con inicio de sesión único",
+        "FEATURE_2": "Acceso gestionado por la organización",
+        "FEATURE_3": "Protocolos de seguridad reforzados",
+        "SECURITY_TITLE": "Seguridad empresarial",
+        "SECURITY_DESC": "Autenticación compatible con SAML 2.0"
       }
     }
   }

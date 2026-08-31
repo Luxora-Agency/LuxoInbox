@@ -1,5 +1,5 @@
 class Onboarding::WebWidgetCreationService
-  DEFAULT_WIDGET_COLOR = '#1f93ff'.freeze
+  DEFAULT_WIDGET_COLOR = '#010828'.freeze
   # context.dev descriptions and LLM completions are unbounded; bound the
   # stored tagline so a long string doesn't render as a wall of text in the
   # widget UI (and so backends that enforce varchar limits don't raise).

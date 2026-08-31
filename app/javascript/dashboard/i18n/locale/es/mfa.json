@@ -104,11 +104,11 @@
       "TITLE": "Two-Factor Authentication Help",
       "AUTHENTICATOR_TITLE": "Using an Authenticator App",
       "AUTHENTICATOR_DESC": "Open your authenticator app (Google Authenticator, Authy, etc.) and enter the 6-digit code shown for your account.",
-      "BACKUP_TITLE": "Using a Backup Code",
-      "BACKUP_DESC": "If you don't have access to your authenticator app, you can use one of the backup codes you saved when setting up 2FA. Each code can only be used once.",
-      "CONTACT_TITLE": "Need More Help?",
-      "CONTACT_DESC_CLOUD": "If you've lost access to both your authenticator app and backup codes, please reach out to Chatwoot support for assistance.",
-      "CONTACT_DESC_SELF_HOSTED": "If you've lost access to both your authenticator app and backup codes, please contact your administrator for assistance."
+      "BACKUP_TITLE": "Usar un código de respaldo",
+      "BACKUP_DESC": "Si no tienes acceso a tu aplicación de autenticación, puedes usar uno de los códigos de respaldo que guardaste al configurar la verificación en dos pasos. Cada código se puede usar una sola vez.",
+      "CONTACT_TITLE": "¿Necesitas más ayuda?",
+      "CONTACT_DESC_CLOUD": "Si perdiste el acceso a tu aplicación de autenticación y a tus códigos de respaldo, ponte en contacto con el soporte de LuxoInbox para obtener ayuda.",
+      "CONTACT_DESC_SELF_HOSTED": "Si perdiste el acceso a tu aplicación de autenticación y a tus códigos de respaldo, ponte en contacto con tu administrador para obtener ayuda."
     },
     "VERIFICATION_FAILED": "Verification failed. Please try again."
   }

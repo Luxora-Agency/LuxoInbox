@@ -13,16 +13,16 @@ export default defineConfig({
   viteIgnorePlugins: ['vite-plugin-ruby'],
   theme: {
     darkClass: 'dark',
-    title: '@chatwoot/design',
+    title: '@luxoinbox/design',
     logo: {
-      square: './design-system/images/logo-thumbnail.svg',
-      light: './design-system/images/logo.png',
-      dark: './design-system/images/logo-dark.png',
+      square: './public/brand-assets/logo_thumbnail.svg',
+      light: './public/brand-assets/logo.svg',
+      dark: './public/brand-assets/logo_dark.svg',
     },
   },
   defaultStoryProps: {
     icon: 'carbon:cube',
-    iconColor: '#1F93FF',
+    iconColor: '#6FFF00',
     layout: {
       type: 'grid',
       width: '80%',

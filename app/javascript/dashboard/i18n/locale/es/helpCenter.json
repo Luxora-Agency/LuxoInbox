@@ -331,8 +331,8 @@
       }
     },
     "TABLE": {
-      "LOADING_MESSAGE": "Cargando artículos...",
       "404": "No hay artículos que coincidan con su búsqueda 🔍",
+      "LOADING_MESSAGE": "Cargando artículos...",
       "NO_ARTICLES": "No hay artículos disponibles",
       "HEADERS": {
         "TITLE": "Título",
@@ -425,7 +425,7 @@
         "SLUG": {
           "LABEL": "Slug",
           "PLACEHOLDER": "Slug de categoría para urls",
-          "HELP_TEXT": "app.chatwoot.com/hc/my-portal/es-es-ES/categories/my-slug",
+          "HELP_TEXT": "app.luxoinbox.com/hc/my-portal/es-ES/categories/my-slug",
           "ERROR": "Slug es requerido"
         },
         "DESCRIPTION": {
@@ -456,7 +456,7 @@
         "SLUG": {
           "LABEL": "Slug",
           "PLACEHOLDER": "Slug de categoría para urls",
-          "HELP_TEXT": "app.chatwoot.com/hc/my-portal/es-ES/categories/my-slug",
+          "HELP_TEXT": "app.luxoinbox.com/hc/my-portal/es-ES/categories/my-slug",
           "ERROR": "Slug es requerido"
         },
         "DESCRIPTION": {
@@ -693,7 +693,7 @@
             "LABEL": "Slug",
             "PLACEHOLDER": "Slug de categoría para urls",
             "ERROR": "Slug es requerido",
-            "HELP_TEXT": "app.chatwoot.com/hc/{portalSlug}/{localeCode}/categories/{categorySlug}"
+            "HELP_TEXT": "app.luxoinbox.com/hc/{portalSlug}/{localeCode}/categories/{categorySlug}"
           },
           "DESCRIPTION": {
             "LABEL": "Descripción",
@@ -853,7 +853,7 @@
       "CONFIRM_BUTTON_LABEL": "Crear",
       "NAME": {
         "LABEL": "Nombre",
-        "PLACEHOLDER": "User Guide | Chatwoot",
+        "PLACEHOLDER": "Guía del usuario {'|'} LuxoInbox",
         "MESSAGE": "Choose an name for your portal.",
         "ERROR": "El nombre es requerido"
       },
@@ -927,7 +927,7 @@
           },
           "DNS_CONFIGURATION_DIALOG": {
             "HEADER": "DNS configuration",
-            "DESCRIPTION": "Log in to the account you have with your DNS provider, and add a CNAME record for subdomain pointing to chatwoot.help",
+            "DESCRIPTION": "Inicia sesión en la cuenta de tu proveedor de DNS y añade un registro CNAME para el subdominio que apunte a luxoinbox.help",
             "COPY": "Successfully copied CNAME",
             "SEND_INSTRUCTIONS": {
               "HEADER": "Send instructions",
@@ -976,7 +976,7 @@
         "HEADER": "Integraciones",
         "DESCRIPTION": "Conecta herramientas que amplían las funciones de tu centro de ayuda.",
         "LIVE_CHAT": {
-          "TITLE": "Chat en directo con Chatwoot",
+          "TITLE": "Chat en directo con LuxoInbox",
           "DESCRIPTION": "Muestra un widget de chat en directo en tu centro de ayuda para que los visitantes puedan contactarte mientras leen.",
           "PLACEHOLDER": "Seleccionar widget de chat en directo",
           "NONE_OPTION": "Sin widget"

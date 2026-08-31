@@ -14,35 +14,37 @@ const assistantParams = computed(() => ({
   assistantId: route.params.assistantId,
 }));
 
-const links = computed(() => [
-  {
-    key: 'docs',
-    title: t('CAPTAIN.OVERVIEW.LINKS.DOCS.TITLE'),
-    description: t('CAPTAIN.OVERVIEW.LINKS.DOCS.DESCRIPTION'),
-    icon: 'i-lucide-book-open',
-    href: getHelpUrlForFeature('captain'),
-  },
-  {
-    key: 'playground',
-    title: t('CAPTAIN.OVERVIEW.LINKS.PLAYGROUND.TITLE'),
-    description: t('CAPTAIN.OVERVIEW.LINKS.PLAYGROUND.DESCRIPTION'),
-    icon: 'i-lucide-flask-conical',
-    to: {
-      name: 'captain_assistants_playground_index',
-      params: assistantParams.value,
+const links = computed(() =>
+  [
+    {
+      key: 'docs',
+      title: t('CAPTAIN.OVERVIEW.LINKS.DOCS.TITLE'),
+      description: t('CAPTAIN.OVERVIEW.LINKS.DOCS.DESCRIPTION'),
+      icon: 'i-lucide-book-open',
+      href: getHelpUrlForFeature('captain'),
     },
-  },
-  {
-    key: 'billing',
-    title: t('CAPTAIN.OVERVIEW.LINKS.BILLING.TITLE'),
-    description: t('CAPTAIN.OVERVIEW.LINKS.BILLING.DESCRIPTION'),
-    icon: 'i-lucide-credit-card',
-    to: {
-      name: 'billing_settings_index',
-      params: { accountId: route.params.accountId },
+    {
+      key: 'playground',
+      title: t('CAPTAIN.OVERVIEW.LINKS.PLAYGROUND.TITLE'),
+      description: t('CAPTAIN.OVERVIEW.LINKS.PLAYGROUND.DESCRIPTION'),
+      icon: 'i-lucide-flask-conical',
+      to: {
+        name: 'captain_assistants_playground_index',
+        params: assistantParams.value,
+      },
     },
-  },
-]);
+    {
+      key: 'billing',
+      title: t('CAPTAIN.OVERVIEW.LINKS.BILLING.TITLE'),
+      description: t('CAPTAIN.OVERVIEW.LINKS.BILLING.DESCRIPTION'),
+      icon: 'i-lucide-credit-card',
+      to: {
+        name: 'billing_settings_index',
+        params: { accountId: route.params.accountId },
+      },
+    },
+  ].filter(link => link.href || link.to)
+);
 </script>
 
 <template>

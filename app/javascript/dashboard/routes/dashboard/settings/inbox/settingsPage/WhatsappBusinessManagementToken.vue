@@ -14,7 +14,6 @@ const props = defineProps({
 });
 
 const { t } = useI18n();
-const WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_GUIDE_URL = 'https://chwt.app/zM7G2yU';
 const businessManagementToken = ref('');
 const isUpdating = ref(false);
 const tokenUpdated = ref(false);
@@ -130,18 +129,6 @@ const updateToken = async () => {
           {{ actionLabel }}
         </NextButton>
       </div>
-      <a
-        :href="WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_GUIDE_URL"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="text-label-small text-n-blue-11 hover:underline"
-      >
-        {{
-          t(
-            'INBOX_MGMT.SETTINGS_POPUP.WHATSAPP_BUSINESS_MANAGEMENT_TOKEN_GUIDE_LINK'
-          )
-        }}
-      </a>
     </div>
   </SettingsFieldSection>
 </template>

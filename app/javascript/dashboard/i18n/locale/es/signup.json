@@ -1,7 +1,7 @@
 {
   "REGISTER": {
     "TRY_WOOT": "Crear una cuenta",
-    "GET_STARTED": "Get started with Chatwoot",
+    "GET_STARTED": "Empieza con LuxoInbox",
     "TITLE": "Registrarse",
     "TESTIMONIAL_HEADER": "Todo lo que se necesita es un paso adelante",
     "TESTIMONIAL_CONTENT": "Usted está a un paso de involucrar a sus clientes, conservarlos y encontrar nuevos.",
@@ -42,7 +42,7 @@
     },
     "API": {
       "SUCCESS_MESSAGE": "Registration Successful",
-      "ERROR_MESSAGE": "No se pudo conectar al servidor Woot, por favor inténtalo de nuevo más tarde"
+      "ERROR_MESSAGE": "No se pudo conectar al servidor de LuxoInbox, por favor inténtalo de nuevo más tarde"
     },
     "SUBMIT": "Crear una cuenta",
     "HAVE_AN_ACCOUNT": "¿Ya tienes una cuenta?",
