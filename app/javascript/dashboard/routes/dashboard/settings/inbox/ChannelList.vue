@@ -116,6 +116,7 @@ const initChannelAuth = channel => {
 
 <template>
   <div
+    data-tour="inbox-channels"
     class="grid max-w-3xl grid-cols-1 xs:grid-cols-2 mx-0 gap-6 sm:grid-cols-3 p-8"
   >
     <ChannelItem

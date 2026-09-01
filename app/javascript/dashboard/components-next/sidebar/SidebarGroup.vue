@@ -69,6 +69,11 @@ const railCount = computed(() => {
   return count > 99 ? '99+' : String(count);
 });
 
+// Stable hook for the guided tours. The rail and the expanded header are
+// mutually exclusive, so the anchor resolves to exactly one node either way.
+const tourSlug = computed(() => props.name.toLowerCase().replace(/\s+/g, '-'));
+const tourAnchor = computed(() => `sidebar-${tourSlug.value}`);
+
 const route = useRoute();
 const router = useRouter();
 const isExpanded = computed(() => expandedItem.value === props.name);
@@ -312,6 +317,7 @@ watch(
           :is="to && !hasChildren ? 'router-link' : 'button'"
           ref="triggerRef"
           v-tooltip="railTooltip"
+          :data-tour="tourAnchor"
           :to="to && !hasChildren ? to : undefined"
           type="button"
           class="flex relative items-center justify-center size-10 rounded-lg"
@@ -405,6 +411,7 @@ watch(
               v-else-if="isAllowed(child.to)"
               v-show="isExpanded || activeChild?.name === child.name"
               v-bind="child"
+              :tour-scope="tourSlug"
               :active="activeChild?.name === child.name"
             />
           </template>

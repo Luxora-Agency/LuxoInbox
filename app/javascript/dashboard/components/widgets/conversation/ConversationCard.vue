@@ -108,6 +108,7 @@ watch(
 
 <template>
   <div
+    data-tour="conversation-card"
     class="relative flex items-start flex-grow-0 flex-shrink-0 w-auto max-w-full py-0.5 cursor-pointer conversation group mx-3 my-1 rounded-xl transition-all duration-200 ease-out bg-white/80 dark:bg-n-solid-3/80 backdrop-blur-sm border border-n-slate-2/80 dark:border-n-solid-2/80 hover:bg-white dark:hover:bg-n-solid-3 hover:shadow-md hover:border-n-slate-3 dark:hover:border-n-solid-1"
     :class="{
       'active !bg-woot-50 dark:!bg-woot-500/15 !border-woot-300 dark:!border-woot-500/40 shadow-md shadow-woot-500/10':

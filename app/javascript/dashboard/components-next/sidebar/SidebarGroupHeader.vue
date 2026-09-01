@@ -4,6 +4,7 @@ import { useMapGetter } from 'dashboard/composables/store.js';
 import Icon from 'next/icon/Icon.vue';
 
 const props = defineProps({
+  name: { type: String, default: '' },
   to: { type: [Object, String], default: '' },
   label: { type: String, default: '' },
   icon: { type: [String, Object], default: '' },
@@ -20,6 +21,12 @@ const showBadge = useMapGetter(props.getterKeys.badge);
 const dynamicCount = useMapGetter(props.getterKeys.count);
 const count = computed(() =>
   dynamicCount.value > 99 ? '99+' : dynamicCount.value
+);
+
+// Stable hook for the guided tours: the item `name` is an internal identifier,
+// so it survives translation and relabelling the way a class or a label cannot.
+const tourAnchor = computed(() =>
+  props.name ? `sidebar-${props.name.toLowerCase().replace(/\s+/g, '-')}` : null
 );
 
 // Without `to` the header renders as a div[role=button], which browsers do not
@@ -39,6 +46,7 @@ const handleKeydown = event => {
     :role="to ? undefined : 'button'"
     :tabindex="to ? undefined : 0"
     draggable="false"
+    :data-tour="tourAnchor"
     :to="to"
     :title="label"
     :aria-current="isActive && to ? 'page' : undefined"

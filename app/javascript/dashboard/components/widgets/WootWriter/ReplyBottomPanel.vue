@@ -277,7 +277,7 @@ export default {
 
 <template>
   <div class="flex justify-between p-3" :class="wrapClass">
-    <div class="left-wrap">
+    <div data-tour="composer-actions" class="left-wrap">
       <NextButton
         v-if="!isEditorDisabled"
         v-tooltip.top-end="$t('CONVERSATION.REPLYBOX.TIP_EMOJI_ICON')"
@@ -396,7 +396,7 @@ export default {
         @click="toggleInsertArticle"
       />
     </div>
-    <div class="right-wrap">
+    <div data-tour="composer-send" class="right-wrap">
       <NextButton
         :label="sendButtonText"
         type="submit"

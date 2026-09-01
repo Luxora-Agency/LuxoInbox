@@ -176,7 +176,10 @@ useEmitter(CMD_RESOLVE_CONVERSATION, onCmdResolveConversation);
 </script>
 
 <template>
-  <div class="flex relative justify-end items-center resolve-actions">
+  <div
+    data-tour="conversation-resolve"
+    class="flex relative justify-end items-center resolve-actions"
+  >
     <ButtonGroup
       class="flex-shrink-0 rounded-lg shadow outline-1 outline"
       :class="!showOpenButton ? 'outline-n-container' : 'outline-transparent'"

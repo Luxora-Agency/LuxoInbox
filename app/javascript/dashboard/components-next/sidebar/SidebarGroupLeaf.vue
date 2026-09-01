@@ -6,6 +6,8 @@ import { useSidebarContext } from './provider';
 import SidebarUnreadBadge from './SidebarUnreadBadge.vue';
 
 const props = defineProps({
+  name: { type: String, default: '' },
+  tourScope: { type: String, default: '' },
   label: { type: String, required: true },
   to: { type: [String, Object], required: true },
   icon: { type: [String, Object], default: null },
@@ -21,6 +23,22 @@ const { resolvePermissions, resolveFeatureFlag, resolveInstallationType } =
 
 const shouldRenderComponent = computed(() => {
   return typeof props.component === 'function' || isVNode(props.component);
+});
+
+// Stable hook for the guided tours, built from the internal `name` so it is
+// immune to translation. Leaf names repeat across groups (both Portals and
+// LuxoIA own a "Settings" leaf, and so does the top level), so the group slug
+// namespaces them unless the name already carries it.
+const tourAnchor = computed(() => {
+  if (!props.name) return null;
+
+  const slug = props.name.toLowerCase().replace(/\s+/g, '-');
+  const scoped =
+    props.tourScope && !slug.startsWith(`${props.tourScope}-`)
+      ? `${props.tourScope}-${slug}`
+      : slug;
+
+  return `sidebar-${scoped}`;
 });
 
 // Tree-line connector per leaf: vertical line (::before) + rounded elbow on the
@@ -44,6 +62,7 @@ const TREE_CONNECTOR =
   >
     <component
       :is="to ? 'router-link' : 'div'"
+      :data-tour="tourAnchor"
       :to="to"
       :title="label"
       :aria-current="active ? 'page' : undefined"

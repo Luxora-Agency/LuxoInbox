@@ -494,6 +494,7 @@ onMounted(async () => {
 
 <template>
   <div
+    data-tour="contacts-page"
     class="flex flex-col justify-between flex-1 h-full m-0 overflow-auto bg-n-surface-1"
   >
     <ContactsListLayout
