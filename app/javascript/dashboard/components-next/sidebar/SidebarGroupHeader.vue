@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useMapGetter } from 'dashboard/composables/store.js';
 import Icon from 'next/icon/Icon.vue';
+import { toTourAnchor } from './tourAnchor';
 
 const props = defineProps({
   name: { type: String, default: '' },
@@ -25,9 +26,7 @@ const count = computed(() =>
 
 // Stable hook for the guided tours: the item `name` is an internal identifier,
 // so it survives translation and relabelling the way a class or a label cannot.
-const tourAnchor = computed(() =>
-  props.name ? `sidebar-${props.name.toLowerCase().replace(/\s+/g, '-')}` : null
-);
+const tourAnchor = computed(() => toTourAnchor(props.name));
 
 // Without `to` the header renders as a div[role=button], which browsers do not
 // activate from the keyboard, so it needs the key handling a button would give.

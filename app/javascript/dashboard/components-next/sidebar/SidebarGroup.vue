@@ -16,6 +16,7 @@ import SidebarSubGroup from './SidebarSubGroup.vue';
 import SidebarGroupEmptyLeaf from './SidebarGroupEmptyLeaf.vue';
 import SidebarSectionHeading from './SidebarSectionHeading.vue';
 import SidebarCollapsedPopover from './SidebarCollapsedPopover.vue';
+import { toTourSlug } from './tourAnchor';
 
 const props = defineProps({
   name: { type: String, required: true },
@@ -71,7 +72,7 @@ const railCount = computed(() => {
 
 // Stable hook for the guided tours. The rail and the expanded header are
 // mutually exclusive, so the anchor resolves to exactly one node either way.
-const tourSlug = computed(() => props.name.toLowerCase().replace(/\s+/g, '-'));
+const tourSlug = computed(() => toTourSlug(props.name));
 const tourAnchor = computed(() => `sidebar-${tourSlug.value}`);
 
 const route = useRoute();
@@ -395,6 +396,7 @@ watch(
             <SidebarSubGroup
               v-else-if="child.children"
               :name="`${name}:${child.name}`"
+              :tour-scope="tourSlug"
               :label="child.label"
               :icon="child.icon"
               :children="child.children"

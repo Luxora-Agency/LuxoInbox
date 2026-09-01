@@ -3,6 +3,7 @@ import { isVNode, computed } from 'vue';
 import Icon from 'next/icon/Icon.vue';
 import Policy from 'dashboard/components/policy.vue';
 import { useSidebarContext } from './provider';
+import { toTourAnchor } from './tourAnchor';
 import SidebarUnreadBadge from './SidebarUnreadBadge.vue';
 
 const props = defineProps({
@@ -29,17 +30,7 @@ const shouldRenderComponent = computed(() => {
 // immune to translation. Leaf names repeat across groups (both Portals and
 // LuxoIA own a "Settings" leaf, and so does the top level), so the group slug
 // namespaces them unless the name already carries it.
-const tourAnchor = computed(() => {
-  if (!props.name) return null;
-
-  const slug = props.name.toLowerCase().replace(/\s+/g, '-');
-  const scoped =
-    props.tourScope && !slug.startsWith(`${props.tourScope}-`)
-      ? `${props.tourScope}-${slug}`
-      : slug;
-
-  return `sidebar-${scoped}`;
-});
+const tourAnchor = computed(() => toTourAnchor(props.name, props.tourScope));
 
 // Tree-line connector per leaf: vertical line (::before) + rounded elbow on the
 // last child (::after). Logical props (start / border-s / rounded-es)
