@@ -5,6 +5,7 @@ import { useAccount } from 'dashboard/composables/useAccount';
 import { useConfig } from 'dashboard/composables/useConfig';
 import { useKbd } from 'dashboard/composables/utils/useKbd';
 import { useMapGetter } from 'dashboard/composables/store';
+import { useTutorials } from 'dashboard/composables/useTutorials';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useSidebarKeyboardShortcuts } from './useSidebarKeyboardShortcuts';
@@ -182,11 +183,21 @@ const {
   snapToCollapsed,
   snapToExpanded,
   COLLAPSED_THRESHOLD,
+  DEFAULT_WIDTH,
 } = useSidebarResize();
+
+// A guided tour needs the labels and the leaves on screen; the collapsed rail
+// hides both. Overriding the derived state (instead of writing sidebar_width)
+// keeps the user's own preference intact and restores it when the tour ends.
+const { isRunning: isTourRunning } = useTutorials();
 
 // On mobile, sidebar is always expanded (flyout mode)
 const isEffectivelyCollapsed = computed(
-  () => !isMobile.value && isCollapsed.value
+  () => !isMobile.value && isCollapsed.value && !isTourRunning.value
+);
+
+const effectiveSidebarWidth = computed(() =>
+  isTourRunning.value && isCollapsed.value ? DEFAULT_WIDTH : sidebarWidth.value
 );
 
 // Resize handle logic
@@ -1056,7 +1067,7 @@ const menuItems = computed(() => {
           !isResizing,
       },
     ]"
-    :style="isMobile ? undefined : { width: `${sidebarWidth}px` }"
+    :style="isMobile ? undefined : { width: `${effectiveSidebarWidth}px` }"
   >
     <!-- Scrim behind the mobile drawer, teleported so the drawer's own
     transform never becomes its containing block -->
@@ -1124,6 +1135,7 @@ const menuItems = computed(() => {
       >
         <RouterLink
           v-if="!isEffectivelyCollapsed"
+          data-tour="sidebar-search"
           :to="{ name: 'search' }"
           class="flex gap-2 items-center px-3 py-1.5 w-full h-8 rounded-xl outline outline-1 outline-n-weak/70 bg-n-alpha-1 hover:bg-n-alpha-2 hover:outline-n-brand/30 focus:outline-n-brand/50 transition-all duration-150 ease-out group"
         >
@@ -1144,6 +1156,7 @@ const menuItems = computed(() => {
         <RouterLink
           v-else
           v-tooltip="searchTooltip"
+          data-tour="sidebar-search"
           :to="{ name: 'search' }"
           :aria-label="t('COMBOBOX.SEARCH_PLACEHOLDER')"
           class="flex items-center justify-center size-8 rounded-xl outline outline-1 outline-n-weak/70 bg-n-alpha-1 transition-all duration-150 ease-out hover:bg-n-alpha-2 hover:outline-n-brand/30 dark:hover:bg-n-slate-9/30 group"
@@ -1156,6 +1169,7 @@ const menuItems = computed(() => {
           <template #trigger="{ isOpen }">
             <Button
               v-tooltip="composeTooltip"
+              data-tour="sidebar-compose"
               icon="i-lucide-pen-line"
               color="slate"
               size="sm"
