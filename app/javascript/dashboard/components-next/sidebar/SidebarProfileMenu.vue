@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import Auth from 'dashboard/api/auth';
 import { useMapGetter } from 'dashboard/composables/store';
+import { useTutorials } from 'dashboard/composables/useTutorials';
 import { useI18n } from 'vue-i18n';
 import Avatar from 'next/avatar/Avatar.vue';
 import SidebarProfileMenuStatus from './SidebarProfileMenuStatus.vue';
@@ -26,6 +27,8 @@ defineOptions({
 });
 
 const { t } = useI18n();
+
+const { openHub } = useTutorials();
 
 const currentUser = useMapGetter('getCurrentUser');
 const currentUserAvailability = useMapGetter('getCurrentUserAvailability');
@@ -58,6 +61,13 @@ const menuItems = computed(() => {
       label: t('SIDEBAR_ITEMS.CONTACT_SUPPORT'),
       icon: 'i-lucide-life-buoy',
       click: toggleChatSupport,
+    },
+    {
+      show: true,
+      showOnCustomBrandedInstance: true,
+      label: t('TUTORIALS.HUB.TITLE'),
+      icon: 'i-lucide-graduation-cap',
+      click: openHub,
     },
     {
       show: true,
@@ -135,6 +145,7 @@ const allowedMenuItems = computed(() => {
   >
     <template #trigger="{ toggle, isOpen }">
       <button
+        data-tour="sidebar-profile"
         class="flex gap-2 items-center p-1.5 text-left rounded-xl cursor-pointer transition-all duration-150 ease-out hover:bg-n-alpha-2 group"
         :class="[
           { 'bg-n-alpha-2 ring-1 ring-n-brand/20': isOpen },
