@@ -21,8 +21,13 @@ const WELCOME_DELAY = 1500;
 
 const { t } = useI18n();
 
-const { progress, shouldShowWelcome, dismissWelcome, startTour } =
-  useTutorials();
+const {
+  progress,
+  shouldShowWelcome,
+  dismissWelcome,
+  startTour,
+  isWelcomeOpen,
+} = useTutorials();
 
 const dialogRef = ref(null);
 const isDelayElapsed = ref(false);
@@ -44,17 +49,26 @@ const isVisible = computed(
     progress.value.completedCount === 0
 );
 
-watch(isVisible, value => {
-  if (value) dialogRef.value?.open();
-  else dialogRef.value?.close();
-});
+watch(
+  isVisible,
+  value => {
+    if (value) dialogRef.value?.open();
+    else dialogRef.value?.close();
+    // The hint chip lives below the dialog's top layer, so it has to know.
+    isWelcomeOpen.value = value;
+  },
+  { immediate: true }
+);
 
+// Dismissing already flips `shouldShowWelcome`, which closes the dialog and
+// emits `close` back into this handler; the composable ignores the repeat so
+// a single "Start" does not fire two ui_settings writes.
 const onDismiss = () => {
   dismissWelcome();
 };
 
-// Dismissing hides the modal <dialog>; starting before it leaves the top layer
-// would leave driver.js highlighting an element nobody can click.
+// Starting before the modal leaves the top layer would leave driver.js
+// highlighting an element nobody can click.
 const onStart = async () => {
   dismissWelcome();
   await nextTick();
@@ -69,6 +83,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearTimeout(delayTimer);
+  isWelcomeOpen.value = false;
 });
 </script>
 
@@ -76,6 +91,7 @@ onBeforeUnmount(() => {
   <Dialog
     ref="dialogRef"
     width="md"
+    :aria-label="t('TUTORIALS.WELCOME.TITLE')"
     :show-cancel-button="false"
     :show-confirm-button="false"
     @close="onDismiss"
@@ -107,7 +123,7 @@ onBeforeUnmount(() => {
       </svg>
 
       <span
-        class="relative grid rounded-2xl size-14 place-items-center bg-orbis-navy ring-1 ring-orbis-neon/25"
+        class="relative grid rounded-2xl size-14 place-items-center bg-orbis-navy ring-1 ring-orbis-neon/25 dark:ring-orbis-neon/40"
       >
         <Icon icon="i-lucide-graduation-cap" class="size-7 text-orbis-neon" />
       </span>
@@ -124,7 +140,7 @@ onBeforeUnmount(() => {
       <div class="relative flex flex-col w-full gap-2 pt-1">
         <button
           type="button"
-          class="inline-flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-semibold transition-colors duration-150 ease-out rounded-lg bg-orbis-neon text-orbis-navy hover:bg-orbis-neon/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orbis-neon focus-visible:ring-offset-2 focus-visible:ring-offset-n-background"
+          class="inline-flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-semibold transition-colors duration-150 ease-out motion-reduce:transition-none rounded-lg bg-orbis-neon text-orbis-navy hover:bg-orbis-neon/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon focus-visible:ring-offset-2 focus-visible:ring-offset-n-background"
           @click="onStart"
         >
           {{ t('TUTORIALS.WELCOME.PRIMARY') }}
@@ -132,7 +148,7 @@ onBeforeUnmount(() => {
         </button>
         <button
           type="button"
-          class="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-medium transition-colors duration-150 ease-out rounded-lg text-n-slate-11 hover:bg-n-alpha-2 hover:text-n-slate-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orbis-neon"
+          class="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-medium transition-colors duration-150 ease-out motion-reduce:transition-none rounded-lg text-n-slate-11 hover:bg-n-alpha-2 hover:text-n-slate-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon"
           @click="onDismiss"
         >
           {{ t('TUTORIALS.WELCOME.SECONDARY') }}

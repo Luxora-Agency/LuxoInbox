@@ -112,3 +112,25 @@
     border-right-color: rgb(var(--slate-2));
   }
 }
+
+// The contract puts the popover on Orbis navy in dark mode; that is exactly
+// --slate-1, so the theme still drives it through a token.
+.dark .driver-popover.orbis-tour {
+  background-color: rgb(var(--slate-1));
+
+  .driver-popover-arrow-side-top {
+    border-top-color: rgb(var(--slate-1));
+  }
+
+  .driver-popover-arrow-side-bottom {
+    border-bottom-color: rgb(var(--slate-1));
+  }
+
+  .driver-popover-arrow-side-left {
+    border-left-color: rgb(var(--slate-1));
+  }
+
+  .driver-popover-arrow-side-right {
+    border-right-color: rgb(var(--slate-1));
+  }
+}

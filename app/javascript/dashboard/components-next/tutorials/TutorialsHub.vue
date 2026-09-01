@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useWindowSize } from '@vueuse/core';
 
@@ -8,6 +8,8 @@ import { useTutorials } from 'dashboard/composables/useTutorials';
 
 import Dialog from 'dashboard/components-next/dialog/Dialog.vue';
 import Icon from 'dashboard/components-next/icon/Icon.vue';
+
+const RESET_CONFIRM_TIMEOUT = 4000;
 
 const { t } = useI18n();
 
@@ -24,6 +26,9 @@ const {
 } = useTutorials();
 
 const dialogRef = ref(null);
+const isResetConfirming = ref(false);
+
+let resetTimer = null;
 
 const { width: windowWidth } = useWindowSize();
 
@@ -31,9 +36,16 @@ const isSmallScreen = computed(
   () => windowWidth.value < wootConstants.SMALL_SCREEN_BREAKPOINT
 );
 
+// Anchored tours need the desktop layout: on a phone the sidebar is a closed
+// drawer, so the card offers nothing to start.
+const isBlockedOnThisScreen = tour => isSmallScreen.value && !tour.mobileSafe;
+
 watch(isHubOpen, value => {
   if (value) dialogRef.value?.open();
   else dialogRef.value?.close();
+
+  clearTimeout(resetTimer);
+  isResetConfirming.value = false;
 });
 
 // `TUTORIALS.TOURS.<UPPER_SNAKE_ID>` — matches the locale tree in the contract.
@@ -79,6 +91,8 @@ const progressLabel = computed(() =>
 // pointer event aimed at the highlighted element. Close it, let the watcher
 // flush, and only then hand control over to the engine.
 const runTour = async tour => {
+  if (isBlockedOnThisScreen(tour)) return;
+
   const shouldReplay = isCompleted(tour.id);
   const shouldResume = !shouldReplay && isResumable(tour);
 
@@ -98,6 +112,27 @@ const runTour = async tour => {
 
   startTour(tour.id);
 };
+
+// Wiping every tour's progress is written straight to the server for all of
+// the user's devices, so the first click only arms the button.
+const onResetAll = () => {
+  clearTimeout(resetTimer);
+
+  if (!isResetConfirming.value) {
+    isResetConfirming.value = true;
+    resetTimer = setTimeout(() => {
+      isResetConfirming.value = false;
+    }, RESET_CONFIRM_TIMEOUT);
+    return;
+  }
+
+  isResetConfirming.value = false;
+  resetAll();
+};
+
+onBeforeUnmount(() => {
+  clearTimeout(resetTimer);
+});
 </script>
 
 <template>
@@ -105,6 +140,8 @@ const runTour = async tour => {
     ref="dialogRef"
     width="3xl"
     position="top"
+    overflow-y-auto
+    :aria-label="t('TUTORIALS.HUB.TITLE')"
     :show-cancel-button="false"
     :show-confirm-button="false"
     @close="closeHub"
@@ -166,6 +203,8 @@ const runTour = async tour => {
                 stroke-width="5"
                 class="text-n-slate-4"
               />
+              <!-- Lime reads as ~1:1 against the light track, so the arc
+                   carries navy on light and lime on dark. -->
               <circle
                 cx="32"
                 cy="32"
@@ -173,7 +212,7 @@ const runTour = async tour => {
                 stroke="currentColor"
                 stroke-width="5"
                 stroke-linecap="round"
-                class="transition-all duration-500 ease-out text-orbis-neon"
+                class="transition-all duration-500 ease-out motion-reduce:transition-none text-orbis-navy dark:text-orbis-neon"
                 :stroke-dasharray="RING_CIRCUMFERENCE"
                 :stroke-dashoffset="ringOffset"
               />
@@ -196,7 +235,7 @@ const runTour = async tour => {
       >
         <Icon
           icon="i-lucide-monitor"
-          class="mt-0.5 flex-shrink-0 size-4 text-orbis-neon"
+          class="mt-0.5 flex-shrink-0 size-4 text-n-slate-12 dark:text-orbis-neon"
         />
         <p class="mb-0 text-sm leading-relaxed text-n-slate-11">
           {{ t('TUTORIALS.HUB.MOBILE_NOTICE') }}
@@ -212,16 +251,16 @@ const runTour = async tour => {
 
       <ul
         v-else
-        class="relative grid grid-cols-1 gap-4 pr-1 -mr-1 list-none md:grid-cols-2 max-h-[58vh] overflow-y-auto"
+        class="relative grid grid-cols-1 gap-4 pr-1 -mr-1 list-none md:grid-cols-2 max-h-[min(58vh,32rem)] overflow-y-auto"
       >
         <li
           v-for="tour in tours"
           :key="tour.id"
-          class="flex flex-col gap-4 p-5 transition-all duration-200 ease-out rounded-2xl bg-n-solid-2 ring-1 ring-n-weak hover:ring-n-slate-6 hover:shadow-lg hover:shadow-n-slate-12/5"
+          class="flex flex-col gap-4 p-5 transition-all duration-200 ease-out motion-reduce:transition-none rounded-2xl bg-n-solid-2 ring-1 ring-n-weak hover:ring-n-slate-6 hover:shadow-lg hover:shadow-n-slate-12/5"
         >
           <div class="flex items-start gap-4">
             <span
-              class="grid flex-shrink-0 rounded-xl size-11 place-items-center bg-orbis-navy ring-1 ring-orbis-neon/25"
+              class="grid flex-shrink-0 rounded-xl size-11 place-items-center bg-orbis-navy ring-1 ring-orbis-neon/25 dark:ring-orbis-neon/40"
             >
               <Icon :icon="tour.icon" class="size-5 text-orbis-neon" />
             </span>
@@ -248,16 +287,20 @@ const runTour = async tour => {
               v-if="isCompleted(tour.id)"
               class="inline-flex items-center gap-1 rounded-full bg-orbis-neon/10 px-2.5 py-1 text-xs font-medium text-n-slate-12 ring-1 ring-orbis-neon/30"
             >
-              <Icon icon="i-lucide-check" class="size-3.5 text-orbis-neon" />
+              <Icon
+                icon="i-lucide-check"
+                class="size-3.5 text-n-slate-12 dark:text-orbis-neon"
+              />
               {{ t('TUTORIALS.HUB.COMPLETED') }}
             </span>
             <button
               type="button"
-              class="inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orbis-neon focus-visible:ring-offset-2 focus-visible:ring-offset-n-background ltr:ml-auto rtl:mr-auto"
+              :disabled="isBlockedOnThisScreen(tour)"
+              class="inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon focus-visible:ring-offset-2 focus-visible:ring-offset-n-background disabled:cursor-not-allowed disabled:opacity-45 ltr:ml-auto rtl:mr-auto"
               :class="
                 isCompleted(tour.id)
-                  ? 'bg-n-alpha-2 text-n-slate-12 ring-1 ring-n-weak hover:bg-n-alpha-3'
-                  : 'bg-orbis-neon text-orbis-navy hover:bg-orbis-neon/85'
+                  ? 'bg-n-alpha-2 text-n-slate-12 ring-1 ring-n-weak hover:enabled:bg-n-alpha-3'
+                  : 'bg-orbis-neon text-orbis-navy hover:enabled:bg-orbis-neon/85'
               "
               @click="runTour(tour)"
             >
@@ -273,17 +316,21 @@ const runTour = async tour => {
       <div class="flex items-center justify-between w-full gap-3">
         <button
           type="button"
-          class="text-sm font-medium underline transition-colors duration-150 rounded text-n-slate-11 underline-offset-4 decoration-n-slate-6 hover:text-n-slate-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orbis-neon"
-          @click="resetAll"
+          class="text-sm font-medium underline transition-colors duration-150 motion-reduce:transition-none rounded text-n-slate-11 underline-offset-4 decoration-n-slate-6 hover:text-n-slate-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon"
+          @click="onResetAll"
         >
-          {{ t('TUTORIALS.HUB.RESET_ALL') }}
+          {{
+            isResetConfirming
+              ? t('TUTORIALS.HUB.RESET_ALL_CONFIRM')
+              : t('TUTORIALS.HUB.RESET_ALL')
+          }}
         </button>
         <button
           type="button"
-          class="inline-flex items-center rounded-lg bg-n-alpha-2 px-3.5 py-2 text-sm font-medium text-n-slate-12 ring-1 ring-n-weak transition-colors duration-150 hover:bg-n-alpha-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orbis-neon"
+          class="inline-flex items-center rounded-lg bg-n-alpha-2 px-3.5 py-2 text-sm font-medium text-n-slate-12 ring-1 ring-n-weak transition-colors duration-150 motion-reduce:transition-none hover:bg-n-alpha-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon"
           @click="closeHub"
         >
-          {{ t('TUTORIALS.FINISHED.CLOSE') }}
+          {{ t('TUTORIALS.HUB.CLOSE') }}
         </button>
       </div>
     </template>
