@@ -21,6 +21,11 @@ const FloatingCallWidget = defineAsyncComponent(
   () => import('dashboard/components-next/call/FloatingCallWidget.vue')
 );
 
+// Lazy so driver.js and its CSS stay out of the main bundle.
+const TutorialsRoot = defineAsyncComponent(
+  () => import('dashboard/components-next/tutorials/TutorialsRoot.vue')
+);
+
 import CopilotLauncher from 'dashboard/components-next/copilot/CopilotLauncher.vue';
 import CopilotContainer from 'dashboard/components/copilot/CopilotContainer.vue';
 
@@ -38,6 +43,7 @@ export default {
     CopilotContainer,
     FloatingCallWidget,
     MobileSidebarLauncher,
+    TutorialsRoot,
   },
   setup() {
     const upgradePageRef = ref(null);
@@ -172,6 +178,7 @@ export default {
         @close="closeKeyShortcutModal"
         @clickaway="closeKeyShortcutModal"
       />
+      <TutorialsRoot />
     </main>
   </div>
 </template>

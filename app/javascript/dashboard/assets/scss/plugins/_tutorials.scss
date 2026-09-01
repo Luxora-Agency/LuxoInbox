@@ -1,0 +1,136 @@
+// Orbis theme for the driver.js popover used by the guided tutorials.
+// driver.js renders into document.body, outside every Vue component, so this
+// is the sanctioned exception to the Tailwind-only rule (same precedent as
+// `plugins/date-picker`). Colors come from the --slate-* variables, which the
+// light/dark themes already swap on their own.
+
+.driver-popover.orbis-tour {
+  background-color: rgb(var(--slate-2));
+  border: 1px solid rgb(var(--slate-5));
+  border-radius: 12px;
+  box-shadow: 0 12px 32px -8px rgba(1, 8, 40, 0.28);
+  color: rgb(var(--slate-12));
+  font-family: 'Inter', 'InterDisplay', sans-serif;
+  max-width: 22rem;
+  padding: 1.25rem;
+
+  .driver-popover-title {
+    color: rgb(var(--slate-12));
+    font-family: 'InterDisplay', 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+
+  .driver-popover-description {
+    color: rgb(var(--slate-11));
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-top: 0.5rem;
+  }
+
+  .driver-popover-progress-text {
+    color: rgb(var(--slate-10));
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .driver-popover-close-btn {
+    color: rgb(var(--slate-10));
+    transition: color 0.15s ease-out;
+
+    &:hover,
+    &:focus-visible {
+      color: rgb(var(--slate-12));
+    }
+  }
+
+  .driver-popover-footer {
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .driver-popover-footer button {
+    border-radius: 0.5rem;
+    box-shadow: none;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding: 0.4375rem 0.875rem;
+    text-shadow: none;
+    transition:
+      background-color 0.15s ease-out,
+      color 0.15s ease-out;
+  }
+
+  // Orbis rule: a lime fill always carries navy text.
+  .driver-popover-next-btn {
+    background-color: #6fff00;
+    border: 1px solid #6fff00;
+    color: #010828;
+
+    &:hover,
+    &:focus-visible {
+      background-color: rgba(111, 255, 0, 0.85);
+      color: #010828;
+    }
+  }
+
+  .driver-popover-prev-btn {
+    background-color: transparent;
+    border: 1px solid rgb(var(--slate-6));
+    color: rgb(var(--slate-11));
+
+    &:hover,
+    &:focus-visible {
+      background-color: rgb(var(--slate-3));
+      color: rgb(var(--slate-12));
+    }
+  }
+
+  .driver-popover-btn-disabled {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  // The arrow is a bordered triangle: it has to track the popover background
+  // in both themes or it reads as a stray notch.
+  .driver-popover-arrow-side-top {
+    border-top-color: rgb(var(--slate-2));
+  }
+
+  .driver-popover-arrow-side-bottom {
+    border-bottom-color: rgb(var(--slate-2));
+  }
+
+  .driver-popover-arrow-side-left {
+    border-left-color: rgb(var(--slate-2));
+  }
+
+  .driver-popover-arrow-side-right {
+    border-right-color: rgb(var(--slate-2));
+  }
+}
+
+// The contract puts the popover on Orbis navy in dark mode; that is exactly
+// --slate-1, so the theme still drives it through a token.
+.dark .driver-popover.orbis-tour {
+  background-color: rgb(var(--slate-1));
+
+  .driver-popover-arrow-side-top {
+    border-top-color: rgb(var(--slate-1));
+  }
+
+  .driver-popover-arrow-side-bottom {
+    border-bottom-color: rgb(var(--slate-1));
+  }
+
+  .driver-popover-arrow-side-left {
+    border-left-color: rgb(var(--slate-1));
+  }
+
+  .driver-popover-arrow-side-right {
+    border-right-color: rgb(var(--slate-1));
+  }
+}

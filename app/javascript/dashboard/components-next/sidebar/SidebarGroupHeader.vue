@@ -2,8 +2,10 @@
 import { computed } from 'vue';
 import { useMapGetter } from 'dashboard/composables/store.js';
 import Icon from 'next/icon/Icon.vue';
+import { toTourAnchor } from './tourAnchor';
 
 const props = defineProps({
+  name: { type: String, default: '' },
   to: { type: [Object, String], default: '' },
   label: { type: String, default: '' },
   icon: { type: [String, Object], default: '' },
@@ -22,6 +24,10 @@ const count = computed(() =>
   dynamicCount.value > 99 ? '99+' : dynamicCount.value
 );
 
+// Stable hook for the guided tours: the item `name` is an internal identifier,
+// so it survives translation and relabelling the way a class or a label cannot.
+const tourAnchor = computed(() => toTourAnchor(props.name));
+
 // Without `to` the header renders as a div[role=button], which browsers do not
 // activate from the keyboard, so it needs the key handling a button would give.
 const handleKeydown = event => {
@@ -39,6 +45,7 @@ const handleKeydown = event => {
     :role="to ? undefined : 'button'"
     :tabindex="to ? undefined : 0"
     draggable="false"
+    :data-tour="tourAnchor"
     :to="to"
     :title="label"
     :aria-current="isActive && to ? 'page' : undefined"

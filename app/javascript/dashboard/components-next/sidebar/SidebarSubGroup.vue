@@ -12,6 +12,7 @@ import { useSidebarContext } from './provider';
 
 const props = defineProps({
   name: { type: String, required: true },
+  tourScope: { type: String, default: '' },
   isExpanded: { type: Boolean, default: false },
   label: { type: String, required: true },
   icon: { type: [Object, String], required: true },
@@ -161,6 +162,7 @@ watch([hasActiveChild, storageKey], expandSubGroupOnActiveChild, {
             v-show="shouldShowItem(child)"
             v-bind="child"
             :key="child.name"
+            :tour-scope="tourScope"
             :active="activeChild?.name === child.name"
             :hide-tree-line="hideLeafTreeLine"
             thin-tree-line

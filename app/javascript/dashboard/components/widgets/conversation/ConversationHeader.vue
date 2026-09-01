@@ -110,6 +110,7 @@ const copyConversationId = async () => {
 <template>
   <div
     ref="conversationHeader"
+    data-tour="conversation-header"
     class="flex flex-col gap-3 items-center justify-between flex-1 w-full min-w-0 xl:flex-row px-4 py-3 h-24 xl:h-14 bg-n-background/80 dark:bg-n-solid-3/80 backdrop-blur-sm border-b border-n-slate-2 dark:border-n-solid-2"
   >
     <div

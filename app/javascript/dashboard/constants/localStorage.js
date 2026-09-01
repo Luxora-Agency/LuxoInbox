@@ -9,4 +9,5 @@ export const LOCAL_STORAGE_KEYS = {
   RECENT_SEARCHES: 'recentSearches',
   SIDEBAR_MINIMIZED_SECTIONS: 'sidebarMinimizedSections',
   SIDEBAR_EXPANDED_GROUP: 'sidebarExpandedGroup',
+  TUTORIAL_PROGRESS: 'tutorialProgress',
 };

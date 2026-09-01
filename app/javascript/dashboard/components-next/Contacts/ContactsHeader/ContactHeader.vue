@@ -115,7 +115,11 @@ const emit = defineEmits([
           <div class="w-px h-4 bg-n-strong" />
           <ComposeConversation>
             <template #trigger>
-              <Button :label="buttonLabel" size="sm" />
+              <Button
+                data-tour="contacts-create"
+                :label="buttonLabel"
+                size="sm"
+              />
             </template>
           </ComposeConversation>
         </div>

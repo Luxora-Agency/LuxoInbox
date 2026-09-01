@@ -3,9 +3,12 @@ import { isVNode, computed } from 'vue';
 import Icon from 'next/icon/Icon.vue';
 import Policy from 'dashboard/components/policy.vue';
 import { useSidebarContext } from './provider';
+import { toTourAnchor } from './tourAnchor';
 import SidebarUnreadBadge from './SidebarUnreadBadge.vue';
 
 const props = defineProps({
+  name: { type: String, default: '' },
+  tourScope: { type: String, default: '' },
   label: { type: String, required: true },
   to: { type: [String, Object], required: true },
   icon: { type: [String, Object], default: null },
@@ -22,6 +25,12 @@ const { resolvePermissions, resolveFeatureFlag, resolveInstallationType } =
 const shouldRenderComponent = computed(() => {
   return typeof props.component === 'function' || isVNode(props.component);
 });
+
+// Stable hook for the guided tours, built from the internal `name` so it is
+// immune to translation. Leaf names repeat across groups (both Portals and
+// LuxoIA own a "Settings" leaf, and so does the top level), so the group slug
+// namespaces them unless the name already carries it.
+const tourAnchor = computed(() => toTourAnchor(props.name, props.tourScope));
 
 // Tree-line connector per leaf: vertical line (::before) + rounded elbow on the
 // last child (::after). Logical props (start / border-s / rounded-es)
@@ -44,6 +53,7 @@ const TREE_CONNECTOR =
   >
     <component
       :is="to ? 'router-link' : 'div'"
+      :data-tour="tourAnchor"
       :to="to"
       :title="label"
       :aria-current="active ? 'page' : undefined"

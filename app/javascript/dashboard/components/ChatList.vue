@@ -888,6 +888,7 @@ watch(conversationFilters, (newVal, oldVal) => {
 
 <template>
   <div
+    data-tour="conversation-list"
     class="flex flex-col flex-shrink-0 conversations-list-wrap bg-gradient-to-b from-white to-n-slate-1 dark:from-n-solid-3 dark:to-n-solid-4 ltr:border-r rtl:border-l border-n-slate-2 dark:border-n-solid-2 relative"
     :class="[
       { hidden: !showConversationList },
@@ -933,6 +934,7 @@ watch(conversationFilters, (newVal, oldVal) => {
 
     <ChatTypeTabs
       v-if="!hasAppliedFiltersOrActiveFolders"
+      data-tour="conversation-tabs"
       :items="assigneeTabItems"
       :active-tab="activeAssigneeTab"
       is-compact

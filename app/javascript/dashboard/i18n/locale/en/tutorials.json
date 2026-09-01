@@ -1,0 +1,562 @@
+{
+  "TUTORIALS": {
+    "HUB": {
+      "TITLE": "Tutorial center",
+      "SUBTITLE": "Guided tours that teach you LuxoInbox step by step, at your own pace.",
+      "PROGRESS": "{completed} of {total} completed",
+      "START": "Start",
+      "RESUME": "Resume",
+      "REPLAY": "Replay",
+      "COMPLETED": "Completed",
+      "MINUTES": "{minutes} min",
+      "RESET_ALL": "Reset all progress",
+      "RESET_ALL_CONFIRM": "Tap again to confirm",
+      "CLOSE": "Close",
+      "EMPTY": "There are no tutorials available for your role in this account yet.",
+      "MOBILE_NOTICE": "Guided tours need a desktop screen. Open LuxoInbox on your computer to take them."
+    },
+    "WELCOME": {
+      "TITLE": "Welcome to LuxoInbox",
+      "BODY": "Every message from every channel lands here, and this is where your team replies. Shall we walk you through the essentials?",
+      "PRIMARY": "Take the tour",
+      "SECONDARY": "Not now"
+    },
+    "CONTROLS": {
+      "NEXT": "Next",
+      "PREV": "Back",
+      "DONE": "Finish",
+      "PROGRESS": "Step {'{{current}}'} of {'{{total}}'}"
+    },
+    "FINISHED": {
+      "TITLE": "Tour completed",
+      "BODY": "You now know this part of LuxoInbox. You can replay any tutorial whenever you like from the tutorial center.",
+      "NEXT_TOUR": "Next: {section}",
+      "CLOSE": "Close"
+    },
+    "HINT": {
+      "TITLE": "There is a guided tour for this: {section}. Take it?",
+      "VIEW": "Show me",
+      "DISMISS": "Not now"
+    },
+    "TOURS": {
+      "GETTING_STARTED": {
+        "NAME": "First steps",
+        "DESCRIPTION": "A quick map of the platform: the sidebar, search, your account and your profile.",
+        "STEPS": {
+          "WELCOME": {
+            "TITLE": "Welcome to LuxoInbox",
+            "BODY": "This is your customer support hub: every message from every channel arrives here. Let's walk through the essentials in a few minutes."
+          },
+          "INBOX": {
+            "TITLE": "Your notification inbox",
+            "BODY": "Mentions, assignments and alerts meant for you pile up here. Check it when you start your day so nothing slips through."
+          },
+          "CONVERSATIONS": {
+            "TITLE": "Conversations",
+            "BODY": "The heart of the product: every chat with a customer lives here. Expand the group to filter by folders, teams, channels or labels."
+          },
+          "CONTACTS": {
+            "TITLE": "Contacts",
+            "BODY": "A profile for everyone who has written to you, with their details and history. Check it before replying so you have context."
+          },
+          "REPORTS": {
+            "TITLE": "Reports",
+            "BODY": "They measure conversation volume, response times and customer satisfaction. They help you decide with data instead of guesswork."
+          },
+          "SEARCH": {
+            "TITLE": "Global search",
+            "BODY": "Find conversations, contacts and messages from a single field. Open it with Cmd+K or Ctrl+K from any screen."
+          },
+          "COMPOSE": {
+            "TITLE": "Start a conversation",
+            "BODY": "Here you write first: pick the channel, the recipient and the message. Perfect for following up with a customer."
+          },
+          "ACCOUNT": {
+            "TITLE": "Your workspace account",
+            "BODY": "If you belong to several accounts, switch between them from this selector. Each account has its own channels, agents and data."
+          },
+          "SETTINGS": {
+            "TITLE": "Account settings",
+            "BODY": "Everything is configured from here: channels, agents, teams, automations and billing. This header tells you which section you are in."
+          },
+          "PROFILE": {
+            "TITLE": "Your profile and preferences",
+            "BODY": "Change your photo, availability, language and light or dark theme. You can also reopen this tutorial center from here."
+          },
+          "NEXT": {
+            "TITLE": "That's the lay of the land",
+            "BODY": "You now have the general map. The next tour, Conversations, teaches you the day-to-day work."
+          }
+        }
+      },
+      "CONVERSATIONS": {
+        "NAME": "Conversations",
+        "DESCRIPTION": "How to read the inbox, open a chat, resolve it and use the contact panel.",
+        "STEPS": {
+          "LIST": {
+            "TITLE": "The conversation list",
+            "BODY": "Each row is one conversation with a customer. The most recent rise to the top, and unread ones stand out."
+          },
+          "TABS": {
+            "TITLE": "Filter by what is yours",
+            "BODY": "Switch between conversations assigned to you, unassigned ones and everything in the account. Always start with yours."
+          },
+          "CARD": {
+            "TITLE": "The card for each chat",
+            "BODY": "It shows who is writing, through which channel, the last message and how long they have waited. Click to open the full conversation."
+          },
+          "HEADER": {
+            "TITLE": "The conversation header",
+            "BODY": "Here you see the customer's name and assign the conversation to an agent or a team. Assigning stops two people answering the same thing."
+          },
+          "RESOLVE": {
+            "TITLE": "Resolve or snooze",
+            "BODY": "Mark the conversation resolved once the customer is taken care of. If you are waiting on a reply, snooze it and it will come back on its own."
+          },
+          "MORE_ACTIONS": {
+            "TITLE": "More actions",
+            "BODY": "Mute, email the transcript or mark as unread. These are occasional actions you will not need every day."
+          },
+          "SIDEPANEL": {
+            "TITLE": "The contact panel",
+            "BODY": "On the right you get who the customer is, their details, labels and past conversations. Read it before you reply."
+          },
+          "SIDEPANEL_SWITCH": {
+            "TITLE": "Switch panels",
+            "BODY": "Toggle between the contact details and the other panel views. You can hide it if you need more room to read."
+          },
+          "LABELS": {
+            "TITLE": "Labels and priority",
+            "BODY": "Labels classify the conversation (sales, complaint, shipping) and priority says what to handle first. You set both from the right panel."
+          },
+          "VIEWS": {
+            "TITLE": "Views and folders",
+            "BODY": "Expand Conversations to reach mentions, unattended, teams, channels and labels. Folders save the filters you use most."
+          },
+          "FINISH": {
+            "TITLE": "You know your way around",
+            "BODY": "You can find, open and close a conversation. The next tour teaches you how to write good replies."
+          }
+        }
+      },
+      "REPLYING": {
+        "NAME": "Replying to messages",
+        "DESCRIPTION": "The reply editor: private notes, attachments, shortcuts and canned responses.",
+        "STEPS": {
+          "COMPOSER": {
+            "TITLE": "The reply editor",
+            "BODY": "Anything you write here goes to the customer through the same channel they used. This is where you spend most of your day."
+          },
+          "MODE": {
+            "TITLE": "Reply or private note",
+            "BODY": "Switch between replying to the customer and leaving an internal note. Always check this toggle before you send."
+          },
+          "PRIVATE_NOTE": {
+            "TITLE": "What a private note is for",
+            "BODY": "Only your team sees a private note: use it to leave context, flag a delicate case or ask a teammate for help."
+          },
+          "EDITOR": {
+            "TITLE": "Format your message",
+            "BODY": "Use bold, lists, links and emoji so your reply reads better. Clear text means fewer follow-up questions."
+          },
+          "SHORTCUTS": {
+            "TITLE": "Two shortcuts that save time",
+            "BODY": "Type / to insert a canned response, and {'@'} to mention a teammate inside a private note. Both open a menu right away."
+          },
+          "ATTACHMENTS": {
+            "TITLE": "Attachments and extras",
+            "BODY": "Send files, images, emoji or a voice note from this bar. Each channel has its own size and format limits."
+          },
+          "SEND": {
+            "TITLE": "Send your reply",
+            "BODY": "Send with the button or with Cmd+Enter. You can also schedule the message, or send and resolve in one step."
+          },
+          "RESOLVE": {
+            "TITLE": "Close it when you are done",
+            "BODY": "After replying, resolve the conversation. That keeps your inbox honest and your reports clean."
+          },
+          "CANNED": {
+            "TITLE": "Your canned responses",
+            "BODY": "Here you create the texts you reuse every day and give each one a short code. Then you insert them by typing / in the editor."
+          },
+          "FINISH": {
+            "TITLE": "Ready to support",
+            "BODY": "You can reply, take notes and close. The next tour shows you how your customer information is stored."
+          }
+        }
+      },
+      "CONTACTS": {
+        "NAME": "Contacts",
+        "DESCRIPTION": "Your customer database: profiles, segments, labels and attributes.",
+        "STEPS": {
+          "OVERVIEW": {
+            "TITLE": "Your customer base",
+            "BODY": "Everyone who has ever written to you gets a profile here, with no manual work. Search by name, email or phone."
+          },
+          "NAVIGATION": {
+            "TITLE": "Where contacts live",
+            "BODY": "This menu group holds every contact view. Expand it to reach the segments and the labels."
+          },
+          "ALL": {
+            "TITLE": "All contacts",
+            "BODY": "The complete list, sorted by latest activity. It is your starting point when you look for someone specific."
+          },
+          "SEGMENTS": {
+            "TITLE": "Saved segments",
+            "BODY": "In the menu, under Contacts, you will find your segments: filters you save with a name, like customers in Bogota who wrote this month."
+          },
+          "TAGS": {
+            "TITLE": "Contacts by label",
+            "BODY": "Right below it you can filter by the labels you put on people, such as VIP or overdue. It groups them without any manual lists."
+          },
+          "CREATE": {
+            "TITLE": "Create a contact",
+            "BODY": "Add someone manually when you met them outside the chat. With an email or a phone number you can reach out first."
+          },
+          "PROFILE": {
+            "TITLE": "What a profile holds",
+            "BODY": "Basic details, company, location, the channels they write from and any custom attributes you define. All editable in one click."
+          },
+          "HISTORY": {
+            "TITLE": "Notes and history",
+            "BODY": "The profile shows past conversations and lets you leave internal notes. The next agent will not start from scratch."
+          },
+          "ATTRIBUTES": {
+            "TITLE": "Custom attributes",
+            "BODY": "Define the fields your business needs: policy number, plan, city. They will show up on every contact profile."
+          },
+          "FINISH": {
+            "TITLE": "Your customers, organized",
+            "BODY": "You can search, create and enrich a profile. The next tour is for admins: how to connect channels."
+          }
+        }
+      },
+      "INBOXES": {
+        "NAME": "Channels and inboxes",
+        "DESCRIPTION": "Connect your website, WhatsApp or email and decide who staffs each channel.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "What an inbox is",
+            "BODY": "An inbox is a connected channel: your website chat, a WhatsApp number, a mailbox. Each one has its own agents and rules."
+          },
+          "NAVIGATION": {
+            "TITLE": "Where you manage them",
+            "BODY": "Every inbox is created and configured from Settings. This is the entry point you will use whenever you add a channel."
+          },
+          "LIST": {
+            "TITLE": "Your current inboxes",
+            "BODY": "Here you see the channels already connected and their status. If a channel breaks, the alert shows up on this screen."
+          },
+          "CHANNELS": {
+            "TITLE": "Pick the channel type",
+            "BODY": "This catalog holds everything you can connect: website, WhatsApp, email, social media and API. Pick one and follow the wizard."
+          },
+          "WEBSITE": {
+            "TITLE": "Your website chat",
+            "BODY": "It is the quickest channel to launch: create the inbox and paste a code snippet into your site. Colors and greeting are customizable."
+          },
+          "MESSAGING": {
+            "TITLE": "WhatsApp, email and social",
+            "BODY": "These channels ask you to authorize your account with the provider. Have the business credentials ready before starting the wizard."
+          },
+          "MEMBERS": {
+            "TITLE": "Who staffs each channel",
+            "BODY": "Every inbox has its own agent list: only they see those conversations. Open it from the list and go to the members tab."
+          },
+          "CONFIGURATION": {
+            "TITLE": "Key inbox settings",
+            "BODY": "Inside each inbox you set the automatic greeting, business hours, the satisfaction survey and the out-of-hours message."
+          },
+          "AUTOMATION": {
+            "TITLE": "Automate the repetitive",
+            "BODY": "Automations can label, assign or reply based on the incoming channel. They save minutes on every conversation."
+          },
+          "FINISH": {
+            "TITLE": "Channels are ready",
+            "BODY": "You can connect and configure a channel. Now decide who works in them: take the Agents and teams tour."
+          }
+        }
+      },
+      "TEAM": {
+        "NAME": "Agents and teams",
+        "DESCRIPTION": "Invite people, define their permissions and group them into working teams.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Agents, teams and roles",
+            "BODY": "An agent is a person who replies. A team groups agents by function, like Sales or Support. The role defines what each one can touch."
+          },
+          "AGENTS": {
+            "TITLE": "The agent list",
+            "BODY": "Here you see your whole team, their role and whether they accepted the invitation. You also deactivate whoever leaves."
+          },
+          "INVITE": {
+            "TITLE": "Invite someone",
+            "BODY": "Type their email, choose the role and send. They get a link to set a password and sign in."
+          },
+          "ROLES": {
+            "TITLE": "Administrator or agent",
+            "BODY": "An agent replies to conversations. An administrator also configures channels, teams and billing. Grant admin only to those who need it."
+          },
+          "CUSTOM_ROLES": {
+            "TITLE": "Custom roles",
+            "BODY": "If the two base roles fall short, build one with exact permissions: for example, view reports but never touch settings."
+          },
+          "TEAMS": {
+            "TITLE": "Working teams",
+            "BODY": "Group agents by specialty so you can assign conversations to all of them at once. An agent can belong to several teams."
+          },
+          "TEAMS_PAGE": {
+            "TITLE": "Create and edit teams",
+            "BODY": "Give it a name, a description and pick its members. You can have them notified whenever something reaches the team."
+          },
+          "ROUTING": {
+            "TITLE": "How teams get used",
+            "BODY": "In a conversation you can assign a team instead of a person. It stays visible to all of them until someone picks it up."
+          },
+          "AVAILABILITY": {
+            "TITLE": "Agent availability",
+            "BODY": "Everyone sets here whether they are online, busy or offline. Automatic routing only considers the people who are online."
+          },
+          "FINISH": {
+            "TITLE": "Team is set up",
+            "BODY": "You can invite people, grant permissions and build teams. The next tour shows the tools that make the whole team faster."
+          }
+        }
+      },
+      "PRODUCTIVITY": {
+        "NAME": "Productivity",
+        "DESCRIPTION": "Canned responses, macros, labels, automations and service level agreements.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Stop repeating yourself",
+            "BODY": "In customer support most cases look alike. These five tools turn that repetition into a single click."
+          },
+          "CANNED": {
+            "TITLE": "Canned responses",
+            "BODY": "Texts you write once and reuse forever, each with a short code. Insert them by typing / in the conversation editor."
+          },
+          "CANNED_PAGE": {
+            "TITLE": "Create your own",
+            "BODY": "Give it a code that is easy to remember, like greeting or shipping, and write the message. The whole team can use it."
+          },
+          "MACROS": {
+            "TITLE": "Macros: several actions at once",
+            "BODY": "A macro runs a sequence in one click: reply, label, assign and resolve. You trigger it from the conversation."
+          },
+          "MACROS_USE": {
+            "TITLE": "When to use a macro",
+            "BODY": "Use it for fixed processes: closing a complaint, escalating to billing or asking for details. If you do it three times a day, make it a macro."
+          },
+          "LABELS": {
+            "TITLE": "Labels",
+            "BODY": "These are the categories you use to classify conversations and contacts. Keep them few and clear: nobody uses a huge list."
+          },
+          "LABELS_USE": {
+            "TITLE": "What they are really for",
+            "BODY": "Labels let you filter the inbox, measure in reports and trigger automations. They are the backbone of your data."
+          },
+          "AUTOMATION": {
+            "TITLE": "Automations",
+            "BODY": "Rules of the form when this happens, do that. They run on their own when a conversation arrives, changes or is resolved."
+          },
+          "AUTOMATION_EXAMPLE": {
+            "TITLE": "A concrete example",
+            "BODY": "If a message arrives on WhatsApp and mentions the word invoice, label it as billing and assign it to the Billing team."
+          },
+          "SLA": {
+            "TITLE": "Service level agreements",
+            "BODY": "They set how fast you promise to reply and resolve. When the deadline nears, the conversation is flagged so nobody forgets it."
+          },
+          "FINISH": {
+            "TITLE": "Less manual work",
+            "BODY": "With these tools your team replies faster with the same quality. Come back to the center whenever you want to review them."
+          }
+        }
+      },
+      "CAMPAIGNS": {
+        "NAME": "Campaigns",
+        "DESCRIPTION": "Messages you send first: live chat, SMS and WhatsApp.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "You make the first move",
+            "BODY": "A campaign is a message that starts on your side, not a reply. Use it to announce, remind or win customers back."
+          },
+          "NAVIGATION": {
+            "TITLE": "Where campaigns live",
+            "BODY": "This menu group holds the three available types. Each one has its own screen and its own rules."
+          },
+          "PAGE": {
+            "TITLE": "The campaign list",
+            "BODY": "Here you see the campaigns you created, whether they are active and since when. You can pause or edit them any time."
+          },
+          "LIVE_CHAT": {
+            "TITLE": "Live chat campaigns",
+            "BODY": "These messages pop up on your website widget when someone visits a specific page. Great for catching interested visitors."
+          },
+          "LIVE_CHAT_SETUP": {
+            "TITLE": "How you set it up",
+            "BODY": "Pick the website inbox, the page address, the text and the delay in seconds. Start with one message and measure it."
+          },
+          "SMS": {
+            "TITLE": "SMS campaigns",
+            "BODY": "Send a text message to a list of contacts on a set date. You need a connected SMS inbox."
+          },
+          "WHATSAPP": {
+            "TITLE": "WhatsApp campaigns",
+            "BODY": "They use templates approved by WhatsApp, so prepare those first. They get read the most, so use them wisely."
+          },
+          "AUDIENCE": {
+            "TITLE": "Choosing the audience",
+            "BODY": "The audience is built from your contact labels. Segment carefully: sending to everyone annoys people and hurts results."
+          },
+          "METRICS": {
+            "TITLE": "Measuring the result",
+            "BODY": "After sending, check how many messages were delivered and how many conversations opened. That last number is the one that matters."
+          },
+          "FINISH": {
+            "TITLE": "Campaigns are ready",
+            "BODY": "You can create, segment and measure. Remember that every reply to a campaign arrives as a normal conversation."
+          }
+        }
+      },
+      "HELP_CENTER": {
+        "NAME": "Help center",
+        "DESCRIPTION": "Publish articles so customers can answer their own frequent questions.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Answer once, help many",
+            "BODY": "The help center is your public article site. Every frequent question you document is a conversation you will not have to handle."
+          },
+          "NAVIGATION": {
+            "TITLE": "Where you edit it",
+            "BODY": "All the content is written and published from this menu group. You do not need anyone from the technical team."
+          },
+          "PAGE": {
+            "TITLE": "Your help portal",
+            "BODY": "A portal is a complete help site with its own name, language and address. You can have one per brand or per product."
+          },
+          "PORTAL": {
+            "TITLE": "How it is organized",
+            "BODY": "Portal, categories and articles: three levels. Think of categories as the chapters of a manual and articles as its pages."
+          },
+          "ARTICLES": {
+            "TITLE": "Writing articles",
+            "BODY": "The editor takes headings, images, lists and links. Write the way you would talk to a customer, not like a technical manual."
+          },
+          "CATEGORIES": {
+            "TITLE": "Categories",
+            "BODY": "They group articles by topic so people find them fast. Five or six well-chosen categories are usually enough."
+          },
+          "LOCALES": {
+            "TITLE": "Portal languages",
+            "BODY": "You can publish the same portal in several languages. Each article is translated separately and keeps its category."
+          },
+          "PUBLISH": {
+            "TITLE": "Draft and publish",
+            "BODY": "An article starts as a draft and only goes online when you publish it. Review it first: it is your brand's public voice."
+          },
+          "DOMAIN": {
+            "TITLE": "Domain and appearance",
+            "BODY": "In the portal settings you set the logo, the colors and your own address. With a custom domain it looks like part of your website."
+          },
+          "FINISH": {
+            "TITLE": "Help is published",
+            "BODY": "You can document and publish. Link articles from your replies: it saves time and the customer gets a better answer."
+          }
+        }
+      },
+      "REPORTS": {
+        "NAME": "Reports",
+        "DESCRIPTION": "Measure volume, response times, agent performance and satisfaction.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Deciding with data",
+            "BODY": "Reports answer three questions: how much work comes in, how fast we handle it and how happy the customer ends up."
+          },
+          "NAVIGATION": {
+            "TITLE": "Where the reports live",
+            "BODY": "This group holds every view. Each one answers a different question, so come in knowing what you want to find out."
+          },
+          "OVERVIEW": {
+            "TITLE": "Overview",
+            "BODY": "A summary of the current state: open conversations, unassigned ones and agents online. It is the picture right now."
+          },
+          "LIVE": {
+            "TITLE": "What is happening today",
+            "BODY": "Live numbers help you react during the day: if the queue grows, add people or review how work is being assigned."
+          },
+          "CONVERSATIONS": {
+            "TITLE": "Conversation report",
+            "BODY": "Volume per day, first response and resolution time over the period you choose. Compare weeks to spot the trend."
+          },
+          "AGENTS": {
+            "TITLE": "Performance by agent",
+            "BODY": "How many conversations each person handled and how fast. Use it to balance workload, not to pressure people."
+          },
+          "CSAT": {
+            "TITLE": "Customer satisfaction",
+            "BODY": "The survey sent when a conversation closes is summarized here. Read the comments: they are worth more than the average."
+          },
+          "SLA": {
+            "TITLE": "SLA compliance",
+            "BODY": "It shows what share of conversations met the deadlines you promised and which ones missed. Start with the breaches."
+          },
+          "EXPORT": {
+            "TITLE": "Filter and export",
+            "BODY": "Every report accepts a date range and filters. You can download them as CSV to analyze or share."
+          },
+          "FINISH": {
+            "TITLE": "You know how to measure",
+            "BODY": "Check the reports once a week, not every day. Good decisions show up in the trend, not in the daily noise."
+          }
+        }
+      },
+      "ASSIGNMENT": {
+        "NAME": "Automatic assignment",
+        "DESCRIPTION": "Distribute conversations on their own, by capacity and available agents.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Let the system distribute",
+            "BODY": "Without automatic assignment someone has to hand out work. With it, each conversation reaches the right agent on its own."
+          },
+          "NAVIGATION": {
+            "TITLE": "Where you configure it",
+            "BODY": "Assignment policies live in Settings. You create them once and apply them to the inboxes you choose."
+          },
+          "PAGE": {
+            "TITLE": "Your policies",
+            "BODY": "Here you see the policies you created and which inboxes they apply to. You can have several, one per channel or team."
+          },
+          "POLICY": {
+            "TITLE": "What a policy is",
+            "BODY": "It is the rule that decides whose turn the next conversation is. It sets the distribution order and who is eligible."
+          },
+          "CREATE": {
+            "TITLE": "Create a policy",
+            "BODY": "Give it a name, choose how work is shared and save. Then link it to one or more inboxes from each inbox's settings."
+          },
+          "ORDER": {
+            "TITLE": "Distribution order",
+            "BODY": "Round robin shares evenly; balanced gives the conversation to whoever has the fewest open. If in doubt, start with round robin."
+          },
+          "CAPACITY": {
+            "TITLE": "Capacity limits",
+            "BODY": "Set how many open conversations an agent can hold at once. Once at the cap they stop receiving until they close one."
+          },
+          "INBOXES": {
+            "TITLE": "Linking the inboxes",
+            "BODY": "A policy only acts on the inboxes where you enable it. Try it on a small channel before rolling it out everywhere."
+          },
+          "AVAILABILITY": {
+            "TITLE": "Only agents who are online",
+            "BODY": "Automatic routing skips anyone who is offline. Remind your team to keep their status up to date."
+          },
+          "FINISH": {
+            "TITLE": "Automatic routing is on",
+            "BODY": "No more handing out work by hand. Check the agent report in a few days to confirm the load came out even."
+          }
+        }
+      }
+    }
+  }
+}

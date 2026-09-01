@@ -1338,7 +1338,12 @@ export default {
 
 <template>
   <ReplyBoxBanner :message="message" :is-on-private-note="isOnPrivateNote" />
-  <div ref="replyEditor" class="reply-box" :class="replyBoxClass">
+  <div
+    ref="replyEditor"
+    data-tour="composer"
+    class="reply-box"
+    :class="replyBoxClass"
+  >
     <ReplyTopPanel
       :mode="replyType"
       :conversation-id="conversationId"
@@ -1421,6 +1426,7 @@ export default {
           v-else-if="!showAudioRecorderEditor"
           ref="messageEditor"
           v-model="message"
+          data-tour="composer-editor"
           :conversation-id="conversationId"
           :editor-id="editorStateId"
           class="input popover-prosemirror-menu"

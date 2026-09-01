@@ -16,6 +16,12 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  // Dialogs that render their own heading inside the default slot still need
+  // an accessible name, otherwise screen readers announce a nameless dialog.
+  ariaLabel: {
+    type: String,
+    default: '',
+  },
   description: {
     type: String,
     default: '',
@@ -118,6 +124,7 @@ defineExpose({ open, close });
   <TeleportWithDirection to="body">
     <dialog
       ref="dialogRef"
+      :aria-label="ariaLabel || title || undefined"
       class="w-full transition-all duration-300 ease-in-out shadow-2xl shadow-n-slate-12/10 rounded-2xl"
       :class="[
         maxWidthClass,
