@@ -10,6 +10,8 @@
       "COMPLETED": "Completed",
       "MINUTES": "{minutes} min",
       "RESET_ALL": "Reset all progress",
+      "RESET_ALL_CONFIRM": "Tap again to confirm",
+      "CLOSE": "Close",
       "EMPTY": "There are no tutorials available for your role in this account yet.",
       "MOBILE_NOTICE": "Guided tours need a desktop screen. Open LuxoInbox on your computer to take them."
     },
@@ -28,11 +30,11 @@
     "FINISHED": {
       "TITLE": "Tour completed",
       "BODY": "You now know this part of LuxoInbox. You can replay any tutorial whenever you like from the tutorial center.",
-      "NEXT_TOUR": "Next tutorial",
+      "NEXT_TOUR": "Next: {section}",
       "CLOSE": "Close"
     },
     "HINT": {
-      "TITLE": "Want to see how {section} works?",
+      "TITLE": "There is a guided tour for this: {section}. Take it?",
       "VIEW": "Show me",
       "DISMISS": "Not now"
     },
@@ -139,7 +141,7 @@
       },
       "REPLYING": {
         "NAME": "Replying to messages",
-        "DESCRIPTION": "The reply editor: private notes, attachments, shortcuts and saved replies.",
+        "DESCRIPTION": "The reply editor: private notes, attachments, shortcuts and canned responses.",
         "STEPS": {
           "COMPOSER": {
             "TITLE": "The reply editor",
@@ -159,7 +161,7 @@
           },
           "SHORTCUTS": {
             "TITLE": "Two shortcuts that save time",
-            "BODY": "Type / to insert a saved reply, and {'@'} to mention a teammate inside a private note. Both open a menu right away."
+            "BODY": "Type / to insert a canned response, and {'@'} to mention a teammate inside a private note. Both open a menu right away."
           },
           "ATTACHMENTS": {
             "TITLE": "Attachments and extras",
@@ -174,7 +176,7 @@
             "BODY": "After replying, resolve the conversation. That keeps your inbox honest and your reports clean."
           },
           "CANNED": {
-            "TITLE": "Your saved replies",
+            "TITLE": "Your canned responses",
             "BODY": "Here you create the texts you reuse every day and give each one a short code. Then you insert them by typing / in the editor."
           },
           "FINISH": {
@@ -323,14 +325,14 @@
       },
       "PRODUCTIVITY": {
         "NAME": "Productivity",
-        "DESCRIPTION": "Saved replies, macros, labels, automations and service level agreements.",
+        "DESCRIPTION": "Canned responses, macros, labels, automations and service level agreements.",
         "STEPS": {
           "CONCEPT": {
             "TITLE": "Stop repeating yourself",
             "BODY": "In customer support most cases look alike. These five tools turn that repetition into a single click."
           },
           "CANNED": {
-            "TITLE": "Saved replies",
+            "TITLE": "Canned responses",
             "BODY": "Texts you write once and reuse forever, each with a short code. Insert them by typing / in the conversation editor."
           },
           "CANNED_PAGE": {

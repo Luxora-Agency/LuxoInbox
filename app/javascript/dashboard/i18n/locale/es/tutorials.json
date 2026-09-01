@@ -10,6 +10,8 @@
       "COMPLETED": "Completado",
       "MINUTES": "{minutes} min",
       "RESET_ALL": "Reiniciar todo el progreso",
+      "RESET_ALL_CONFIRM": "Toca otra vez para confirmar",
+      "CLOSE": "Cerrar",
       "EMPTY": "Por ahora no hay tutoriales disponibles para tu rol en esta cuenta.",
       "MOBILE_NOTICE": "Los recorridos guiados necesitan una pantalla de escritorio. Abre LuxoInbox en tu computadora para hacerlos."
     },
@@ -28,11 +30,11 @@
     "FINISHED": {
       "TITLE": "Recorrido completado",
       "BODY": "Ya conoces esta parte de LuxoInbox. Puedes repetir cualquier tutorial cuando quieras desde el centro de tutoriales.",
-      "NEXT_TOUR": "Siguiente tutorial",
+      "NEXT_TOUR": "Siguiente: {section}",
       "CLOSE": "Cerrar"
     },
     "HINT": {
-      "TITLE": "¿Te mostramos cómo funciona {section}?",
+      "TITLE": "Tenemos un recorrido guiado: {section}. ¿Lo vemos?",
       "VIEW": "Ver ahora",
       "DISMISS": "Ahora no"
     },
@@ -42,11 +44,11 @@
         "DESCRIPTION": "Un mapa rápido de la plataforma: el menú lateral, la búsqueda, tu cuenta y tu perfil.",
         "STEPS": {
           "WELCOME": {
-            "TITLE": "Bienvenido a LuxoInbox",
+            "TITLE": "Este es LuxoInbox",
             "BODY": "Este es tu centro de atención al cliente: todos los mensajes de todos tus canales llegan aquí. Vamos a recorrer lo esencial en pocos minutos."
           },
           "INBOX": {
-            "TITLE": "Tu bandeja de novedades",
+            "TITLE": "Tu bandeja de entrada",
             "BODY": "Aquí se acumulan las menciones, las asignaciones y los avisos dirigidos a ti. Revísala al empezar el día para no perderte nada."
           },
           "CONVERSATIONS": {
@@ -89,7 +91,7 @@
       },
       "CONVERSATIONS": {
         "NAME": "Conversaciones",
-        "DESCRIPTION": "Cómo leer la bandeja, abrir un chat, resolverlo y usar el panel del contacto.",
+        "DESCRIPTION": "Cómo leer la lista de conversaciones, abrir un chat, resolverlo y usar el panel del contacto.",
         "STEPS": {
           "LIST": {
             "TITLE": "La lista de conversaciones",
@@ -109,7 +111,7 @@
           },
           "RESOLVE": {
             "TITLE": "Resolver o posponer",
-            "BODY": "Marca la conversación como resuelta cuando el cliente ya está atendido. Si esperas una respuesta, pospónla y volverá sola a tu bandeja."
+            "BODY": "Marca la conversación como resuelta cuando el cliente ya está atendido. Si esperas una respuesta, posponla y volverá sola a tu lista."
           },
           "MORE_ACTIONS": {
             "TITLE": "Más acciones",
@@ -132,14 +134,14 @@
             "BODY": "Despliega Conversaciones para ver menciones, sin atender, equipos, canales y etiquetas. Las carpetas guardan tus filtros favoritos."
           },
           "FINISH": {
-            "TITLE": "Ya dominas la bandeja",
+            "TITLE": "Ya dominas tus conversaciones",
             "BODY": "Sabes encontrar, abrir y cerrar una conversación. El siguiente recorrido te enseña a escribir buenas respuestas."
           }
         }
       },
       "REPLYING": {
         "NAME": "Responder mensajes",
-        "DESCRIPTION": "El editor de respuestas: notas privadas, adjuntos, atajos y respuestas guardadas.",
+        "DESCRIPTION": "El editor de respuestas: notas privadas, adjuntos, atajos y respuestas predefinidas.",
         "STEPS": {
           "COMPOSER": {
             "TITLE": "El editor de respuestas",
@@ -159,7 +161,7 @@
           },
           "SHORTCUTS": {
             "TITLE": "Dos atajos que ahorran tiempo",
-            "BODY": "Escribe / para insertar una respuesta guardada y {'@'} para mencionar a un compañero en una nota privada. Ambos abren un menú al instante."
+            "BODY": "Escribe / para insertar una respuesta predefinida y {'@'} para mencionar a un compañero en una nota privada. Ambos abren un menú al instante."
           },
           "ATTACHMENTS": {
             "TITLE": "Adjuntos y extras",
@@ -171,10 +173,10 @@
           },
           "RESOLVE": {
             "TITLE": "Cierra cuando termines",
-            "BODY": "Después de responder, resuelve la conversación. Así tu bandeja refleja el trabajo real y tus informes salen limpios."
+            "BODY": "Después de responder, resuelve la conversación. Así tu lista refleja el trabajo real y tus informes salen limpios."
           },
           "CANNED": {
-            "TITLE": "Tus respuestas guardadas",
+            "TITLE": "Tus respuestas predefinidas",
             "BODY": "Aquí creas los textos que reutilizas a diario y les asignas un atajo corto. Luego los insertas escribiendo / en el editor."
           },
           "FINISH": {
@@ -230,19 +232,19 @@
         }
       },
       "INBOXES": {
-        "NAME": "Canales y bandejas",
+        "NAME": "Canales y entradas",
         "DESCRIPTION": "Conecta tu sitio web, WhatsApp o correo y define quién atiende cada canal.",
         "STEPS": {
           "CONCEPT": {
-            "TITLE": "Qué es una bandeja",
-            "BODY": "Una bandeja es un canal conectado: tu chat web, un número de WhatsApp, una casilla de correo. Cada una tiene sus agentes y sus reglas."
+            "TITLE": "Qué es una entrada",
+            "BODY": "Una entrada es un canal conectado: tu chat web, un número de WhatsApp, una casilla de correo. Cada una tiene sus agentes y sus reglas."
           },
           "NAVIGATION": {
             "TITLE": "Dónde se gestionan",
-            "BODY": "Todas las bandejas se crean y se configuran desde Ajustes. Este es el acceso que usarás cada vez que agregues un canal."
+            "BODY": "Todas las entradas se crean y se configuran desde Ajustes. Este es el acceso que usarás cada vez que agregues un canal."
           },
           "LIST": {
-            "TITLE": "Tus bandejas actuales",
+            "TITLE": "Tus entradas actuales",
             "BODY": "Aquí ves los canales ya conectados y su estado. Si un canal deja de funcionar, la alerta aparece en esta pantalla."
           },
           "CHANNELS": {
@@ -251,7 +253,7 @@
           },
           "WEBSITE": {
             "TITLE": "El chat de tu sitio web",
-            "BODY": "Es el canal más rápido de activar: creas la bandeja y pegas un fragmento de código en tu web. Puedes personalizar colores y saludo."
+            "BODY": "Es el canal más rápido de activar: creas la entrada y pegas un fragmento de código en tu web. Puedes personalizar colores y saludo."
           },
           "MESSAGING": {
             "TITLE": "WhatsApp, correo y redes",
@@ -259,11 +261,11 @@
           },
           "MEMBERS": {
             "TITLE": "Quién atiende cada canal",
-            "BODY": "Cada bandeja tiene su lista de agentes: solo ellos ven esas conversaciones. Ábrela desde la lista y ve a la pestaña de miembros."
+            "BODY": "Cada entrada tiene su lista de agentes: solo ellos ven esas conversaciones. Ábrela desde la lista y ve a la pestaña de miembros."
           },
           "CONFIGURATION": {
-            "TITLE": "Ajustes clave de la bandeja",
-            "BODY": "Dentro de cada bandeja defines el saludo automático, el horario de atención, la encuesta de satisfacción y el aviso fuera de horario."
+            "TITLE": "Ajustes clave de la entrada",
+            "BODY": "Dentro de cada entrada defines el saludo automático, el horario de atención, la encuesta de satisfacción y el aviso fuera de horario."
           },
           "AUTOMATION": {
             "TITLE": "Automatiza lo repetitivo",
@@ -323,19 +325,19 @@
       },
       "PRODUCTIVITY": {
         "NAME": "Productividad",
-        "DESCRIPTION": "Respuestas guardadas, macros, etiquetas, automatizaciones y acuerdos de servicio.",
+        "DESCRIPTION": "Respuestas predefinidas, macros, etiquetas, automatizaciones y acuerdos de servicio.",
         "STEPS": {
           "CONCEPT": {
             "TITLE": "Deja de repetir trabajo",
             "BODY": "En atención al cliente la mayoría de los casos se parecen. Estas cinco herramientas convierten esa repetición en un solo clic."
           },
           "CANNED": {
-            "TITLE": "Respuestas guardadas",
+            "TITLE": "Respuestas predefinidas",
             "BODY": "Textos que escribes una vez y reutilizas siempre, con un atajo corto. Se insertan escribiendo / en el editor de la conversación."
           },
           "CANNED_PAGE": {
             "TITLE": "Crea la tuya",
-            "BODY": "Dale un atajo fácil de recordar, como saludo o envio, y escribe el mensaje. Todo el equipo puede usarlas."
+            "BODY": "Dale un atajo fácil de recordar, como «saludo» o «envío», y escribe el mensaje. Todo el equipo puede usarlas."
           },
           "MACROS": {
             "TITLE": "Macros: varias acciones juntas",
@@ -351,7 +353,7 @@
           },
           "LABELS_USE": {
             "TITLE": "Para qué sirven de verdad",
-            "BODY": "Con etiquetas puedes filtrar la bandeja, medir en los informes y disparar automatizaciones. Son la base de tus datos."
+            "BODY": "Con etiquetas puedes filtrar la lista, medir en los informes y disparar automatizaciones. Son la base de tus datos."
           },
           "AUTOMATION": {
             "TITLE": "Automatizaciones",
@@ -389,15 +391,15 @@
           },
           "LIVE_CHAT": {
             "TITLE": "Campañas de chat en vivo",
-            "BODY": "Son mensajes que aparecen solos en el widget de tu web cuando alguien visita una página concreta. Ideales para captar interesados."
+            "BODY": "Son mensajes que aparecen solos en el chat de tu web cuando alguien visita una página concreta. Ideales para captar interesados."
           },
           "LIVE_CHAT_SETUP": {
             "TITLE": "Cómo se configura",
-            "BODY": "Eliges la bandeja web, la dirección de la página, el texto y los segundos de espera. Empieza con un solo mensaje y mídelo."
+            "BODY": "Eliges la entrada web, la dirección de la página, el texto y los segundos de espera. Empieza con un solo mensaje y mídelo."
           },
           "SMS": {
             "TITLE": "Campañas por SMS",
-            "BODY": "Envías un mensaje de texto a una lista de contactos en una fecha concreta. Necesitas una bandeja de SMS conectada."
+            "BODY": "Envías un mensaje de texto a una lista de contactos en una fecha concreta. Necesitas una entrada de SMS conectada."
           },
           "WHATSAPP": {
             "TITLE": "Campañas por WhatsApp",
@@ -519,11 +521,11 @@
           },
           "NAVIGATION": {
             "TITLE": "Dónde se configura",
-            "BODY": "Las políticas de asignación viven en Ajustes. Se crean una vez y se aplican a las bandejas que elijas."
+            "BODY": "Las políticas de asignación viven en Ajustes. Se crean una vez y se aplican a las entradas que elijas."
           },
           "PAGE": {
             "TITLE": "Tus políticas",
-            "BODY": "Aquí ves las políticas creadas y a qué bandejas están aplicadas. Puedes tener varias, una por tipo de canal o de equipo."
+            "BODY": "Aquí ves las políticas creadas y a qué entradas están aplicadas. Puedes tener varias, una por tipo de canal o de equipo."
           },
           "POLICY": {
             "TITLE": "Qué es una política",
@@ -531,7 +533,7 @@
           },
           "CREATE": {
             "TITLE": "Crear una política",
-            "BODY": "Ponle nombre, elige cómo se reparte y guárdala. Después la vinculas a una o varias bandejas desde los ajustes de cada una."
+            "BODY": "Ponle nombre, elige cómo se reparte y guárdala. Después la vinculas a una o varias entradas desde los ajustes de cada una."
           },
           "ORDER": {
             "TITLE": "Orden de reparto",
@@ -542,8 +544,8 @@
             "BODY": "Define cuántas conversaciones abiertas soporta un agente a la vez. Al llegar al tope deja de recibir hasta que cierre alguna."
           },
           "INBOXES": {
-            "TITLE": "Vincular las bandejas",
-            "BODY": "Una política solo actúa sobre las bandejas donde la actives. Pruébala en un canal pequeño antes de aplicarla a todos."
+            "TITLE": "Vincular las entradas",
+            "BODY": "Una política solo actúa sobre las entradas donde la actives. Pruébala en un canal pequeño antes de aplicarla a todos."
           },
           "AVAILABILITY": {
             "TITLE": "Solo agentes en línea",
