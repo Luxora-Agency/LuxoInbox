@@ -1,0 +1,560 @@
+{
+  "TUTORIALS": {
+    "HUB": {
+      "TITLE": "Centro de tutoriales",
+      "SUBTITLE": "Recorridos guiados para aprender LuxoInbox paso a paso, a tu ritmo.",
+      "PROGRESS": "{completed} de {total} completados",
+      "START": "Empezar",
+      "RESUME": "Reanudar",
+      "REPLAY": "Repetir",
+      "COMPLETED": "Completado",
+      "MINUTES": "{minutes} min",
+      "RESET_ALL": "Reiniciar todo el progreso",
+      "EMPTY": "Por ahora no hay tutoriales disponibles para tu rol en esta cuenta.",
+      "MOBILE_NOTICE": "Los recorridos guiados necesitan una pantalla de escritorio. Abre LuxoInbox en tu computadora para hacerlos."
+    },
+    "WELCOME": {
+      "TITLE": "Te damos la bienvenida a LuxoInbox",
+      "BODY": "Aquí llegan los mensajes de todos tus canales y desde aquí los responde tu equipo. ¿Te mostramos lo esencial en unos minutos?",
+      "PRIMARY": "Empezar el recorrido",
+      "SECONDARY": "Ahora no"
+    },
+    "CONTROLS": {
+      "NEXT": "Siguiente",
+      "PREV": "Atrás",
+      "DONE": "Terminar",
+      "PROGRESS": "Paso {'{{current}}'} de {'{{total}}'}"
+    },
+    "FINISHED": {
+      "TITLE": "Recorrido completado",
+      "BODY": "Ya conoces esta parte de LuxoInbox. Puedes repetir cualquier tutorial cuando quieras desde el centro de tutoriales.",
+      "NEXT_TOUR": "Siguiente tutorial",
+      "CLOSE": "Cerrar"
+    },
+    "HINT": {
+      "TITLE": "¿Te mostramos cómo funciona {section}?",
+      "VIEW": "Ver ahora",
+      "DISMISS": "Ahora no"
+    },
+    "TOURS": {
+      "GETTING_STARTED": {
+        "NAME": "Primeros pasos",
+        "DESCRIPTION": "Un mapa rápido de la plataforma: el menú lateral, la búsqueda, tu cuenta y tu perfil.",
+        "STEPS": {
+          "WELCOME": {
+            "TITLE": "Bienvenido a LuxoInbox",
+            "BODY": "Este es tu centro de atención al cliente: todos los mensajes de todos tus canales llegan aquí. Vamos a recorrer lo esencial en pocos minutos."
+          },
+          "INBOX": {
+            "TITLE": "Tu bandeja de novedades",
+            "BODY": "Aquí se acumulan las menciones, las asignaciones y los avisos dirigidos a ti. Revísala al empezar el día para no perderte nada."
+          },
+          "CONVERSATIONS": {
+            "TITLE": "Conversaciones",
+            "BODY": "El corazón del producto: cada chat con un cliente vive aquí. Despliega el grupo para filtrar por carpetas, equipos, canales o etiquetas."
+          },
+          "CONTACTS": {
+            "TITLE": "Contactos",
+            "BODY": "La ficha de cada persona que te escribió, con sus datos y su historial. Consúltala antes de responder para tener contexto."
+          },
+          "REPORTS": {
+            "TITLE": "Informes",
+            "BODY": "Miden el volumen de conversaciones, los tiempos de respuesta y la satisfacción de tus clientes. Sirven para decidir con datos."
+          },
+          "SEARCH": {
+            "TITLE": "Búsqueda global",
+            "BODY": "Encuentra conversaciones, contactos y mensajes desde un solo campo. Ábrela con Cmd+K o Ctrl+K desde cualquier pantalla."
+          },
+          "COMPOSE": {
+            "TITLE": "Iniciar una conversación",
+            "BODY": "Aquí escribes tú primero: eliges el canal, el destinatario y el mensaje. Ideal para dar seguimiento a un cliente."
+          },
+          "ACCOUNT": {
+            "TITLE": "Tu cuenta de trabajo",
+            "BODY": "Si perteneces a varias cuentas, cambia entre ellas desde este selector. Cada cuenta tiene sus propios canales, agentes y datos."
+          },
+          "SETTINGS": {
+            "TITLE": "Ajustes de la cuenta",
+            "BODY": "Desde aquí se configura todo: canales, agentes, equipos, automatizaciones y facturación. Esta cabecera te indica en qué sección estás."
+          },
+          "PROFILE": {
+            "TITLE": "Tu perfil y tus preferencias",
+            "BODY": "Cambia tu foto, tu disponibilidad, el idioma y el tema claro u oscuro. También vuelves a abrir este centro de tutoriales desde aquí."
+          },
+          "NEXT": {
+            "TITLE": "Listo, ya sabes moverte",
+            "BODY": "Ese es el mapa general. El siguiente recorrido, Conversaciones, te enseña el trabajo del día a día."
+          }
+        }
+      },
+      "CONVERSATIONS": {
+        "NAME": "Conversaciones",
+        "DESCRIPTION": "Cómo leer la bandeja, abrir un chat, resolverlo y usar el panel del contacto.",
+        "STEPS": {
+          "LIST": {
+            "TITLE": "La lista de conversaciones",
+            "BODY": "Cada fila es una conversación con un cliente. Las más recientes suben, y las que no leíste aparecen resaltadas."
+          },
+          "TABS": {
+            "TITLE": "Filtra por lo que te toca",
+            "BODY": "Cambia entre las conversaciones asignadas a ti, las que no tienen dueño y todas las de la cuenta. Empieza siempre por las tuyas."
+          },
+          "CARD": {
+            "TITLE": "La tarjeta de cada chat",
+            "BODY": "Muestra quién escribe, por qué canal, el último mensaje y cuánto lleva esperando. Haz clic para abrir la conversación completa."
+          },
+          "HEADER": {
+            "TITLE": "La cabecera de la conversación",
+            "BODY": "Aquí ves el nombre del cliente y asignas la conversación a un agente o a un equipo. Asignar evita que dos personas respondan lo mismo."
+          },
+          "RESOLVE": {
+            "TITLE": "Resolver o posponer",
+            "BODY": "Marca la conversación como resuelta cuando el cliente ya está atendido. Si esperas una respuesta, pospónla y volverá sola a tu bandeja."
+          },
+          "MORE_ACTIONS": {
+            "TITLE": "Más acciones",
+            "BODY": "Silenciar, enviar la transcripción por correo o marcar como no leída. Son acciones puntuales que no necesitas todos los días."
+          },
+          "SIDEPANEL": {
+            "TITLE": "El panel del contacto",
+            "BODY": "A la derecha tienes quién es el cliente, sus datos, sus etiquetas y sus conversaciones anteriores. Léelo antes de responder."
+          },
+          "SIDEPANEL_SWITCH": {
+            "TITLE": "Cambia de panel",
+            "BODY": "Alterna entre los datos del contacto y las otras vistas del panel. Puedes ocultarlo si necesitas más espacio para leer."
+          },
+          "LABELS": {
+            "TITLE": "Etiquetas y prioridad",
+            "BODY": "Las etiquetas clasifican la conversación (venta, reclamo, envío) y la prioridad indica qué atender primero. Ambas se aplican desde el panel derecho."
+          },
+          "VIEWS": {
+            "TITLE": "Vistas y carpetas",
+            "BODY": "Despliega Conversaciones para ver menciones, sin atender, equipos, canales y etiquetas. Las carpetas guardan tus filtros favoritos."
+          },
+          "FINISH": {
+            "TITLE": "Ya dominas la bandeja",
+            "BODY": "Sabes encontrar, abrir y cerrar una conversación. El siguiente recorrido te enseña a escribir buenas respuestas."
+          }
+        }
+      },
+      "REPLYING": {
+        "NAME": "Responder mensajes",
+        "DESCRIPTION": "El editor de respuestas: notas privadas, adjuntos, atajos y respuestas guardadas.",
+        "STEPS": {
+          "COMPOSER": {
+            "TITLE": "El editor de respuestas",
+            "BODY": "Todo lo que escribas aquí sale hacia el cliente por el mismo canal que usó él. Es el lugar donde pasas la mayor parte del día."
+          },
+          "MODE": {
+            "TITLE": "Respuesta o nota privada",
+            "BODY": "Cambia entre responder al cliente y dejar una nota interna. Revisa siempre este selector antes de enviar."
+          },
+          "PRIVATE_NOTE": {
+            "TITLE": "Para qué sirve una nota",
+            "BODY": "La nota privada solo la ve tu equipo: úsala para dejar contexto, avisar de un caso delicado o pedir ayuda a un compañero."
+          },
+          "EDITOR": {
+            "TITLE": "Da formato a tu mensaje",
+            "BODY": "Puedes usar negritas, listas, enlaces y emojis para que la respuesta se lea mejor. Un texto claro reduce las repreguntas."
+          },
+          "SHORTCUTS": {
+            "TITLE": "Dos atajos que ahorran tiempo",
+            "BODY": "Escribe / para insertar una respuesta guardada y {'@'} para mencionar a un compañero en una nota privada. Ambos abren un menú al instante."
+          },
+          "ATTACHMENTS": {
+            "TITLE": "Adjuntos y extras",
+            "BODY": "Envía archivos, imágenes, emojis o un audio desde esta barra. Cada canal tiene sus propios límites de tamaño y formato."
+          },
+          "SEND": {
+            "TITLE": "Enviar la respuesta",
+            "BODY": "Envía con el botón o con Cmd+Enter. También puedes programar el envío o enviar y resolver en un solo paso."
+          },
+          "RESOLVE": {
+            "TITLE": "Cierra cuando termines",
+            "BODY": "Después de responder, resuelve la conversación. Así tu bandeja refleja el trabajo real y tus informes salen limpios."
+          },
+          "CANNED": {
+            "TITLE": "Tus respuestas guardadas",
+            "BODY": "Aquí creas los textos que reutilizas a diario y les asignas un atajo corto. Luego los insertas escribiendo / en el editor."
+          },
+          "FINISH": {
+            "TITLE": "Listo para atender",
+            "BODY": "Ya sabes responder, anotar y cerrar. El siguiente recorrido te muestra cómo se guarda la información de tus clientes."
+          }
+        }
+      },
+      "CONTACTS": {
+        "NAME": "Contactos",
+        "DESCRIPTION": "La base de datos de tus clientes: fichas, segmentos, etiquetas y atributos.",
+        "STEPS": {
+          "OVERVIEW": {
+            "TITLE": "Tu base de clientes",
+            "BODY": "Cada persona que escribió alguna vez tiene una ficha aquí, sin que tengas que crearla a mano. Búscala por nombre, correo o teléfono."
+          },
+          "NAVIGATION": {
+            "TITLE": "Dónde viven los contactos",
+            "BODY": "Este grupo del menú reúne todas las vistas de contactos. Despliégalo para llegar a los segmentos y a las etiquetas."
+          },
+          "ALL": {
+            "TITLE": "Todos los contactos",
+            "BODY": "La lista completa, ordenada por la última actividad. Es tu punto de partida cuando buscas a alguien concreto."
+          },
+          "SEGMENTS": {
+            "TITLE": "Segmentos guardados",
+            "BODY": "En el menú, dentro de Contactos, están tus segmentos: filtros que guardas con nombre, como clientes de Bogotá que escribieron este mes."
+          },
+          "TAGS": {
+            "TITLE": "Contactos por etiqueta",
+            "BODY": "Justo debajo puedes filtrar por las etiquetas que le pusiste a la gente, como cliente VIP o moroso. Agrupa sin listas manuales."
+          },
+          "CREATE": {
+            "TITLE": "Crear un contacto",
+            "BODY": "Añade a alguien a mano cuando lo conociste fuera del chat. Con el correo o el teléfono ya puedes escribirle tú primero."
+          },
+          "PROFILE": {
+            "TITLE": "Qué guarda una ficha",
+            "BODY": "Datos básicos, empresa, ubicación, canales por los que escribe y los atributos personalizados que definas. Todo editable en un clic."
+          },
+          "HISTORY": {
+            "TITLE": "Notas e historial",
+            "BODY": "En la ficha ves sus conversaciones anteriores y puedes dejar notas internas. Así el próximo agente no empieza de cero."
+          },
+          "ATTRIBUTES": {
+            "TITLE": "Atributos personalizados",
+            "BODY": "Define los campos propios de tu negocio: número de póliza, plan contratado, ciudad. Aparecerán en la ficha de cada contacto."
+          },
+          "FINISH": {
+            "TITLE": "Tus clientes, ordenados",
+            "BODY": "Ya sabes buscar, crear y enriquecer una ficha. El siguiente recorrido es para administradores: cómo conectar canales."
+          }
+        }
+      },
+      "INBOXES": {
+        "NAME": "Canales y bandejas",
+        "DESCRIPTION": "Conecta tu sitio web, WhatsApp o correo y define quién atiende cada canal.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Qué es una bandeja",
+            "BODY": "Una bandeja es un canal conectado: tu chat web, un número de WhatsApp, una casilla de correo. Cada una tiene sus agentes y sus reglas."
+          },
+          "NAVIGATION": {
+            "TITLE": "Dónde se gestionan",
+            "BODY": "Todas las bandejas se crean y se configuran desde Ajustes. Este es el acceso que usarás cada vez que agregues un canal."
+          },
+          "LIST": {
+            "TITLE": "Tus bandejas actuales",
+            "BODY": "Aquí ves los canales ya conectados y su estado. Si un canal deja de funcionar, la alerta aparece en esta pantalla."
+          },
+          "CHANNELS": {
+            "TITLE": "Elige el tipo de canal",
+            "BODY": "Este catálogo reúne todo lo que puedes conectar: sitio web, WhatsApp, correo, redes sociales y API. Elige uno y sigue el asistente."
+          },
+          "WEBSITE": {
+            "TITLE": "El chat de tu sitio web",
+            "BODY": "Es el canal más rápido de activar: creas la bandeja y pegas un fragmento de código en tu web. Puedes personalizar colores y saludo."
+          },
+          "MESSAGING": {
+            "TITLE": "WhatsApp, correo y redes",
+            "BODY": "Estos canales piden autorizar tu cuenta con el proveedor. Ten a mano los accesos del negocio antes de empezar el asistente."
+          },
+          "MEMBERS": {
+            "TITLE": "Quién atiende cada canal",
+            "BODY": "Cada bandeja tiene su lista de agentes: solo ellos ven esas conversaciones. Ábrela desde la lista y ve a la pestaña de miembros."
+          },
+          "CONFIGURATION": {
+            "TITLE": "Ajustes clave de la bandeja",
+            "BODY": "Dentro de cada bandeja defines el saludo automático, el horario de atención, la encuesta de satisfacción y el aviso fuera de horario."
+          },
+          "AUTOMATION": {
+            "TITLE": "Automatiza lo repetitivo",
+            "BODY": "Las automatizaciones pueden etiquetar, asignar o responder según el canal de entrada. Ahorran minutos en cada conversación."
+          },
+          "FINISH": {
+            "TITLE": "Canales listos",
+            "BODY": "Ya sabes conectar y configurar un canal. Ahora toca decidir quién trabaja en ellos: haz el recorrido de Agentes y equipos."
+          }
+        }
+      },
+      "TEAM": {
+        "NAME": "Agentes y equipos",
+        "DESCRIPTION": "Invita personas, define sus permisos y agrúpalas en equipos de trabajo.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Agentes, equipos y roles",
+            "BODY": "Un agente es una persona que responde. Un equipo agrupa agentes por función, como Ventas o Soporte. El rol define qué puede tocar cada uno."
+          },
+          "AGENTS": {
+            "TITLE": "La lista de agentes",
+            "BODY": "Aquí ves a todo tu equipo, su rol y si ya aceptó la invitación. También desactivas a quien deja la empresa."
+          },
+          "INVITE": {
+            "TITLE": "Invitar a una persona",
+            "BODY": "Escribe su correo, elige el rol y envía. La persona recibe un enlace para crear su contraseña y entrar."
+          },
+          "ROLES": {
+            "TITLE": "Administrador o agente",
+            "BODY": "El agente responde conversaciones. El administrador además configura canales, equipos y facturación. Da administrador solo a quien lo necesita."
+          },
+          "CUSTOM_ROLES": {
+            "TITLE": "Roles personalizados",
+            "BODY": "Si los dos roles base te quedan cortos, crea uno a medida con permisos exactos: por ejemplo, ver informes pero no tocar ajustes."
+          },
+          "TEAMS": {
+            "TITLE": "Equipos de trabajo",
+            "BODY": "Agrupa agentes por especialidad para asignarles conversaciones de una sola vez. Un agente puede estar en varios equipos."
+          },
+          "TEAMS_PAGE": {
+            "TITLE": "Crear y editar equipos",
+            "BODY": "Ponle nombre, una descripción y elige a sus miembros. Puedes activar que se les notifique cuando llega algo al equipo."
+          },
+          "ROUTING": {
+            "TITLE": "Cómo se usan los equipos",
+            "BODY": "En una conversación puedes asignar el equipo en lugar de una persona. Queda visible para todos ellos hasta que alguien la tome."
+          },
+          "AVAILABILITY": {
+            "TITLE": "Disponibilidad del agente",
+            "BODY": "Cada persona marca aquí si está en línea, ocupada o desconectada. El reparto automático solo considera a quienes están en línea."
+          },
+          "FINISH": {
+            "TITLE": "Equipo configurado",
+            "BODY": "Ya sabes invitar, dar permisos y armar equipos. El siguiente recorrido muestra las herramientas que hacen más rápido a todo el equipo."
+          }
+        }
+      },
+      "PRODUCTIVITY": {
+        "NAME": "Productividad",
+        "DESCRIPTION": "Respuestas guardadas, macros, etiquetas, automatizaciones y acuerdos de servicio.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Deja de repetir trabajo",
+            "BODY": "En atención al cliente la mayoría de los casos se parecen. Estas cinco herramientas convierten esa repetición en un solo clic."
+          },
+          "CANNED": {
+            "TITLE": "Respuestas guardadas",
+            "BODY": "Textos que escribes una vez y reutilizas siempre, con un atajo corto. Se insertan escribiendo / en el editor de la conversación."
+          },
+          "CANNED_PAGE": {
+            "TITLE": "Crea la tuya",
+            "BODY": "Dale un atajo fácil de recordar, como saludo o envio, y escribe el mensaje. Todo el equipo puede usarlas."
+          },
+          "MACROS": {
+            "TITLE": "Macros: varias acciones juntas",
+            "BODY": "Una macro ejecuta una secuencia con un solo clic: responder, etiquetar, asignar y resolver. Se dispara desde la conversación."
+          },
+          "MACROS_USE": {
+            "TITLE": "Cuándo usar una macro",
+            "BODY": "Úsala para procesos fijos: cerrar un reclamo, escalar a facturación o pedir datos. Si haces lo mismo tres veces al día, hazlo macro."
+          },
+          "LABELS": {
+            "TITLE": "Etiquetas",
+            "BODY": "Son las categorías con las que clasificas conversaciones y contactos. Define pocas y claras: demasiadas etiquetas no las usa nadie."
+          },
+          "LABELS_USE": {
+            "TITLE": "Para qué sirven de verdad",
+            "BODY": "Con etiquetas puedes filtrar la bandeja, medir en los informes y disparar automatizaciones. Son la base de tus datos."
+          },
+          "AUTOMATION": {
+            "TITLE": "Automatizaciones",
+            "BODY": "Reglas del tipo si pasa esto, haz aquello. Se ejecutan solas cuando llega, cambia o se resuelve una conversación."
+          },
+          "AUTOMATION_EXAMPLE": {
+            "TITLE": "Un ejemplo concreto",
+            "BODY": "Si el mensaje llega por WhatsApp y menciona la palabra factura, etiquétalo como cobranza y asígnalo al equipo de Facturación."
+          },
+          "SLA": {
+            "TITLE": "Acuerdos de servicio (SLA)",
+            "BODY": "Definen en cuánto tiempo prometes responder y resolver. Cuando el plazo se acerca, la conversación se marca para que nadie la olvide."
+          },
+          "FINISH": {
+            "TITLE": "Menos trabajo manual",
+            "BODY": "Con estas herramientas tu equipo responde más rápido y con la misma calidad. Vuelve al centro cuando quieras repasarlas."
+          }
+        }
+      },
+      "CAMPAIGNS": {
+        "NAME": "Campañas",
+        "DESCRIPTION": "Mensajes que envías tú primero: chat en vivo, SMS y WhatsApp.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Tú das el primer paso",
+            "BODY": "Una campaña es un mensaje que sale de tu lado, no una respuesta. Sirve para anunciar, recordar o recuperar clientes."
+          },
+          "NAVIGATION": {
+            "TITLE": "Dónde están las campañas",
+            "BODY": "Este grupo del menú reúne los tres tipos disponibles. Cada uno tiene su propia pantalla y sus propias reglas."
+          },
+          "PAGE": {
+            "TITLE": "La lista de campañas",
+            "BODY": "Aquí ves las campañas creadas, si están activas y desde cuándo. Puedes pausarlas o editarlas en cualquier momento."
+          },
+          "LIVE_CHAT": {
+            "TITLE": "Campañas de chat en vivo",
+            "BODY": "Son mensajes que aparecen solos en el widget de tu web cuando alguien visita una página concreta. Ideales para captar interesados."
+          },
+          "LIVE_CHAT_SETUP": {
+            "TITLE": "Cómo se configura",
+            "BODY": "Eliges la bandeja web, la dirección de la página, el texto y los segundos de espera. Empieza con un solo mensaje y mídelo."
+          },
+          "SMS": {
+            "TITLE": "Campañas por SMS",
+            "BODY": "Envías un mensaje de texto a una lista de contactos en una fecha concreta. Necesitas una bandeja de SMS conectada."
+          },
+          "WHATSAPP": {
+            "TITLE": "Campañas por WhatsApp",
+            "BODY": "Usan plantillas aprobadas por WhatsApp, así que prepáralas antes. Son las de mayor tasa de lectura: úsalas con criterio."
+          },
+          "AUDIENCE": {
+            "TITLE": "Elegir la audiencia",
+            "BODY": "La audiencia se arma con las etiquetas de tus contactos. Segmenta bien: enviar a todos molesta y baja los resultados."
+          },
+          "METRICS": {
+            "TITLE": "Medir el resultado",
+            "BODY": "Después del envío revisa cuántos mensajes se entregaron y cuántas conversaciones se abrieron. Ese último número es el que importa."
+          },
+          "FINISH": {
+            "TITLE": "Campañas listas",
+            "BODY": "Ya sabes crear, segmentar y medir. Recuerda que cada respuesta a una campaña entra como una conversación normal."
+          }
+        }
+      },
+      "HELP_CENTER": {
+        "NAME": "Centro de ayuda",
+        "DESCRIPTION": "Publica artículos para que tus clientes resuelvan solos las dudas frecuentes.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Responder una sola vez",
+            "BODY": "El centro de ayuda es tu sitio público de artículos. Cada duda frecuente que documentes es una conversación que no tendrás que atender."
+          },
+          "NAVIGATION": {
+            "TITLE": "Dónde se edita",
+            "BODY": "Todo el contenido se escribe y se publica desde este grupo del menú. No necesitas a nadie del área técnica."
+          },
+          "PAGE": {
+            "TITLE": "Tu portal de ayuda",
+            "BODY": "Un portal es un sitio de ayuda completo, con su nombre, su idioma y su dirección. Puedes tener uno por marca o por producto."
+          },
+          "PORTAL": {
+            "TITLE": "Cómo se organiza",
+            "BODY": "Portal, categorías y artículos: tres niveles. Piensa las categorías como los capítulos de un manual y los artículos como sus páginas."
+          },
+          "ARTICLES": {
+            "TITLE": "Escribir artículos",
+            "BODY": "El editor acepta títulos, imágenes, listas y enlaces. Escribe como le hablarías a un cliente, no como un manual técnico."
+          },
+          "CATEGORIES": {
+            "TITLE": "Categorías",
+            "BODY": "Agrupan los artículos por tema para que se encuentren rápido. Con cinco o seis categorías bien pensadas suele bastar."
+          },
+          "LOCALES": {
+            "TITLE": "Idiomas del portal",
+            "BODY": "Puedes publicar el mismo portal en varios idiomas. Cada artículo se traduce por separado y conserva su categoría."
+          },
+          "PUBLISH": {
+            "TITLE": "Borrador y publicación",
+            "BODY": "Un artículo nace como borrador y solo se ve en internet cuando lo publicas. Revísalo antes: es la voz pública de tu marca."
+          },
+          "DOMAIN": {
+            "TITLE": "Dominio y apariencia",
+            "BODY": "En los ajustes del portal defines el logo, los colores y la dirección propia. Con un dominio propio se ve como parte de tu web."
+          },
+          "FINISH": {
+            "TITLE": "Ayuda publicada",
+            "BODY": "Ya puedes documentar y publicar. Enlaza los artículos desde tus respuestas: ahorras tiempo y el cliente queda mejor atendido."
+          }
+        }
+      },
+      "REPORTS": {
+        "NAME": "Informes",
+        "DESCRIPTION": "Mide volumen, tiempos de respuesta, rendimiento por agente y satisfacción.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Decidir con datos",
+            "BODY": "Los informes responden tres preguntas: cuánto trabajo entra, qué tan rápido lo atendemos y qué tan contento queda el cliente."
+          },
+          "NAVIGATION": {
+            "TITLE": "Dónde están los informes",
+            "BODY": "Este grupo reúne todas las vistas. Cada una responde una pregunta distinta, así que entra sabiendo qué quieres averiguar."
+          },
+          "OVERVIEW": {
+            "TITLE": "Vista general",
+            "BODY": "El resumen del estado actual: conversaciones abiertas, sin asignar y agentes en línea. Es la foto de ahora mismo."
+          },
+          "LIVE": {
+            "TITLE": "Lo que pasa hoy",
+            "BODY": "Los números en vivo te sirven para reaccionar en el día: si la cola crece, hay que sumar gente o revisar la asignación."
+          },
+          "CONVERSATIONS": {
+            "TITLE": "Informe de conversaciones",
+            "BODY": "Volumen por día, primera respuesta y tiempo de resolución en el periodo que elijas. Compara semanas para ver la tendencia."
+          },
+          "AGENTS": {
+            "TITLE": "Rendimiento por agente",
+            "BODY": "Cuántas conversaciones atendió cada persona y en cuánto tiempo. Úsalo para repartir la carga, no para presionar."
+          },
+          "CSAT": {
+            "TITLE": "Satisfacción del cliente",
+            "BODY": "La encuesta que se envía al cerrar una conversación se resume aquí. Lee los comentarios: valen más que el promedio."
+          },
+          "SLA": {
+            "TITLE": "Cumplimiento de SLA",
+            "BODY": "Muestra qué porcentaje de conversaciones cumplió los plazos que prometiste y cuáles se pasaron. Empieza por las incumplidas."
+          },
+          "EXPORT": {
+            "TITLE": "Filtrar y exportar",
+            "BODY": "Todos los informes aceptan un rango de fechas y filtros. Puedes descargarlos en CSV para analizarlos o compartirlos."
+          },
+          "FINISH": {
+            "TITLE": "Ya sabes medir",
+            "BODY": "Revisa los informes una vez por semana, no todos los días. Las buenas decisiones se ven en la tendencia, no en el ruido diario."
+          }
+        }
+      },
+      "ASSIGNMENT": {
+        "NAME": "Asignación automática",
+        "DESCRIPTION": "Reparte las conversaciones solo, según la capacidad y los agentes disponibles.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Que el sistema reparta",
+            "BODY": "Sin asignación automática alguien tiene que repartir a mano. Con ella, cada conversación llega sola al agente adecuado."
+          },
+          "NAVIGATION": {
+            "TITLE": "Dónde se configura",
+            "BODY": "Las políticas de asignación viven en Ajustes. Se crean una vez y se aplican a las bandejas que elijas."
+          },
+          "PAGE": {
+            "TITLE": "Tus políticas",
+            "BODY": "Aquí ves las políticas creadas y a qué bandejas están aplicadas. Puedes tener varias, una por tipo de canal o de equipo."
+          },
+          "POLICY": {
+            "TITLE": "Qué es una política",
+            "BODY": "Es la regla que decide a quién le toca la siguiente conversación. Define el orden de reparto y quiénes pueden recibirla."
+          },
+          "CREATE": {
+            "TITLE": "Crear una política",
+            "BODY": "Ponle nombre, elige cómo se reparte y guárdala. Después la vinculas a una o varias bandejas desde los ajustes de cada una."
+          },
+          "ORDER": {
+            "TITLE": "Orden de reparto",
+            "BODY": "Por turnos reparte de forma pareja; por carga le da la conversación a quien tenga menos abiertas. Si dudas, empieza por turnos."
+          },
+          "CAPACITY": {
+            "TITLE": "Límites de capacidad",
+            "BODY": "Define cuántas conversaciones abiertas soporta un agente a la vez. Al llegar al tope deja de recibir hasta que cierre alguna."
+          },
+          "INBOXES": {
+            "TITLE": "Vincular las bandejas",
+            "BODY": "Una política solo actúa sobre las bandejas donde la actives. Pruébala en un canal pequeño antes de aplicarla a todos."
+          },
+          "AVAILABILITY": {
+            "TITLE": "Solo agentes en línea",
+            "BODY": "El reparto automático ignora a quien está desconectado. Recuérdale a tu equipo mantener su estado actualizado."
+          },
+          "FINISH": {
+            "TITLE": "Reparto automático activo",
+            "BODY": "Ya no hace falta repartir a mano. Revisa el informe de agentes en unos días para confirmar que la carga quedó pareja."
+          }
+        }
+      }
+    }
+  }
+}

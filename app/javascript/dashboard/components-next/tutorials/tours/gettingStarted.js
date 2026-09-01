@@ -1,0 +1,76 @@
+export default {
+  id: 'getting-started',
+  icon: 'i-lucide-compass',
+  order: 1,
+  audience: 'all',
+  featureFlag: null,
+  estimatedMinutes: 4,
+  route: { name: 'inbox_view' },
+  mobileSafe: false,
+  steps: [
+    {
+      target: null,
+      i18nKey: 'GETTING_STARTED.WELCOME',
+    },
+    {
+      target: '[data-tour="sidebar-inbox"]',
+      i18nKey: 'GETTING_STARTED.INBOX',
+      side: 'right',
+      align: 'start',
+    },
+    {
+      target: '[data-tour="sidebar-conversation"]',
+      i18nKey: 'GETTING_STARTED.CONVERSATIONS',
+      side: 'right',
+      align: 'start',
+    },
+    {
+      target: '[data-tour="sidebar-contacts"]',
+      i18nKey: 'GETTING_STARTED.CONTACTS',
+      side: 'right',
+      align: 'start',
+    },
+    {
+      target: '[data-tour="sidebar-reports"]',
+      i18nKey: 'GETTING_STARTED.REPORTS',
+      side: 'right',
+      align: 'start',
+    },
+    {
+      target: '[data-tour="sidebar-search"]',
+      i18nKey: 'GETTING_STARTED.SEARCH',
+      side: 'right',
+      align: 'start',
+    },
+    {
+      target: '[data-tour="sidebar-compose"]',
+      i18nKey: 'GETTING_STARTED.COMPOSE',
+      side: 'right',
+      align: 'start',
+    },
+    {
+      target: '#sidebar-account-switcher',
+      i18nKey: 'GETTING_STARTED.ACCOUNT',
+      side: 'right',
+      align: 'start',
+    },
+    {
+      target: '[data-tour="settings-header"]',
+      i18nKey: 'GETTING_STARTED.SETTINGS',
+      side: 'bottom',
+      align: 'start',
+      route: { name: 'general_settings_index' },
+      audience: 'admin',
+    },
+    {
+      target: '[data-tour="sidebar-profile"]',
+      i18nKey: 'GETTING_STARTED.PROFILE',
+      side: 'right',
+      align: 'end',
+    },
+    {
+      target: null,
+      i18nKey: 'GETTING_STARTED.NEXT',
+    },
+  ],
+};
