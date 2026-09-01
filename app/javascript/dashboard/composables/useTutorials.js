@@ -1,53 +1,61 @@
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 import { useAccount } from 'dashboard/composables/useAccount';
 import { useAdmin } from 'dashboard/composables/useAdmin';
 import { useMapGetter } from 'dashboard/composables/store';
+import { usePolicy } from 'dashboard/composables/usePolicy';
 import { useUISettings } from 'dashboard/composables/useUISettings';
 
 import { LocalStorage } from 'shared/helpers/localStorage';
 import { LOCAL_STORAGE_KEYS } from 'dashboard/constants/localStorage';
+import wootConstants from 'dashboard/constants/globals';
 
 import { TOURS, getTourById } from 'dashboard/components-next/tutorials/tours';
 
-// Singleton state: every consumer (hub, welcome, chip, engine, sidebar) shares
-// one running tour, so the state lives at module scope like the repo's other
-// cross-component composables.
-const activeTour = ref(null);
-const activeStepIndex = ref(0);
-const isHubOpen = ref(false);
-
-// localStorage is not reactive; this mirror keeps the hub's "Resume" label and
-// the engine's start index in sync with what we last wrote. Seeded eagerly:
-// filling it lazily would write to the ref from inside the `tours` computed,
-// which self-invalidates the getter. LocalStorage.get swallows its own errors.
-const stepProgress = ref(
-  LocalStorage.get(LOCAL_STORAGE_KEYS.TUTORIAL_PROGRESS) || {}
-);
+import {
+  activeTour,
+  activeStepIndex,
+  finishedTourId,
+  isHubOpen,
+  isRunning,
+  isWelcomeOpen,
+  openHub,
+  closeHub,
+  stepProgress,
+} from 'dashboard/composables/useTutorialsUI';
 
 const readStepProgress = () => stepProgress.value;
+
+// Tours anchor on the desktop layout: on a phone the sidebar is a closed
+// drawer and the conversation panes are mutually exclusive, so every anchored
+// step would resolve to nothing.
+const isSmallScreen = () =>
+  window.innerWidth < wootConstants.SMALL_SCREEN_BREAKPOINT;
 
 export function useTutorials() {
   const { accountId } = useAccount();
   const { isAdmin } = useAdmin();
+  const { shouldShow } = usePolicy();
   const { uiSettings, updateUISettings } = useUISettings();
-  const isFeatureEnabledonAccount = useMapGetter(
-    'accounts/isFeatureEnabledonAccount'
-  );
+  const allConversations = useMapGetter('getAllConversations');
 
   const settings = computed(() => uiSettings.value?.tutorials ?? {});
   const completedIds = computed(() => settings.value.completed ?? []);
+  const dismissedHintIds = computed(() => settings.value.dismissed_hints ?? []);
 
-  const isFlagOn = flag =>
-    !flag || isFeatureEnabledonAccount.value(accountId.value, flag);
-
+  // The sidebar decides what it renders with exactly this predicate, so an
+  // anchor exists if and only if `shouldShow` agrees: a tour the user could
+  // never navigate to is never offered.
   const isVisible = entry => {
     if (entry.audience === 'admin' && !isAdmin.value) return false;
-    return isFlagOn(entry.featureFlag);
+    return shouldShow(entry.featureFlag, entry.permissions);
   };
 
   const stepIndexFor = tourId =>
     readStepProgress()[accountId.value]?.[tourId] ?? 0;
+
+  const canRunOnThisScreen = tour =>
+    Boolean(tour) && (tour.mobileSafe || !isSmallScreen());
 
   const tours = computed(() =>
     TOURS.filter(isVisible).map(tour => ({
@@ -99,26 +107,50 @@ export function useTutorials() {
     );
   };
 
+  // Tours that teach the reply flow only make sense with a chat open; the
+  // engine uses this to pick the start route and to drop the steps that would
+  // otherwise wait three seconds for an element that cannot exist.
+  const firstConversationId = computed(
+    () => allConversations.value?.[0]?.id ?? null
+  );
+
   /**
    * Steps the current user is allowed to see. Filtering here — not while the
    * tour runs — keeps the progress counter honest.
    * @param {Object} tour
    * @returns {Array} visible steps
    */
-  const resolveSteps = tour => (tour ? tour.steps.filter(isVisible) : []);
+  const resolveSteps = tour => {
+    if (!tour) return [];
 
-  const openHub = () => {
-    isHubOpen.value = true;
+    return tour.steps.filter(step => {
+      if (step.requiresConversation && !firstConversationId.value) return false;
+      return isVisible(step);
+    });
   };
 
-  const closeHub = () => {
-    isHubOpen.value = false;
+  /**
+   * Where the tour has to start. Conversation tours resolve to a real chat so
+   * their anchors exist; everything else uses the declared route.
+   * @param {Object} tour
+   * @returns {Object|null}
+   */
+  const resolveTourRoute = tour => {
+    if (!tour) return null;
+    if (tour.conversationScoped && firstConversationId.value) {
+      return {
+        name: 'inbox_conversation',
+        params: { conversation_id: firstConversationId.value },
+      };
+    }
+    return tour.route;
   };
 
   const startTour = (tourId, stepIndex = 0) => {
     const tour = getTourById(tourId);
-    if (!tour) return;
+    if (!tour || !canRunOnThisScreen(tour)) return;
 
+    finishedTourId.value = null;
     activeStepIndex.value = stepIndex;
     activeTour.value = tour;
   };
@@ -156,17 +188,56 @@ export function useTutorials() {
 
   const shouldShowWelcome = computed(() => !settings.value.welcome_dismissed);
 
-  const dismissWelcome = () => patchSettings({ welcome_dismissed: true });
+  const dismissWelcome = () => {
+    if (!shouldShowWelcome.value) return;
+    patchSettings({ welcome_dismissed: true });
+  };
+
+  const isHintDismissed = tourId => dismissedHintIds.value.includes(tourId);
+
+  const dismissHint = tourId => {
+    if (isHintDismissed(tourId)) return;
+    patchSettings({ dismissed_hints: [...dismissedHintIds.value, tourId] });
+  };
+
+  // The tour that just ended, so the completion dialog can offer the next one.
+  const finishedTour = computed(() =>
+    finishedTourId.value ? getTourById(finishedTourId.value) : null
+  );
+
+  const nextTour = computed(() => {
+    if (!finishedTourId.value) return null;
+    const runnable = tours.value.filter(
+      tour =>
+        tour.id !== finishedTourId.value &&
+        !isCompleted(tour.id) &&
+        canRunOnThisScreen(tour)
+    );
+    return (
+      runnable.find(
+        tour => tour.order > (getTourById(finishedTourId.value)?.order ?? 0)
+      ) ??
+      runnable[0] ??
+      null
+    );
+  });
+
+  const clearFinishedTour = () => {
+    finishedTourId.value = null;
+  };
 
   return {
     // state
     tours,
     activeTour,
     activeStepIndex,
-    isRunning: computed(() => Boolean(activeTour.value)),
+    isRunning,
     progress,
     isHubOpen,
+    isWelcomeOpen,
     shouldShowWelcome,
+    finishedTour,
+    nextTour,
     // actions
     startTour,
     stopTour,
@@ -178,8 +249,14 @@ export function useTutorials() {
     closeHub,
     isCompleted,
     dismissWelcome,
+    isHintDismissed,
+    dismissHint,
+    clearFinishedTour,
+    canRunOnThisScreen,
     // engine internals
     resolveSteps,
+    resolveTourRoute,
+    finishedTourId,
     saveStepIndex: writeStepIndex,
   };
 }

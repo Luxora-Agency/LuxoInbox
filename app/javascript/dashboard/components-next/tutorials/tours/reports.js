@@ -5,7 +5,10 @@ export default {
   icon: 'i-lucide-chart-spline',
   order: 10,
   audience: 'all',
-  featureFlag: null,
+  featureFlag: FEATURE_FLAGS.REPORTS,
+  // Mirrors the meta of every report route: without these the router
+  // redirects the user away and the sidebar hides the group entirely.
+  permissions: ['administrator', 'report_manage'],
   estimatedMinutes: 4,
   route: { name: 'account_overview_reports' },
   mobileSafe: false,

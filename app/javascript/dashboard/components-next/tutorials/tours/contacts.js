@@ -5,7 +5,9 @@ export default {
   icon: 'i-lucide-contact',
   order: 4,
   audience: 'all',
-  featureFlag: null,
+  featureFlag: FEATURE_FLAGS.CRM,
+  // Mirrors the meta shared by every contacts route.
+  permissions: ['administrator', 'agent', 'contact_manage'],
   estimatedMinutes: 4,
   route: { name: 'contacts_dashboard_index' },
   mobileSafe: false,

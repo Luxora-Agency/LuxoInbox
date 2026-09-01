@@ -6,6 +6,9 @@ export default {
   featureFlag: null,
   estimatedMinutes: 5,
   route: { name: 'home' },
+  // The card, header and contact panel only exist with a chat open, so the
+  // engine starts this tour on a real conversation when the account has one.
+  conversationScoped: true,
   mobileSafe: false,
   steps: [
     {
@@ -23,36 +26,42 @@ export default {
     {
       target: '[data-tour="conversation-card"]',
       i18nKey: 'CONVERSATIONS.CARD',
+      requiresConversation: true,
       side: 'right',
       align: 'start',
     },
     {
       target: '[data-tour="conversation-header"]',
       i18nKey: 'CONVERSATIONS.HEADER',
+      requiresConversation: true,
       side: 'bottom',
       align: 'center',
     },
     {
       target: '[data-tour="conversation-resolve"]',
       i18nKey: 'CONVERSATIONS.RESOLVE',
+      requiresConversation: true,
       side: 'bottom',
       align: 'end',
     },
     {
       target: '[data-tour="conversation-more-actions"]',
       i18nKey: 'CONVERSATIONS.MORE_ACTIONS',
+      requiresConversation: true,
       side: 'bottom',
       align: 'end',
     },
     {
       target: '[data-tour="conversation-sidebar"]',
       i18nKey: 'CONVERSATIONS.SIDEPANEL',
+      requiresConversation: true,
       side: 'left',
       align: 'start',
     },
     {
       target: '[data-tour="sidepanel-switch"]',
       i18nKey: 'CONVERSATIONS.SIDEPANEL_SWITCH',
+      requiresConversation: true,
       side: 'left',
       align: 'start',
     },

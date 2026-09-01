@@ -8,17 +8,21 @@ export default {
   featureFlag: null,
   estimatedMinutes: 5,
   route: { name: 'home' },
+  // Every composer anchor lives inside an open conversation.
+  conversationScoped: true,
   mobileSafe: false,
   steps: [
     {
       target: '[data-tour="composer"]',
       i18nKey: 'REPLYING.COMPOSER',
+      requiresConversation: true,
       side: 'top',
       align: 'center',
     },
     {
       target: '[data-tour="composer-mode"]',
       i18nKey: 'REPLYING.MODE',
+      requiresConversation: true,
       side: 'bottom',
       align: 'start',
     },
@@ -29,30 +33,35 @@ export default {
     {
       target: '[data-tour="composer-editor"]',
       i18nKey: 'REPLYING.EDITOR',
+      requiresConversation: true,
       side: 'top',
       align: 'center',
     },
     {
       target: '[data-tour="composer-editor"]',
       i18nKey: 'REPLYING.SHORTCUTS',
+      requiresConversation: true,
       side: 'top',
       align: 'end',
     },
     {
       target: '[data-tour="composer-actions"]',
       i18nKey: 'REPLYING.ATTACHMENTS',
+      requiresConversation: true,
       side: 'top',
       align: 'start',
     },
     {
       target: '[data-tour="composer-send"]',
       i18nKey: 'REPLYING.SEND',
+      requiresConversation: true,
       side: 'top',
       align: 'end',
     },
     {
       target: '[data-tour="conversation-resolve"]',
       i18nKey: 'REPLYING.RESOLVE',
+      requiresConversation: true,
       side: 'bottom',
       align: 'end',
     },

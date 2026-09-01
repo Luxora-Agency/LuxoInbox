@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import Auth from 'dashboard/api/auth';
 import { useMapGetter } from 'dashboard/composables/store';
-import { useTutorials } from 'dashboard/composables/useTutorials';
+import { useTutorialsUI } from 'dashboard/composables/useTutorialsUI';
 import { useI18n } from 'vue-i18n';
 import Avatar from 'next/avatar/Avatar.vue';
 import SidebarProfileMenuStatus from './SidebarProfileMenuStatus.vue';
@@ -28,7 +28,7 @@ defineOptions({
 
 const { t } = useI18n();
 
-const { openHub } = useTutorials();
+const { openHub } = useTutorialsUI();
 
 const currentUser = useMapGetter('getCurrentUser');
 const currentUserAvailability = useMapGetter('getCurrentUserAvailability');
