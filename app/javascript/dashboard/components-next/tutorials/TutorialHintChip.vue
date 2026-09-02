@@ -1,7 +1,6 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
 import { useWindowSize } from '@vueuse/core';
 
 import wootConstants from 'dashboard/constants/globals';
@@ -12,10 +11,9 @@ import Icon from 'dashboard/components-next/icon/Icon.vue';
 const HINT_DELAY = 2500;
 
 const { t } = useI18n();
-const route = useRoute();
 
 const {
-  tours,
+  toursForCurrentRoute,
   isRunning,
   isHubOpen,
   isWelcomeOpen,
@@ -41,12 +39,12 @@ const candidateTour = computed(() => {
   // The welcome dialog owns the top layer; a chip underneath its backdrop is
   // a second nudge the user cannot even read.
   if (isWelcomeOpen.value) return null;
-  if (!route.name) return null;
 
+  // `toursForCurrentRoute` honours `pageRoutes`, so a tour that covers a list
+  // and its detail is nudged on both.
   return (
-    tours.value.find(
+    toursForCurrentRoute.value.find(
       tour =>
-        tour.route?.name === route.name &&
         canRunOnThisScreen(tour) &&
         !isCompleted(tour.id) &&
         !isHintDismissed(tour.id)

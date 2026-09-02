@@ -1,12 +1,14 @@
 <script setup>
-import { onBeforeUnmount, watch } from 'vue';
+import { nextTick, onBeforeUnmount, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 
 import { useAccount } from 'dashboard/composables/useAccount';
+import { useStore } from 'dashboard/composables/store';
 import { useTutorials } from 'dashboard/composables/useTutorials';
+import { requestedSidebarGroup } from 'dashboard/composables/useTutorialsUI';
 
 const ANCHOR_TIMEOUT = 3000;
 const POLL_INTERVAL = 100;
@@ -19,6 +21,7 @@ const ORBIS_NAVY = '#010828';
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
+const store = useStore();
 const { accountScopedRoute } = useAccount();
 
 const {
@@ -48,6 +51,9 @@ let isTearingDown = false;
 // A tour that never rendered a step must not be recorded as completed.
 let hasShownStep = false;
 let cancelAnchorWait = null;
+// The step currently on screen, so its `after` action can undo whatever its
+// `before` action opened when the user leaves it.
+let shownStep = null;
 
 const prefersReducedMotion = () =>
   window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
@@ -116,12 +122,82 @@ const navigateTo = async routeDef => {
   }
 };
 
+// What a step's declarative actions get to work with. `expandSidebarGroup`
+// reaches the sidebar through the shared ref because `expandedItem` is local
+// state provided only to the sidebar's own subtree.
+const actionContext = {
+  router,
+  store,
+  expandSidebarGroup: async name => {
+    requestedSidebarGroup.value = name;
+    await nextTick();
+  },
+};
+
+/**
+ * Opens whatever a step needs on screen before it can be highlighted.
+ * `{ click }` waits for the control with the same budget as an anchor and
+ * clicks it — driver.js only blocks real pointer events, so a programmatic
+ * click reaches the element under the overlay. `{ expandSidebarGroup }` asks
+ * the sidebar to open a collapsible group. A function is the escape hatch.
+ * Escape is never used to close anything: driver.js listens for it and would
+ * kill the tour.
+ * @param {Object|Function|undefined} action
+ * @param {Object} ctx
+ */
+const runAction = async (action, ctx) => {
+  if (!action) return;
+
+  if (typeof action === 'function') {
+    await action(ctx);
+    return;
+  }
+
+  if (action.expandSidebarGroup) {
+    await ctx.expandSidebarGroup(action.expandSidebarGroup);
+  }
+
+  if (action.click) {
+    const element = await waitForAnchor(action.click);
+    element?.click();
+  }
+};
+
+/**
+ * Undoes a step's `before` when the user leaves it. Nothing here waits:
+ * whatever the step opened is on screen already, and the teardown path — a
+ * close, an abort, the hub swapping tours — has to stay synchronous so it
+ * cannot install an anchor poll that outlives the tour it belonged to.
+ * @param {Object|Function|undefined} action
+ */
+const runLeaveAction = action => {
+  if (!action) return;
+
+  if (typeof action === 'function') {
+    action(actionContext);
+    return;
+  }
+
+  if (action.expandSidebarGroup) {
+    requestedSidebarGroup.value = action.expandSidebarGroup;
+  }
+
+  if (action.click) findVisible(action.click)?.click();
+};
+
 const teardown = () => {
   runId += 1;
   transitionId += 1;
+  const leavingStep = shownStep;
+  shownStep = null;
   steps = [];
   hasShownStep = false;
   cancelAnchorWait?.();
+  runLeaveAction(leavingStep?.after);
+  // Clearing last, so it supersedes any group the leave action just asked for:
+  // once the tour is gone nothing may keep steering the sidebar. Only the ref
+  // is touched — the user's stored preference is never written from here.
+  requestedSidebarGroup.value = null;
   if (!driverObj) return;
   const instance = driverObj;
   driverObj = null;
@@ -175,6 +251,12 @@ const goToStep = async (index, direction) => {
   const isStale = () =>
     localRun !== runId || localTransition !== transitionId || !activeTour.value;
 
+  // The step on screen is being left: close whatever it opened before the next
+  // one navigates or opens anything of its own.
+  const leavingStep = shownStep;
+  shownStep = null;
+  runLeaveAction(leavingStep?.after);
+
   let cursor = index;
   let hasPruned = false;
 
@@ -184,12 +266,19 @@ const goToStep = async (index, direction) => {
     await navigateTo(step.route);
     if (isStale()) return;
 
+    // eslint-disable-next-line no-await-in-loop
+    await runAction(step.before, actionContext);
+    if (isStale()) return;
+
     if (!step.target) break;
     // eslint-disable-next-line no-await-in-loop
     const anchor = await waitForAnchor(step.target);
     if (isStale()) return;
     if (anchor) break;
 
+    // The step is dropped: it will never be shown, so its own leave never runs
+    // and whatever its `before` opened has to be closed right here.
+    runLeaveAction(step.after);
     steps.splice(cursor, 1);
     hasPruned = true;
     // Splicing already slid the next forward candidate into `cursor`.
@@ -224,6 +313,7 @@ const goToStep = async (index, direction) => {
   }
 
   hasShownStep = true;
+  shownStep = steps[cursor];
   activeStepIndex.value = cursor;
   saveStepIndex(activeTour.value.id, cursor);
   driverObj?.drive(cursor);

@@ -1,4 +1,6 @@
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 
 import { useAccount } from 'dashboard/composables/useAccount';
 import { useAdmin } from 'dashboard/composables/useAdmin';
@@ -11,6 +13,10 @@ import { LOCAL_STORAGE_KEYS } from 'dashboard/constants/localStorage';
 import wootConstants from 'dashboard/constants/globals';
 
 import { TOURS, getTourById } from 'dashboard/components-next/tutorials/tours';
+import {
+  CATEGORIES,
+  categoryI18nKey,
+} from 'dashboard/components-next/tutorials/tours/categories';
 
 import {
   activeTour,
@@ -32,12 +38,29 @@ const readStepProgress = () => stepProgress.value;
 const isSmallScreen = () =>
   window.innerWidth < wootConstants.SMALL_SCREEN_BREAKPOINT;
 
+// `TUTORIALS.TOURS.<UPPER_SNAKE_ID>` — the locale tree keys tours by id.
+const tourI18nKey = id =>
+  `TUTORIALS.TOURS.${id.toUpperCase().replace(/-/g, '_')}`;
+
+// The search box is typed without accents as often as with them, and Spanish
+// copy is full of them: fold both sides before comparing.
+const normalize = value =>
+  String(value ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+
 export function useTutorials() {
+  const { t } = useI18n();
+  const route = useRoute();
   const { accountId } = useAccount();
   const { isAdmin } = useAdmin();
   const { shouldShow } = usePolicy();
   const { uiSettings, updateUISettings } = useUISettings();
   const allConversations = useMapGetter('getAllConversations');
+  const allContacts = useMapGetter('contacts/getContacts');
+  const allInboxes = useMapGetter('inboxes/getInboxes');
 
   const settings = computed(() => uiSettings.value?.tutorials ?? {});
   const completedIds = computed(() => settings.value.completed ?? []);
@@ -46,9 +69,16 @@ export function useTutorials() {
   // The sidebar decides what it renders with exactly this predicate, so an
   // anchor exists if and only if `shouldShow` agrees: a tour the user could
   // never navigate to is never offered.
+  // Tours and steps copy their route's `meta` verbatim, so the third argument
+  // is what keeps a cloud-only or enterprise-only page from being taught on an
+  // installation that does not have it.
   const isVisible = entry => {
     if (entry.audience === 'admin' && !isAdmin.value) return false;
-    return shouldShow(entry.featureFlag, entry.permissions);
+    return shouldShow(
+      entry.featureFlag,
+      entry.permissions,
+      entry.installationTypes
+    );
   };
 
   const stepIndexFor = tourId =>
@@ -68,7 +98,9 @@ export function useTutorials() {
 
   const progress = computed(() => {
     const visible = tours.value;
-    const done = visible.filter(tour => isCompleted(tour.id)).map(t => t.id);
+    const done = visible
+      .filter(tour => isCompleted(tour.id))
+      .map(tour => tour.id);
     return {
       completedIds: done,
       completedCount: done.length,
@@ -78,6 +110,75 @@ export function useTutorials() {
         : 0,
     };
   });
+
+  /**
+   * The library shelves: every category that still has something to offer this
+   * user, with its own progress. Categories whose tours are all hidden by a
+   * flag, a permission or the installation type are dropped, so the rail never
+   * shows a shelf that opens on nothing.
+   * @returns {Array} categories decorated with `tours` and progress counters
+   */
+  const categories = computed(() => {
+    const visible = tours.value;
+
+    return CATEGORIES.map(category => {
+      const categoryTours = visible.filter(
+        tour => tour.category === category.id
+      );
+
+      return {
+        ...category,
+        i18nKey: categoryI18nKey(category.id),
+        tours: categoryTours,
+        completedCount: categoryTours.filter(tour => isCompleted(tour.id))
+          .length,
+        totalCount: categoryTours.length,
+      };
+    }).filter(category => category.totalCount > 0);
+  });
+
+  /**
+   * Tours that belong to a screen. `pageRoutes` lets one tour be offered on
+   * several routes (a list and its detail, a wizard and its steps); a tour that
+   * does not declare it is offered on its own start route only.
+   * @param {string} routeName
+   * @returns {Array} visible tours for that route
+   */
+  const toursForRoute = routeName => {
+    if (!routeName) return [];
+
+    return tours.value.filter(tour =>
+      (tour.pageRoutes ?? [tour.route?.name]).includes(routeName)
+    );
+  };
+
+  // Single source of truth for the contextual chip, the per-screen launcher
+  // and the command bar.
+  const toursForCurrentRoute = computed(() => toursForRoute(route?.name));
+
+  /**
+   * Free-text search over the library: the translated name and description
+   * plus the tour's own `keywords`, all accent- and case-insensitive.
+   * @param {string} query
+   * @returns {Array} matching visible tours
+   */
+  const searchTours = query => {
+    const needle = normalize(query);
+    if (!needle) return tours.value;
+
+    return tours.value.filter(tour => {
+      const key = tourI18nKey(tour.id);
+      const haystack = [
+        t(`${key}.NAME`),
+        t(`${key}.DESCRIPTION`),
+        ...(tour.keywords ?? []),
+      ]
+        .map(normalize)
+        .join(' ');
+
+      return haystack.includes(needle);
+    });
+  };
 
   // `updateUISettings` merges only the first level, so the whole `tutorials`
   // object has to be read, merged and written back as one value.
@@ -114,6 +215,13 @@ export function useTutorials() {
     () => allConversations.value?.[0]?.id ?? null
   );
 
+  // Same idea for the record-scoped tours: the contact detail page and the
+  // inbox settings page only exist for a concrete id, so a tour that teaches
+  // them runs against the first record the account has.
+  const firstContactId = computed(() => allContacts.value?.[0]?.id ?? null);
+
+  const firstInboxId = computed(() => allInboxes.value?.[0]?.id ?? null);
+
   /**
    * Steps the current user is allowed to see. Filtering here — not while the
    * tour runs — keeps the progress counter honest.
@@ -125,13 +233,16 @@ export function useTutorials() {
 
     return tour.steps.filter(step => {
       if (step.requiresConversation && !firstConversationId.value) return false;
+      if (step.requiresContact && !firstContactId.value) return false;
+      if (step.requiresInbox && !firstInboxId.value) return false;
       return isVisible(step);
     });
   };
 
   /**
-   * Where the tour has to start. Conversation tours resolve to a real chat so
-   * their anchors exist; everything else uses the declared route.
+   * Where the tour has to start. Record-scoped tours resolve to a real
+   * conversation, contact or inbox so their anchors exist; everything else uses
+   * the declared route.
    * @param {Object} tour
    * @returns {Object|null}
    */
@@ -141,6 +252,18 @@ export function useTutorials() {
       return {
         name: 'inbox_conversation',
         params: { conversation_id: firstConversationId.value },
+      };
+    }
+    if (tour.contactScoped && firstContactId.value) {
+      return {
+        name: 'contacts_edit',
+        params: { contactId: firstContactId.value },
+      };
+    }
+    if (tour.inboxScoped && firstInboxId.value) {
+      return {
+        name: 'settings_inbox_show',
+        params: { inboxId: firstInboxId.value },
       };
     }
     return tour.route;
@@ -229,6 +352,8 @@ export function useTutorials() {
   return {
     // state
     tours,
+    categories,
+    toursForCurrentRoute,
     activeTour,
     activeStepIndex,
     isRunning,
@@ -253,6 +378,9 @@ export function useTutorials() {
     dismissHint,
     clearFinishedTour,
     canRunOnThisScreen,
+    toursForRoute,
+    searchTours,
+    tourI18nKey,
     // engine internals
     resolveSteps,
     resolveTourRoute,

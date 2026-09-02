@@ -189,7 +189,14 @@ const {
 // A guided tour needs the labels and the leaves on screen; the collapsed rail
 // hides both. Overriding the derived state (instead of writing sidebar_width)
 // keeps the user's own preference intact and restores it when the tour ends.
-const { isRunning: isTourRunning } = useTutorialsUI();
+const { isRunning: isTourRunning, requestedSidebarGroup } = useTutorialsUI();
+
+// A tour step can point at a leaf inside a collapsible group. `expandedItem` is
+// local to this component, so the engine asks through the shared ref instead.
+// Only the ref moves: the stored preference stays whatever the user chose.
+watch(requestedSidebarGroup, name => {
+  if (name) expandedItem.value = name;
+});
 
 // On mobile, sidebar is always expanded (flyout mode)
 const isEffectivelyCollapsed = computed(
@@ -1115,6 +1122,7 @@ const menuItems = computed(() => {
         <button
           v-tooltip="collapseTooltip"
           type="button"
+          data-tour="sidebar-collapse-toggle"
           class="hidden flex-shrink-0 place-content-center rounded-lg transition-colors duration-150 ease-out motion-reduce:transition-none md:grid size-8 text-n-slate-10 hover:bg-n-alpha-2 hover:text-n-slate-12"
           :aria-label="collapseTooltip.content"
           @click="toggleCollapse"

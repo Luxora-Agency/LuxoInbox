@@ -13,6 +13,14 @@ export const isHubOpen = ref(false);
 export const isWelcomeOpen = ref(false);
 export const finishedTourId = ref(null);
 
+// `expandedItem` is local state inside `Sidebar.vue` and is only provided to
+// the sidebar's own subtree, so the engine cannot reach it. It watches this ref
+// instead: a step declaring `before: { expandSidebarGroup: 'Settings' }` writes
+// the group name here and the sidebar opens it. The engine clears it on
+// teardown, which leaves whatever the user had open untouched — the sidebar
+// never writes its stored preference from this path.
+export const requestedSidebarGroup = ref(null);
+
 // localStorage is not reactive; this mirror keeps the hub's "Resume" label and
 // the engine's start index in sync with what we last wrote. Seeded eagerly:
 // filling it lazily would write to the ref from inside the `tours` computed,
@@ -36,5 +44,5 @@ export const closeHub = () => {
  * modules, no driver.js, no i18n copy.
  */
 export function useTutorialsUI() {
-  return { isRunning, isHubOpen, openHub, closeHub };
+  return { isRunning, isHubOpen, openHub, closeHub, requestedSidebarGroup };
 }
