@@ -2,8 +2,9 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'contacts',
+  category: 'contacts',
   icon: 'i-lucide-contact',
-  order: 4,
+  order: 300,
   audience: 'all',
   featureFlag: FEATURE_FLAGS.CRM,
   // Mirrors the meta shared by every contacts route.

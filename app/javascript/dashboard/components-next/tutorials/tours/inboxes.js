@@ -2,8 +2,9 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'inboxes',
+  category: 'channels',
   icon: 'i-lucide-inbox',
-  order: 5,
+  order: 400,
   audience: 'admin',
   featureFlag: null,
   estimatedMinutes: 5,

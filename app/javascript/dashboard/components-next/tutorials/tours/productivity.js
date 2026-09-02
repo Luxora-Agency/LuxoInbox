@@ -2,8 +2,9 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'productivity',
+  category: 'productivity',
   icon: 'i-lucide-zap',
-  order: 7,
+  order: 600,
   audience: 'all',
   featureFlag: null,
   estimatedMinutes: 6,

@@ -1,7 +1,8 @@
 export default {
   id: 'conversations',
+  category: 'conversations',
   icon: 'i-lucide-messages-square',
-  order: 2,
+  order: 200,
   audience: 'all',
   featureFlag: null,
   estimatedMinutes: 5,

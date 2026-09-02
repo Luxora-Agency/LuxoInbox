@@ -13,7 +13,12 @@
       "RESET_ALL_CONFIRM": "Toca otra vez para confirmar",
       "CLOSE": "Cerrar",
       "EMPTY": "Por ahora no hay tutoriales disponibles para tu rol en esta cuenta.",
-      "MOBILE_NOTICE": "Los recorridos guiados necesitan una pantalla de escritorio. Abre LuxoInbox en tu computadora para hacerlos."
+      "MOBILE_NOTICE": "Los recorridos guiados necesitan una pantalla de escritorio. Abre LuxoInbox en tu computadora para hacerlos.",
+      "SEARCH_PLACEHOLDER": "Buscar tutoriales",
+      "NO_RESULTS": "Ningún tutorial coincide con tu búsqueda.",
+      "CATEGORY_PROGRESS": "{completed} de {total}",
+      "ALL_CATEGORIES": "Todas",
+      "VIEW_LIBRARY": "Ver toda la biblioteca"
     },
     "WELCOME": {
       "TITLE": "Te damos la bienvenida a LuxoInbox",
@@ -556,6 +561,2432 @@
             "BODY": "Ya no hace falta repartir a mano. Revisa el informe de agentes en unos días para confirmar que la carga quedó pareja."
           }
         }
+      },
+      "NAVIGATION": {
+        "NAME": "El menú lateral",
+        "DESCRIPTION": "Recorre el menú de la izquierda: dónde vive cada sección y cómo llegar rápido a la que necesitas.",
+        "STEPS": {
+          "INBOX": {
+            "TITLE": "Mi bandeja de entrada",
+            "BODY": "Aquí llegan tus avisos personales: menciones, conversaciones asignadas y mensajes nuevos. Es lo primero que conviene revisar al empezar el día."
+          },
+          "CONVERSATIONS": {
+            "TITLE": "Conversaciones",
+            "BODY": "Este grupo abre todas las vistas de chats: todas, menciones, participar y desatendido. Es donde vas a trabajar la mayor parte del tiempo."
+          },
+          "SUBGROUPS": {
+            "TITLE": "Carpetas, equipos, canales y etiquetas",
+            "BODY": "Dentro del grupo hay subgrupos plegables. Canales lista tus entradas conectadas, Carpetas guarda tus filtros, y Equipos y Etiquetas agrupan por responsable y por tema."
+          },
+          "CONTACTS": {
+            "TITLE": "Contactos",
+            "BODY": "Guarda a las personas que te escriben. Desde aquí ves su ficha, sus datos y todo lo que hablaron contigo antes, sin importar el canal."
+          },
+          "REPORTS": {
+            "TITLE": "Informes",
+            "BODY": "Mide lo que pasa: volumen de conversaciones, tiempos de respuesta, carga por agente y satisfacción. Solo lo ven administradores y roles con permiso de informes."
+          },
+          "SETTINGS": {
+            "TITLE": "Ajustes",
+            "BODY": "Todo lo que configura la cuenta: agentes, equipos, entradas, etiquetas, automatización e integraciones. Se despliega en secciones para que no te pierdas."
+          },
+          "SETTINGS_SECTIONS": {
+            "TITLE": "Las secciones de Ajustes",
+            "BODY": "Ajustes se agrupa en bloques: espacio de trabajo, productividad, IA, datos y cuenta. Configuración de la cuenta abre el general: nombre, idioma y zona horaria."
+          },
+          "SEARCH": {
+            "TITLE": "Buscar",
+            "BODY": "Encuentra mensajes, contactos, conversaciones y artículos desde un solo lugar. También responde al atajo de teclado, sin tocar el ratón."
+          },
+          "COMPOSE": {
+            "TITLE": "Nueva conversación",
+            "BODY": "Escribe tú primero a un contacto por el canal que elijas. Útil para dar seguimiento o retomar un caso que quedó abierto."
+          },
+          "COLLAPSE": {
+            "TITLE": "Contrae el menú",
+            "BODY": "Reduce el menú a una franja de iconos y gana ancho para leer los mensajes. Vuelve a pulsarlo cuando quieras ver los nombres otra vez."
+          }
+        }
+      },
+      "SEARCH_AND_COMMANDS": {
+        "NAME": "Buscar y comandos",
+        "DESCRIPTION": "Encuentra cualquier mensaje o contacto y ejecuta acciones sin soltar el teclado.",
+        "STEPS": {
+          "ENTRY": {
+            "TITLE": "El buscador general",
+            "BODY": "Abre la búsqueda de toda la cuenta. Busca a la vez en mensajes, contactos, conversaciones y artículos del centro de ayuda."
+          },
+          "WHAT_IT_FINDS": {
+            "TITLE": "Qué puedes buscar",
+            "BODY": "Escribe un nombre, un correo, un teléfono o el número de una conversación. También funciona con el texto exacto de un mensaje que recuerdes."
+          },
+          "TABS": {
+            "TITLE": "Los resultados por tipo",
+            "BODY": "Las pestañas separan Conversaciones, Mensajes, Contactos y Artículos. Empieza por la que corresponda y te ahorrarás leer resultados que no te sirven."
+          },
+          "FILTERS": {
+            "TITLE": "Afina la búsqueda",
+            "BODY": "Puedes acotar por remitente, por bandeja de entrada y por rango de fechas. Con eso pasas de cientos de resultados a los cinco que importan."
+          },
+          "TIPS": {
+            "TITLE": "Trucos que ahorran tiempo",
+            "BODY": "Buscar por id de conversación, correo o teléfono da resultados más precisos que buscar por nombre. Tus búsquedas recientes quedan guardadas debajo del campo."
+          },
+          "COMMAND_BAR": {
+            "TITLE": "La barra de comandos",
+            "BODY": "Pulsa Cmd+K o Ctrl+K en cualquier pantalla, escribe lo que quieres hacer y ejecútalo: ir a una sección, cambiar el estado de un chat o lanzar una macro."
+          },
+          "SHORTCUTS": {
+            "TITLE": "Atajos de teclado",
+            "BODY": "Esta opción abre la lista completa de atajos. Los más usados: resolver, abrir la siguiente conversación y cambiar entre respuesta y nota privada."
+          },
+          "FINISH": {
+            "TITLE": "Ya buscas como un experto",
+            "BODY": "Con el buscador y la barra de comandos llegas a cualquier parte en dos segundos. Es el hábito que más tiempo te va a ahorrar."
+          }
+        }
+      },
+      "PROFILE_AND_PREFERENCES": {
+        "NAME": "Tu perfil",
+        "DESCRIPTION": "Configura tu foto, tu firma, tu idioma, tu disponibilidad y la seguridad de tu cuenta.",
+        "STEPS": {
+          "PROFILE": {
+            "TITLE": "Ajustes del perfil",
+            "BODY": "Aquí cambias tu foto, tu nombre visible, tu correo y tu contraseña. El nombre visible es el que ven tus compañeros dentro del panel."
+          },
+          "INTERFACE": {
+            "TITLE": "Interfaz",
+            "BODY": "En la sección Interfaz eliges tu idioma preferido y el tamaño de letra del panel. El idioma es tuyo: no cambia el de tus compañeros."
+          },
+          "SIGNATURE": {
+            "TITLE": "Firma de mensaje personal",
+            "BODY": "Escribe una firma y se añadirá al final de cada mensaje que envíes. Funciona en las entradas de chat en vivo, correo y API."
+          },
+          "SEND_KEY": {
+            "TITLE": "Tecla rápida para enviar",
+            "BODY": "Elige si envías con Enter o con Cmd/Ctrl+Enter. Si sueles escribir mensajes largos, Cmd/Ctrl+Enter te evita enviarlos a medias."
+          },
+          "NOTIFICATIONS": {
+            "TITLE": "Preferencias de notificación",
+            "BODY": "Decide qué te avisa por correo y qué por notificación push: conversación asignada, mención, mensaje nuevo o SLA incumplido."
+          },
+          "AVAILABILITY": {
+            "TITLE": "Tu disponibilidad",
+            "BODY": "Ponte en línea, ocupado o desconectado. La asignación automática solo reparte conversaciones entre los agentes que están en línea."
+          },
+          "AUTO_OFFLINE": {
+            "TITLE": "Desconexión automática",
+            "BODY": "Si lo activas, el sistema te marca sin conexión cuando dejas de usar el panel. Así no se te asignan chats que nadie va a atender."
+          },
+          "APPEARANCE": {
+            "TITLE": "Apariencia",
+            "BODY": "Cambia entre tema claro, oscuro o el del sistema. Si trabajas muchas horas seguidas, el oscuro cansa menos la vista."
+          },
+          "MFA": {
+            "TITLE": "Verificación en dos pasos",
+            "BODY": "En Two-Factor Authentication activas un código temporal desde tu aplicación de autenticación. Guarda los códigos de respaldo en un lugar seguro."
+          },
+          "FINISH": {
+            "TITLE": "Tu cuenta, a tu medida",
+            "BODY": "Ya tienes perfil, firma, idioma y seguridad configurados. Revisa tu disponibilidad cada mañana y el reparto de trabajo funcionará solo."
+          }
+        }
+      },
+      "NOTIFICATIONS_INBOX": {
+        "NAME": "Mi bandeja de entrada",
+        "DESCRIPTION": "Tu lista personal de avisos: qué llega, cómo leerla y cómo dejarla vacía cada día.",
+        "STEPS": {
+          "ENTRY": {
+            "TITLE": "Mi bandeja de entrada",
+            "BODY": "Es tu lista personal de avisos, distinta de la lista de conversaciones. Aquí solo aparece lo que te toca a ti."
+          },
+          "WHAT_ARRIVES": {
+            "TITLE": "Qué llega aquí",
+            "BODY": "Conversaciones asignadas a ti, menciones en notas privadas, mensajes nuevos en chats que sigues y avisos de SLA incumplido."
+          },
+          "READING": {
+            "TITLE": "Leer un aviso",
+            "BODY": "Al abrir un aviso ves la conversación completa al lado y puedes responder sin salir de la bandeja. Se marca como leído al abrirlo."
+          },
+          "DISPLAY": {
+            "TITLE": "El menú Mostrar",
+            "BODY": "Ordena por más reciente, más antiguo o prioridad, y decide si quieres ver también los pospuestos, los leídos y las etiquetas."
+          },
+          "ACTIONS": {
+            "TITLE": "Acciones sobre un aviso",
+            "BODY": "Marca como leído o no leído, pospón o elimina. También puedes marcar todo como leído y dejar la bandeja limpia de una vez."
+          },
+          "SNOOZE": {
+            "TITLE": "Posponer un aviso",
+            "BODY": "Si no puedes atenderlo ahora, posponlo y volverá a aparecer cuando lo indiques. Es mejor que dejarlo sin leer y olvidarlo."
+          },
+          "DIFFERENCE": {
+            "TITLE": "No la confundas con Conversaciones",
+            "BODY": "La bandeja son avisos tuyos; Conversaciones es el trabajo del equipo. Vacía la bandeja cada día, pero trabaja desde las vistas de conversaciones."
+          },
+          "FINISH": {
+            "TITLE": "Bandeja bajo control",
+            "BODY": "Empieza el día por la bandeja para no dejar nada colgando y sigue el resto del turno desde tus vistas de conversaciones."
+          }
+        }
+      },
+      "ACCOUNTS": {
+        "NAME": "Cuentas",
+        "DESCRIPTION": "Qué es una cuenta, cómo cambiar entre varias y qué se comparte entre ellas.",
+        "STEPS": {
+          "CURRENT": {
+            "TITLE": "La cuenta activa",
+            "BODY": "Arriba del menú ves el nombre de la cuenta en la que estás trabajando. Todo lo que aparece en pantalla pertenece solo a esa cuenta."
+          },
+          "SWITCH": {
+            "TITLE": "Cambiar de cuenta",
+            "BODY": "Si perteneces a varias, elígela en esta lista y el panel se recarga con sus conversaciones, contactos e informes. Junto a cada una ves tu rol."
+          },
+          "ISOLATION": {
+            "TITLE": "Cada cuenta es independiente",
+            "BODY": "Conversaciones, contactos, entradas, etiquetas e informes no se mezclan entre cuentas. Lo que hagas en una nunca aparece en otra."
+          },
+          "ROLES": {
+            "TITLE": "Tu rol cambia por cuenta",
+            "BODY": "Puedes ser administrador en una cuenta y agente en otra. Por eso el menú lateral no siempre te muestra las mismas secciones."
+          },
+          "SHARED_PROFILE": {
+            "TITLE": "Tu perfil sí es único",
+            "BODY": "Foto, nombre, correo y contraseña son tuyos y viajan contigo. La disponibilidad y las notificaciones, en cambio, se ajustan en cada cuenta."
+          },
+          "FINISH": {
+            "TITLE": "Sabes dónde estás parado",
+            "BODY": "Antes de responder, confirma la cuenta activa. Es el error más común cuando se trabaja con varias marcas a la vez."
+          }
+        }
+      },
+      "CONVERSATION_VIEWS": {
+        "NAME": "Vistas de conversaciones",
+        "DESCRIPTION": "Todas, menciones, participar y desatendido, más los subgrupos de carpetas, equipos, canales y etiquetas.",
+        "STEPS": {
+          "GROUP": {
+            "TITLE": "El grupo Conversaciones",
+            "BODY": "Reúne todas las formas de mirar el mismo trabajo. Cambiar de vista no cambia los datos: cambia el recorte que ves."
+          },
+          "ALL": {
+            "TITLE": "Todas las conversaciones",
+            "BODY": "La vista completa de la cuenta, según lo que tu rol te permita ver. Úsala para tener el panorama, no para el día a día."
+          },
+          "MENTIONS": {
+            "TITLE": "Menciones",
+            "BODY": "Solo las conversaciones donde un compañero te nombró en una nota privada. Suelen ser pedidos de ayuda: revísalas pronto."
+          },
+          "PARTICIPATING": {
+            "TITLE": "Participar",
+            "BODY": "Las conversaciones en las que participaste aunque no sean tuyas. Te sirve para seguir un caso que derivaste a otra persona."
+          },
+          "UNATTENDED": {
+            "TITLE": "Desatendido",
+            "BODY": "Chats con mensajes del cliente que todavía no recibieron ninguna respuesta del equipo. Es la vista que evita que alguien quede esperando."
+          },
+          "FOLDERS": {
+            "TITLE": "Carpetas",
+            "BODY": "Cada carpeta es un filtro guardado con nombre. Crea una para lo que revisas todos los días y la tendrás siempre a un clic."
+          },
+          "TEAMS": {
+            "TITLE": "Equipos",
+            "BODY": "Agrupa las conversaciones asignadas a cada equipo: ventas, soporte, facturación. Útil cuando cubres a un compañero."
+          },
+          "CHANNELS": {
+            "TITLE": "Canales",
+            "BODY": "Una entrada por cada canal conectado: web, WhatsApp, correo, redes. Entra por aquí cuando quieras atender un solo canal."
+          },
+          "LABELS": {
+            "TITLE": "Etiquetas",
+            "BODY": "Filtra por el tema que le pusiste a la conversación: reclamo, envío, devolución. Las etiquetas se aplican desde el panel derecho."
+          },
+          "FINISH": {
+            "TITLE": "Elige la vista correcta",
+            "BODY": "Empieza por Desatendido y por lo asignado a ti, y deja Todas para revisar el panorama. Trabajar por vistas es lo que evita duplicar respuestas."
+          }
+        }
+      },
+      "CONVERSATION_FILTERS": {
+        "NAME": "Filtrar conversaciones",
+        "DESCRIPTION": "Pestañas de estado y asignación, orden, filtros avanzados y cómo guardarlos como carpeta.",
+        "STEPS": {
+          "STATUS": {
+            "TITLE": "Filtra por estado",
+            "BODY": "Abiertas, Resueltas, Pendientes, Postpuestas o Todos. Trabaja siempre desde Abiertas y usa el resto para revisar o auditar."
+          },
+          "ASSIGNEE": {
+            "TITLE": "Mías, Sin asignar y Todos",
+            "BODY": "Mías son tus conversaciones, Sin asignar las que nadie tomó todavía y Todos el total de la cuenta. Empieza por las tuyas y luego ayuda con las libres."
+          },
+          "SORT": {
+            "TITLE": "Ordenar la lista",
+            "BODY": "Ordena por última actividad, fecha de creación, prioridad o tiempo de espera. Ordenar por espera es la mejor forma de no dejar a nadie colgado."
+          },
+          "ADVANCED": {
+            "TITLE": "Filtrar conversaciones",
+            "BODY": "Abre el panel de filtros avanzados para combinar condiciones: canal, agente, equipo, etiqueta, estado, prioridad o atributos del contacto."
+          },
+          "PANEL": {
+            "TITLE": "Arma tu filtro",
+            "BODY": "Añade una condición por línea y combínalas con las opciones de unión. Cuando esté listo, pulsa Aplicar filtros y la lista se recorta al instante."
+          },
+          "SAVE": {
+            "TITLE": "Guardar filtro",
+            "BODY": "Si un filtro te sirve todos los días, guárdalo con un nombre y se convertirá en una carpeta dentro del grupo Conversaciones."
+          },
+          "RESET": {
+            "TITLE": "Limpiar filtros",
+            "BODY": "Devuelve la lista a su estado normal. Úsalo siempre que dejes de ver conversaciones que sabes que existen."
+          },
+          "FOLDERS": {
+            "TITLE": "Tus carpetas en el menú",
+            "BODY": "Los filtros guardados aparecen aquí como Carpetas, listos para un solo clic. Desde la misma cabecera puedes editarlas o eliminarlas."
+          },
+          "FINISH": {
+            "TITLE": "La lista, a tu medida",
+            "BODY": "Estado, asignación, orden y filtros avanzados se combinan entre sí. Guarda los dos o tres que uses a diario y olvídate de volver a armarlos."
+          }
+        }
+      },
+      "BULK_ACTIONS": {
+        "NAME": "Acciones masivas",
+        "DESCRIPTION": "Selecciona varias conversaciones y asígnalas, etiquétalas o ciérralas de una sola vez.",
+        "STEPS": {
+          "WHERE": {
+            "TITLE": "Trabajar de a muchas",
+            "BODY": "Cuando la lista se acumula, no la abras una por una. Puedes seleccionar varias conversaciones y aplicarles la misma acción de golpe."
+          },
+          "SELECT": {
+            "TITLE": "La casilla de selección",
+            "BODY": "Marca la casilla de una conversación para seleccionarla. En la vista compacta aparece al pasar el cursor sobre la foto del contacto."
+          },
+          "BAR": {
+            "TITLE": "La barra de acciones",
+            "BODY": "Al seleccionar aparece esta barra con el total elegido y todo lo que puedes hacer con ellas. Limpiar deshace la selección."
+          },
+          "AGENT": {
+            "TITLE": "Asignar un agente",
+            "BODY": "Reparte el lote entre las personas del equipo, o quítales el agente para devolverlas a Sin asignar."
+          },
+          "TEAM": {
+            "TITLE": "Asignar equipo",
+            "BODY": "Manda el lote al equipo que corresponde: ventas, soporte, facturación. Después cada equipo lo reparte internamente."
+          },
+          "LABEL": {
+            "TITLE": "Asignar o quitar etiquetas",
+            "BODY": "Clasifica muchas conversaciones con el mismo tema en un solo paso, o retira una etiqueta que ya no aplica."
+          },
+          "STATUS": {
+            "TITLE": "Cambiar estado",
+            "BODY": "Resuelve, reabre o pospón todo el lote. Es la forma más rápida de cerrar una tanda que ya quedó atendida."
+          },
+          "SELECT_ALL": {
+            "TITLE": "Seleccionar toda la página",
+            "BODY": "Marca de una vez todas las conversaciones visibles. Combínalo con un filtro para actuar sobre un grupo concreto."
+          },
+          "SCOPE": {
+            "TITLE": "Solo la página que ves",
+            "BODY": "La selección alcanza únicamente las conversaciones cargadas en pantalla, no toda la cuenta. Baja y vuelve a seleccionar si necesitas más."
+          },
+          "FINISH": {
+            "TITLE": "Cierra tandas en segundos",
+            "BODY": "Filtra, selecciona y aplica. Con este hábito, una lista de cincuenta conversaciones se ordena en un minuto."
+          }
+        }
+      },
+      "CONVERSATION_ACTIONS": {
+        "NAME": "Cerrar conversaciones",
+        "DESCRIPTION": "Resolver, posponer, marcar como pendiente y las demás acciones de la cabecera del chat.",
+        "STEPS": {
+          "HEADER": {
+            "TITLE": "La cabecera del chat",
+            "BODY": "Reúne todo lo que puedes hacer con la conversación abierta: cerrarla, posponerla, llamar o consultar sus tiempos comprometidos."
+          },
+          "RESOLVE": {
+            "TITLE": "Resolver",
+            "BODY": "Marca la conversación como atendida y la saca de la lista de abiertas. Si el cliente vuelve a escribir, se reabre sola."
+          },
+          "MORE": {
+            "TITLE": "El desplegable de resolver",
+            "BODY": "La flecha junto al botón abre las formas de cerrar que no son un cierre definitivo: posponer y marcar como pendiente."
+          },
+          "SNOOZE": {
+            "TITLE": "Posponer",
+            "BODY": "Elige hasta cuándo: la siguiente respuesta, mañana o la próxima semana. La conversación sale de tu lista y vuelve sola en ese momento."
+          },
+          "PENDING": {
+            "TITLE": "Marcar como pendiente",
+            "BODY": "Úsalo cuando ya respondiste pero el caso sigue abierto por algo interno: un envío, una devolución, una autorización. No cuenta como resuelto."
+          },
+          "OTHER": {
+            "TITLE": "Otras acciones",
+            "BODY": "El menú de tres puntos suma silenciar el contacto, enviar la transcripción por correo y marcar la conversación como no leída."
+          },
+          "SLA": {
+            "TITLE": "El SLA de la conversación",
+            "BODY": "Muestra el tiempo comprometido para la primera respuesta, la siguiente y la resolución. En rojo significa que ya se venció."
+          },
+          "CALL": {
+            "TITLE": "Llamar al contacto",
+            "BODY": "Si el canal lo permite, inicia una llamada desde la misma conversación. La llamada queda registrada en el historial del contacto."
+          },
+          "ASSIGN": {
+            "TITLE": "Asignar y priorizar",
+            "BODY": "En Acciones de conversación del panel derecho eliges agente, equipo, prioridad y etiquetas. Asignar evita que dos personas respondan lo mismo."
+          },
+          "FINISH": {
+            "TITLE": "Cada chat, con un cierre",
+            "BODY": "Resuelto, pospuesto o pendiente: ninguna conversación debería quedarse abierta sin motivo. Tus informes y tu equipo te lo van a agradecer."
+          }
+        }
+      },
+      "CONTACT_PANEL": {
+        "NAME": "El panel del contacto",
+        "DESCRIPTION": "Todo lo que sabes del cliente mientras respondes: datos, historial, atributos, notas y adjuntos.",
+        "STEPS": {
+          "PANEL": {
+            "TITLE": "El panel derecho",
+            "BODY": "Acompaña a cada conversación con el contexto del cliente. Puedes arrastrar sus secciones para dejar arriba la que más consultas."
+          },
+          "SWITCH": {
+            "TITLE": "Contacto o Copilot",
+            "BODY": "Alterna entre la ficha del contacto y el asistente de IA. También puedes ocultar el panel y ganar ancho para leer los mensajes."
+          },
+          "INFO": {
+            "TITLE": "Detalles de contacto",
+            "BODY": "Nombre, foto, correo, teléfono y canal por el que escribe. Desde aquí abres su ficha completa si necesitas editarla."
+          },
+          "ACTIONS": {
+            "TITLE": "Acciones de conversación",
+            "BODY": "Asigna agente y equipo, define la prioridad y aplica etiquetas. Es el bloque que más vas a usar de todo el panel."
+          },
+          "PARTICIPANTS": {
+            "TITLE": "Participantes",
+            "BODY": "Las personas del equipo que siguen esta conversación. Reciben aviso de cada mensaje nuevo aunque no sean el agente asignado."
+          },
+          "CONVERSATION_INFO": {
+            "TITLE": "Información de la conversación",
+            "BODY": "Datos técnicos del contacto: navegador, sistema, ubicación y página desde la que escribió. Ayuda a reproducir un problema."
+          },
+          "ATTRIBUTES": {
+            "TITLE": "Atributos de contacto",
+            "BODY": "Los campos propios de tu negocio: plan, número de cliente, ciudad. Los define un administrador y se rellenan desde aquí."
+          },
+          "PREVIOUS": {
+            "TITLE": "Conversaciones anteriores",
+            "BODY": "Todo lo que este cliente habló contigo antes, por cualquier canal. Léelo antes de responder y evitarás pedirle lo que ya contó."
+          },
+          "NOTES": {
+            "TITLE": "Notas de contacto",
+            "BODY": "Notas permanentes sobre la persona, no sobre un chat concreto. Ideales para acuerdos, preferencias o advertencias del caso."
+          },
+          "FILES": {
+            "TITLE": "Adjuntos",
+            "BODY": "Reúne las imágenes y archivos intercambiados en la conversación. Desde aquí los descargas o saltas al mensaje original."
+          }
+        }
+      },
+      "COMPOSER_ADVANCED": {
+        "NAME": "El editor a fondo",
+        "DESCRIPTION": "Emojis, adjuntos, audios, firma, plantillas y los atajos que aceleran cada respuesta.",
+        "STEPS": {
+          "TOOLBAR": {
+            "TITLE": "La barra del editor",
+            "BODY": "Debajo del área de escritura tienes todo lo que puedes añadir al mensaje. Los botones cambian según el canal por el que escribe el cliente."
+          },
+          "EMOJI": {
+            "TITLE": "Emojis",
+            "BODY": "Abre el selector para añadir un emoji sin salir del teclado. Con moderación, ayudan a que el mensaje suene cercano."
+          },
+          "ATTACHMENTS": {
+            "TITLE": "Adjuntar archivos",
+            "BODY": "Sube imágenes, PDF o documentos, o arrástralos sobre el editor. Cada canal tiene sus propios límites de tamaño y formato."
+          },
+          "AUDIO": {
+            "TITLE": "Grabar un audio",
+            "BODY": "Graba una nota de voz desde el panel y envíala como mensaje. Útil para explicaciones largas en los canales que lo admiten."
+          },
+          "SIGNATURE": {
+            "TITLE": "Firma del mensaje",
+            "BODY": "Activa o desactiva tu firma personal solo para este mensaje. El texto de la firma se configura en los ajustes de tu perfil."
+          },
+          "QUOTE": {
+            "TITLE": "Hilo citado",
+            "BODY": "En correo, decide si incluyes el hilo anterior debajo de tu respuesta. Sin él, el mensaje se lee mucho más limpio."
+          },
+          "WA_TEMPLATE": {
+            "TITLE": "Plantillas de WhatsApp",
+            "BODY": "Pasadas 24 horas sin respuesta del cliente, WhatsApp solo permite escribir con una plantilla aprobada. Aquí eliges cuál enviar."
+          },
+          "ARTICLE": {
+            "TITLE": "Insertar un artículo",
+            "BODY": "Busca un artículo del centro de ayuda y pégalo como enlace en tu respuesta. Resuelves más rápido y el cliente se queda con la guía."
+          },
+          "SHORTCUTS": {
+            "TITLE": "Tres atajos dentro del texto",
+            "BODY": "Escribe / para insertar una respuesta predefinida y {'@'} para mencionar a un compañero en una nota privada. Las variables entre llaves dobles insertan datos del cliente."
+          },
+          "SEND": {
+            "TITLE": "Enviar",
+            "BODY": "Envía con el botón o con tu tecla rápida. También puedes programar el envío o enviar y resolver la conversación en un solo paso."
+          }
+        }
+      },
+      "COPILOT": {
+        "NAME": "Copilot",
+        "DESCRIPTION": "El asistente de IA que te resume la conversación y te propone la respuesta.",
+        "STEPS": {
+          "WHERE": {
+            "TITLE": "Dónde vive Copilot",
+            "BODY": "En el conmutador del panel derecho, junto a la ficha del contacto. Copilot te acompaña dentro de la conversación, sin cambiar de pantalla."
+          },
+          "PANEL": {
+            "TITLE": "El panel de Copilot",
+            "BODY": "Lee la conversación abierta y responde en el idioma en el que le escribas. Si no sabes por dónde empezar, usa las sugerencias que te propone."
+          },
+          "ASK": {
+            "TITLE": "Qué pedirle",
+            "BODY": "Un resumen del caso, un borrador de respuesta, un cambio de tono o la traducción del último mensaje. Cuanto más concreto el pedido, mejor la respuesta."
+          },
+          "SOURCES": {
+            "TITLE": "De dónde saca la información",
+            "BODY": "Se apoya en la conversación abierta y en el conocimiento del asistente de IA de la cuenta: sus documentos y sus preguntas frecuentes."
+          },
+          "INSERT": {
+            "TITLE": "Llevar la respuesta al editor",
+            "BODY": "Copia el borrador al editor, revísalo y ajústalo antes de enviar. Copilot propone; la respuesta que sale sigue siendo tuya."
+          },
+          "LAUNCHER": {
+            "TITLE": "Copilot fuera del chat",
+            "BODY": "Fuera de una conversación, este botón flotante abre Copilot en cualquier pantalla para consultas generales."
+          },
+          "FINISH": {
+            "TITLE": "Un compañero más",
+            "BODY": "Úsalo para arrancar la respuesta, no para enviarla a ciegas. Revisar siempre el borrador es lo que mantiene la calidad."
+          }
+        }
+      },
+      "CONTACTS_SEARCH_SEGMENTS": {
+        "NAME": "Buscar y segmentar",
+        "DESCRIPTION": "Encuentra contactos con búsqueda y filtros, y guarda como segmentos las listas que repites.",
+        "STEPS": {
+          "SEARCH": {
+            "TITLE": "Busca un contacto",
+            "BODY": "Escribe un nombre, un correo o un teléfono y la lista se filtra al instante. Es la vía más rápida cuando ya sabes a quién buscas."
+          },
+          "FILTER": {
+            "TITLE": "Filtra por lo que necesitas",
+            "BODY": "Este botón abre el panel Filtrar contactos. Sirve para armar listas por país, ciudad, empresa, última actividad o cualquier atributo."
+          },
+          "CONDITIONS": {
+            "TITLE": "Combina varias condiciones",
+            "BODY": "Suma condiciones con Añadir Filtro y aplícalas con Aplicar filtros. Cuando hay filtros activos aparece un icono de disquete para guardarlos."
+          },
+          "SAVE_SEGMENT": {
+            "TITLE": "Guarda el filtro como segmento",
+            "BODY": "Ponle un nombre y quedará disponible para todo el equipo. Un segmento se recalcula solo: siempre muestra los contactos que cumplen esas condiciones."
+          },
+          "SEGMENTS_LIST": {
+            "TITLE": "Tus segmentos guardados",
+            "BODY": "Dentro de Contactos, en la barra lateral, el grupo Segmentos lista lo que guardaste. Un clic te devuelve esa misma lista ya filtrada."
+          },
+          "TAGGED_WITH": {
+            "TITLE": "Etiquetado con",
+            "BODY": "Aquí aparece cada etiqueta que usas en tus contactos. Es el atajo para ver, por ejemplo, todos los clientes marcados como mayoristas."
+          },
+          "ACTIVE": {
+            "TITLE": "Contactos activos",
+            "BODY": "El enlace Activo muestra a quienes están navegando tu sitio en este momento. Sirve para ofrecer ayuda antes de que se vayan."
+          },
+          "DELETE_SEGMENT": {
+            "TITLE": "Editar o eliminar un segmento",
+            "BODY": "Abre el segmento y usa el lápiz para cambiar sus condiciones o la papelera para borrarlo. Borrar el segmento no elimina ningún contacto."
+          },
+          "FINISH": {
+            "TITLE": "Listo, ya segmentas solo",
+            "BODY": "Guarda las búsquedas que repites cada semana y tendrás tus listas de trabajo siempre a un clic."
+          }
+        }
+      },
+      "CONTACT_DETAIL": {
+        "NAME": "Ficha del contacto",
+        "DESCRIPTION": "Todo lo que sabes de una persona: datos, atributos, historial, notas, archivos y fusión de duplicados.",
+        "STEPS": {
+          "FROM_LIST": {
+            "TITLE": "Entra desde la lista",
+            "BODY": "Abre Todos los contactos y haz clic en una fila. Se abre su ficha completa sin perder el lugar en el que estabas."
+          },
+          "PROFILE": {
+            "TITLE": "La ficha del contacto",
+            "BODY": "A la izquierda están sus datos: nombre, correo, teléfono, empresa, ciudad y redes sociales. Es la fuente de verdad para todo el equipo."
+          },
+          "EDIT": {
+            "TITLE": "Edita y bloquea",
+            "BODY": "Cambia cualquier dato desde Editar detalles del contacto y sube su avatar. Si hace falta, Bloquear contacto corta la entrada de sus mensajes."
+          },
+          "TABS": {
+            "TITLE": "El panel de la derecha",
+            "BODY": "Tiene cinco pestañas: Atributos, Historial, Notas, Media y Combinar. Cada una suma contexto que te ahorra preguntar lo mismo dos veces."
+          },
+          "ATTRIBUTES": {
+            "TITLE": "Atributos",
+            "BODY": "Los campos propios de tu negocio: plan contratado, número de cliente, ciudad de entrega. Se definen en Ajustes y se rellenan aquí."
+          },
+          "HISTORY": {
+            "TITLE": "Historial",
+            "BODY": "Reúne sus conversaciones anteriores con cualquier agente y por cualquier canal. Léelo antes de responder para no repetir preguntas."
+          },
+          "NOTES_MEDIA": {
+            "TITLE": "Notas y Media",
+            "BODY": "En Notas dejas apuntes internos que el cliente nunca ve. En Media encuentras los archivos e imágenes que compartió contigo."
+          },
+          "MERGE": {
+            "TITLE": "Combinar duplicados",
+            "BODY": "Si la misma persona te escribió por dos canales, Combinar une las dos fichas. Elige el contacto principal: sus atributos tienen prioridad."
+          },
+          "FINISH": {
+            "TITLE": "Ya conoces la ficha",
+            "BODY": "Mantén los datos al día y cada conversación empezará con contexto en lugar de con preguntas."
+          }
+        }
+      },
+      "CONTACTS_BULK_IMPORT": {
+        "NAME": "Acciones masivas",
+        "DESCRIPTION": "Etiqueta o elimina muchos contactos a la vez e incorpora tu base desde CSV o desde otra herramienta.",
+        "STEPS": {
+          "WHY": {
+            "TITLE": "Trabaja de a muchos",
+            "BODY": "Cuando tienes cientos de contactos, tocarlos uno por uno no escala. La lista te deja seleccionar varios y aplicarles la misma acción."
+          },
+          "SELECT": {
+            "TITLE": "Selecciona contactos",
+            "BODY": "Pasa el cursor sobre el avatar de un contacto y aparecerá una casilla. Marca las filas que quieras y se abrirá una barra de acciones."
+          },
+          "BULK_BAR": {
+            "TITLE": "La barra de acciones",
+            "BODY": "Aparece sobre la lista en cuanto hay una selección: cuenta cuántos llevas, te deja tomar todos los de la página y ofrece las acciones."
+          },
+          "LABELS": {
+            "TITLE": "Etiquetar en lote",
+            "BODY": "Asignar etiquetas las añade a todos los seleccionados y Quitar etiquetas hace lo contrario. Así preparas segmentos o campañas en segundos."
+          },
+          "CSV": {
+            "TITLE": "Importar contactos por CSV",
+            "BODY": "En el menú de acciones de la cabecera tienes Importar contactos: descarga el csv de ejemplo, respeta sus columnas y súbelo."
+          },
+          "DATA_PAGE": {
+            "TITLE": "Datos: importaciones",
+            "BODY": "En Ajustes, la sección Datos trae contactos y conversaciones desde otra herramienta de soporte. Cada importación corre en segundo plano."
+          },
+          "DATA_NEW": {
+            "TITLE": "Nueva importación",
+            "BODY": "Elige la fuente, pega su clave de acceso y marca qué datos traer. Verás el progreso y podrás descargar los registros omitidos."
+          },
+          "FINISH": {
+            "TITLE": "Tu base, dentro",
+            "BODY": "Con la importación y las acciones masivas puedes mudarte de herramienta sin perder historial ni etiquetas."
+          }
+        }
+      },
+      "COMPANIES": {
+        "NAME": "Empresas",
+        "DESCRIPTION": "Agrupa contactos por empresa y consulta su ficha, su gente, su historial y sus notas.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Qué es una empresa",
+            "BODY": "Una empresa agrupa a varios contactos de la misma organización. Sirve para atender cuentas completas y no personas sueltas."
+          },
+          "NAVIGATION": {
+            "TITLE": "Dónde están las empresas",
+            "BODY": "Empresas es una entrada propia de la barra lateral, justo al lado de Contactos. Desde ahí ves todas las de la cuenta."
+          },
+          "LIST": {
+            "TITLE": "La lista de empresas",
+            "BODY": "Cada fila muestra el nombre, el dominio, cuántos contactos tiene y su última actividad. Haz clic para abrir su ficha."
+          },
+          "SEARCH_SORT": {
+            "TITLE": "Busca y ordena",
+            "BODY": "Busca por nombre desde el campo superior y usa Ordenar por para listarlas por dominio, número de contactos o última actividad."
+          },
+          "CREATE": {
+            "TITLE": "Añadir empresa",
+            "BODY": "Con Añadir empresa registras una nueva: con el nombre y el dominio alcanza. El dominio ayuda a vincular contactos automáticamente."
+          },
+          "DETAIL": {
+            "TITLE": "La ficha de la empresa",
+            "BODY": "Al abrirla ves su perfil a la izquierda y, a la derecha, cuatro pestañas: Atributos, Contactos, Historial y Notas."
+          },
+          "CONTACTS": {
+            "TITLE": "Su gente",
+            "BODY": "En Contactos vinculas personas ya existentes con Vincular contacto, o las quitas de la empresa si cambiaron de trabajo."
+          },
+          "HISTORY_NOTES": {
+            "TITLE": "Historial y Notas",
+            "BODY": "Historial reúne las conversaciones de todos sus contactos y Notas guarda los acuerdos y el contexto interno de la cuenta."
+          },
+          "FINISH": {
+            "TITLE": "Cuentas bajo control",
+            "BODY": "Con las empresas al día sabes de un vistazo con quién hablas y qué pasó antes con esa cuenta."
+          }
+        }
+      },
+      "INBOX_WEBSITE": {
+        "NAME": "Chat en tu sitio web",
+        "DESCRIPTION": "Crea la entrada de Sitio web, configura su widget y pega el código en tu página.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Qué es una entrada",
+            "BODY": "Una entrada es un canal conectado: un sitio web, un WhatsApp, un correo. Todo lo que llega por ahí aparece en tus conversaciones."
+          },
+          "NAVIGATION": {
+            "TITLE": "Ajustes, Entradas",
+            "BODY": "En la barra lateral abre Ajustes y entra en Entradas. Ahí ves las que ya existen y creas nuevas."
+          },
+          "CHANNELS": {
+            "TITLE": "Elegir canal",
+            "BODY": "Esta cuadrícula lista todos los canales que puedes conectar. Cada tarjeta abre su propio formulario de configuración."
+          },
+          "CARD": {
+            "TITLE": "Sitio web",
+            "BODY": "Es el chat en vivo que verán tus visitantes. No necesitas cuenta de terceros: LuxoInbox genera el widget por ti."
+          },
+          "FORM": {
+            "TITLE": "Configura el widget",
+            "BODY": "Indica el nombre de la entrada, el dominio del sitio web y la cabecera de bienvenida. Eso es lo que el visitante verá en tu página."
+          },
+          "GREETING": {
+            "TITLE": "Saludo y tiempo de respuesta",
+            "BODY": "Activa Habilitar bienvenida al canal para enviar un saludo automático y elige el tiempo de respuesta que se mostrará en el chat."
+          },
+          "AGENTS": {
+            "TITLE": "Añadir agentes",
+            "BODY": "El siguiente paso pregunta quién atenderá esta entrada. Solo esos agentes verán sus conversaciones y puedes cambiarlo cuando quieras."
+          },
+          "SCRIPT": {
+            "TITLE": "Copia el código",
+            "BODY": "La última pantalla muestra un script. Pégalo al final del cuerpo de tu sitio web y el chat empezará a funcionar."
+          },
+          "FINISH": {
+            "TITLE": "Tu chat ya está en línea",
+            "BODY": "Prueba el widget desde tu propia web: la conversación debería aparecer en segundos en tu lista."
+          }
+        }
+      },
+      "INBOX_WHATSAPP": {
+        "NAME": "Conectar WhatsApp",
+        "DESCRIPTION": "Elige entre WhatsApp Cloud, Twilio o el código QR y deja tu número atendiendo desde LuxoInbox.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "WhatsApp como canal",
+            "BODY": "Conectas un número y sus mensajes entran como conversaciones normales. Puedes tener varios números, cada uno con su propia entrada."
+          },
+          "CARD": {
+            "TITLE": "La tarjeta de WhatsApp",
+            "BODY": "Desde Elegir canal abre WhatsApp. El paso siguiente es decidir con qué proveedor se conecta tu número."
+          },
+          "PROVIDERS": {
+            "TITLE": "Elige el proveedor",
+            "BODY": "Aquí defines cómo se conecta tu número. La opción correcta depende de si ya tienes cuenta de WhatsApp Business API o solo el teléfono."
+          },
+          "CLOUD": {
+            "TITLE": "Nube de WhatsApp",
+            "BODY": "Es la vía oficial de Meta. Pide el ID de número de teléfono, el ID de cuenta de negocio y la clave de API del panel de desarrolladores."
+          },
+          "EMBEDDED": {
+            "TITLE": "Configuración rápida con Meta",
+            "BODY": "Si está disponible, te lleva a iniciar sesión en Meta y configura el número y los webhooks sola. Ten a mano un acceso de administrador."
+          },
+          "TWILIO": {
+            "TITLE": "Twilio",
+            "BODY": "Si ya usas Twilio, conéctate con tu Cuenta SID y tu Token de Auth. El número debe estar habilitado para WhatsApp en Twilio."
+          },
+          "EVOLUTION": {
+            "TITLE": "WhatsApp QR",
+            "BODY": "La vía más rápida: genera un código QR y escanéalo desde Dispositivos vinculados en tu teléfono. No necesitas cuenta de API."
+          },
+          "MIGRATION": {
+            "TITLE": "Migrar un número existente",
+            "BODY": "Si tu número ya vive en otra plataforma, la migración manual te guía para traerlo sin perder su verificación."
+          },
+          "FINISH": {
+            "TITLE": "WhatsApp conectado",
+            "BODY": "Envía un mensaje de prueba a ese número: debería abrirse una conversación nueva en tu lista."
+          }
+        }
+      },
+      "INBOX_SOCIAL": {
+        "NAME": "Redes sociales",
+        "DESCRIPTION": "Conecta Facebook, Instagram y TikTok para responder sus mensajes desde un solo lugar.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Mensajes de redes",
+            "BODY": "Cada red se conecta como una entrada más. Sus mensajes directos llegan a tu lista junto con los de WhatsApp o el chat web."
+          },
+          "CHANNELS": {
+            "TITLE": "Elegir canal",
+            "BODY": "Las tarjetas de redes sociales viven en esta cuadrícula. Solo aparecen las que estén habilitadas en tu instalación."
+          },
+          "FACEBOOK": {
+            "TITLE": "Facebook",
+            "BODY": "Conecta una página de Facebook. Al elegirla se te pedirá iniciar sesión y autorizar el acceso a los mensajes de esa página."
+          },
+          "FACEBOOK_SETUP": {
+            "TITLE": "Elige la página",
+            "BODY": "Tras autorizar, selecciona la página en el desplegable y ponle nombre a la entrada. Necesitas ser administrador de esa página."
+          },
+          "INSTAGRAM": {
+            "TITLE": "Instagram",
+            "BODY": "Conecta una cuenta profesional de Instagram para recibir sus mensajes directos. La cuenta debe permitir el acceso a mensajes."
+          },
+          "TIKTOK": {
+            "TITLE": "TikTok",
+            "BODY": "Conecta tu cuenta de TikTok para atender los mensajes que llegan por ahí. Aparece solo si tu instalación tiene la app configurada."
+          },
+          "PERMISSIONS": {
+            "TITLE": "Permisos y titularidad",
+            "BODY": "Todas estas conexiones dependen de permisos que otorgas en la red social. Conéctate siempre con la cuenta dueña del perfil."
+          },
+          "REAUTHORIZE": {
+            "TITLE": "Reconectar cuando caduca",
+            "BODY": "Si la autorización expira, la entrada muestra un aviso para volver a conectarla. Hazlo pronto: mientras tanto no entran mensajes."
+          },
+          "FINISH": {
+            "TITLE": "Tus redes, en una bandeja",
+            "BODY": "Con las redes conectadas dejas de saltar entre aplicaciones y respondes todo desde la misma lista."
+          }
+        }
+      },
+      "INBOX_EMAIL": {
+        "NAME": "Canal de correo",
+        "DESCRIPTION": "Recibe y responde correos desde LuxoInbox con Google, Microsoft, reenvío o IMAP y SMTP.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "El correo como canal",
+            "BODY": "Cada correo entrante se convierte en una conversación y tus respuestas salen como correo. El cliente no nota la diferencia."
+          },
+          "NAVIGATION": {
+            "TITLE": "Ajustes, Entradas",
+            "BODY": "Abre Ajustes en la barra lateral y entra en Entradas para crear el canal de correo."
+          },
+          "CHANNELS": {
+            "TITLE": "Elegir canal",
+            "BODY": "En la cuadrícula de canales busca la tarjeta de correo. Desde ahí eliges cómo se conecta tu casilla."
+          },
+          "CARD": {
+            "TITLE": "E-mail",
+            "BODY": "Es la entrada para tu casilla de soporte: la que publicas en tu web, en tus facturas o en tu firma."
+          },
+          "PROVIDERS": {
+            "TITLE": "Tres formas de conectar",
+            "BODY": "Puedes usar Google, Microsoft u Otros proveedores. Las dos primeras se autorizan con un clic; la tercera pide los datos a mano."
+          },
+          "OAUTH": {
+            "TITLE": "Google o Microsoft",
+            "BODY": "Inicia sesión con la cuenta de la casilla y autoriza el acceso. Quedan listos el envío y la recepción sin tocar ninguna contraseña."
+          },
+          "OTHER_PROVIDERS": {
+            "TITLE": "IMAP y SMTP",
+            "BODY": "Con Otros proveedores indicas servidor, puerto y credenciales: IMAP para recibir y SMTP para enviar. Sin ambos el correo no circula."
+          },
+          "FORWARDING": {
+            "TITLE": "Dirección de reenvío",
+            "BODY": "Al terminar verás una dirección propia de LuxoInbox. Configura tu casilla para reenviar ahí y todo entrará a esta entrada."
+          },
+          "FINISH": {
+            "TITLE": "Correo conectado",
+            "BODY": "Mándate un correo de prueba a la casilla: en menos de un minuto debería aparecer como conversación."
+          }
+        }
+      },
+      "INBOX_MESSAGING": {
+        "NAME": "SMS, Telegram y API",
+        "DESCRIPTION": "Conecta canales de mensajería como SMS, Telegram y Line, o crea el tuyo con el canal API.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Otros canales de mensajes",
+            "BODY": "Además del chat web y de WhatsApp puedes conectar SMS, Telegram, Line o tu propio sistema mediante el canal API."
+          },
+          "CHANNELS": {
+            "TITLE": "Elegir canal",
+            "BODY": "Todas estas opciones viven en la misma cuadrícula. El formulario cambia según el proveedor, pero el flujo es siempre el mismo."
+          },
+          "SMS": {
+            "TITLE": "SMS",
+            "BODY": "Atiende mensajes de texto desde un número propio. Es útil para avisos y para clientes que no tienen datos móviles."
+          },
+          "SMS_PROVIDERS": {
+            "TITLE": "Twilio o Bandwidth",
+            "BODY": "SMS se conecta con Twilio o con Bandwidth, que en español aparece como Ancho de banda. Necesitas sus credenciales y un número ya comprado."
+          },
+          "TELEGRAM": {
+            "TITLE": "Telegram",
+            "BODY": "Crea un bot con BotFather dentro de Telegram, copia su Bot Token y pégalo aquí. En un minuto tienes el canal funcionando."
+          },
+          "LINE": {
+            "TITLE": "Line",
+            "BODY": "Pide el ID del canal LINE, su secreto y su token, que obtienes en la consola de desarrolladores de LINE."
+          },
+          "API": {
+            "TITLE": "Canal API",
+            "BODY": "Para conectar un sistema propio: tú envías los mensajes por la API y recibes los eventos en tu URL de Webhook."
+          },
+          "CALLBACKS": {
+            "TITLE": "URL de devolución de llamada",
+            "BODY": "Varios de estos canales muestran una URL al terminar. Cópiala en el panel del proveedor o los mensajes no llegarán nunca."
+          },
+          "FINISH": {
+            "TITLE": "Más canales, misma bandeja",
+            "BODY": "No importa por dónde escriba el cliente: todo termina en la misma lista de conversaciones."
+          }
+        }
+      },
+      "INBOX_VOICE": {
+        "NAME": "Llamadas de voz",
+        "DESCRIPTION": "Crea el canal Voice con Twilio y activa las llamadas sobre tu número de WhatsApp.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Hablar, no solo escribir",
+            "BODY": "El canal de voz permite recibir llamadas dentro de LuxoInbox, con la ficha del contacto a la vista mientras atiendes."
+          },
+          "CHANNELS": {
+            "TITLE": "Elegir canal",
+            "BODY": "Las tarjetas de voz están al final de la cuadrícula de canales, junto a las de mensajería."
+          },
+          "VOICE_CARD": {
+            "TITLE": "Voice",
+            "BODY": "Conecta un número de Twilio para atender llamadas telefónicas. El número tiene que estar ya comprado en tu cuenta de Twilio."
+          },
+          "CREDENTIALS": {
+            "TITLE": "Credenciales de Twilio",
+            "BODY": "El formulario pide Cuenta SID, Token de Auth, API Key SID y Clave API secreta, además del número en formato internacional."
+          },
+          "TWILIO_URLS": {
+            "TITLE": "Configura Twilio",
+            "BODY": "Al terminar verás la Twilio Voice URL y la URL de estado. Pégalas en tu número de Twilio o las llamadas no entrarán."
+          },
+          "WHATSAPP_CALL": {
+            "TITLE": "Llamada de WhatsApp",
+            "BODY": "Permite responder llamadas de voz sobre tu número de WhatsApp. Requiere que Meta tenga habilitadas las llamadas en ese número."
+          },
+          "TABS": {
+            "TITLE": "Ajustes de voz de la entrada",
+            "BODY": "Una vez creada, la entrada suma las pestañas Voz y Llamadas, donde afinas cómo se comportan las llamadas."
+          },
+          "FINISH": {
+            "TITLE": "Listo para atender llamadas",
+            "BODY": "Haz una llamada de prueba a tu número: deberías verla llegar en el panel de llamadas."
+          }
+        }
+      },
+      "INBOX_SETTINGS": {
+        "NAME": "Ajustes de una entrada",
+        "DESCRIPTION": "Recorre las pestañas de una entrada: ajustes, colaboradores, horarios, encuestas y bots.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Cada entrada se afina aparte",
+            "BODY": "Abre Ajustes, Entradas y elige una. Sus pestañas cambian según el canal, pero las primeras son iguales para todas."
+          },
+          "GENERAL": {
+            "TITLE": "Ajustes",
+            "BODY": "Nombre, avatar, asignación automática y comportamiento general de la entrada. Es lo primero que conviene revisar al crearla."
+          },
+          "COLLABORATORS": {
+            "TITLE": "Colaboradores",
+            "BODY": "Define qué agentes y equipos atienden esta entrada. Solo ellos verán sus conversaciones y podrán recibir asignaciones."
+          },
+          "BUSINESS_HOURS": {
+            "TITLE": "Horarios",
+            "BODY": "Marca los días y las horas en que atiendes, con tu zona horaria. Fuera de ese rango puedes mostrar un mensaje de ausencia."
+          },
+          "CSAT": {
+            "TITLE": "Encuestas de Satisfacción",
+            "BODY": "Envía una encuesta al resolver la conversación. Sus respuestas alimentan el informe de satisfacción del cliente."
+          },
+          "PRE_CHAT_FORM": {
+            "TITLE": "Pre-formulario de chat",
+            "BODY": "Pide nombre, correo o teléfono antes de iniciar el chat. Te da contexto y una forma de responder si el visitante se va."
+          },
+          "CONFIGURATION": {
+            "TITLE": "Configuración",
+            "BODY": "Los datos técnicos del canal: credenciales, webhooks y, en el caso del correo, los servidores IMAP y SMTP."
+          },
+          "BOT": {
+            "TITLE": "Configuración del bot",
+            "BODY": "Conecta un bot que atienda primero y entregue la conversación a una persona cuando haga falta."
+          },
+          "FINISH": {
+            "TITLE": "Entrada a punto",
+            "BODY": "Revisa estas pestañas cada vez que crees una entrada: evitan la mayoría de los problemas del primer día."
+          }
+        }
+      },
+      "WHATSAPP_TEMPLATES": {
+        "NAME": "Plantillas de WhatsApp",
+        "DESCRIPTION": "Consulta las plantillas aprobadas de tus números de WhatsApp y aprende cuándo usarlas.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Por qué existen las plantillas",
+            "BODY": "WhatsApp solo te deja escribir primero con un mensaje aprobado por Meta. Esas plantillas son las que ves en esta pantalla."
+          },
+          "NAVIGATION": {
+            "TITLE": "Ajustes, Plantillas",
+            "BODY": "En la barra lateral abre Ajustes y entra en Plantillas. Se sincronizan solas desde tus entradas de WhatsApp."
+          },
+          "LIST": {
+            "TITLE": "Tus plantillas",
+            "BODY": "Cada fila muestra el nombre, el idioma, la categoría y el texto de la plantilla, con las entradas en las que está disponible."
+          },
+          "SEARCH": {
+            "TITLE": "Buscar y filtrar",
+            "BODY": "Busca por contenido o nombre y filtra por bandeja o por idioma cuando manejas varios números o varios mercados."
+          },
+          "STATUS": {
+            "TITLE": "El estado importa",
+            "BODY": "Solo puedes enviar las plantillas aprobadas. Si una figura rechazada o pendiente, hay que corregirla con tu proveedor."
+          },
+          "PREVIEW": {
+            "TITLE": "Vista previa",
+            "BODY": "Abre una plantilla para verla tal como le llegará al cliente, con sus botones y sus variables."
+          },
+          "MANAGE": {
+            "TITLE": "Crear y editar",
+            "BODY": "Aquí solo se consultan. Para crear o cambiar una plantilla usa Gestionar en Meta o Gestionar en Twilio, según tu proveedor."
+          },
+          "USE": {
+            "TITLE": "Usarlas al responder",
+            "BODY": "En una conversación de WhatsApp, el editor tiene un botón de plantillas: elige una, completa sus variables y envía."
+          },
+          "FINISH": {
+            "TITLE": "Plantillas dominadas",
+            "BODY": "Ten aprobadas las que más usas y podrás retomar conversaciones fuera de la ventana de 24 horas."
+          }
+        }
+      },
+      "AGENTS": {
+        "NAME": "Agentes",
+        "DESCRIPTION": "Invita a tu equipo, asigna roles y gestiona quién puede responder en tu cuenta.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Quién atiende a tus clientes",
+            "BODY": "Un agente es una persona de tu equipo que puede ver y responder los mensajes de la cuenta. Antes de repartir trabajo, tienes que darles acceso."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Agentes",
+            "BODY": "Todo el alta y baja de personas vive aquí. Es una sección solo para administradores: los agentes no la ven en su barra lateral."
+          },
+          "PAGE": {
+            "TITLE": "La lista de agentes",
+            "BODY": "Cada fila muestra el nombre, el correo, el rol y si la invitación ya fue confirmada. El buscador de arriba filtra por nombre o correo."
+          },
+          "ADD": {
+            "TITLE": "Añadir agente",
+            "BODY": "Este botón abre el formulario: nombre del agente, tipo de agente y dirección de correo. Con eso se envía la invitación."
+          },
+          "ROLES": {
+            "TITLE": "Administrador o Agente",
+            "BODY": "El Administrador entra a Ajustes, informes y facturación. El Agente solo trabaja conversaciones y contactos. Deja pocos administradores."
+          },
+          "INVITATION": {
+            "TITLE": "Verificación pendiente",
+            "BODY": "Hasta que la persona acepte el correo de invitación aparece como pendiente y no puede entrar. Si no le llega, revisa su carpeta de spam."
+          },
+          "MANAGE": {
+            "TITLE": "Editar, eliminar y contraseñas",
+            "BODY": "Desde cada fila puedes cambiar el nombre, el rol y la disponibilidad, restablecer la contraseña o eliminar al agente de la cuenta."
+          },
+          "FINISH": {
+            "TITLE": "Tu equipo ya tiene acceso",
+            "BODY": "Con los agentes creados, el siguiente paso es organizarlos: crea equipos para repartir las conversaciones por área."
+          }
+        }
+      },
+      "TEAMS": {
+        "NAME": "Equipos",
+        "DESCRIPTION": "Agrupa a tus agentes por área para repartir y seguir las conversaciones sin pisarse.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Agrupa por responsabilidad",
+            "BODY": "Un equipo reúne agentes que atienden lo mismo: Ventas, Soporte, Facturación. Un agente puede estar en varios equipos a la vez."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Equipos",
+            "BODY": "Aquí creas, editas y eliminas equipos. Solo los administradores entran a esta pantalla."
+          },
+          "PAGE": {
+            "TITLE": "La lista de equipos",
+            "BODY": "Cada equipo muestra su nombre y su descripción. Desde la fila puedes abrir sus ajustes o eliminarlo."
+          },
+          "CREATE": {
+            "TITLE": "Crear un nuevo equipo",
+            "BODY": "Este botón abre el asistente. Empieza por el nombre, como Ventas o Soporte, y una descripción corta que explique qué atiende el equipo."
+          },
+          "WIZARD": {
+            "TITLE": "Tres pasos y listo",
+            "BODY": "Crear, Añadir agentes y Finalizar. En el segundo paso eliges qué agentes entran; puedes cambiarlos después desde los ajustes del equipo."
+          },
+          "AUTO_ASSIGN": {
+            "TITLE": "Auto asignación del equipo",
+            "BODY": "Si activas la auto asignación, las conversaciones que lleguen al equipo se reparten solas entre los agentes disponibles."
+          },
+          "IN_SIDEBAR": {
+            "TITLE": "Dónde ves su trabajo",
+            "BODY": "Despliega Conversaciones y encontrarás el subgrupo Equipos: cada equipo tiene su propia bandeja con lo que tiene asignado."
+          },
+          "FINISH": {
+            "TITLE": "Equipos listos",
+            "BODY": "Ya puedes asignar una conversación a un equipo entero en vez de a una persona. Eliminar un equipo quita esa asignación de sus conversaciones."
+          }
+        }
+      },
+      "CUSTOM_ROLES": {
+        "NAME": "Roles personalizados",
+        "DESCRIPTION": "Crea roles a medida con permisos exactos cuando Administrador y Agente se te quedan cortos.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Cuando dos roles no alcanzan",
+            "BODY": "Administrador y Agente cubren lo básico. Un rol personalizado te deja abrir solo lo necesario: por ejemplo, ver informes sin tocar Ajustes."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Roles personalizados",
+            "BODY": "Aquí defines los roles a medida de tu cuenta. La función está disponible en los planes de pago."
+          },
+          "PAGE": {
+            "TITLE": "La lista de roles",
+            "BODY": "Cada fila muestra el nombre, la descripción y los permisos incluidos. Desde ahí puedes editarlos o eliminarlos."
+          },
+          "CREATE": {
+            "TITLE": "Crear un rol",
+            "BODY": "Este botón abre el formulario: nombre, descripción y los permisos que quieras marcar. Nombra el rol por el trabajo, no por la persona."
+          },
+          "PERMISSIONS": {
+            "TITLE": "Los permisos disponibles",
+            "BODY": "Gestionar todas las conversaciones, solo las no asignadas o solo en las que participa; administrar contactos, informes y base de conocimiento."
+          },
+          "ASSIGN": {
+            "TITLE": "Cómo se asigna a alguien",
+            "BODY": "Ve a Ajustes → Agentes, edita al agente y elige el rol en Tipo de agente. Quien tiene un rol personalizado no es administrador."
+          },
+          "FINISH": {
+            "TITLE": "Permisos a tu medida",
+            "BODY": "Empieza con pocos roles y súmales permisos cuando de verdad hagan falta. Siempre es más fácil abrir accesos que retirarlos."
+          }
+        }
+      },
+      "AGENT_BOTS": {
+        "NAME": "Bots",
+        "DESCRIPTION": "Conecta un bot por webhook a una entrada para que atienda el primer contacto y derive al equipo.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Un compañero que no duerme",
+            "BODY": "Un bot recibe los mensajes de una entrada, responde lo repetitivo y pasa la conversación a una persona cuando hace falta."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Bots",
+            "BODY": "Aquí registras y administras los bots de la cuenta. Es una pantalla solo para administradores."
+          },
+          "PAGE": {
+            "TITLE": "La lista de bots",
+            "BODY": "Cada fila muestra los detalles del bot y su URL de webhook. Los bots del sistema aparecen marcados y no se editan."
+          },
+          "CREATE": {
+            "TITLE": "Agregar Bot",
+            "BODY": "Este botón abre el formulario: avatar, nombre del bot, descripción y la URL de webhook a la que enviaremos los eventos."
+          },
+          "WEBHOOK": {
+            "TITLE": "Cómo funciona el webhook",
+            "BODY": "Cada mensaje nuevo se envía como evento a tu URL y tu servicio responde por la API. Guarda el secreto para validar que el evento es nuestro."
+          },
+          "CONNECT": {
+            "TITLE": "Conéctalo a una entrada",
+            "BODY": "Un bot no hace nada hasta que lo asignas. Entra en Ajustes → Entradas, abre la entrada y usa su pestaña de configuración del bot."
+          },
+          "HANDOFF": {
+            "TITLE": "Cuándo entra una persona",
+            "BODY": "El bot puede cerrar el caso o dejar la conversación abierta para un agente. Define ese límite antes de ponerlo frente a clientes."
+          },
+          "FINISH": {
+            "TITLE": "Bot en marcha",
+            "BODY": "Pruébalo primero en una entrada de poco volumen y revisa las conversaciones que atendió antes de ampliarlo al resto."
+          }
+        }
+      },
+      "LABELS": {
+        "NAME": "Etiquetas",
+        "DESCRIPTION": "Crea las categorías con las que clasificas conversaciones y contactos, y elige cuáles van al menú.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "El vocabulario de tu cuenta",
+            "BODY": "Las etiquetas clasifican conversaciones y contactos: venta, reclamo, envío. Todo el equipo usa las mismas, así que defínelas con cuidado."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Etiquetas",
+            "BODY": "Aquí se crean y editan todas las etiquetas de la cuenta. Los agentes las aplican, pero solo un administrador las define."
+          },
+          "PAGE": {
+            "TITLE": "La lista de etiquetas",
+            "BODY": "Cada fila muestra el nombre, la descripción y el color. El buscador de arriba te ayuda cuando la lista ya es larga."
+          },
+          "CREATE": {
+            "TITLE": "Añadir etiqueta",
+            "BODY": "Este botón abre el formulario: nombre, descripción, color y la opción de mostrar la etiqueta en la barra lateral."
+          },
+          "NAMING": {
+            "TITLE": "Cómo nombrarlas",
+            "BODY": "Solo se admiten letras, números, guion y guion bajo, con al menos dos caracteres. Usa pocas y en singular: demasiadas no las usa nadie."
+          },
+          "IN_SIDEBAR": {
+            "TITLE": "Etiquetas en el menú",
+            "BODY": "Las que marques para la barra lateral aparecen bajo Conversaciones, en el subgrupo Etiquetas, como un filtro de un clic."
+          },
+          "USES": {
+            "TITLE": "Más que un adorno",
+            "BODY": "Con etiquetas filtras la lista, mides en el informe de Etiquetas y disparas automatizaciones. Sin ellas no tienes datos que analizar."
+          },
+          "FINISH": {
+            "TITLE": "Ya tienes tu clasificación",
+            "BODY": "Revisa las etiquetas cada pocos meses: junta las que se solapan y borra las que nadie aplica."
+          }
+        }
+      },
+      "CANNED_RESPONSES": {
+        "NAME": "Respuestas predefinidas",
+        "DESCRIPTION": "Guarda los mensajes que repites e insértalos en la conversación con un atajo corto.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Deja de escribir lo mismo",
+            "BODY": "Una respuesta predefinida es un texto que guardas una vez y reutilizas siempre: el saludo, el horario, el estado de un envío."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Respuestas predefinidas",
+            "BODY": "Aquí las creas y las editas. A diferencia de otras secciones de Ajustes, los agentes también entran y aportan las suyas."
+          },
+          "PAGE": {
+            "TITLE": "La lista de respuestas",
+            "BODY": "Cada fila muestra el código corto y el contenido del mensaje. Son compartidas: lo que crees lo usa todo el equipo."
+          },
+          "CREATE": {
+            "TITLE": "Añadir respuesta predefinida",
+            "BODY": "Este botón abre el formulario con dos campos: el código corto con el que la llamas y el mensaje que se insertará."
+          },
+          "SHORT_CODE": {
+            "TITLE": "Elige bien el código corto",
+            "BODY": "Que sea corto y predecible: saludo, envio, garantia. Si tienes muchas, agrúpalas con un prefijo como envio-demora o envio-cambio."
+          },
+          "USE": {
+            "TITLE": "Insértala escribiendo /",
+            "BODY": "En el editor de la conversación escribe / y el código corto. Aparece la lista, eliges una y el texto se inserta listo para editar."
+          },
+          "MANAGE": {
+            "TITLE": "Mantén la lista limpia",
+            "BODY": "Edita o elimina cada respuesta desde su fila. Revisa los textos cuando cambien tus precios, plazos o políticas."
+          },
+          "FINISH": {
+            "TITLE": "Respuestas listas",
+            "BODY": "Escribe la respuesta una vez, bien redactada, y todo el equipo responderá igual de bien. El siguiente paso son las macros."
+          }
+        }
+      },
+      "MACROS": {
+        "NAME": "Macros",
+        "DESCRIPTION": "Encadena varias acciones (responder, etiquetar, asignar, resolver) y ejecútalas con un clic.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Varias acciones, un clic",
+            "BODY": "Una macro es una secuencia guardada de acciones sobre la conversación. Donde antes hacías cinco cosas seguidas, ahora haces una."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Macros",
+            "BODY": "Aquí viven todas las macros de la cuenta. Los agentes también entran: pueden crear las suyas propias en privado."
+          },
+          "PAGE": {
+            "TITLE": "La lista de macros",
+            "BODY": "Cada fila muestra el nombre, quién la creó, la última actualización y su visibilidad. Desde ahí la ves, la editas o la eliminas."
+          },
+          "EDITOR": {
+            "TITLE": "El editor de macros",
+            "BODY": "Esta es la pantalla de una macro nueva: ponle nombre y añade acciones entre Iniciar flujo y Finalizar flujo."
+          },
+          "ACTIONS": {
+            "TITLE": "Qué puede hacer una macro",
+            "BODY": "Enviar un mensaje, añadir o quitar etiquetas, asignar agente o equipo, cambiar prioridad, posponer, resolver o enviar la transcripción."
+          },
+          "ORDER": {
+            "TITLE": "El orden importa",
+            "BODY": "Las acciones se ejecutan en el orden en que las añades. Arrástralas por el manejador para reordenarlas: responde antes de resolver."
+          },
+          "VISIBILITY": {
+            "TITLE": "Pública o privada",
+            "BODY": "Una macro pública está disponible para todos los agentes y solo los administradores pueden crearla. La privada es solo tuya."
+          },
+          "RUN": {
+            "TITLE": "Cómo ejecutarla",
+            "BODY": "Abre una conversación y busca Macros en el panel derecho. Puedes previsualizarla antes de ejecutarla para ver qué va a pasar."
+          },
+          "FINISH": {
+            "TITLE": "Convierte la rutina en un clic",
+            "BODY": "Si haces la misma secuencia tres veces al día, conviértela en macro. Volvimos a la lista para que crees la primera."
+          }
+        }
+      },
+      "AUTOMATION_RULES": {
+        "NAME": "Automatizaciones",
+        "DESCRIPTION": "Reglas que se ejecutan solas: cuando pasa algo y se cumplen tus condiciones, el sistema actúa.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Si pasa esto, haz aquello",
+            "BODY": "Una regla vigila lo que ocurre en tus conversaciones y actúa sola. Nadie tiene que acordarse de etiquetar, asignar o avisar."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Automatización",
+            "BODY": "Aquí se crean y administran todas las reglas de la cuenta. Es una sección solo para administradores."
+          },
+          "PAGE": {
+            "TITLE": "La lista de reglas",
+            "BODY": "Cada fila muestra el nombre, si está activa y cuándo se creó. Una regla desactivada se conserva pero no se ejecuta."
+          },
+          "CREATE": {
+            "TITLE": "Crear una regla",
+            "BODY": "Este botón abre el formulario. Necesitas cuatro cosas: nombre, descripción, el evento que la dispara y las acciones a ejecutar."
+          },
+          "EVENT": {
+            "TITLE": "El evento que la dispara",
+            "BODY": "Conversación creada, actualizada, abierta o resuelta, y mensaje creado. Cambiar el evento reinicia las condiciones que ya escribiste."
+          },
+          "CONDITIONS": {
+            "TITLE": "Las condiciones",
+            "BODY": "Acotan cuándo aplica: la entrada, el remitente, el contenido del mensaje, las etiquetas o tus atributos personalizados. Necesitas al menos una."
+          },
+          "ACTIONS": {
+            "TITLE": "Las acciones",
+            "BODY": "Asignar a un agente o equipo, añadir etiquetas, cambiar la prioridad, enviar un mensaje o una nota, avisar por correo o llamar a un webhook."
+          },
+          "DELAYED": {
+            "TITLE": "Ejecutar después de una espera",
+            "BODY": "Una regla puede esperar y ejecutarse solo si nada cambió: por ejemplo, avisarte cuando el cliente lleva dos horas sin respuesta."
+          },
+          "MANAGE": {
+            "TITLE": "Activar, clonar y eliminar",
+            "BODY": "Desde la lista activas o desactivas cada regla, la clonas para hacer una variante o la eliminas. Clonar es más rápido que empezar de cero."
+          },
+          "FINISH": {
+            "TITLE": "Que el sistema trabaje por ti",
+            "BODY": "Empieza con una regla sencilla y compruébala con conversaciones reales antes de sumar más. Una regla mal escrita se nota enseguida."
+          }
+        }
+      },
+      "SLA": {
+        "NAME": "Acuerdos de servicio",
+        "DESCRIPTION": "Define en cuánto prometes responder y resolver, y detecta a tiempo lo que se está pasando.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Una promesa medible",
+            "BODY": "Un SLA fija los tiempos que prometes a tus clientes. El sistema los vigila y marca la conversación cuando el plazo se acerca o se pasa."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → SLA",
+            "BODY": "Aquí creas y administras las políticas de SLA. La función está disponible en los planes de pago."
+          },
+          "PAGE": {
+            "TITLE": "La lista de políticas",
+            "BODY": "Cada fila muestra el nombre de la política, sus umbrales y si respeta el horario laboral. Puedes tener varias para distintos clientes."
+          },
+          "CREATE": {
+            "TITLE": "Añadir SLA",
+            "BODY": "Este botón abre el formulario: nombre, descripción y los tres umbrales de tiempo. Empieza por una política general para todos."
+          },
+          "THRESHOLDS": {
+            "TITLE": "Los tres tiempos",
+            "BODY": "Tiempo de primera respuesta, próximo tiempo de respuesta y tiempo de resolución. Define solo los que de verdad vas a cumplir."
+          },
+          "BUSINESS_HOURS": {
+            "TITLE": "Solo en horario laboral",
+            "BODY": "Si lo activas, el reloj se detiene fuera de tu horario. Sin esto, un mensaje del sábado consume el plazo mientras nadie trabaja."
+          },
+          "APPLY": {
+            "TITLE": "Cómo se aplica a un caso",
+            "BODY": "La política se asigna a la conversación desde el panel derecho o con una automatización, según la entrada o la etiqueta del cliente."
+          },
+          "TRACK": {
+            "TITLE": "Cómo saber si cumples",
+            "BODY": "En la cabecera de la conversación aparece el plazo restante, y el informe de SLA reúne los incumplimientos para revisarlos con el equipo."
+          },
+          "FINISH": {
+            "TITLE": "Plazos bajo control",
+            "BODY": "Empieza con plazos que ya cumplas hoy y ajústalos con los datos del informe. Un SLA imposible solo genera alarmas que nadie mira."
+          }
+        }
+      },
+      "CONVERSATION_WORKFLOW": {
+        "NAME": "Flujo de conversación",
+        "DESCRIPTION": "Ajusta cómo se cierran las conversaciones: resolución automática y datos obligatorios al resolver.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Cómo se cierra una conversación",
+            "BODY": "Esta sección define dos cosas: cuándo se resuelven solas las conversaciones olvidadas y qué datos exiges antes de dar un caso por cerrado."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Conversation Workflow",
+            "BODY": "En el menú aparece como Conversation Workflow. Es una pantalla de administrador y lo que configures afecta a toda la cuenta."
+          },
+          "PAGE": {
+            "TITLE": "Dos bloques de ajustes",
+            "BODY": "La página reúne la resolución automática y los atributos obligatorios. Cada bloque aparece solo si tu plan lo incluye."
+          },
+          "AUTO_RESOLVE": {
+            "TITLE": "Resolución automática",
+            "BODY": "Marca como resuelta cualquier conversación que lleve demasiado tiempo sin actividad. Evita que la bandeja se llene de casos muertos."
+          },
+          "AUTO_RESOLVE_OPTIONS": {
+            "TITLE": "Afínala antes de activarla",
+            "BODY": "Elige el tiempo de inactividad, un mensaje de cierre para el cliente, una etiqueta que lo marque y si excluir las que esperan respuesta."
+          },
+          "REQUIRED_ATTRIBUTES": {
+            "TITLE": "Datos obligatorios al resolver",
+            "BODY": "Elige qué atributos personalizados no pueden quedar vacíos. Sirve para no perder el motivo del contacto ni el número de pedido."
+          },
+          "REQUIRED_FLOW": {
+            "TITLE": "Qué ve el agente",
+            "BODY": "Al resolver, si falta alguno de esos datos aparece un formulario que los pide. La conversación no se cierra hasta completarlo."
+          },
+          "FINISH": {
+            "TITLE": "Cierres consistentes",
+            "BODY": "Con estos dos ajustes tus conversaciones se cierran a tiempo y con la información completa. Tus informes lo agradecerán."
+          }
+        }
+      },
+      "LUXOIA_OVERVIEW": {
+        "NAME": "Empezar con LuxoIA",
+        "DESCRIPTION": "Qué es LuxoIA, dónde vive en el menú y cómo leer el resumen de tu asistente.",
+        "STEPS": {
+          "SIDEBAR": {
+            "TITLE": "LuxoIA en el menú lateral",
+            "BODY": "LuxoIA es el asistente de inteligencia artificial que responde solo. En el menú aparece como «Capitán»; ábrelo para ver todas sus secciones."
+          },
+          "SECTIONS": {
+            "TITLE": "Las secciones de LuxoIA",
+            "BODY": "Resumen, Preguntas frecuentes, Documentos, Scenarios, Playground, Entradas, Tools y Ajustes. Cada una tiene su propio tutorial en esta biblioteca."
+          },
+          "PAGE": {
+            "TITLE": "El resumen del asistente",
+            "BODY": "Esta pantalla resume cómo trabajó tu asistente. Arriba a la derecha eliges el periodo: últimos 7 días, últimos 30 días o el mes en curso."
+          },
+          "METRICS": {
+            "TITLE": "Las métricas que importan",
+            "BODY": "Conversaciones manejadas, resolución automática, desconexión, reaperturas y tiempo ahorrado. Si eres administrador, haz clic en una tarjeta para ver el detalle."
+          },
+          "KNOWLEDGE": {
+            "TITLE": "Cobertura del conocimiento",
+            "BODY": "Mide cuánto sabe tu asistente: FAQs aprobadas, sugerencias pendientes y documentos. Cuanto más alta la cobertura, menos consultas llegan a un agente."
+          },
+          "SWITCHER": {
+            "TITLE": "Cambiar de asistente",
+            "BODY": "Junto al título verás el nombre del asistente activo con una flecha. Ahí cambias entre asistentes cuando tienes más de uno."
+          },
+          "CREATE": {
+            "TITLE": "Crear un asistente nuevo",
+            "BODY": "Ese mismo selector ofrece crear asistente. Solo necesitas nombre, descripción y el producto del que habla; el resto se ajusta después."
+          },
+          "FINISH": {
+            "TITLE": "Ya sabes dónde está todo",
+            "BODY": "El siguiente paso es darle conocimiento: empieza por el tutorial de Preguntas frecuentes y sigue con el de Documentos."
+          }
+        }
+      },
+      "LUXOIA_FAQS": {
+        "NAME": "Preguntas frecuentes",
+        "DESCRIPTION": "Cómo escribir las respuestas que usa tu asistente y aprobar las sugerencias que propone.",
+        "STEPS": {
+          "NAV": {
+            "TITLE": "La sección Preguntas frecuentes",
+            "BODY": "Aquí vive el conocimiento de tu asistente: pares de pregunta y respuesta que usa para contestar. Es la sección que más vas a visitar."
+          },
+          "PAGE": {
+            "TITLE": "La lista de FAQs",
+            "BODY": "Cada tarjeta muestra la pregunta, la respuesta y en cuántas conversaciones se usó. Ese contador te dice cuáles vale la pena mejorar."
+          },
+          "CREATE": {
+            "TITLE": "Crear una FAQ",
+            "BODY": "Con el botón más de arriba a la derecha agregas una pregunta y su respuesta. Escribe la pregunta como la haría un cliente, no como la escribirías tú."
+          },
+          "SEARCH": {
+            "TITLE": "Buscar y depurar",
+            "BODY": "El buscador filtra por texto. Pasa el cursor sobre una tarjeta para seleccionarla y borra en lote las respuestas que quedaron obsoletas."
+          },
+          "SUGGESTIONS": {
+            "TITLE": "Sugerencias de FAQ",
+            "BODY": "LuxoIA agrupa las preguntas repetidas de tus clientes y propone FAQs nuevas. Cuando hay sugerencias aparece un aviso azul con «Revisar sugerencias»."
+          },
+          "APPROVE": {
+            "TITLE": "Aprobar o descartar",
+            "BODY": "En la cola de revisión puedes abrir las conversaciones que originaron cada sugerencia, corregir el texto y aprobarla. Lo aprobado pasa a la lista de FAQs."
+          },
+          "QUALITY": {
+            "TITLE": "Una respuesta, una idea",
+            "BODY": "Las respuestas cortas y concretas funcionan mejor que los textos largos. Si una pregunta mezcla dos temas, divídela en dos FAQs."
+          },
+          "FINISH": {
+            "TITLE": "Conocimiento listo",
+            "BODY": "Prueba en Playground lo que acabas de cargar y, si falta información, agrégala como documento."
+          }
+        }
+      },
+      "LUXOIA_DOCUMENTS": {
+        "NAME": "Documentos de LuxoIA",
+        "DESCRIPTION": "Cómo alimentar al asistente con páginas web y PDFs, y mantener ese contenido al día.",
+        "STEPS": {
+          "NAV": {
+            "TITLE": "La sección Documentos",
+            "BODY": "En lugar de escribir cada FAQ a mano, le das a LuxoIA una fuente completa: una página web o un PDF. Él extrae las preguntas y las respuestas."
+          },
+          "PAGE": {
+            "TITLE": "Tus fuentes de conocimiento",
+            "BODY": "Cada tarjeta es un documento con su origen, su estado y cuántas FAQs generó. Los filtros de arriba separan las páginas web de los PDFs."
+          },
+          "ADD": {
+            "TITLE": "Agregar un documento",
+            "BODY": "Con el botón más pegas la URL de una página o subes un PDF. Elige fuentes con información estable: precios, políticas de envío, preguntas de soporte."
+          },
+          "STATUS": {
+            "TITLE": "Estado y FAQs generadas",
+            "BODY": "Después de subirlo, el documento se procesa y verás cuántas preguntas frecuentes salieron de él. Ese número te dice si la fuente sirvió."
+          },
+          "SYNC": {
+            "TITLE": "Mantenerlo al día",
+            "BODY": "Si la página cambia, el documento queda marcado como «Necesita actualización». Selecciónalo y usa «Actualizar» para que LuxoIA lo vuelva a leer."
+          },
+          "REVIEW": {
+            "TITLE": "Revisa lo que aprendió",
+            "BODY": "Las respuestas generadas se guardan en Preguntas frecuentes. Ábrelas y corrige lo que esté mal antes de que lo lea un cliente."
+          },
+          "FINISH": {
+            "TITLE": "Fuentes bajo control",
+            "BODY": "Con documentos y FAQs al día, tu asistente responde con información real. Define cuándo y a quién responde en Ajustes."
+          }
+        }
+      },
+      "LUXOIA_SCENARIOS": {
+        "NAME": "Scenarios de LuxoIA",
+        "DESCRIPTION": "Cómo instruir a tu asistente para situaciones concretas, como una devolución o un reclamo.",
+        "STEPS": {
+          "NAV": {
+            "TITLE": "La sección Scenarios",
+            "BODY": "Una FAQ responde una pregunta. Un scenario le dice al asistente cómo actuar en una situación: qué preguntar, qué verificar y cuándo transferir."
+          },
+          "PAGE": {
+            "TITLE": "Tus scenarios",
+            "BODY": "Cada tarjeta es una situación con su instrucción. El buscador ayuda cuando la lista crece, y puedes seleccionar varios y borrarlos juntos."
+          },
+          "EXAMPLES": {
+            "TITLE": "Empieza por los ejemplos",
+            "BODY": "La primera vez verás una lista de scenarios de ejemplo. Agrega uno con un clic y edítalo: es más rápido que empezar con la hoja en blanco."
+          },
+          "CREATE": {
+            "TITLE": "Crear un scenario",
+            "BODY": "Necesita un título, una descripción de cuándo aplica y la instrucción paso a paso. Escríbela como se la explicarías a un agente nuevo."
+          },
+          "TOOLS": {
+            "TITLE": "Scenarios con herramientas",
+            "BODY": "Un scenario puede llamar a las herramientas de la sección Tools para consultar tu sistema, por ejemplo el estado de un pedido."
+          },
+          "FINISH": {
+            "TITLE": "Situaciones cubiertas",
+            "BODY": "Prueba cada scenario en Playground con el mensaje que enviaría un cliente real antes de dejarlo activo."
+          }
+        }
+      },
+      "LUXOIA_PLAYGROUND": {
+        "NAME": "Playground de LuxoIA",
+        "DESCRIPTION": "Cómo probar las respuestas de tu asistente antes de que hable con un cliente real.",
+        "STEPS": {
+          "NAV": {
+            "TITLE": "La zona de pruebas",
+            "BODY": "Playground es un chat privado con tu asistente. Lo que escribas aquí no llega a ningún cliente ni crea conversaciones."
+          },
+          "PAGE": {
+            "TITLE": "Habla con tu asistente",
+            "BODY": "Escribe abajo y envía. Responde con el mismo conocimiento y las mismas reglas que va a usar en producción."
+          },
+          "WHAT_TO_ASK": {
+            "TITLE": "Qué preguntarle",
+            "BODY": "Usa preguntas reales de tus clientes, con sus errores de escritura incluidos. Prueba también aquello que no debería responder, para ver sus límites."
+          },
+          "FIX": {
+            "TITLE": "Cuando la respuesta falla",
+            "BODY": "Si contesta mal, corrige la FAQ que usó, agrega un documento con el dato que le falta o escribe un scenario para esa situación."
+          },
+          "CREDITS": {
+            "TITLE": "Consume créditos",
+            "BODY": "Los mensajes que envías aquí cuentan para tus créditos de LuxoIA igual que una conversación real. Prueba lo necesario, no de más."
+          },
+          "FINISH": {
+            "TITLE": "Listo para producción",
+            "BODY": "Cuando las respuestas te convenzan, conecta el asistente a una bandeja de entrada desde la sección Entradas."
+          }
+        }
+      },
+      "LUXOIA_INBOXES": {
+        "NAME": "Entradas de LuxoIA",
+        "DESCRIPTION": "Cómo conectar tu asistente a una bandeja de entrada para que empiece a responder.",
+        "STEPS": {
+          "NAV": {
+            "TITLE": "La sección Entradas",
+            "BODY": "Un asistente sin bandeja conectada no le responde a nadie. Aquí eliges en qué canales trabaja: web, WhatsApp, correo o los que tengas."
+          },
+          "PAGE": {
+            "TITLE": "Bandejas conectadas",
+            "BODY": "Cada tarjeta es una bandeja donde el asistente ya responde. Si la lista está vacía, tu asistente está entrenado pero apagado."
+          },
+          "CONNECT": {
+            "TITLE": "Conectar una bandeja",
+            "BODY": "Con el botón más eliges la bandeja de entrada. Empieza por una sola, de poco volumen, y observa cómo responde durante unos días."
+          },
+          "HANDOFF": {
+            "TITLE": "Cuándo entra tu equipo",
+            "BODY": "Si el cliente pide hablar con una persona o el asistente no sabe, transfiere la conversación y tu equipo la ve como cualquier otra."
+          },
+          "DISCONNECT": {
+            "TITLE": "Desconectar",
+            "BODY": "En el menú de cada tarjeta tienes «Desconectar». El asistente deja de responder en ese canal al instante, sin perder su conocimiento."
+          },
+          "FINISH": {
+            "TITLE": "Tu asistente ya atiende",
+            "BODY": "Vuelve al Resumen en unos días para ver cuántas conversaciones resolvió solo y dónde todavía necesita ayuda."
+          }
+        }
+      },
+      "LUXOIA_SETTINGS": {
+        "NAME": "Ajustes de LuxoIA",
+        "DESCRIPTION": "Nombre, mensajes, a quién responde, en qué horario y qué temas puede tratar.",
+        "STEPS": {
+          "NAV": {
+            "TITLE": "La sección Ajustes",
+            "BODY": "Todo lo que define el carácter de tu asistente está aquí, organizado en las pestañas de la izquierda de la pantalla."
+          },
+          "PAGE": {
+            "TITLE": "Configuraciones básicas",
+            "BODY": "La primera pestaña guarda el nombre, la descripción, el producto del que habla y los mensajes de bienvenida, transferencia y cierre."
+          },
+          "SYSTEM": {
+            "TITLE": "Cuando el cliente no responde",
+            "BODY": "En «System settings» decides qué pasa si la conversación queda en silencio: esperar al cliente, resolver siempre o dejar que LuxoIA lo evalúe."
+          },
+          "AUDIENCE": {
+            "TITLE": "A quién le responde",
+            "BODY": "En «Audience» eliges si atiende a todos o solo a los clientes que cumplen ciertas condiciones, como el idioma o un atributo del contacto."
+          },
+          "SCHEDULE": {
+            "TITLE": "En qué horario responde",
+            "BODY": "En «Schedule» defines si trabaja siempre, solo en horario laboral o solo fuera de él. Las bandejas sin horario configurado quedan siempre cubiertas."
+          },
+          "GUARDRAILS": {
+            "TITLE": "Límites de lo que responde",
+            "BODY": "«Guardrails» marca los temas que el asistente no debe tocar: consejos legales, promesas de descuento o cualquier dato sensible."
+          },
+          "GUIDELINES": {
+            "TITLE": "El tono de las respuestas",
+            "BODY": "«Response guidelines» define cómo escribe: formal o cercano, breve o detallado. Ambas listas traen ejemplos que puedes agregar con un clic."
+          },
+          "DELETE": {
+            "TITLE": "Eliminar el asistente",
+            "BODY": "Al final de la primera pestaña está el botón rojo para eliminarlo. Se borran también sus FAQs y documentos, así que úsalo con cuidado."
+          },
+          "FINISH": {
+            "TITLE": "Asistente afinado",
+            "BODY": "Cada cambio se nota en la próxima conversación. Prueba en Playground después de tocar el tono o los límites."
+          }
+        }
+      },
+      "LUXOIA_TOOLS": {
+        "NAME": "Tools de LuxoIA",
+        "DESCRIPTION": "Cómo conectar tu asistente con tus propias APIs para consultar datos y ejecutar acciones.",
+        "STEPS": {
+          "NAV": {
+            "TITLE": "La sección Tools",
+            "BODY": "Una herramienta le da al asistente acceso a tu sistema: consultar un pedido, verificar un pago o abrir un ticket sin salir del chat."
+          },
+          "PAGE": {
+            "TITLE": "Tus herramientas",
+            "BODY": "Cada tarjeta muestra el endpoint, el método HTTP y el tipo de autenticación. Puedes desactivar una herramienta sin borrarla."
+          },
+          "CREATE": {
+            "TITLE": "Crear una herramienta",
+            "BODY": "Necesitas un título, una descripción, la URL del endpoint, el método y los parámetros. La descripción es lo más importante: define cuándo se usa."
+          },
+          "AUTH": {
+            "TITLE": "Autenticación",
+            "BODY": "Configura cómo se autentica la llamada a tu API. Usa una credencial de solo lectura y limitada a lo que el asistente realmente necesita."
+          },
+          "SCENARIOS": {
+            "TITLE": "Usarlas en un scenario",
+            "BODY": "Las herramientas se disparan desde los scenarios: ahí describes en qué situación el asistente debe llamarlas y qué hacer con la respuesta."
+          },
+          "LIMIT": {
+            "TITLE": "Pocas y bien descritas",
+            "BODY": "Con más de diez herramientas el asistente empieza a equivocarse al elegir. Borra las que ya no uses antes de agregar una nueva."
+          },
+          "FINISH": {
+            "TITLE": "Asistente conectado",
+            "BODY": "Prueba cada herramienta en Playground con un caso real y revisa que devuelva exactamente el dato que esperabas."
+          }
+        }
+      },
+      "CALLS": {
+        "NAME": "Llamadas",
+        "DESCRIPTION": "Cómo llamar desde una conversación y revisar el historial de llamadas de tu equipo.",
+        "STEPS": {
+          "CALL_BUTTON": {
+            "TITLE": "Llamar desde la conversación",
+            "BODY": "Si la bandeja tiene canal de voz, este botón marca al contacto sin salir del chat. La llamada queda ligada a esta conversación."
+          },
+          "WIDGET": {
+            "TITLE": "El panel de la llamada",
+            "BODY": "Durante la llamada aparece un panel flotante con el tiempo, el silenciador y el botón para colgar. Puedes seguir escribiendo mientras hablas."
+          },
+          "DASHBOARD": {
+            "TITLE": "El historial de llamadas",
+            "BODY": "«Llamadas» en el menú lateral reúne todo lo que entró y salió por tus canales de voz, sin importar quién atendió."
+          },
+          "PAGE": {
+            "TITLE": "La lista de llamadas",
+            "BODY": "Cada fila indica quién llamó, quién atendió, cuánto duró y cómo terminó. Abre una para llegar a la conversación asociada."
+          },
+          "FILTERS": {
+            "TITLE": "Filtrar lo que importa",
+            "BODY": "«Perdidas» y «Sin respuesta» son los dos filtros que más vas a usar. En «Más filtros» acotas la lista por bandeja de entrada."
+          },
+          "ASSIGNEE": {
+            "TITLE": "Quién atendió",
+            "BODY": "Si eres administrador puedes filtrar por responsable y revisar la carga de cada agente. Los agentes solo ven sus propias llamadas."
+          },
+          "SETUP": {
+            "TITLE": "Si no ves llamadas",
+            "BODY": "El historial necesita al menos una bandeja de entrada con canal de voz configurado. Pídeselo a un administrador si la pantalla sigue vacía."
+          },
+          "FINISH": {
+            "TITLE": "Llamadas bajo control",
+            "BODY": "Revisa las perdidas al empezar el día: son clientes que intentaron hablar contigo y todavía esperan respuesta."
+          }
+        }
+      },
+      "CAMPAIGN_LIVE_CHAT": {
+        "NAME": "Campañas de Live Chat",
+        "DESCRIPTION": "Crea mensajes que aparecen solos en el chat de tu web cuando alguien visita una página.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Hablar primero en tu web",
+            "BODY": "Una campaña de Live Chat lanza un mensaje en el chat de tu sitio cuando un visitante cumple una condición. Sirve para captar interesados sin esperar a que escriban."
+          },
+          "WHERE": {
+            "TITLE": "Dónde viven estas campañas",
+            "BODY": "En el menú, Campañas → Live Chat. Cada tipo de campaña tiene su propia pantalla y sus propias reglas, así que entra por la que vas a usar."
+          },
+          "PAGE": {
+            "TITLE": "La pantalla de Live Chat",
+            "BODY": "Aquí se listan las campañas creadas con su estado: Activado o Deshabilitado. Puedes editarlas o eliminarlas cuando quieras sin borrar las conversaciones que generaron."
+          },
+          "CREATE": {
+            "TITLE": "El botón Crear campaña",
+            "BODY": "Arriba a la derecha, «Crear campaña» abre el formulario. Empieza con una sola campaña bien pensada antes de llenar tu web de mensajes."
+          },
+          "FORM": {
+            "TITLE": "El formulario de la campaña",
+            "BODY": "Aquí pones el Título, que es interno, el Mensaje que ve el visitante y eliges la bandeja de entrada del chat web desde la que sale. Sin bandeja no hay campaña."
+          },
+          "TRIGGER": {
+            "TITLE": "Cuándo se dispara",
+            "BODY": "En URL escribes la dirección de la página y en «Tiempo en la página (segundos)» cuántos segundos espera antes de aparecer. Diez segundos suele ser suficiente."
+          },
+          "SENDER": {
+            "TITLE": "Quién lo envía y cuándo",
+            "BODY": "En «Enviado por» eliges Bot o un agente: ese es el nombre que verá el cliente. En «Otras preferencias» activas la campaña y la limitas a tu horario de trabajo."
+          },
+          "LIST": {
+            "TITLE": "Revisa lo que ya está activo",
+            "BODY": "Cada tarjeta muestra el mensaje, la bandeja, el remitente y la URL donde se dispara. Si una campaña no rinde, desactívala antes de crear otra."
+          },
+          "FINISH": {
+            "TITLE": "Campaña de Live Chat lista",
+            "BODY": "Ya sabes crear, disparar y revisar. Las respuestas entran como conversaciones normales, así que avisa a tu equipo antes de activarla."
+          }
+        }
+      },
+      "CAMPAIGN_SMS": {
+        "NAME": "Campañas de SMS",
+        "DESCRIPTION": "Envía un mensaje de texto a un grupo de contactos en la fecha y hora que elijas.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Un mensaje, una lista, una fecha",
+            "BODY": "Una campaña de SMS es un envío único a un grupo de contactos. No se repite: se programa, se envía y queda registrado. Necesitas una bandeja de entrada de SMS conectada."
+          },
+          "WHERE": {
+            "TITLE": "Dónde están las campañas de SMS",
+            "BODY": "En el menú, Campañas → SMS. Aquí solo verás envíos de texto; las de Live Chat y WhatsApp viven en sus propias pantallas."
+          },
+          "PAGE": {
+            "TITLE": "La pantalla de SMS",
+            "BODY": "Lista los envíos con su estado: Programado mientras espera la hora y Completado cuando ya salió. Un envío completado no se puede deshacer."
+          },
+          "CREATE": {
+            "TITLE": "El botón Crear campaña",
+            "BODY": "Arriba a la derecha, «Crear campaña» abre el formulario. Prepara antes el texto y la lista de contactos: al confirmar, el envío queda programado."
+          },
+          "FORM": {
+            "TITLE": "El formulario del envío",
+            "BODY": "Pones el Título para reconocerlo internamente, el Mensaje que recibirá el cliente y la bandeja de entrada de SMS desde la que sale. Sé breve: es un SMS."
+          },
+          "AUDIENCE": {
+            "TITLE": "A quién le llega",
+            "BODY": "En «Audiencia» eliges etiquetas de contactos, no personas sueltas. Etiqueta bien antes de enviar: mandar a todos molesta y te hace perder suscriptores."
+          },
+          "SCHEDULE": {
+            "TITLE": "Cuándo sale",
+            "BODY": "En «Programar tiempo» defines la fecha y la hora del envío. Elige un horario razonable para tu público: un SMS a medianoche se lee como spam."
+          },
+          "STATUS": {
+            "TITLE": "Seguimiento del envío",
+            "BODY": "Cada tarjeta muestra desde qué bandeja salió y en qué fecha. Las respuestas de tus clientes entran como conversaciones nuevas en esa misma bandeja."
+          },
+          "FINISH": {
+            "TITLE": "Envío de SMS listo",
+            "BODY": "Ya sabes redactar, segmentar y programar. Empieza con un grupo pequeño, mide las respuestas y recién ahí amplía la audiencia."
+          }
+        }
+      },
+      "CAMPAIGN_WHATSAPP": {
+        "NAME": "Campañas de WhatsApp",
+        "DESCRIPTION": "Envía plantillas aprobadas por WhatsApp a un grupo de contactos y mide las entregas.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "WhatsApp exige plantilla",
+            "BODY": "Para escribir primero por WhatsApp no puedes usar texto libre: hay que enviar una plantilla aprobada por Meta. Son los mensajes más leídos, úsalos con criterio."
+          },
+          "WHERE": {
+            "TITLE": "Dónde están estas campañas",
+            "BODY": "En el menú, Campañas → WhatsApp. Necesitas una bandeja de entrada de WhatsApp conectada; si no la tienes, créala antes en Ajustes → Entradas."
+          },
+          "PAGE": {
+            "TITLE": "La pantalla de WhatsApp",
+            "BODY": "Lista los envíos con su estado: Programado mientras espera la hora y Completado cuando ya salió. Desde una campaña enviada puedes abrir sus analíticas."
+          },
+          "TEMPLATES": {
+            "TITLE": "Prepara la plantilla antes",
+            "BODY": "Las plantillas se gestionan en Ajustes → Plantillas y las aprueba Meta, no LuxoInbox. Sin una plantilla aprobada no vas a poder crear la campaña."
+          },
+          "CREATE": {
+            "TITLE": "El botón Crear campaña",
+            "BODY": "Arriba a la derecha, «Crear campaña» abre el formulario. Ten a mano la plantilla aprobada y las etiquetas de la audiencia que quieres alcanzar."
+          },
+          "FORM": {
+            "TITLE": "El formulario del envío",
+            "BODY": "Pones el Título interno, eliges la bandeja de entrada de WhatsApp y la plantilla que se enviará. La vista previa te muestra cómo llegará el mensaje."
+          },
+          "VARIABLES": {
+            "TITLE": "Rellena las variables",
+            "BODY": "Si la plantilla tiene huecos, el formulario te pide un valor para cada uno. Revísalos: un hueco mal completado llega tal cual al cliente."
+          },
+          "AUDIENCE": {
+            "TITLE": "A quién le llega",
+            "BODY": "En «Audiencia» eliges etiquetas de contactos y en «Programar tiempo» la fecha del envío. Segmenta: WhatsApp castiga los envíos masivos sin criterio."
+          },
+          "ANALYTICS": {
+            "TITLE": "Mide la entrega",
+            "BODY": "En una campaña ya procesada, la opción de analíticas abre el desglose de entregados, leídos y fallidos. Ese detalle te dice si falló la lista o el mensaje."
+          },
+          "FINISH": {
+            "TITLE": "Campaña de WhatsApp lista",
+            "BODY": "Ya sabes preparar la plantilla, segmentar, programar y medir. Cada respuesta entra como conversación en la bandeja de WhatsApp que elegiste."
+          }
+        }
+      },
+      "PORTAL_SETUP": {
+        "NAME": "Crear tu portal",
+        "DESCRIPTION": "Monta el portal público del centro de ayuda: nombre, dominio, apariencia e idiomas.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Un sitio que responde solo",
+            "BODY": "El centro de ayuda es un sitio público con tus artículos. Cada duda resuelta ahí es una conversación que tu equipo no tiene que atender."
+          },
+          "WHERE": {
+            "TITLE": "Dónde se administra",
+            "BODY": "Todo el centro de ayuda cuelga de este grupo del menú: artículos, categorías, idiomas y ajustes. El contenido siempre pertenece a un portal."
+          },
+          "CREATE": {
+            "TITLE": "Crear el primer portal",
+            "BODY": "Un portal es un sitio completo. Con «Crear Portal» arrancas el asistente: primero la información básica, después la personalización y listo."
+          },
+          "BASICS": {
+            "TITLE": "Nombre, slug y dominio",
+            "BODY": "El Nombre es interno, el Slug forma la dirección pública y el Dominio personalizado solo hace falta si quieres servir el portal desde tu propio sitio."
+          },
+          "CUSTOMIZATION": {
+            "TITLE": "Cómo se ve el portal",
+            "BODY": "En la personalización subes el Logo, eliges el Color del tema y escribes el Título del portal y el subtexto. Es lo primero que ve quien llega buscando ayuda."
+          },
+          "SWITCHER": {
+            "TITLE": "Varios portales a la vez",
+            "BODY": "Puedes tener un portal por producto o por marca. El nombre del portal aparece arriba a la izquierda y con la flecha de al lado cambias de uno a otro."
+          },
+          "SETTINGS": {
+            "TITLE": "Ajustes del portal",
+            "BODY": "Aquí editas todo lo que definiste al crearlo, gestionas los idiomas disponibles y decides cuál es el predeterminado."
+          },
+          "PUBLISH": {
+            "TITLE": "Publicar y visitar",
+            "BODY": "Desde los ajustes puedes abrir el portal público con «Visitar sitio». Revísalo como lo vería un cliente antes de compartir el enlace."
+          },
+          "FINISH": {
+            "TITLE": "Portal en pie",
+            "BODY": "Ya tienes dónde publicar. El siguiente paso es llenarlo: el recorrido de Artículos te enseña a redactar y publicar el primero."
+          }
+        }
+      },
+      "ARTICLES": {
+        "NAME": "Artículos",
+        "DESCRIPTION": "Redacta, organiza, publica y traduce los artículos de tu centro de ayuda.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "El contenido del centro de ayuda",
+            "BODY": "Un artículo responde una duda concreta. Escribe uno por cada pregunta real de tus clientes, no un manual gigante que nadie termina de leer."
+          },
+          "WHERE": {
+            "TITLE": "Dónde están los artículos",
+            "BODY": "En el menú, Centro de ayuda → Artículos. Siempre estás viendo los artículos de un portal y un idioma concretos."
+          },
+          "PAGE": {
+            "TITLE": "La lista de artículos",
+            "BODY": "Arriba tienes el buscador y los filtros por categoría e idioma. Debajo, la lista con el estado y las vistas de cada artículo."
+          },
+          "TABS": {
+            "TITLE": "Filtra por estado",
+            "BODY": "Las pestañas separan «All articles», «Mías», Borrador, Publicado y Archivado. Empieza por Borrador: ahí está lo que quedó a medias."
+          },
+          "CARD": {
+            "TITLE": "La ficha de un artículo",
+            "BODY": "Cada fila muestra título, categoría, estado y cuántas veces se leyó. El menú de la derecha te deja publicar, pasar a borrador, archivar, traducir o eliminar."
+          },
+          "NEW": {
+            "TITLE": "Escribir uno nuevo",
+            "BODY": "El botón «New article», arriba a la derecha, abre el editor en blanco dentro del portal y el idioma que tengas seleccionados."
+          },
+          "EDITOR": {
+            "TITLE": "El editor",
+            "BODY": "Escribes el título y el contenido con formato, imágenes y enlaces. Se guarda solo: verás «Guardando...» y luego «Guardado» en la parte superior."
+          },
+          "PUBLISH": {
+            "TITLE": "Borrador, publicado, archivado",
+            "BODY": "Un artículo nace como borrador y no se ve fuera hasta que pulsas «Publicar». «Mover a archivado» lo saca del portal sin borrarlo, ideal para contenido viejo."
+          },
+          "TRANSLATE": {
+            "TITLE": "Traducir a otro idioma",
+            "BODY": "Selecciona uno o varios artículos con su casilla y usa «Traducir» para crear la versión en otro idioma. Llegan como borradores: revísalos antes de publicar."
+          },
+          "FINISH": {
+            "TITLE": "Ya sabes publicar",
+            "BODY": "Escribe pocos artículos y buenos, revisa cada trimestre cuáles se leen y archiva los que ya no aplican. Un centro de ayuda desactualizado resta."
+          }
+        }
+      },
+      "CATEGORIES_AND_LOCALES": {
+        "NAME": "Categorías e idiomas",
+        "DESCRIPTION": "Organiza los artículos en categorías y publica tu portal en varios idiomas.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Ordenar y traducir",
+            "BODY": "Las categorías agrupan los artículos para que el cliente encuentre; los idiomas sirven el mismo portal a públicos distintos. Se configuran por separado."
+          },
+          "CATEGORIES": {
+            "TITLE": "Dónde están las categorías",
+            "BODY": "En el menú, Centro de ayuda → Categorías. Las categorías pertenecen a un portal y a un idioma: cada idioma tiene su propio juego."
+          },
+          "CATEGORY_PAGE": {
+            "TITLE": "La lista de categorías",
+            "BODY": "Cada tarjeta muestra el nombre, la descripción y cuántos artículos contiene. Haz clic en una para ver y ordenar sus artículos."
+          },
+          "NEW_CATEGORY": {
+            "TITLE": "Crear una categoría",
+            "BODY": "Con «Nueva categoría» defines Nombre, Slug y Descripción. El nombre y la descripción se ven en el portal público, así que escríbelos pensando en el cliente."
+          },
+          "ORDER": {
+            "TITLE": "El orden importa",
+            "BODY": "Dentro de una categoría puedes arrastrar los artículos para decidir cuál va primero. Pon arriba los que resuelven las dudas más frecuentes."
+          },
+          "LOCALES": {
+            "TITLE": "Dónde están los idiomas",
+            "BODY": "En el menú, Centro de ayuda → Idiomas. Cada idioma es una versión completa del portal, con sus propias categorías y artículos."
+          },
+          "NEW_LOCALE": {
+            "TITLE": "Añadir un idioma",
+            "BODY": "Con «New locale» eliges el idioma y si entra publicado o como borrador. Uno de ellos es el Predeterminado: el que se muestra cuando no hay traducción."
+          },
+          "CONTENT": {
+            "TITLE": "Ajustar cada idioma",
+            "BODY": "El menú de cada idioma trae «Localizar contenido», para traducir el nombre y los textos del portal, y «Seleccionar contenido recomendado», para su portada."
+          },
+          "FINISH": {
+            "TITLE": "Portal ordenado",
+            "BODY": "Con pocas categorías claras y un idioma bien cuidado alcanza. Añade un segundo idioma solo cuando el primero esté completo."
+          }
+        }
+      },
+      "REPORTS_FILTERS": {
+        "NAME": "Filtros de los informes",
+        "DESCRIPTION": "Los controles que comparten todos los informes: fechas, agrupación, horario y descarga.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Un mismo panel de control",
+            "BODY": "Todos los informes se leen igual: eliges un periodo, decides cómo agrupar y comparas. Aprender estos controles una vez te sirve para las nueve pantallas."
+          },
+          "WHERE": {
+            "TITLE": "Dónde probarlos",
+            "BODY": "El informe de Conversaciones tiene todos los controles a la vista, así que lo usamos de ejemplo. Los mismos filtros aparecen en los demás informes."
+          },
+          "HEADER": {
+            "TITLE": "La cabecera del informe",
+            "BODY": "Te dice qué estás mirando y guarda a la derecha las acciones de la pantalla, como la descarga. Léela antes de sacar conclusiones de un número."
+          },
+          "DATE_RANGE": {
+            "TITLE": "El rango de fechas",
+            "BODY": "Elige entre los últimos 7, 14 o 30 días, meses recientes o un «Rango de fechas personalizado». Todo lo que veas debajo corresponde solo a ese periodo."
+          },
+          "GROUP_BY": {
+            "TITLE": "Agrupar por",
+            "BODY": "«Agrupar por» decide el tamaño de cada barra: Día, Semana, Mes o Año. Día sirve para detectar picos; Semana o Mes, para ver la tendencia real."
+          },
+          "BUSINESS_HOURS": {
+            "TITLE": "Contar solo tu horario",
+            "BODY": "El interruptor de Horarios descuenta noches y fines de semana de los tiempos de respuesta. Actívalo si no atiendes 24 horas: los números serán justos."
+          },
+          "DOWNLOAD": {
+            "TITLE": "Descargar el informe",
+            "BODY": "El botón de descarga te entrega el mismo periodo en un archivo CSV, listo para una hoja de cálculo o para compartirlo fuera de LuxoInbox."
+          },
+          "DRILLDOWN": {
+            "TITLE": "Del número al caso",
+            "BODY": "Al hacer clic en una barra del gráfico se abre un panel con las conversaciones que la componen. Es la forma de pasar de un promedio a un caso concreto."
+          },
+          "FINISH": {
+            "TITLE": "Ya sabes filtrar",
+            "BODY": "Fija un periodo, agrupa por semana y compara contra el periodo anterior. Sin comparación, un número suelto no dice nada."
+          }
+        }
+      },
+      "REPORTS_CONVERSATIONS_AGENTS": {
+        "NAME": "Conversaciones y agentes",
+        "DESCRIPTION": "Cuánto trabajo entra, en cuánto tiempo se atiende y cómo va cada agente.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Volumen y desempeño",
+            "BODY": "Dos preguntas seguidas: cuánto trabajo llega y quién lo está sacando adelante. La primera se responde en Conversaciones y la segunda en Agentes."
+          },
+          "CONVERSATIONS": {
+            "TITLE": "El informe de Conversaciones",
+            "BODY": "En el menú, Informes → Conversaciones. Es la foto del volumen y de los tiempos en el periodo que elijas."
+          },
+          "CHARTS": {
+            "TITLE": "Los gráficos",
+            "BODY": "Cada gráfico es una métrica en el tiempo. Míralos juntos: mucho volumen con tiempos estables es capacidad de sobra; poco volumen con tiempos altos es un atasco."
+          },
+          "METRICS": {
+            "TITLE": "Qué mide cada número",
+            "BODY": "Conversaciones y Mensajes son totales. Tiempo de primera respuesta, Tiempo de resolución y Tiempo de espera del cliente son promedios: un caso extremo los mueve."
+          },
+          "AGENTS": {
+            "TITLE": "El resumen de agentes",
+            "BODY": "En el menú, Informes → Agentes. Una fila por persona, con las mismas métricas del informe anterior aplicadas a su trabajo."
+          },
+          "TABLE": {
+            "TITLE": "Leer la tabla",
+            "BODY": "Compara la columna de conversaciones con las de tiempos. Un agente con muchos casos y tiempos altos no rinde mal: está sobrecargado."
+          },
+          "DETAIL": {
+            "TITLE": "Ver a una persona",
+            "BODY": "Al hacer clic en el nombre de un agente se abre su detalle, con sus propios gráficos y su rango de fechas. Úsalo para hablar con la persona, no para rankings."
+          },
+          "DOWNLOAD": {
+            "TITLE": "Descargar el resumen",
+            "BODY": "El botón de descarga exporta la tabla completa en CSV con el periodo que tengas elegido. Sirve para las revisiones mensuales sin capturas de pantalla."
+          },
+          "FINISH": {
+            "TITLE": "Ya sabes medir el trabajo",
+            "BODY": "Revisa volumen y tiempos una vez por semana y reparte la carga con datos. El pico de un día es ruido; la tendencia es la señal."
+          }
+        }
+      },
+      "REPORTS_LABELS_INBOXES_TEAMS": {
+        "NAME": "Etiquetas, canales y equipos",
+        "DESCRIPTION": "Las mismas métricas cortadas por etiqueta, por bandeja de entrada y por equipo.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Tres formas de cortar lo mismo",
+            "BODY": "Estos tres informes comparten métricas con el de agentes y solo cambian el criterio de agrupación. Elige el corte según la pregunta que traes."
+          },
+          "LABELS": {
+            "TITLE": "Resumen de etiquetas",
+            "BODY": "En el menú, Informes → Etiquetas. Responde de qué habla tu gente: devoluciones, envíos, precios, según cómo etiquetes las conversaciones."
+          },
+          "LABELS_USE": {
+            "TITLE": "Para qué sirve",
+            "BODY": "Si una etiqueta crece mes a mes, ahí tienes un problema de producto o un artículo del centro de ayuda que todavía falta escribir."
+          },
+          "INBOXES": {
+            "TITLE": "Resumen de bandejas",
+            "BODY": "En el menú, Informes → Bandeja de entrada. Compara cómo rinde cada canal conectado: web, WhatsApp, correo o redes sociales."
+          },
+          "INBOXES_USE": {
+            "TITLE": "Para qué sirve",
+            "BODY": "Los tiempos suelen variar mucho entre canales. Si uno se queda atrás, revisa quién lo atiende y qué reglas de asignación tiene."
+          },
+          "TEAMS": {
+            "TITLE": "Vista general del equipo",
+            "BODY": "En el menú, Informes → Equipo. Agrupa el trabajo por los equipos que creaste, no por persona: es la lectura para hablar con sus responsables."
+          },
+          "TEAMS_USE": {
+            "TITLE": "Para qué sirve",
+            "BODY": "Sirve para repartir gente entre equipos y para ver si alguno carga con más de lo que puede sostener."
+          },
+          "DETAIL": {
+            "TITLE": "Entrar al detalle",
+            "BODY": "En los tres informes, hacer clic en un nombre abre su pantalla propia con gráficos en el tiempo. Ahí se ve si el número de hoy es normal o excepcional."
+          },
+          "FINISH": {
+            "TITLE": "Ya sabes comparar",
+            "BODY": "Empieza siempre por la pregunta y recién después elige el corte. Abrir los tres informes sin una pregunta concreta solo cuesta tiempo."
+          }
+        }
+      },
+      "REPORTS_CSAT_SLA_BOT": {
+        "NAME": "Satisfacción, SLA y bot",
+        "DESCRIPTION": "Los informes de calidad: qué opina el cliente, si cumples plazos y qué resuelve el bot.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Medir la calidad, no el volumen",
+            "BODY": "Estos tres informes no cuentan trabajo: cuentan si lo hiciste bien. Satisfacción del cliente, cumplimiento de plazos y aporte real del bot."
+          },
+          "CSAT": {
+            "TITLE": "Encuestas de satisfacción",
+            "BODY": "En el menú, Informes → Encuestas de Satisfacción. Recoge las respuestas de la encuesta que se envía al cerrar una conversación."
+          },
+          "CSAT_METRICS": {
+            "TITLE": "Los tres números clave",
+            "BODY": "Total de respuestas dice cuánta gente contestó, Puntuación de satisfacción qué porcentaje fue positivo y Tasa de respuesta si la encuesta está llegando."
+          },
+          "CSAT_TABLE": {
+            "TITLE": "Lee los comentarios",
+            "BODY": "La tabla lista cada respuesta con contacto, agente y calificación, y puedes filtrar por agente, bandeja, equipo o calificación. Los comentarios valen más que el promedio."
+          },
+          "SLA": {
+            "TITLE": "Cumplimiento de SLA",
+            "BODY": "En el menú, Informes → SLA. Muestra qué conversaciones cumplieron los plazos que prometiste y cuáles se pasaron."
+          },
+          "SLA_METRICS": {
+            "TITLE": "Aciertos y fallos",
+            "BODY": "Tasa de Aciertos es el porcentaje cumplido y Número de Fallos los incumplimientos del periodo. Abre siempre los fallos: cada uno tiene un motivo distinto."
+          },
+          "BOT": {
+            "TITLE": "Informes de bot",
+            "BODY": "En el menú, Informes → Bot. Mide qué hace el bot antes de que la conversación llegue a una persona."
+          },
+          "BOT_METRICS": {
+            "TITLE": "¿Ayuda o estorba?",
+            "BODY": "Mira cuántas conversaciones atendió, cuántas cerró y la Tasa de traspasos. Si traspasa casi todo, hay que revisar sus respuestas."
+          },
+          "FINISH": {
+            "TITLE": "Ya sabes medir la calidad",
+            "BODY": "Un equipo rápido con clientes molestos no está funcionando. Cruza estos tres informes con los de volumen antes de decidir cambios."
+          }
+        }
+      },
+      "ACCOUNT_SETTINGS": {
+        "NAME": "Ajustes de la cuenta",
+        "DESCRIPTION": "Configura el nombre, el idioma y los datos básicos que usa toda tu cuenta.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "La identidad de tu cuenta",
+            "BODY": "Aquí vive lo que define a toda la cuenta: cómo se llama y en qué idioma trabaja. Es lo primero que conviene dejar bien puesto."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Configuración de la cuenta",
+            "BODY": "Despliega Ajustes en la barra lateral y entra en Configuración de la cuenta. Solo los administradores ven esta sección."
+          },
+          "PAGE": {
+            "TITLE": "Ajustes generales",
+            "BODY": "La página tiene un bloque de datos generales y, debajo, información técnica de la cuenta. Todo se guarda con un único botón."
+          },
+          "NAME": {
+            "TITLE": "Nombre de cuenta",
+            "BODY": "Es el nombre que ves en el selector de cuentas y el que aparece en varias notificaciones. Usa el nombre real de tu empresa."
+          },
+          "LOCALE": {
+            "TITLE": "Idioma del sitio",
+            "BODY": "Define el idioma por defecto del panel para toda la cuenta. Cada persona puede cambiar el suyo desde Ajustes del perfil."
+          },
+          "SAVE": {
+            "TITLE": "Guarda los cambios",
+            "BODY": "Ningún cambio se aplica hasta que pulsas Actualizar ajustes al final del formulario. Verás un aviso verde al confirmarse."
+          },
+          "ACCOUNT_ID": {
+            "TITLE": "ID de Cuenta",
+            "BODY": "Más abajo encuentras el ID de Cuenta. Lo necesitas cuando conectas la API o cuando el soporte te pide identificar tu cuenta."
+          },
+          "FINISH": {
+            "TITLE": "Tu cuenta ya está configurada",
+            "BODY": "Con el nombre y el idioma resueltos, el siguiente paso es conectar herramientas externas desde Integraciones."
+          }
+        }
+      },
+      "INTEGRATIONS": {
+        "NAME": "Integraciones",
+        "DESCRIPTION": "Conecta LuxoInbox con otras herramientas y envía eventos en tiempo real con webhooks.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Conectar con tus otras herramientas",
+            "BODY": "Una integración deja que LuxoInbox lea o escriba en otro sistema: tu CRM, tu tienda, tu gestor de tareas o tu chat interno."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Integraciones",
+            "BODY": "Despliega Ajustes y entra en Integraciones. Es una sección solo para administradores porque conecta datos de toda la cuenta."
+          },
+          "CATALOG": {
+            "TITLE": "El catálogo de aplicaciones",
+            "BODY": "Cada tarjeta es una aplicación disponible. El buscador de arriba filtra por nombre cuando la lista se hace larga."
+          },
+          "CONFIGURE": {
+            "TITLE": "Activado o Deshabilitado",
+            "BODY": "La etiqueta de cada tarjeta te dice si ya está conectada. Pulsa Configurar para conectarla, revisar sus datos o desconectarla."
+          },
+          "WEBHOOKS": {
+            "TITLE": "Webhooks: eventos en vivo",
+            "BODY": "Un webhook avisa a tu sistema cada vez que algo pasa aquí. Pulsa Añadir nuevo webhook e indica la URL que recibirá el aviso."
+          },
+          "WEBHOOK_EVENTS": {
+            "TITLE": "Elige qué eventos enviar",
+            "BODY": "En el formulario marcas los eventos: conversación creada, mensaje creado, contacto actualizado y varios más. Envía solo los que uses."
+          },
+          "DASHBOARD_APPS": {
+            "TITLE": "Panel de aplicaciones",
+            "BODY": "Una aplicación de panel incrusta tu propia web dentro de la conversación: pedidos, historial de pagos o lo que tu equipo necesite a mano."
+          },
+          "FINISH": {
+            "TITLE": "Ya sabes conectar herramientas",
+            "BODY": "Empieza por una sola integración y compruébala con un caso real antes de conectar la siguiente."
+          }
+        }
+      },
+      "DATA_IMPORT": {
+        "NAME": "Importar datos",
+        "DESCRIPTION": "Trae contactos y conversaciones desde otra herramienta de soporte y sigue el avance.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Mudarte sin perder historia",
+            "BODY": "Si vienes de otra herramienta de soporte, puedes traer tus contactos y sus conversaciones anteriores a esta cuenta."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Datos",
+            "BODY": "Despliega Ajustes y entra en Datos. Desde aquí se lanzan las importaciones y se revisa el historial de las anteriores."
+          },
+          "PAGE": {
+            "TITLE": "Importar y Exportar",
+            "BODY": "La cabecera tiene dos pestañas. Importar es la que usarás hoy; Exportar todavía está en camino y lo verás marcado como Próximamente."
+          },
+          "NEW": {
+            "TITLE": "Iniciar una importación",
+            "BODY": "El botón Importar abre el panel de nueva importación. Solo puede haber una importación activa a la vez, así que espera a que termine."
+          },
+          "SOURCES": {
+            "TITLE": "Origen y credenciales",
+            "BODY": "Elige la fuente (Intercom o Freshdesk), pon un nombre, pega la clave de acceso y marca qué datos traer: contactos, conversaciones o mensajes."
+          },
+          "LIST": {
+            "TITLE": "Importaciones recientes",
+            "BODY": "Cada fila es una importación con su fuente, su tipo, su estado y cuántos registros entraron. Haz clic para abrir el detalle."
+          },
+          "PROGRESS": {
+            "TITLE": "Se ejecuta en segundo plano",
+            "BODY": "La importación sigue corriendo aunque cierres la página. El estado se actualiza solo: en cola, importando contactos, finalizando."
+          },
+          "DETAIL": {
+            "TITLE": "Errores y registros saltados",
+            "BODY": "Dentro de una importación ves el progreso, los errores y lo que se omitió. Puedes descargar ambos en CSV para revisarlos con calma."
+          },
+          "FINISH": {
+            "TITLE": "Tu historia ya está aquí",
+            "BODY": "Después de importar, revisa los registros saltados y corrige lo que haga falta antes de dar la migración por cerrada."
+          }
+        }
+      },
+      "AUDIT_LOGS": {
+        "NAME": "Auditoría de registros",
+        "DESCRIPTION": "Consulta quién hizo qué en la cuenta y desde dónde, para auditar cambios e incidentes.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "El historial de tu cuenta",
+            "BODY": "La auditoría guarda quién hizo cada cambio importante y cuándo. Sirve para entender qué pasó cuando algo no cuadra."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Auditoría de registros",
+            "BODY": "Despliega Ajustes y entra en Auditoría de registros. Solo los administradores pueden consultarla."
+          },
+          "PAGE": {
+            "TITLE": "La lista de eventos",
+            "BODY": "Los eventos aparecen del más reciente al más antiguo, con el total arriba y paginación al final de la tabla."
+          },
+          "ENTRIES": {
+            "TITLE": "Qué se registra",
+            "BODY": "Inicios y cierres de sesión, invitaciones y cambios de rol, altas y bajas de bandejas, equipos, macros, webhooks y reglas."
+          },
+          "FILTERS": {
+            "TITLE": "Buscar y filtrar",
+            "BODY": "Desde la cabecera filtras por tipo de evento y por rango de fechas, y el buscador acota por nombre o correo. Puedes limpiar los filtros cuando termines."
+          },
+          "IP": {
+            "TITLE": "Hora y dirección IP",
+            "BODY": "Cada línea trae la hora exacta y la dirección IP desde donde se hizo la acción. Es el dato clave al investigar un acceso extraño."
+          },
+          "USES": {
+            "TITLE": "Cuándo mirar aquí",
+            "BODY": "Cuando desaparece una configuración, cuando alguien pierde acceso o cuando necesitas evidencia para una revisión de seguridad."
+          },
+          "FINISH": {
+            "TITLE": "Ya sabes auditar tu cuenta",
+            "BODY": "No hace falta revisarla a diario. Ábrela cuando tengas una pregunta concreta y filtra por fecha para llegar rápido."
+          }
+        }
+      },
+      "SECURITY_SSO": {
+        "NAME": "Seguridad y SSO",
+        "DESCRIPTION": "Configura el inicio de sesión único con SAML para que tu equipo entre con las credenciales de tu empresa.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Una sola llave para entrar",
+            "BODY": "Con SSO tu equipo entra con las credenciales de la empresa en vez de una contraseña propia. Menos contraseñas, menos riesgo."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Security",
+            "BODY": "Despliega Ajustes y entra en Security. Si el inicio de sesión con SAML no está habilitado, la página te lo indicará."
+          },
+          "PAGE": {
+            "TITLE": "SAML SSO",
+            "BODY": "SAML es el estándar que conecta LuxoInbox con tu proveedor de identidad: Google Workspace, Microsoft Entra, Okta y similares."
+          },
+          "IDENTITY_PROVIDER": {
+            "TITLE": "Datos de tu proveedor",
+            "BODY": "Necesitas tres valores de tu proveedor: la SSO URL, el Identity Provider Entity ID y el certificado de firma en formato PEM."
+          },
+          "SERVICE_PROVIDER": {
+            "TITLE": "Datos que copias al proveedor",
+            "BODY": "La sección de información del proveedor de servicios trae la ACS URL y el ID de entidad del SP. Cópialos en la configuración de tu IdP."
+          },
+          "ATTRIBUTES": {
+            "TITLE": "Atributos que debes enviar",
+            "BODY": "Tu proveedor tiene que enviar los atributos que se listan en la página, como el correo y el nombre. Sin ellos el acceso falla."
+          },
+          "ROLLOUT": {
+            "TITLE": "Prueba antes de anunciarlo",
+            "BODY": "Guarda con Update SAML Settings y prueba el acceso con una cuenta antes de avisar al equipo. Deja un administrador con acceso por correo."
+          },
+          "FINISH": {
+            "TITLE": "Tu acceso ya es corporativo",
+            "BODY": "Con SSO activo, dar de baja a alguien en tu proveedor le quita el acceso aquí también. Ese es el mayor beneficio."
+          }
+        }
+      },
+      "BILLING": {
+        "NAME": "Facturación",
+        "DESCRIPTION": "Revisa tu plan, tus asientos y tus créditos, y gestiona la suscripción desde el portal.",
+        "STEPS": {
+          "CONCEPT": {
+            "TITLE": "Tu plan y tu consumo",
+            "BODY": "Esta sección resume qué plan tienes contratado, cuántas personas cubre y cuándo se renueva. Solo existe en la versión en la nube."
+          },
+          "WHERE": {
+            "TITLE": "Ajustes → Facturación",
+            "BODY": "Despliega Ajustes y entra en Facturación. Es una sección solo para administradores."
+          },
+          "PAGE": {
+            "TITLE": "La página de facturación",
+            "BODY": "Arriba tienes el enlace Ver precios para comparar planes, y debajo las tarjetas con tu suscripción y tu consumo."
+          },
+          "CURRENT_PLAN": {
+            "TITLE": "Plan actual y asientos",
+            "BODY": "Ves tu plan, el número de asientos contratados, la fecha de renovación y la moneda. Un asiento equivale a un agente activo."
+          },
+          "PORTAL": {
+            "TITLE": "El portal de facturación",
+            "BODY": "Con Ir al portal de facturación abres tus facturas anteriores, cambias los datos de pago o cancelas la suscripción."
+          },
+          "CREDITS": {
+            "TITLE": "Créditos de LuxoIA",
+            "BODY": "Si usas LuxoIA verás dos medidores, respuestas y documentos, con lo consumido del mes. Puedes comprar más créditos cuando se agoten."
+          },
+          "SUPPORT": {
+            "TITLE": "Si algo no cuadra",
+            "BODY": "El botón Chatea con nosotros abre soporte directo para dudas de cobros, cambios de plan o facturas que no encuentras."
+          },
+          "FINISH": {
+            "TITLE": "Ya controlas tu suscripción",
+            "BODY": "Revisa los asientos cada vez que entra o sale alguien del equipo: es el ajuste que más impacta en lo que pagas."
+          }
+        }
+      }
+    },
+    "LAUNCHER": {
+      "ARIA_LABEL": "Abrir los tutoriales de esta pantalla",
+      "TITLE": "En esta pantalla",
+      "VIEW_LIBRARY": "Ver toda la biblioteca"
+    },
+    "COMMANDS": {
+      "SECTION": "Tutoriales",
+      "OPEN_HUB": "Abrir el centro de tutoriales",
+      "START_PREFIX": "Tutorial: {name}"
+    },
+    "CATEGORIES": {
+      "START": {
+        "NAME": "Empezar",
+        "DESCRIPTION": "Ubícate en LuxoInbox: la barra lateral, la búsqueda, tu perfil y tus cuentas."
+      },
+      "CONVERSATIONS": {
+        "NAME": "Conversaciones",
+        "DESCRIPTION": "Responde, filtra, organiza y cierra las conversaciones que llegan a tu equipo."
+      },
+      "CONTACTS": {
+        "NAME": "Contactos y empresas",
+        "DESCRIPTION": "Mantén tus registros en orden: búsqueda, segmentos, importaciones y fichas de empresa."
+      },
+      "CHANNELS": {
+        "NAME": "Canales y entradas",
+        "DESCRIPTION": "Conecta WhatsApp, correo, redes sociales y el chat web, y ajusta cada bandeja de entrada."
+      },
+      "TEAM": {
+        "NAME": "Equipo y permisos",
+        "DESCRIPTION": "Invita agentes, arma equipos y decide qué puede hacer cada rol."
+      },
+      "PRODUCTIVITY": {
+        "NAME": "Productividad y automatización",
+        "DESCRIPTION": "Etiquetas, respuestas predefinidas, macros, reglas de automatización y SLA que te ahorran tiempo."
+      },
+      "AI": {
+        "NAME": "LuxoIA",
+        "DESCRIPTION": "Configura tu asistente de IA: preguntas frecuentes, documentos, escenarios y las entradas donde responde."
+      },
+      "CAMPAIGNS": {
+        "NAME": "Campañas",
+        "DESCRIPTION": "Adelántate a tus clientes con campañas de chat en vivo, SMS y WhatsApp."
+      },
+      "HELP_CENTER": {
+        "NAME": "Centro de ayuda",
+        "DESCRIPTION": "Publica tu propia base de conocimiento: portales, artículos, categorías e idiomas."
+      },
+      "REPORTS": {
+        "NAME": "Informes",
+        "DESCRIPTION": "Mide tu operación: conversaciones, agentes, etiquetas, CSAT y SLA."
+      },
+      "ACCOUNT": {
+        "NAME": "Cuenta, seguridad e integraciones",
+        "DESCRIPTION": "Configuración de la cuenta, integraciones, webhooks, importación de datos y seguridad."
+      },
+      "CALLS": {
+        "NAME": "Llamadas",
+        "DESCRIPTION": "Recibe y haz llamadas desde LuxoInbox sin salir de la conversación."
       }
     }
   }

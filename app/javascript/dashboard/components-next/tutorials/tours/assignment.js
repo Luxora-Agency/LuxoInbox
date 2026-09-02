@@ -2,8 +2,9 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'assignment',
+  category: 'productivity',
   icon: 'i-lucide-user-cog',
-  order: 11,
+  order: 610,
   audience: 'admin',
   featureFlag: FEATURE_FLAGS.ASSIGNMENT_V2,
   estimatedMinutes: 4,

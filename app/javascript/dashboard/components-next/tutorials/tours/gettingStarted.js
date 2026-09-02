@@ -1,7 +1,8 @@
 export default {
   id: 'getting-started',
+  category: 'start',
   icon: 'i-lucide-compass',
-  order: 1,
+  order: 100,
   audience: 'all',
   featureFlag: null,
   estimatedMinutes: 4,

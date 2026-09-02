@@ -2,8 +2,9 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'team',
+  category: 'team',
   icon: 'i-lucide-users',
-  order: 6,
+  order: 500,
   audience: 'admin',
   featureFlag: null,
   estimatedMinutes: 5,

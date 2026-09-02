@@ -2,8 +2,9 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'help-center',
+  category: 'help-center',
   icon: 'i-lucide-library-big',
-  order: 9,
+  order: 900,
   audience: 'admin',
   featureFlag: FEATURE_FLAGS.HELP_CENTER,
   estimatedMinutes: 4,

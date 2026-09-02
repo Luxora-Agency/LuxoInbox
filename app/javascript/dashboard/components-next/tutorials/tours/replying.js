@@ -2,8 +2,9 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'replying',
+  category: 'conversations',
   icon: 'i-lucide-reply',
-  order: 3,
+  order: 210,
   audience: 'all',
   featureFlag: null,
   estimatedMinutes: 5,
