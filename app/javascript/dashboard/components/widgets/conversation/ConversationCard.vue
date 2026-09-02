@@ -121,7 +121,10 @@ watch(
     @click="$emit('click', $event)"
     @contextmenu="$emit('contextmenu', $event)"
   >
+    <!-- The select overlay only renders on hover, so a guided tour has to
+         synthesise that hover here before it can reach the checkbox. -->
     <div
+      data-tour="conversation-card-thumbnail"
       class="relative"
       @mouseenter="onThumbnailHover"
       @mouseleave="onThumbnailLeave"

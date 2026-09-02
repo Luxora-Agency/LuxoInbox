@@ -145,6 +145,11 @@ const menuItems = computed(() => {
 const allowedMenuItems = computed(() => {
   return menuItems.value.filter(item => item.show);
 });
+
+// `tourName` is only the source of the anchor slug. `DropdownItem` sets
+// `inheritAttrs: false` and re-binds `$attrs`, so leaving it in the spread
+// would render a stray `tourname` attribute on every menu button.
+const dropdownItemProps = ({ tourName, ...props }) => props;
 </script>
 
 <template>
@@ -192,7 +197,7 @@ const allowedMenuItems = computed(() => {
         >
           <DropdownItem
             v-if="item.show"
-            v-bind="item"
+            v-bind="dropdownItemProps(item)"
             :data-tour="'profile-menu-' + toTourSlug(item.tourName)"
           />
         </CustomBrandPolicyWrapper>
