@@ -11,10 +11,16 @@ import Icon from 'dashboard/components-next/icon/Icon.vue';
 
 const RESET_CONFIRM_TIMEOUT = 4000;
 
+// Rail entry that clears the category filter. Kept out of the category ids so
+// it can never collide with one coming from `tours/categories.js`.
+const ALL_CATEGORIES = 'all';
+
 const { t } = useI18n();
 
 const {
   tours,
+  categories,
+  searchTours,
   progress,
   isHubOpen,
   startTour,
@@ -23,10 +29,13 @@ const {
   resetAll,
   closeHub,
   isCompleted,
+  canRunOnThisScreen,
 } = useTutorials();
 
 const dialogRef = ref(null);
 const isResetConfirming = ref(false);
+const searchQuery = ref('');
+const activeCategoryId = ref(ALL_CATEGORIES);
 
 let resetTimer = null;
 
@@ -37,8 +46,16 @@ const isSmallScreen = computed(
 );
 
 // Anchored tours need the desktop layout: on a phone the sidebar is a closed
-// drawer, so the card offers nothing to start.
-const isBlockedOnThisScreen = tour => isSmallScreen.value && !tour.mobileSafe;
+// drawer, so the card offers nothing to start. The composable owns the rule —
+// `startTour` refuses the same tours — but it samples the width once per call,
+// so the reactive width is read first to re-evaluate the cards on a resize.
+const isBlockedOnThisScreen = tour =>
+  isSmallScreen.value && !canRunOnThisScreen(tour);
+
+const clearFilters = () => {
+  searchQuery.value = '';
+  activeCategoryId.value = ALL_CATEGORIES;
+};
 
 watch(isHubOpen, value => {
   if (value) dialogRef.value?.open();
@@ -46,6 +63,7 @@ watch(isHubOpen, value => {
 
   clearTimeout(resetTimer);
   isResetConfirming.value = false;
+  clearFilters();
 });
 
 // `TUTORIALS.TOURS.<UPPER_SNAKE_ID>` — matches the locale tree in the contract.
@@ -55,6 +73,11 @@ const tourI18nKey = id =>
 const tourName = tour => t(`${tourI18nKey(tour.id)}.NAME`);
 
 const tourDescription = tour => t(`${tourI18nKey(tour.id)}.DESCRIPTION`);
+
+// Categories arrive decorated with their locale key (`HELP_CENTER` for
+// `help-center`), so the hub never re-derives it.
+const categoryName = category =>
+  t(`TUTORIALS.CATEGORIES.${category.i18nKey}.NAME`);
 
 // The composable decorates every visible tour with the step the user stopped at.
 const isResumable = tour =>
@@ -86,6 +109,76 @@ const progressLabel = computed(() =>
     total: progress.value.totalCount,
   })
 );
+
+const categoryProgressLabel = entry =>
+  t('TUTORIALS.HUB.CATEGORY_PROGRESS', {
+    completed: entry.completedCount,
+    total: entry.totalCount,
+  });
+
+// Compact "3/5" for the rail; built here so the separator is not raw template
+// text. The full sentence rides along as the button's title.
+const railCountLabel = entry => `${entry.completedCount}/${entry.totalCount}`;
+
+const isFullyCompleted = entry =>
+  entry.totalCount > 0 && entry.completedCount === entry.totalCount;
+
+const trimmedQuery = computed(() => searchQuery.value.trim());
+
+const isSearching = computed(() => Boolean(trimmedQuery.value));
+
+// "All" is the library view — shelves with headings, whether or not a query is
+// narrowing them. Picking a single category is already the heading, so that
+// mode renders one flat list.
+const isGrouped = computed(() => activeCategoryId.value === ALL_CATEGORIES);
+
+const filteredTours = computed(() => {
+  const matches = isSearching.value
+    ? searchTours(trimmedQuery.value)
+    : tours.value;
+
+  if (activeCategoryId.value === ALL_CATEGORIES) return matches;
+  return matches.filter(tour => tour.category === activeCategoryId.value);
+});
+
+// One shape for both modes so the card markup lives in a single place: a
+// section without a `category` renders its list without a heading.
+const sections = computed(() => {
+  if (!isGrouped.value) {
+    return filteredTours.value.length
+      ? [{ id: 'results', category: null, tours: filteredTours.value }]
+      : [];
+  }
+
+  return categories.value
+    .map(category => ({
+      id: category.id,
+      category,
+      tours: filteredTours.value.filter(tour => tour.category === category.id),
+    }))
+    .filter(section => section.tours.length);
+});
+
+const railEntries = computed(() => [
+  {
+    id: ALL_CATEGORIES,
+    icon: 'i-lucide-layout-grid',
+    label: t('TUTORIALS.HUB.ALL_CATEGORIES'),
+    completedCount: progress.value.completedCount,
+    totalCount: progress.value.totalCount,
+  },
+  ...categories.value.map(category => ({
+    id: category.id,
+    icon: category.icon,
+    label: categoryName(category),
+    completedCount: category.completedCount,
+    totalCount: category.totalCount,
+  })),
+]);
+
+const selectCategory = categoryId => {
+  activeCategoryId.value = categoryId;
+};
 
 // The hub is a modal <dialog>: it owns the top layer and would swallow every
 // pointer event aimed at the highlighted element. Close it, let the watcher
@@ -249,67 +342,174 @@ onBeforeUnmount(() => {
         {{ t('TUTORIALS.HUB.EMPTY') }}
       </p>
 
-      <ul
-        v-else
-        class="relative grid grid-cols-1 gap-4 pr-1 -mr-1 list-none md:grid-cols-2 max-h-[min(58vh,32rem)] overflow-y-auto"
-      >
-        <li
-          v-for="tour in tours"
-          :key="tour.id"
-          class="flex flex-col gap-4 p-5 transition-all duration-200 ease-out motion-reduce:transition-none rounded-2xl bg-n-solid-2 ring-1 ring-n-weak hover:ring-n-slate-6 hover:shadow-lg hover:shadow-n-slate-12/5"
-        >
-          <div class="flex items-start gap-4">
-            <span
-              class="grid flex-shrink-0 rounded-xl size-11 place-items-center bg-orbis-navy ring-1 ring-orbis-neon/25 dark:ring-orbis-neon/40"
-            >
-              <Icon :icon="tour.icon" class="size-5 text-orbis-neon" />
-            </span>
-            <div class="flex flex-col gap-1 min-w-0">
-              <h3 class="mb-0 text-sm font-semibold text-n-slate-12">
-                {{ tourName(tour) }}
-              </h3>
-              <p class="mb-0 text-sm leading-relaxed text-n-slate-11">
-                {{ tourDescription(tour) }}
-              </p>
-            </div>
-          </div>
+      <template v-else>
+        <div class="relative">
+          <Icon
+            icon="i-lucide-search"
+            class="absolute -translate-y-1/2 pointer-events-none size-4 top-1/2 text-n-slate-10 ltr:left-3.5 rtl:right-3.5"
+          />
+          <input
+            v-model="searchQuery"
+            type="search"
+            :placeholder="t('TUTORIALS.HUB.SEARCH_PLACEHOLDER')"
+            :aria-label="t('TUTORIALS.HUB.SEARCH_PLACEHOLDER')"
+            class="w-full py-2.5 text-sm transition-shadow duration-150 ease-out border-0 rounded-xl motion-reduce:transition-none bg-n-alpha-2 text-n-slate-12 ring-1 ring-n-weak placeholder:text-n-slate-10 focus:outline-none focus:ring-2 focus:ring-n-slate-12 dark:focus:ring-orbis-neon ltr:pl-10 ltr:pr-3.5 rtl:pr-10 rtl:pl-3.5"
+          />
+        </div>
 
-          <div class="flex flex-wrap items-center gap-2 mt-auto">
-            <span
-              class="inline-flex items-center gap-1.5 text-xs font-medium text-n-slate-11"
-            >
-              <Icon icon="i-lucide-clock" class="size-3.5" />
-              {{
-                t('TUTORIALS.HUB.MINUTES', { minutes: tour.estimatedMinutes })
-              }}
-            </span>
-            <span
-              v-if="isCompleted(tour.id)"
-              class="inline-flex items-center gap-1 rounded-full bg-orbis-neon/10 px-2.5 py-1 text-xs font-medium text-n-slate-12 ring-1 ring-orbis-neon/30"
-            >
-              <Icon
-                icon="i-lucide-check"
-                class="size-3.5 text-n-slate-12 dark:text-orbis-neon"
-              />
-              {{ t('TUTORIALS.HUB.COMPLETED') }}
-            </span>
+        <div class="relative flex flex-col gap-4 md:flex-row md:gap-5">
+          <div
+            class="flex flex-row flex-shrink-0 gap-2 pb-1 overflow-x-auto md:sticky md:top-0 md:self-start md:w-52 md:flex-col md:gap-1 md:overflow-x-visible md:overflow-y-auto md:pb-0 md:max-h-[min(58vh,32rem)]"
+          >
             <button
+              v-for="entry in railEntries"
+              :key="entry.id"
               type="button"
-              :disabled="isBlockedOnThisScreen(tour)"
-              class="inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon focus-visible:ring-offset-2 focus-visible:ring-offset-n-background disabled:cursor-not-allowed disabled:opacity-45 ltr:ml-auto rtl:mr-auto"
+              :aria-pressed="activeCategoryId === entry.id"
+              :title="categoryProgressLabel(entry)"
+              class="inline-flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon md:w-full"
               :class="
-                isCompleted(tour.id)
-                  ? 'bg-n-alpha-2 text-n-slate-12 ring-1 ring-n-weak hover:enabled:bg-n-alpha-3'
-                  : 'bg-orbis-neon text-orbis-navy hover:enabled:bg-orbis-neon/85'
+                activeCategoryId === entry.id
+                  ? 'bg-orbis-neon text-orbis-navy'
+                  : 'text-n-slate-11 hover:bg-n-alpha-2 hover:text-n-slate-12'
               "
-              @click="runTour(tour)"
+              @click="selectCategory(entry.id)"
             >
-              {{ actionLabel(tour) }}
-              <Icon :icon="actionIcon(tour)" class="size-3.5" />
+              <Icon :icon="entry.icon" class="flex-shrink-0 size-4" />
+              <span class="truncate">{{ entry.label }}</span>
+              <Icon
+                v-if="isFullyCompleted(entry)"
+                icon="i-lucide-check"
+                class="flex-shrink-0 size-3.5 ltr:ml-auto rtl:mr-auto"
+                :class="
+                  activeCategoryId === entry.id
+                    ? 'text-orbis-navy'
+                    : 'text-n-slate-12 dark:text-orbis-neon'
+                "
+              />
+              <span
+                v-else
+                class="text-xs tabular-nums ltr:ml-auto rtl:mr-auto"
+                :class="
+                  activeCategoryId === entry.id
+                    ? 'text-orbis-navy/70'
+                    : 'text-n-slate-10'
+                "
+              >
+                {{ railCountLabel(entry) }}
+              </span>
             </button>
           </div>
-        </li>
-      </ul>
+
+          <div
+            class="flex flex-col flex-1 min-w-0 gap-6 pr-1 -mr-1 max-h-[min(58vh,32rem)] overflow-y-auto"
+          >
+            <div
+              v-if="!sections.length"
+              role="status"
+              class="flex flex-col items-center gap-3 py-10"
+            >
+              <p class="mb-0 text-sm text-center text-n-slate-11">
+                {{ t('TUTORIALS.HUB.NO_RESULTS') }}
+              </p>
+              <button
+                type="button"
+                class="inline-flex items-center gap-1.5 rounded-lg bg-n-alpha-2 px-3.5 py-2 text-sm font-medium text-n-slate-12 ring-1 ring-n-weak transition-colors duration-150 ease-out motion-reduce:transition-none hover:bg-n-alpha-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon"
+                @click="clearFilters"
+              >
+                <Icon icon="i-lucide-library" class="size-3.5" />
+                {{ t('TUTORIALS.HUB.VIEW_LIBRARY') }}
+              </button>
+            </div>
+
+            <section
+              v-for="section in sections"
+              :key="section.id"
+              class="flex flex-col gap-3"
+            >
+              <div v-if="section.category" class="flex items-center gap-2.5">
+                <Icon
+                  :icon="section.category.icon"
+                  class="flex-shrink-0 size-4 text-n-slate-11"
+                />
+                <h3
+                  class="mb-0 text-xs font-semibold tracking-wider uppercase text-n-slate-12"
+                >
+                  {{ categoryName(section.category) }}
+                </h3>
+                <span class="text-xs font-medium tabular-nums text-n-slate-10">
+                  {{ categoryProgressLabel(section.category) }}
+                </span>
+                <span aria-hidden="true" class="flex-1 h-px bg-n-weak" />
+              </div>
+
+              <ul class="grid grid-cols-1 gap-4 list-none">
+                <li
+                  v-for="tour in section.tours"
+                  :key="tour.id"
+                  class="flex flex-col gap-4 p-5 transition-all duration-200 ease-out motion-reduce:transition-none rounded-2xl bg-n-solid-2 ring-1 ring-n-weak hover:ring-n-slate-6 hover:shadow-lg hover:shadow-n-slate-12/5"
+                >
+                  <div class="flex items-start gap-4">
+                    <span
+                      class="grid flex-shrink-0 rounded-xl size-11 place-items-center bg-orbis-navy ring-1 ring-orbis-neon/25 dark:ring-orbis-neon/40"
+                    >
+                      <Icon :icon="tour.icon" class="size-5 text-orbis-neon" />
+                    </span>
+                    <div class="flex flex-col gap-1 min-w-0">
+                      <component
+                        :is="section.category ? 'h4' : 'h3'"
+                        class="mb-0 text-sm font-semibold text-n-slate-12"
+                      >
+                        {{ tourName(tour) }}
+                      </component>
+                      <p class="mb-0 text-sm leading-relaxed text-n-slate-11">
+                        {{ tourDescription(tour) }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-wrap items-center gap-2 mt-auto">
+                    <span
+                      class="inline-flex items-center gap-1.5 text-xs font-medium text-n-slate-11"
+                    >
+                      <Icon icon="i-lucide-clock" class="size-3.5" />
+                      {{
+                        t('TUTORIALS.HUB.MINUTES', {
+                          minutes: tour.estimatedMinutes,
+                        })
+                      }}
+                    </span>
+                    <span
+                      v-if="isCompleted(tour.id)"
+                      class="inline-flex items-center gap-1 rounded-full bg-orbis-neon/10 px-2.5 py-1 text-xs font-medium text-n-slate-12 ring-1 ring-orbis-neon/30"
+                    >
+                      <Icon
+                        icon="i-lucide-check"
+                        class="size-3.5 text-n-slate-12 dark:text-orbis-neon"
+                      />
+                      {{ t('TUTORIALS.HUB.COMPLETED') }}
+                    </span>
+                    <button
+                      type="button"
+                      :disabled="isBlockedOnThisScreen(tour)"
+                      class="inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon focus-visible:ring-offset-2 focus-visible:ring-offset-n-background disabled:cursor-not-allowed disabled:opacity-45 ltr:ml-auto rtl:mr-auto"
+                      :class="
+                        isCompleted(tour.id)
+                          ? 'bg-n-alpha-2 text-n-slate-12 ring-1 ring-n-weak hover:enabled:bg-n-alpha-3'
+                          : 'bg-orbis-neon text-orbis-navy hover:enabled:bg-orbis-neon/85'
+                      "
+                      @click="runTour(tour)"
+                    >
+                      {{ actionLabel(tour) }}
+                      <Icon :icon="actionIcon(tour)" class="size-3.5" />
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </template>
     </div>
 
     <template #footer>
