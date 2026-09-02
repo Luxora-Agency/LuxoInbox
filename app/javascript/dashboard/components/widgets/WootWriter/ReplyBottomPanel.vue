@@ -366,7 +366,6 @@ export default {
       <NextButton
         v-if="enableContentTemplates"
         v-tooltip.top-end="'Content Templates'"
-        data-tour="composer-content-template"
         icon="i-ph-whatsapp-logo"
         slate
         faded

@@ -92,7 +92,6 @@ const emit = defineEmits([
                 !isLabelView &&
                 !isActiveView
               "
-              data-tour="contacts-create-segment"
               icon="i-lucide-save"
               color="slate"
               size="sm"
@@ -101,7 +100,6 @@ const emit = defineEmits([
             />
             <Button
               v-if="isSegmentsView && !isLabelView && !isActiveView"
-              data-tour="contacts-delete-segment"
               icon="i-lucide-trash"
               color="slate"
               size="sm"

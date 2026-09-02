@@ -301,7 +301,7 @@ export default {
       </BaseTable>
 
       <woot-modal v-model:show="showAddPopup" :on-close="hideAddPopup">
-        <AddSLA data-tour="sla-dialog" @close="hideAddPopup" />
+        <AddSLA @close="hideAddPopup" />
       </woot-modal>
 
       <woot-delete-modal

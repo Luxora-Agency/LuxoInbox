@@ -114,7 +114,6 @@ onUnmounted(() => {
       />
       <DropdownMenu
         v-if="showActionsDropdown"
-        data-tour="conversation-more-actions-menu"
         :menu-items="actionMenuItems"
         class="mt-1 ltr:right-0 rtl:left-0 top-full"
         @action="handleActionClick"

@@ -145,11 +145,7 @@ const handleCreateArticle = event => {
 </script>
 
 <template>
-  <HelpCenterLayout
-    data-tour="article-editor"
-    :show-header-title="false"
-    :show-pagination-footer="false"
-  >
+  <HelpCenterLayout :show-header-title="false" :show-pagination-footer="false">
     <template #header-actions>
       <ArticleEditorHeader
         :is-updating="isUpdating"

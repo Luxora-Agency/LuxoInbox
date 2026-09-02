@@ -134,7 +134,6 @@ onMounted(() => {
 <template>
   <div class="w-full">
     <SidebarActionsHeader
-      data-tour="contact-panel-actions-header"
       :title="$t('CONVERSATION.SIDEBAR.CONTACT')"
       @close="closeContactPanel"
     />

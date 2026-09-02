@@ -171,7 +171,6 @@ onUnmounted(() => {
 
 <template>
   <PageLayout
-    data-tour="captain-faq-suggestions"
     :total-count="suggestionMeta.totalCount"
     :current-page="suggestionMeta.page"
     :header-title="$t('CAPTAIN.FAQ_SUGGESTIONS.HEADER')"

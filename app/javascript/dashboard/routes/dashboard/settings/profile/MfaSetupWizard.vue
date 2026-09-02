@@ -148,7 +148,7 @@ defineExpose({
 </script>
 
 <template>
-  <div v-if="showSetup && !mfaEnabled" data-tour="mfa-setup">
+  <div v-if="showSetup && !mfaEnabled">
     <!-- Step 1: QR Code -->
     <div v-if="setupStep === 'qr'" class="space-y-6">
       <div

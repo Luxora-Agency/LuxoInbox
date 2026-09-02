@@ -91,11 +91,7 @@ export default {
 
 <template>
   <div class="h-full w-full p-6 col-span-6">
-    <form
-      data-tour="inbox-add-agents"
-      class="flex flex-wrap flex-col mx-0"
-      @submit.prevent="addAgents()"
-    >
+    <form class="flex flex-wrap flex-col mx-0" @submit.prevent="addAgents()">
       <div class="w-full">
         <PageHeader
           :header-title="$t('INBOX_MGMT.ADD.AGENTS.TITLE')"

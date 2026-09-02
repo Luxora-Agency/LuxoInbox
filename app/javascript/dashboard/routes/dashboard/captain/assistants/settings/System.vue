@@ -20,7 +20,6 @@ const systemSettingsDescription = computed(() =>
 
 <template>
   <SettingsPageLayout
-    data-tour="captain-settings-system"
     :heading="t('CAPTAIN.ASSISTANTS.SETTINGS.SYSTEM_SETTINGS.TITLE')"
     :description="systemSettingsDescription"
   >

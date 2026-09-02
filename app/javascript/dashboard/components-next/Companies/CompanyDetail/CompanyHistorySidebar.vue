@@ -38,7 +38,6 @@ const conversationInbox = conversation =>
 <template>
   <div
     v-if="isLoading"
-    data-tour="company-history"
     class="flex items-center justify-center py-10 text-n-slate-11"
   >
     <Spinner />
@@ -46,7 +45,6 @@ const conversationInbox = conversation =>
 
   <div
     v-else-if="conversations.length > 0"
-    data-tour="company-history"
     class="px-6 divide-y divide-n-strong [&>*:hover]:!border-y-transparent [&>*:hover+*]:!border-t-transparent"
   >
     <ConversationCard
@@ -62,7 +60,6 @@ const conversationInbox = conversation =>
 
   <p
     v-else
-    data-tour="company-history"
     class="py-8 px-4 mx-6 text-sm text-center rounded-xl border border-dashed border-n-strong text-n-slate-11"
   >
     {{ t('COMPANIES.DETAIL.HISTORY.EMPTY') }}

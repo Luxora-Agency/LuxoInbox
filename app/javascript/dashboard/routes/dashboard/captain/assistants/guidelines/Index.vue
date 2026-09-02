@@ -169,7 +169,6 @@ const addAllExample = async () => {
 
 <template>
   <SettingsPageLayout
-    data-tour="captain-guidelines"
     :heading="t('CAPTAIN.ASSISTANTS.RESPONSE_GUIDELINES.TITLE')"
     :description="t('CAPTAIN.ASSISTANTS.RESPONSE_GUIDELINES.DESCRIPTION')"
   >

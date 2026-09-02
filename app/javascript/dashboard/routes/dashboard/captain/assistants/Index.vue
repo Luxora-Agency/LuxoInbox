@@ -47,7 +47,6 @@ const handleAfterCreate = newAssistant => {
 
 <template>
   <PageLayout
-    data-tour="captain-assistants"
     :header-title="$t('CAPTAIN.ASSISTANTS.HEADER')"
     :show-pagination-footer="false"
     :is-fetching="isFetching"

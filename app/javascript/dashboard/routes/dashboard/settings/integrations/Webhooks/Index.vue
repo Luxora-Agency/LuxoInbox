@@ -192,11 +192,7 @@ export default {
       v-model:show="showAddPopup"
       :on-close="hideAddPopup"
     >
-      <NewWebhook
-        v-if="showAddPopup"
-        data-tour="webhooks-dialog"
-        :on-close="hideAddPopup"
-      />
+      <NewWebhook v-if="showAddPopup" :on-close="hideAddPopup" />
     </woot-modal>
 
     <woot-modal

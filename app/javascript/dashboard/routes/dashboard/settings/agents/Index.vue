@@ -279,7 +279,7 @@ const confirmDeletion = () => {
     </template>
 
     <woot-modal v-model:show="showAddPopup" :on-close="hideAddPopup">
-      <AddAgent data-tour="agents-dialog" @close="hideAddPopup" />
+      <AddAgent @close="hideAddPopup" />
     </woot-modal>
 
     <woot-modal v-model:show="showEditPopup" :on-close="hideEditPopup">

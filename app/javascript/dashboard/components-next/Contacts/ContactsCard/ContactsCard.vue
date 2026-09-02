@@ -135,7 +135,6 @@ const handleAvatarHover = isHovered => {
           >
             <template v-if="selectable" #overlay="{ size }">
               <label
-                data-tour="contacts-row-select"
                 class="flex items-center justify-center rounded-full cursor-pointer absolute inset-0 z-10 backdrop-blur-[2px] border border-n-weak"
                 :style="{ width: `${size}px`, height: `${size}px` }"
                 @click.stop

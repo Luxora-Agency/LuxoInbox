@@ -93,7 +93,6 @@ const redirectToPortalHomePage = () => {
 
 <template>
   <div
-    data-tour="portal-switcher"
     class="pt-5 bg-n-alpha-3 backdrop-blur-[100px] outline outline-n-container outline-1 z-50 absolute w-[27.5rem] max-h-96 rounded-xl shadow-md flex flex-col gap-4"
   >
     <div

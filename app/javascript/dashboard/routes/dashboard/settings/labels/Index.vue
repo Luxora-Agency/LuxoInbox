@@ -191,7 +191,7 @@ onBeforeMount(() => {
     </template>
 
     <woot-modal v-model:show="showAddPopup" :on-close="hideAddPopup">
-      <AddLabel data-tour="labels-dialog" @close="hideAddPopup" />
+      <AddLabel @close="hideAddPopup" />
     </woot-modal>
 
     <woot-modal v-model:show="showEditPopup" :on-close="hideEditPopup">

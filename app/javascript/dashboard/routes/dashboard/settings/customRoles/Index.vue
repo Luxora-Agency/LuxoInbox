@@ -190,7 +190,6 @@ const confirmDeletion = () => {
       :on-close="hideCustomRoleModal"
     >
       <CustomRoleModal
-        data-tour="custom-roles-dialog"
         :mode="customRoleModalMode"
         :selected-role="selectedRole"
         @close="hideCustomRoleModal"

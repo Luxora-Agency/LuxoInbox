@@ -83,7 +83,7 @@ export default {
 
 <template>
   <Modal v-model:show="show" :on-close="onClose">
-    <div data-tour="canned-dialog" class="flex flex-col h-auto overflow-auto">
+    <div class="flex flex-col h-auto overflow-auto">
       <woot-modal-header
         :header-title="$t('CANNED_MGMT.ADD.TITLE')"
         :header-content="$t('CANNED_MGMT.ADD.DESC')"
