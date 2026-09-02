@@ -4,6 +4,7 @@ import TutorialsHub from './TutorialsHub.vue';
 import TutorialWelcomeDialog from './TutorialWelcomeDialog.vue';
 import TutorialFinishedDialog from './TutorialFinishedDialog.vue';
 import TutorialHintChip from './TutorialHintChip.vue';
+import TutorialPageLauncher from './TutorialPageLauncher.vue';
 </script>
 
 <template>
@@ -12,4 +13,5 @@ import TutorialHintChip from './TutorialHintChip.vue';
   <TutorialWelcomeDialog />
   <TutorialFinishedDialog />
   <TutorialHintChip />
+  <TutorialPageLauncher />
 </template>

@@ -11,6 +11,7 @@ import { useGoToCommandHotKeys } from 'dashboard/composables/commands/useGoToCom
 import { useBulkActionsHotKeys } from 'dashboard/composables/commands/useBulkActionsHotKeys';
 import { useConversationHotKeys } from 'dashboard/composables/commands/useConversationHotKeys';
 import { useMacroHotKeys } from 'dashboard/composables/commands/useMacroHotKeys';
+import { useTutorialHotKeys } from 'dashboard/composables/commands/useTutorialHotKeys';
 import ConversationResolveAttributesModal from 'dashboard/components-next/ConversationWorkflow/ConversationResolveAttributesModal.vue';
 import wootConstants from 'dashboard/constants/globals';
 import {
@@ -58,6 +59,7 @@ const {
   submitPendingAttributes,
   dismissPendingAttributes,
 } = useMacroHotKeys();
+const { tutorialHotKeys } = useTutorialHotKeys();
 
 watch(pendingAttributes, pending => {
   if (pending) {
@@ -101,6 +103,7 @@ const hotKeys = computed(() => {
     ...bulkActionsHotKeys.value,
     ...conversationHotKeys.value,
     ...macroHotKeys.value,
+    ...tutorialHotKeys.value,
   ];
   // When dynamic NLP snooze suggestions exist, hide all preset snooze actions to avoid duplication
   if (!dynamicSnoozeActions.value.length) return allActions;
