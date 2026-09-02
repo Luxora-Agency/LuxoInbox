@@ -1,59 +1,87 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 import { onKeyStroke, useWindowSize } from '@vueuse/core';
 import { OnClickOutside } from '@vueuse/components';
 
 import wootConstants from 'dashboard/constants/globals';
 import { useTutorials } from 'dashboard/composables/useTutorials';
+import { useCallsStore } from 'dashboard/stores/calls';
 
 import Icon from 'dashboard/components-next/icon/Icon.vue';
 
 const PANEL_TITLE_ID = 'tutorial-page-launcher-title';
+// The panel is anchored bottom-right and grows upward; `home` alone offers
+// eleven tours, which is taller than a 720p viewport. Beyond this the list
+// scrolls and the library is one click away.
+const MAX_LISTED_TOURS = 6;
 
 const { t } = useI18n();
+const route = useRoute();
+const callsStore = useCallsStore();
 
 const {
   toursForCurrentRoute,
   isRunning,
   isHubOpen,
   isWelcomeOpen,
+  finishedTour,
   startTour,
   resumeTour,
   resetTour,
   openHub,
   isCompleted,
   canRunOnThisScreen,
+  isBlockedByData,
   tourI18nKey,
 } = useTutorials();
 
 const { width: windowWidth } = useWindowSize();
 
 const isOpen = ref(false);
+const triggerRef = ref(null);
 
 const isDesktop = computed(
   () => windowWidth.value >= wootConstants.SMALL_SCREEN_BREAKPOINT
 );
 
 // Everything this screen can teach right now. `toursForCurrentRoute` already
-// filters by feature flag, permission and installation type.
+// filters by feature flag, permission and installation type; a tour the
+// account's data left with no steps at all is dropped here.
 const screenTours = computed(() =>
-  isDesktop.value ? toursForCurrentRoute.value.filter(canRunOnThisScreen) : []
+  isDesktop.value
+    ? toursForCurrentRoute.value.filter(
+        tour => canRunOnThisScreen(tour) && !isBlockedByData(tour)
+      )
+    : []
 );
 
-// The launcher stacks over the contextual chip (bottom-24) and the Copilot
-// launcher (bottom-4); while a tour runs, the hub or the welcome dialog owns
-// the screen, so it steps aside.
+const listedTours = computed(() =>
+  screenTours.value.slice(0, MAX_LISTED_TOURS)
+);
+
+// The launcher stacks over the contextual chip and the Copilot
+// launcher (bottom-4); while a tour runs, the hub, the welcome dialog or the
+// completion dialog owns the screen, so it steps aside. A live call parks its
+// own widget in this corner and its controls win.
 const isVisible = computed(
   () =>
     screenTours.value.length > 0 &&
     !isRunning.value &&
     !isHubOpen.value &&
-    !isWelcomeOpen.value
+    !isWelcomeOpen.value &&
+    !finishedTour.value &&
+    !callsStore.hasActiveCall &&
+    !callsStore.hasIncomingCall
 );
 
 const close = () => {
+  const wasOpen = isOpen.value;
   isOpen.value = false;
+  // The focused row is about to leave the DOM; hand focus back to the trigger
+  // instead of dropping it on `<body>`.
+  if (wasOpen) nextTick(() => triggerRef.value?.focus());
 };
 
 const toggle = () => {
@@ -61,8 +89,17 @@ const toggle = () => {
 };
 
 watch(isVisible, visible => {
-  if (!visible) close();
+  if (!visible) isOpen.value = false;
 });
+
+// The panel lists the tours of the screen it was opened on; a navigation makes
+// every row stale.
+watch(
+  () => route.name,
+  () => {
+    isOpen.value = false;
+  }
+);
 
 onKeyStroke('Escape', () => {
   if (isOpen.value) close();
@@ -110,7 +147,9 @@ const onViewLibrary = () => {
   <!-- Kept mounted and hidden instead of `v-if`: the launcher is the component's
        single root, and its own visibility rules already gate what renders. -->
   <OnClickOutside v-show="isVisible" @trigger="close">
-    <div class="fixed bottom-40 z-50 ltr:right-4 rtl:left-4">
+    <!-- Above the contextual chip (bottom-24, up to three lines tall) and the
+         Copilot launcher (bottom-4); both share this corner. -->
+    <div class="fixed bottom-48 z-50 ltr:right-4 rtl:left-4">
       <Transition
         enter-active-class="transition duration-200 ease-out motion-reduce:transition-none"
         enter-from-class="opacity-0 translate-y-2 motion-reduce:translate-y-0"
@@ -121,19 +160,20 @@ const onViewLibrary = () => {
       >
         <div
           v-if="isOpen"
-          role="dialog"
           :aria-labelledby="PANEL_TITLE_ID"
-          class="absolute bottom-full mb-3 w-72 overflow-hidden rounded-2xl bg-n-solid-2/95 shadow-xl shadow-n-slate-12/10 ring-1 ring-n-weak backdrop-blur-md ltr:right-0 rtl:left-0"
+          class="absolute bottom-full mb-3 flex max-h-[min(60vh,26rem)] w-72 flex-col overflow-hidden rounded-2xl bg-n-solid-2/95 shadow-xl shadow-n-slate-12/10 ring-1 ring-n-weak backdrop-blur-md ltr:right-0 rtl:left-0"
         >
           <p
             :id="PANEL_TITLE_ID"
-            class="mb-0 px-4 pt-3.5 pb-2 text-xs font-semibold uppercase tracking-wide text-n-slate-11"
+            class="flex-shrink-0 mb-0 px-4 pt-3.5 pb-2 text-xs font-semibold uppercase tracking-wide text-n-slate-11"
           >
             {{ t('TUTORIALS.LAUNCHER.TITLE') }}
           </p>
 
-          <ul class="flex flex-col gap-1 px-2 pb-2 mb-0 list-none">
-            <li v-for="tour in screenTours" :key="tour.id">
+          <ul
+            class="flex flex-col flex-1 gap-1 px-2 pb-2 mb-0 overflow-y-auto list-none"
+          >
+            <li v-for="tour in listedTours" :key="tour.id">
               <button
                 type="button"
                 class="flex w-full items-start gap-3 rounded-xl px-2 py-2 text-start transition-colors duration-150 motion-reduce:transition-none hover:bg-n-alpha-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon"
@@ -162,7 +202,7 @@ const onViewLibrary = () => {
                   <Icon
                     v-if="isCompleted(tour.id)"
                     icon="i-lucide-check"
-                    class="size-3.5 text-orbis-neon"
+                    class="size-3.5 text-n-slate-12 dark:text-orbis-neon"
                   />
                   {{ actionLabel(tour) }}
                 </span>
@@ -170,7 +210,7 @@ const onViewLibrary = () => {
             </li>
           </ul>
 
-          <div class="px-2 pb-2 border-t border-n-weak">
+          <div class="flex-shrink-0 px-2 pb-2 border-t border-n-weak">
             <button
               type="button"
               class="flex w-full items-center gap-2 mt-2 rounded-xl px-2 py-2 text-xs font-medium text-n-slate-11 transition-colors duration-150 motion-reduce:transition-none hover:bg-n-alpha-2 hover:text-n-slate-12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon"
@@ -184,8 +224,13 @@ const onViewLibrary = () => {
       </Transition>
 
       <button
+        ref="triggerRef"
         type="button"
-        :aria-label="t('TUTORIALS.LAUNCHER.ARIA_LABEL')"
+        :aria-label="
+          t('TUTORIALS.LAUNCHER.ARIA_LABEL_COUNT', {
+            count: screenTours.length,
+          })
+        "
         :aria-expanded="isOpen"
         class="relative grid rounded-2xl size-11 place-items-center bg-n-solid-2/95 shadow-lg shadow-n-slate-12/10 ring-1 ring-n-weak backdrop-blur-md transition-colors duration-150 motion-reduce:transition-none hover:bg-n-alpha-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon"
         @click="toggle"

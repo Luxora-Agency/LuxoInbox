@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { useWindowSize } from '@vueuse/core';
 
 import wootConstants from 'dashboard/constants/globals';
+import { useStore, useMapGetter } from 'dashboard/composables/store';
 import { useTutorials } from 'dashboard/composables/useTutorials';
 
 import Dialog from 'dashboard/components-next/dialog/Dialog.vue';
@@ -16,6 +17,8 @@ const RESET_CONFIRM_TIMEOUT = 4000;
 const ALL_CATEGORIES = 'all';
 
 const { t } = useI18n();
+const store = useStore();
+const allContacts = useMapGetter('contacts/getContacts');
 
 const {
   tours,
@@ -30,6 +33,7 @@ const {
   closeHub,
   isCompleted,
   canRunOnThisScreen,
+  isBlockedByData,
 } = useTutorials();
 
 const dialogRef = ref(null);
@@ -52,6 +56,17 @@ const isSmallScreen = computed(
 const isBlockedOnThisScreen = tour =>
   isSmallScreen.value && !canRunOnThisScreen(tour);
 
+// A tour whose every step needs a record the account has not created yet has
+// nothing to show. Disabling it here is the only place the user finds out;
+// `startTour` refuses it too, but silently.
+const isBlocked = tour => isBlockedOnThisScreen(tour) || isBlockedByData(tour);
+
+const blockedReason = tour => {
+  if (isBlockedOnThisScreen(tour)) return t('TUTORIALS.HUB.MOBILE_NOTICE');
+  if (isBlockedByData(tour)) return t('TUTORIALS.HUB.NEEDS_DATA');
+  return undefined;
+};
+
 const clearFilters = () => {
   searchQuery.value = '';
   activeCategoryId.value = ALL_CATEGORIES;
@@ -60,6 +75,10 @@ const clearFilters = () => {
 watch(isHubOpen, value => {
   if (value) dialogRef.value?.open();
   else dialogRef.value?.close();
+
+  // Only the contacts index fills this store, so the library opened from any
+  // other screen would judge the contact tours against an empty list.
+  if (value && !allContacts.value.length) store.dispatch('contacts/get');
 
   clearTimeout(resetTimer);
   isResetConfirming.value = false;
@@ -159,6 +178,12 @@ const sections = computed(() => {
     .filter(section => section.tours.length);
 });
 
+// Changing a category or typing in the search box only repaints the results
+// column; this is the sentence the live region announces when it does.
+const resultsLabel = computed(() =>
+  t('TUTORIALS.HUB.RESULTS_COUNT', { count: filteredTours.value.length })
+);
+
 const railEntries = computed(() => [
   {
     id: ALL_CATEGORIES,
@@ -184,7 +209,7 @@ const selectCategory = categoryId => {
 // pointer event aimed at the highlighted element. Close it, let the watcher
 // flush, and only then hand control over to the engine.
 const runTour = async tour => {
-  if (isBlockedOnThisScreen(tour)) return;
+  if (isBlocked(tour)) return;
 
   const shouldReplay = isCompleted(tour.id);
   const shouldResume = !shouldReplay && isResumable(tour);
@@ -346,19 +371,21 @@ onBeforeUnmount(() => {
         <div class="relative">
           <Icon
             icon="i-lucide-search"
-            class="absolute -translate-y-1/2 pointer-events-none size-4 top-1/2 text-n-slate-10 ltr:left-3.5 rtl:right-3.5"
+            class="absolute -translate-y-1/2 pointer-events-none size-4 top-1/2 text-n-slate-11 ltr:left-3.5 rtl:right-3.5"
           />
           <input
             v-model="searchQuery"
             type="search"
             :placeholder="t('TUTORIALS.HUB.SEARCH_PLACEHOLDER')"
             :aria-label="t('TUTORIALS.HUB.SEARCH_PLACEHOLDER')"
-            class="w-full py-2.5 text-sm transition-shadow duration-150 ease-out border-0 rounded-xl motion-reduce:transition-none bg-n-alpha-2 text-n-slate-12 ring-1 ring-n-weak placeholder:text-n-slate-10 focus:outline-none focus:ring-2 focus:ring-n-slate-12 dark:focus:ring-orbis-neon ltr:pl-10 ltr:pr-3.5 rtl:pr-10 rtl:pl-3.5"
+            class="w-full py-2.5 text-sm transition-shadow duration-150 ease-out border-0 rounded-xl motion-reduce:transition-none bg-n-alpha-2 text-n-slate-12 ring-1 ring-n-weak placeholder:text-n-slate-11 focus:outline-none focus:ring-2 focus:ring-n-slate-12 dark:focus:ring-orbis-neon ltr:pl-10 ltr:pr-3.5 rtl:pr-10 rtl:pl-3.5"
           />
         </div>
 
         <div class="relative flex flex-col gap-4 md:flex-row md:gap-5">
           <div
+            role="group"
+            :aria-label="t('TUTORIALS.HUB.CATEGORIES_LABEL')"
             class="flex flex-row flex-shrink-0 gap-2 pb-1 overflow-x-auto md:sticky md:top-0 md:self-start md:w-52 md:flex-col md:gap-1 md:overflow-x-visible md:overflow-y-auto md:pb-0 md:max-h-[min(58vh,32rem)]"
           >
             <button
@@ -366,6 +393,7 @@ onBeforeUnmount(() => {
               :key="entry.id"
               type="button"
               :aria-pressed="activeCategoryId === entry.id"
+              :aria-label="`${entry.label} — ${categoryProgressLabel(entry)}`"
               :title="categoryProgressLabel(entry)"
               class="inline-flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon md:w-full"
               :class="
@@ -393,7 +421,7 @@ onBeforeUnmount(() => {
                 :class="
                   activeCategoryId === entry.id
                     ? 'text-orbis-navy/70'
-                    : 'text-n-slate-10'
+                    : 'text-n-slate-11'
                 "
               >
                 {{ railCountLabel(entry) }}
@@ -402,8 +430,11 @@ onBeforeUnmount(() => {
           </div>
 
           <div
+            aria-live="polite"
             class="flex flex-col flex-1 min-w-0 gap-6 pr-1 -mr-1 max-h-[min(58vh,32rem)] overflow-y-auto"
           >
+            <p class="sr-only">{{ resultsLabel }}</p>
+
             <div
               v-if="!sections.length"
               role="status"
@@ -437,7 +468,7 @@ onBeforeUnmount(() => {
                 >
                   {{ categoryName(section.category) }}
                 </h3>
-                <span class="text-xs font-medium tabular-nums text-n-slate-10">
+                <span class="text-xs font-medium tabular-nums text-n-slate-11">
                   {{ categoryProgressLabel(section.category) }}
                 </span>
                 <span aria-hidden="true" class="flex-1 h-px bg-n-weak" />
@@ -489,9 +520,17 @@ onBeforeUnmount(() => {
                       />
                       {{ t('TUTORIALS.HUB.COMPLETED') }}
                     </span>
+                    <span
+                      v-if="isBlockedByData(tour)"
+                      class="inline-flex items-center gap-1.5 text-xs font-medium text-n-slate-11"
+                    >
+                      <Icon icon="i-lucide-info" class="size-3.5" />
+                      {{ t('TUTORIALS.HUB.NEEDS_DATA') }}
+                    </span>
                     <button
                       type="button"
-                      :disabled="isBlockedOnThisScreen(tour)"
+                      :disabled="isBlocked(tour)"
+                      :title="blockedReason(tour)"
                       class="inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:focus-visible:ring-orbis-neon focus-visible:ring-offset-2 focus-visible:ring-offset-n-background disabled:cursor-not-allowed disabled:opacity-45 ltr:ml-auto rtl:mr-auto"
                       :class="
                         isCompleted(tour.id)

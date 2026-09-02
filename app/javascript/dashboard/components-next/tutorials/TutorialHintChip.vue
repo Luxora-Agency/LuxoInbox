@@ -5,23 +5,27 @@ import { useWindowSize } from '@vueuse/core';
 
 import wootConstants from 'dashboard/constants/globals';
 import { useTutorials } from 'dashboard/composables/useTutorials';
+import { useCallsStore } from 'dashboard/stores/calls';
 
 import Icon from 'dashboard/components-next/icon/Icon.vue';
 
 const HINT_DELAY = 2500;
 
 const { t } = useI18n();
+const callsStore = useCallsStore();
 
 const {
   toursForCurrentRoute,
   isRunning,
   isHubOpen,
   isWelcomeOpen,
+  finishedTour,
   startTour,
   isCompleted,
   isHintDismissed,
   dismissHint,
   canRunOnThisScreen,
+  isBlockedByData,
 } = useTutorials();
 
 const { width: windowWidth } = useWindowSize();
@@ -37,8 +41,11 @@ const isDesktop = computed(
 const candidateTour = computed(() => {
   if (!isDesktop.value || isRunning.value || isHubOpen.value) return null;
   // The welcome dialog owns the top layer; a chip underneath its backdrop is
-  // a second nudge the user cannot even read.
-  if (isWelcomeOpen.value) return null;
+  // a second nudge the user cannot even read. The completion dialog is the
+  // same case, and it already offers the next tour itself.
+  if (isWelcomeOpen.value || finishedTour.value) return null;
+  // A live call parks its own widget in this corner and its controls win.
+  if (callsStore.hasActiveCall || callsStore.hasIncomingCall) return null;
 
   // `toursForCurrentRoute` honours `pageRoutes`, so a tour that covers a list
   // and its detail is nudged on both.
@@ -46,6 +53,7 @@ const candidateTour = computed(() => {
     toursForCurrentRoute.value.find(
       tour =>
         canRunOnThisScreen(tour) &&
+        !isBlockedByData(tour) &&
         !isCompleted(tour.id) &&
         !isHintDismissed(tour.id)
     ) ?? null

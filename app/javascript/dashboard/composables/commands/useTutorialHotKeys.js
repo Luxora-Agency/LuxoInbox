@@ -12,12 +12,23 @@ import { ICON_TUTORIAL } from 'dashboard/helper/commandbar/icons';
 export function useTutorialHotKeys() {
   const { t } = useI18n();
 
-  const { tours, startTour, openHub, canRunOnThisScreen, tourI18nKey } =
-    useTutorials();
+  const {
+    tours,
+    startTour,
+    openHub,
+    canRunOnThisScreen,
+    isBlockedByData,
+    tourI18nKey,
+  } = useTutorials();
 
-  // Anchored tours need the desktop layout; offering one the engine would
-  // refuse to start is a dead command.
-  const runnableTours = computed(() => tours.value.filter(canRunOnThisScreen));
+  // Anchored tours need the desktop layout, and one whose every step needs a
+  // record the account has not created yet has nothing to show; offering
+  // either is a command the engine would refuse to start.
+  const runnableTours = computed(() =>
+    tours.value.filter(
+      tour => canRunOnThisScreen(tour) && !isBlockedByData(tour)
+    )
+  );
 
   const tutorialHotKeys = computed(() => {
     const section = t('TUTORIALS.COMMANDS.SECTION');
@@ -45,7 +56,7 @@ export function useTutorialHotKeys() {
     return [
       {
         id: 'open_tutorials',
-        title: t('TUTORIALS.COMMANDS.OPEN_HUB'),
+        title: t('TUTORIALS.COMMANDS.TITLE'),
         section,
         icon: ICON_TUTORIAL,
         children: [hubOption.id, ...options.map(option => option.id)],
