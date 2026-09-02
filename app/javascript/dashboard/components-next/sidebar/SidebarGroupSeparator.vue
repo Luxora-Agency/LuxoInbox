@@ -35,6 +35,10 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  tourSlug: {
+    type: String,
+    default: '',
+  },
 });
 
 const emit = defineEmits(['toggle', 'update-sort']);
@@ -46,7 +50,11 @@ const TREE_ELBOW =
 </script>
 
 <template>
-  <div class="relative min-w-0" :class="{ 'ms-5': collapsible }">
+  <div
+    :data-tour="tourSlug ? `sidebar-subgroup-${tourSlug}` : null"
+    class="relative min-w-0"
+    :class="{ 'ms-5': collapsible }"
+  >
     <component
       :is="collapsible ? 'button' : 'div'"
       :type="collapsible ? 'button' : undefined"

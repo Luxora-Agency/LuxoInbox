@@ -1,9 +1,18 @@
 export default {
   id: 'getting-started',
+  category: 'start',
   icon: 'i-lucide-compass',
-  order: 1,
+  order: 100,
   audience: 'all',
   featureFlag: null,
+  // Verbatim from the `inbox_view` route meta.
+  permissions: [
+    'administrator',
+    'agent',
+    'conversation_manage',
+    'conversation_unassigned_manage',
+    'conversation_participating_manage',
+  ],
   estimatedMinutes: 4,
   route: { name: 'inbox_view' },
   mobileSafe: false,

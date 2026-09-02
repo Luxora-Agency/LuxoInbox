@@ -2,9 +2,13 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'help-center',
+  category: 'help-center',
   icon: 'i-lucide-library-big',
-  order: 9,
-  audience: 'admin',
+  order: 900,
+  audience: 'all',
+  // Verbatim from the `portals_index` route meta: a custom role holding
+  // `knowledge_base_manage` reaches the screen without being an administrator.
+  permissions: ['administrator', 'knowledge_base_manage'],
   featureFlag: FEATURE_FLAGS.HELP_CENTER,
   estimatedMinutes: 4,
   route: {

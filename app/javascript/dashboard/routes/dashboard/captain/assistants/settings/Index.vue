@@ -49,6 +49,7 @@ const handleDeleteSuccess = () => {
 
 <template>
   <SettingsPageLayout
+    data-tour="captain-settings"
     :heading="t('CAPTAIN.ASSISTANTS.SETTINGS.BASIC_SETTINGS.TITLE')"
     :description="t('CAPTAIN.ASSISTANTS.SETTINGS.BASIC_SETTINGS.DESCRIPTION')"
   >

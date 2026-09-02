@@ -170,6 +170,7 @@ export default {
           @submit.prevent="updateAccount"
         >
           <WithLabel
+            data-tour="account-settings-name"
             name="account-name"
             :has-error="v$.name.$error"
             :label="$t('GENERAL_SETTINGS.FORM.NAME.LABEL')"
@@ -184,6 +185,7 @@ export default {
             />
           </WithLabel>
           <WithLabel
+            data-tour="account-settings-locale"
             name="site-language"
             :has-error="v$.locale.$error"
             :label="$t('GENERAL_SETTINGS.FORM.LANGUAGE.LABEL')"

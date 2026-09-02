@@ -33,6 +33,7 @@ const hotKeySources = {
     { id: 'until_tomorrow', parent: 'other_menu' },
   ],
   macroHotKeys: [{ id: 'execute_a_macro' }],
+  tutorialHotKeys: [{ id: 'open_tutorials' }],
 };
 
 const pendingAttributes = ref(null);
@@ -83,6 +84,12 @@ const suggestion = {
   formattedDate: 'Feb 3, 9:00 AM',
   resolve: () => 'resolved-date',
 };
+
+vi.mock('dashboard/composables/commands/useTutorialHotKeys', () => ({
+  useTutorialHotKeys: () => ({
+    tutorialHotKeys: ref(hotKeySources.tutorialHotKeys),
+  }),
+}));
 
 vi.mock('dashboard/helper/snoozeHelpers', () => ({
   generateSnoozeSuggestions: vi.fn(search => (search ? [suggestion] : [])),
@@ -167,6 +174,7 @@ describe('commandbar', () => {
           'bulk',
           'conversation',
           'execute_a_macro',
+          'open_tutorials',
         ])
       );
     });

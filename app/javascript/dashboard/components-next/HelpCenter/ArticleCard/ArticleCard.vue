@@ -190,6 +190,7 @@ const handleClick = id => {
 
 <template>
   <CardLayout
+    data-tour="article-card"
     :selectable="selectable"
     class="relative"
     @mouseenter="emit('hover', true)"

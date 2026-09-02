@@ -114,6 +114,7 @@ onMounted(() => {
         </template>
         <template #actions>
           <Button
+            data-tour="agent-bots-add"
             :label="$t('AGENT_BOTS.ADD.TITLE')"
             size="sm"
             @click="openAddModal"

@@ -38,6 +38,7 @@ const handleClose = () => emit('close');
 
 <template>
   <div
+    data-tour="campaign-dialog"
     class="w-[25rem] z-50 min-w-0 absolute top-10 ltr:right-0 rtl:left-0 bg-n-alpha-3 backdrop-blur-[100px] rounded-xl border border-n-weak shadow-md max-h-[80vh] overflow-y-auto"
   >
     <div class="p-6 flex flex-col gap-6">

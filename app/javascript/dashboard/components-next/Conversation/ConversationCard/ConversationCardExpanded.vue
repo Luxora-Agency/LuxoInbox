@@ -85,9 +85,15 @@ const selectedModel = computed({
   >
     <!-- LEFT SECTION -->
     <div class="flex items-center gap-2 min-w-0 flex-1">
-      <div class="flex items-center justify-center flex-shrink-0" @click.stop>
+      <!-- A label, so activating it (a guided tour clicks it programmatically)
+           reaches the checkbox it wraps. -->
+      <label
+        data-tour="conversation-card-select"
+        class="flex items-center justify-center flex-shrink-0 cursor-pointer"
+        @click.stop
+      >
         <Checkbox v-model="selectedModel" />
-      </div>
+      </label>
 
       <div class="w-px h-3 bg-n-slate-6 flex-shrink-0" />
 

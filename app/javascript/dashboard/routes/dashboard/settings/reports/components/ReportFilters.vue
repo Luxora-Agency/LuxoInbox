@@ -319,7 +319,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col w-full gap-3 lg:flex-row">
+  <div
+    data-tour="reports-filters"
+    class="flex flex-col w-full gap-3 lg:flex-row"
+  >
     <WootDatePicker
       v-model:date-range="customDateRange"
       v-model:range-type="selectedDateRange"

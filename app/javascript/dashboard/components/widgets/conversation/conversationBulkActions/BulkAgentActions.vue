@@ -111,7 +111,7 @@ const handleToggleDropdown = () => {
 </script>
 
 <template>
-  <div ref="containerRef" class="relative">
+  <div ref="containerRef" data-tour="conversation-bulk-agent" class="relative">
     <Button
       v-tooltip="$t('BULK_ACTION.ASSIGN_AGENT_TOOLTIP')"
       icon="i-lucide-user-round-check"

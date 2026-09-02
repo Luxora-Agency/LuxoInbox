@@ -146,7 +146,10 @@ const requestEmbeddedSignupAccess = () => {
         </p>
       </div>
 
-      <div class="flex gap-6 justify-start">
+      <div
+        data-tour="channel-whatsapp-providers"
+        class="flex gap-6 justify-start"
+      >
         <ChannelSelector
           v-for="provider in availableProviders"
           :key="provider.key"

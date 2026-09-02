@@ -2,10 +2,13 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'team',
+  category: 'team',
   icon: 'i-lucide-users',
-  order: 6,
+  order: 500,
   audience: 'admin',
-  featureFlag: null,
+  // Verbatim from the `agent_list` route meta.
+  permissions: ['administrator'],
+  featureFlag: FEATURE_FLAGS.AGENT_MANAGEMENT,
   estimatedMinutes: 5,
   route: { name: 'agent_list' },
   mobileSafe: false,

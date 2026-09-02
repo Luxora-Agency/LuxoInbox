@@ -157,6 +157,7 @@ export default {
         <template v-if="apiAndWebhooksEnabled" #actions>
           <NextButton
             blue
+            data-tour="webhooks-add"
             :label="$t('INTEGRATION_SETTINGS.WEBHOOK.HEADER_BTN_TXT')"
             size="sm"
             @click="openAddPopup"

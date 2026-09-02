@@ -6,6 +6,7 @@ import { useTutorialsUI } from 'dashboard/composables/useTutorialsUI';
 import { useI18n } from 'vue-i18n';
 import Avatar from 'next/avatar/Avatar.vue';
 import SidebarProfileMenuStatus from './SidebarProfileMenuStatus.vue';
+import { toTourSlug } from './tourAnchor';
 import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 import {
@@ -56,6 +57,7 @@ const toggleChatSupport = () => {
 const menuItems = computed(() => {
   return [
     {
+      tourName: 'Support',
       show: showChatSupport.value,
       showOnCustomBrandedInstance: false,
       label: t('SIDEBAR_ITEMS.CONTACT_SUPPORT'),
@@ -63,6 +65,7 @@ const menuItems = computed(() => {
       click: toggleChatSupport,
     },
     {
+      tourName: 'Tutorials',
       show: true,
       showOnCustomBrandedInstance: true,
       label: t('TUTORIALS.HUB.TITLE'),
@@ -70,6 +73,7 @@ const menuItems = computed(() => {
       click: openHub,
     },
     {
+      tourName: 'Keyboard Shortcuts',
       show: true,
       showOnCustomBrandedInstance: true,
       label: t('SIDEBAR_ITEMS.KEYBOARD_SHORTCUTS'),
@@ -79,6 +83,7 @@ const menuItems = computed(() => {
       },
     },
     {
+      tourName: 'Profile Settings',
       show: true,
       showOnCustomBrandedInstance: true,
       label: t('SIDEBAR_ITEMS.PROFILE_SETTINGS'),
@@ -86,6 +91,7 @@ const menuItems = computed(() => {
       link: { name: 'profile_settings_index' },
     },
     {
+      tourName: 'Appearance',
       show: true,
       showOnCustomBrandedInstance: true,
       label: t('SIDEBAR_ITEMS.APPEARANCE'),
@@ -96,6 +102,7 @@ const menuItems = computed(() => {
       },
     },
     {
+      tourName: 'Docs',
       show: true,
       showOnCustomBrandedInstance: false,
       label: t('SIDEBAR_ITEMS.DOCS'),
@@ -105,6 +112,7 @@ const menuItems = computed(() => {
       target: '_blank',
     },
     {
+      tourName: 'Changelog',
       show: true,
       showOnCustomBrandedInstance: false,
       label: t('SIDEBAR_ITEMS.CHANGELOG'),
@@ -114,6 +122,7 @@ const menuItems = computed(() => {
       target: '_blank',
     },
     {
+      tourName: 'Super Admin Console',
       show: currentUser.value.type === 'SuperAdmin',
       showOnCustomBrandedInstance: true,
       label: t('SIDEBAR_ITEMS.SUPER_ADMIN_CONSOLE'),
@@ -123,6 +132,7 @@ const menuItems = computed(() => {
       target: '_blank',
     },
     {
+      tourName: 'Logout',
       show: true,
       showOnCustomBrandedInstance: true,
       label: t('SIDEBAR_ITEMS.LOGOUT'),
@@ -135,6 +145,11 @@ const menuItems = computed(() => {
 const allowedMenuItems = computed(() => {
   return menuItems.value.filter(item => item.show);
 });
+
+// `tourName` is only the source of the anchor slug. `DropdownItem` sets
+// `inheritAttrs: false` and re-binds `$attrs`, so leaving it in the spread
+// would render a stray `tourname` attribute on every menu button.
+const dropdownItemProps = ({ tourName, ...props }) => props;
 </script>
 
 <template>
@@ -180,7 +195,11 @@ const allowedMenuItems = computed(() => {
         <CustomBrandPolicyWrapper
           :show-on-custom-branded-instance="item.showOnCustomBrandedInstance"
         >
-          <DropdownItem v-if="item.show" v-bind="item" />
+          <DropdownItem
+            v-if="item.show"
+            v-bind="dropdownItemProps(item)"
+            :data-tour="'profile-menu-' + toTourSlug(item.tourName)"
+          />
         </CustomBrandPolicyWrapper>
       </template>
     </DropdownBody>

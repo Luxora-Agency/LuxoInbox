@@ -167,6 +167,7 @@ const confirmDeletion = () => {
         </template>
         <template #actions>
           <Button
+            data-tour="agents-add"
             :label="$t('AGENT_MGMT.HEADER_BTN_TXT')"
             size="sm"
             @click="openAddPopup"

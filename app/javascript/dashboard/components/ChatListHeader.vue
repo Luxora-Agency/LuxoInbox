@@ -102,6 +102,7 @@ const toggleConversationLayout = () => {
         <div class="relative">
           <NextButton
             v-tooltip.top-end="t('FILTER.CUSTOM_VIEWS.ADD.SAVE_BUTTON')"
+            data-tour="chatlist-save-filter"
             icon="i-lucide-save"
             slate
             xs
@@ -116,6 +117,7 @@ const toggleConversationLayout = () => {
         </div>
         <NextButton
           v-tooltip.top-end="t('FILTER.CLEAR_BUTTON_LABEL')"
+          data-tour="chatlist-reset-filters"
           icon="i-lucide-circle-x"
           ruby
           faded

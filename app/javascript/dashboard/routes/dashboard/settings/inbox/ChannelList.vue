@@ -122,6 +122,7 @@ const initChannelAuth = channel => {
     <ChannelItem
       v-for="channel in channelList"
       :key="channel.key"
+      :data-tour="'channel-card-' + channel.key"
       :channel="channel"
       :enabled-features="enabledFeatures"
       @channel-item-click="initChannelAuth"

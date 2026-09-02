@@ -152,6 +152,7 @@ const confirmDeletion = () => {
         </template>
         <template #actions>
           <Button
+            data-tour="custom-roles-add"
             :label="$t('CUSTOM_ROLE.HEADER_BTN_TXT')"
             size="sm"
             :disabled="isBehindAPaywall"

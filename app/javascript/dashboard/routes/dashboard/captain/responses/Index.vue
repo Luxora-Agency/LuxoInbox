@@ -270,6 +270,7 @@ onUnmounted(() => {
 
 <template>
   <PageLayout
+    data-tour="captain-responses"
     :total-count="responseMeta.totalCount"
     :current-page="responseMeta.page"
     :button-policy="['administrator']"

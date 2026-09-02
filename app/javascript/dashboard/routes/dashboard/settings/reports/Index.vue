@@ -109,6 +109,7 @@ export default {
 <template>
   <ReportHeader :header-title="$t('REPORT.HEADER')">
     <V4Button
+      data-tour="reports-download"
       :label="$t('REPORT.DOWNLOAD_CONVERSATION_REPORTS')"
       icon="i-ph-download-simple"
       size="sm"

@@ -18,7 +18,7 @@ defineProps({
 </script>
 
 <template>
-  <section class="flex flex-col gap-1 pt-6 pb-5">
+  <section data-tour="reports-header" class="flex flex-col gap-1 pt-6 pb-5">
     <div v-if="hasBackButton">
       <BackButton compact />
     </div>

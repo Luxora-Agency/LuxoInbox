@@ -52,6 +52,7 @@ const toggleSidebar = () => {
 <template>
   <div
     v-if="showCopilotLauncher"
+    data-tour="copilot-launcher"
     class="fixed bottom-4 ltr:right-4 rtl:left-4 z-50"
   >
     <ButtonGroup

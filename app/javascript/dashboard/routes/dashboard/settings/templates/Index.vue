@@ -408,6 +408,7 @@ onDeactivated(abortTemplateRequest);
     <template #body>
       <div
         v-if="!filteredTemplates.length"
+        data-tour="templates-list"
         class="flex items-center justify-center p-8"
       >
         <span class="text-base text-n-slate-11">
@@ -415,7 +416,11 @@ onDeactivated(abortTemplateRequest);
         </span>
       </div>
 
-      <div v-else class="border-t divide-y divide-n-weak border-n-weak">
+      <div
+        v-else
+        data-tour="templates-list"
+        class="border-t divide-y divide-n-weak border-n-weak"
+      >
         <TemplateCard
           v-for="template in filteredTemplates"
           :key="template.key"

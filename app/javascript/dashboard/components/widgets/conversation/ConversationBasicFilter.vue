@@ -139,7 +139,7 @@ const handleSortChange = value => {
 </script>
 
 <template>
-  <div class="relative flex">
+  <div data-tour="conversation-basic-filter" class="relative flex">
     <NextButton
       v-tooltip.right="$t('CHAT_LIST.SORT_TOOLTIP_LABEL')"
       icon="i-lucide-arrow-up-down"

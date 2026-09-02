@@ -319,6 +319,7 @@ onUnmounted(() => {
 
 <template>
   <PageLayout
+    data-tour="captain-documents"
     :header-title="$t('CAPTAIN.DOCUMENTS.HEADER')"
     :button-label="$t('CAPTAIN.DOCUMENTS.ADD_NEW')"
     :button-policy="['administrator']"

@@ -2,8 +2,9 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'reports',
+  category: 'reports',
   icon: 'i-lucide-chart-spline',
-  order: 10,
+  order: 1000,
   audience: 'all',
   featureFlag: FEATURE_FLAGS.REPORTS,
   // Mirrors the meta of every report route: without these the router

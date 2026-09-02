@@ -78,7 +78,7 @@ const handleDismiss = () => {
 </script>
 
 <template>
-  <div ref="containerRef" class="relative">
+  <div ref="containerRef" data-tour="conversation-bulk-team" class="relative">
     <Button
       v-tooltip="$t('BULK_ACTION.ASSIGN_TEAM_TOOLTIP')"
       icon="i-lucide-users-round"

@@ -2,10 +2,13 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'inboxes',
+  category: 'channels',
   icon: 'i-lucide-inbox',
-  order: 5,
+  order: 400,
   audience: 'admin',
-  featureFlag: null,
+  // Verbatim from the `settings_inbox_list` route meta.
+  permissions: ['administrator'],
+  featureFlag: FEATURE_FLAGS.INBOX_MANAGEMENT,
   estimatedMinutes: 5,
   route: { name: 'settings_inbox_list' },
   mobileSafe: false,

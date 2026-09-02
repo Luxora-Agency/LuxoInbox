@@ -191,6 +191,7 @@ onMounted(() => {
 
 <template>
   <PageLayout
+    data-tour="captain-scenarios"
     :header-title="$t('CAPTAIN.ASSISTANTS.SCENARIOS.TITLE')"
     :is-fetching="isFetching"
     :show-know-more="false"

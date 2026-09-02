@@ -2,8 +2,9 @@ import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
 export default {
   id: 'campaigns',
+  category: 'campaigns',
   icon: 'i-lucide-megaphone',
-  order: 8,
+  order: 800,
   audience: 'admin',
   featureFlag: FEATURE_FLAGS.CAMPAIGNS,
   estimatedMinutes: 4,

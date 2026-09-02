@@ -21,7 +21,11 @@ const startSetup = () => {
 </script>
 
 <template>
-  <div v-if="!mfaEnabled && !showSetup" class="space-y-6">
+  <div
+    v-if="!mfaEnabled && !showSetup"
+    data-tour="mfa-status"
+    class="space-y-6"
+  >
     <div
       class="bg-n-solid-1 rounded-lg p-6 outline outline-n-weak outline-1 text-center"
     >

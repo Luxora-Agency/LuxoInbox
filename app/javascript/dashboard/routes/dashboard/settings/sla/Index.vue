@@ -159,6 +159,7 @@ export default {
         </template>
         <template v-if="!isBehindAPaywall" #actions>
           <NextButton
+            data-tour="sla-add"
             :label="$t('SLA.ADD_ACTION')"
             size="sm"
             @click="openAddPopup"

@@ -281,6 +281,7 @@ export default {
       <NextButton
         v-if="!isEditorDisabled"
         v-tooltip.top-end="$t('CONVERSATION.REPLYBOX.TIP_EMOJI_ICON')"
+        data-tour="composer-emoji"
         icon="i-ph-smiley-sticker"
         slate
         faded
@@ -315,6 +316,7 @@ export default {
       <NextButton
         v-if="showAudioRecorderButton"
         v-tooltip.top-end="$t('CONVERSATION.REPLYBOX.TIP_AUDIORECORDER_ICON')"
+        data-tour="composer-audio"
         :icon="!isRecordingAudio ? 'i-ph-microphone' : 'i-ph-microphone-slash'"
         slate
         faded
@@ -333,6 +335,7 @@ export default {
       <NextButton
         v-if="showMessageSignatureButton"
         v-tooltip.top-end="signatureToggleTooltip"
+        data-tour="composer-signature"
         icon="i-ph-signature"
         slate
         faded
@@ -342,6 +345,7 @@ export default {
       <NextButton
         v-if="showQuotedReplyToggle"
         v-tooltip.top-end="quotedReplyToggleTooltip"
+        data-tour="composer-quote"
         icon="i-ph-quotes"
         :variant="quotedReplyEnabled ? 'solid' : 'faded'"
         color="slate"
@@ -352,6 +356,7 @@ export default {
       <NextButton
         v-if="enableWhatsAppTemplates"
         v-tooltip.top-end="$t('CONVERSATION.FOOTER.WHATSAPP_TEMPLATES')"
+        data-tour="composer-wa-template"
         icon="i-ph-whatsapp-logo"
         slate
         faded
@@ -389,6 +394,7 @@ export default {
       <NextButton
         v-if="enableInsertArticleInReply"
         v-tooltip.top-end="$t('HELP_CENTER.ARTICLE_SEARCH.OPEN_ARTICLE_SEARCH')"
+        data-tour="composer-article"
         icon="i-ph-article-ny-times"
         slate
         faded
