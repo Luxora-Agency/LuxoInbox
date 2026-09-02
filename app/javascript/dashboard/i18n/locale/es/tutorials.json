@@ -14,10 +14,13 @@
       "CLOSE": "Cerrar",
       "EMPTY": "Por ahora no hay tutoriales disponibles para tu rol en esta cuenta.",
       "MOBILE_NOTICE": "Los recorridos guiados necesitan una pantalla de escritorio. Abre LuxoInbox en tu computadora para hacerlos.",
+      "NEEDS_DATA": "Crea una conversación, un contacto o una bandeja y este tutorial ya tendrá algo que mostrarte.",
       "SEARCH_PLACEHOLDER": "Buscar tutoriales",
       "NO_RESULTS": "Ningún tutorial coincide con tu búsqueda.",
+      "RESULTS_COUNT": "{count} tutoriales",
       "CATEGORY_PROGRESS": "{completed} de {total}",
       "ALL_CATEGORIES": "Todas",
+      "CATEGORIES_LABEL": "Categorías",
       "VIEW_LIBRARY": "Ver toda la biblioteca"
     },
     "WELCOME": {
@@ -95,7 +98,7 @@
         }
       },
       "CONVERSATIONS": {
-        "NAME": "Conversaciones",
+        "NAME": "Visión general: Conversaciones",
         "DESCRIPTION": "Cómo leer la lista de conversaciones, abrir un chat, resolverlo y usar el panel del contacto.",
         "STEPS": {
           "LIST": {
@@ -237,7 +240,7 @@
         }
       },
       "INBOXES": {
-        "NAME": "Canales y entradas",
+        "NAME": "Visión general: Canales",
         "DESCRIPTION": "Conecta tu sitio web, WhatsApp o correo y define quién atiende cada canal.",
         "STEPS": {
           "CONCEPT": {
@@ -379,7 +382,7 @@
         }
       },
       "CAMPAIGNS": {
-        "NAME": "Campañas",
+        "NAME": "Visión general: Campañas",
         "DESCRIPTION": "Mensajes que envías tú primero: chat en vivo, SMS y WhatsApp.",
         "STEPS": {
           "CONCEPT": {
@@ -425,7 +428,7 @@
         }
       },
       "HELP_CENTER": {
-        "NAME": "Centro de ayuda",
+        "NAME": "Visión general: Centro de ayuda",
         "DESCRIPTION": "Publica artículos para que tus clientes resuelvan solos las dudas frecuentes.",
         "STEPS": {
           "CONCEPT": {
@@ -471,7 +474,7 @@
         }
       },
       "REPORTS": {
-        "NAME": "Informes",
+        "NAME": "Visión general: Informes",
         "DESCRIPTION": "Mide volumen, tiempos de respuesta, rendimiento por agente y satisfacción.",
         "STEPS": {
           "CONCEPT": {
@@ -596,7 +599,7 @@
           },
           "SEARCH": {
             "TITLE": "Buscar",
-            "BODY": "Encuentra mensajes, contactos, conversaciones y artículos desde un solo lugar. También responde al atajo de teclado, sin tocar el ratón."
+            "BODY": "Encuentra mensajes, contactos, conversaciones y artículos desde un solo lugar. También responde al atajo de teclado, sin tocar el mouse."
           },
           "COMPOSE": {
             "TITLE": "Nueva conversación",
@@ -604,7 +607,7 @@
           },
           "COLLAPSE": {
             "TITLE": "Contrae el menú",
-            "BODY": "Reduce el menú a una franja de iconos y gana ancho para leer los mensajes. Vuelve a pulsarlo cuando quieras ver los nombres otra vez."
+            "BODY": "Reduce el menú a una franja de iconos y gana ancho para leer los mensajes. Vuelve a hacer clic cuando quieras ver los nombres otra vez."
           }
         }
       },
@@ -828,7 +831,7 @@
           },
           "PANEL": {
             "TITLE": "Arma tu filtro",
-            "BODY": "Añade una condición por línea y combínalas con las opciones de unión. Cuando esté listo, pulsa Aplicar filtros y la lista se recorta al instante."
+            "BODY": "Añade una condición por línea y combínalas con las opciones de unión. Cuando esté listo, haz clic en Aplicar filtros y la lista se recorta al instante."
           },
           "SAVE": {
             "TITLE": "Guardar filtro",
@@ -853,7 +856,7 @@
         "DESCRIPTION": "Selecciona varias conversaciones y asígnalas, etiquétalas o ciérralas de una sola vez.",
         "STEPS": {
           "WHERE": {
-            "TITLE": "Trabajar de a muchas",
+            "TITLE": "Trabajar por lotes",
             "BODY": "Cuando la lista se acumula, no la abras una por una. Puedes seleccionar varias conversaciones y aplicarles la misma acción de golpe."
           },
           "SELECT": {
@@ -1080,7 +1083,7 @@
           },
           "CONDITIONS": {
             "TITLE": "Combina varias condiciones",
-            "BODY": "Suma condiciones con Añadir Filtro y aplícalas con Aplicar filtros. Cuando hay filtros activos aparece un icono de disquete para guardarlos."
+            "BODY": "Suma condiciones con Añadir Filtro y aplícalas con Aplicar filtros. Cuando hay filtros activos aparece un icono de guardar para conservarlos."
           },
           "SAVE_SEGMENT": {
             "TITLE": "Guarda el filtro como segmento",
@@ -1151,11 +1154,11 @@
         }
       },
       "CONTACTS_BULK_IMPORT": {
-        "NAME": "Acciones masivas",
+        "NAME": "Importar y editar en lote",
         "DESCRIPTION": "Etiqueta o elimina muchos contactos a la vez e incorpora tu base desde CSV o desde otra herramienta.",
         "STEPS": {
           "WHY": {
-            "TITLE": "Trabaja de a muchos",
+            "TITLE": "Trabaja por lotes",
             "BODY": "Cuando tienes cientos de contactos, tocarlos uno por uno no escala. La lista te deja seleccionar varios y aplicarles la misma acción."
           },
           "SELECT": {
@@ -1416,7 +1419,7 @@
           },
           "SMS_PROVIDERS": {
             "TITLE": "Twilio o Bandwidth",
-            "BODY": "SMS se conecta con Twilio o con Bandwidth, que en español aparece como Ancho de banda. Necesitas sus credenciales y un número ya comprado."
+            "BODY": "SMS se conecta con Twilio o con Bandwidth. Necesitas las credenciales del proveedor y un número ya comprado."
           },
           "TELEGRAM": {
             "TITLE": "Telegram",
@@ -1812,7 +1815,7 @@
           },
           "ORDER": {
             "TITLE": "El orden importa",
-            "BODY": "Las acciones se ejecutan en el orden en que las añades. Arrástralas por el manejador para reordenarlas: responde antes de resolver."
+            "BODY": "Las acciones se ejecutan en el orden en que las añades. Arrástralas por el icono de arrastre para reordenarlas: responde antes de resolver."
           },
           "VISIBILITY": {
             "TITLE": "Pública o privada",
@@ -1960,7 +1963,7 @@
         "STEPS": {
           "SIDEBAR": {
             "TITLE": "LuxoIA en el menú lateral",
-            "BODY": "LuxoIA es el asistente de inteligencia artificial que responde solo. En el menú aparece como «Capitán»; ábrelo para ver todas sus secciones."
+            "BODY": "LuxoIA es el asistente de inteligencia artificial que responde solo. Abre su grupo en el menú lateral para llegar a todas sus secciones."
           },
           "SECTIONS": {
             "TITLE": "Las secciones de LuxoIA",
@@ -2348,7 +2351,7 @@
           },
           "FINISH": {
             "TITLE": "Envío de SMS listo",
-            "BODY": "Ya sabes redactar, segmentar y programar. Empieza con un grupo pequeño, mide las respuestas y recién ahí amplía la audiencia."
+            "BODY": "Ya sabes redactar, segmentar y programar. Empieza con un grupo pequeño, mide las respuestas y solo entonces amplía la audiencia."
           }
         }
       },
@@ -2474,7 +2477,7 @@
           },
           "PUBLISH": {
             "TITLE": "Borrador, publicado, archivado",
-            "BODY": "Un artículo nace como borrador y no se ve fuera hasta que pulsas «Publicar». «Mover a archivado» lo saca del portal sin borrarlo, ideal para contenido viejo."
+            "BODY": "Un artículo nace como borrador y no se ve fuera hasta que haces clic en «Publicar». «Mover a archivado» lo saca del portal sin borrarlo, ideal para contenido viejo."
           },
           "TRANSLATE": {
             "TITLE": "Traducir a otro idioma",
@@ -2482,7 +2485,7 @@
           },
           "FINISH": {
             "TITLE": "Ya sabes publicar",
-            "BODY": "Escribe pocos artículos y buenos, revisa cada trimestre cuáles se leen y archiva los que ya no aplican. Un centro de ayuda desactualizado resta."
+            "BODY": "Escribe pocos artículos y buenos, revisa cada trimestre cuáles se leen y archiva los que ya no aplican. Un centro de ayuda desactualizado juega en tu contra."
           }
         }
       },
@@ -2584,7 +2587,7 @@
           },
           "CHARTS": {
             "TITLE": "Los gráficos",
-            "BODY": "Cada gráfico es una métrica en el tiempo. Míralos juntos: mucho volumen con tiempos estables es capacidad de sobra; poco volumen con tiempos altos es un atasco."
+            "BODY": "Cada gráfico es una métrica en el tiempo. Míralos juntos: mucho volumen con tiempos estables es capacidad de sobra; poco volumen con tiempos altos es un cuello de botella."
           },
           "METRICS": {
             "TITLE": "Qué mide cada número",
@@ -2722,7 +2725,7 @@
           },
           "SAVE": {
             "TITLE": "Guarda los cambios",
-            "BODY": "Ningún cambio se aplica hasta que pulsas Actualizar ajustes al final del formulario. Verás un aviso verde al confirmarse."
+            "BODY": "Ningún cambio se aplica hasta que haces clic en Actualizar ajustes al final del formulario. Verás un aviso verde al confirmarse."
           },
           "ACCOUNT_ID": {
             "TITLE": "ID de Cuenta",
@@ -2931,11 +2934,13 @@
     },
     "LAUNCHER": {
       "ARIA_LABEL": "Abrir los tutoriales de esta pantalla",
+      "ARIA_LABEL_COUNT": "Abrir los {count} tutoriales de esta pantalla",
       "TITLE": "En esta pantalla",
       "VIEW_LIBRARY": "Ver toda la biblioteca"
     },
     "COMMANDS": {
       "SECTION": "Tutoriales",
+      "TITLE": "Tutoriales",
       "OPEN_HUB": "Abrir el centro de tutoriales",
       "START_PREFIX": "Tutorial: {name}"
     },

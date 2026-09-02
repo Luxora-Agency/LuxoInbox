@@ -14,10 +14,13 @@
       "CLOSE": "Close",
       "EMPTY": "There are no tutorials available for your role in this account yet.",
       "MOBILE_NOTICE": "Guided tours need a desktop screen. Open LuxoInbox on your computer to take them.",
+      "NEEDS_DATA": "Create a conversation, a contact or an inbox first and this tutorial will have something to show you.",
       "SEARCH_PLACEHOLDER": "Search tutorials",
       "NO_RESULTS": "No tutorial matches your search.",
+      "RESULTS_COUNT": "{count} tutorials",
       "CATEGORY_PROGRESS": "{completed} of {total}",
       "ALL_CATEGORIES": "All",
+      "CATEGORIES_LABEL": "Categories",
       "VIEW_LIBRARY": "View the full library"
     },
     "WELCOME": {
@@ -95,7 +98,7 @@
         }
       },
       "CONVERSATIONS": {
-        "NAME": "Conversations",
+        "NAME": "Conversations overview",
         "DESCRIPTION": "How to read the inbox, open a chat, resolve it and use the contact panel.",
         "STEPS": {
           "LIST": {
@@ -237,7 +240,7 @@
         }
       },
       "INBOXES": {
-        "NAME": "Channels and inboxes",
+        "NAME": "Channels overview",
         "DESCRIPTION": "Connect your website, WhatsApp or email and decide who staffs each channel.",
         "STEPS": {
           "CONCEPT": {
@@ -379,7 +382,7 @@
         }
       },
       "CAMPAIGNS": {
-        "NAME": "Campaigns",
+        "NAME": "Campaigns overview",
         "DESCRIPTION": "Messages you send first: live chat, SMS and WhatsApp.",
         "STEPS": {
           "CONCEPT": {
@@ -425,7 +428,7 @@
         }
       },
       "HELP_CENTER": {
-        "NAME": "Help center",
+        "NAME": "Help center overview",
         "DESCRIPTION": "Publish articles so customers can answer their own frequent questions.",
         "STEPS": {
           "CONCEPT": {
@@ -471,7 +474,7 @@
         }
       },
       "REPORTS": {
-        "NAME": "Reports",
+        "NAME": "Reports overview",
         "DESCRIPTION": "Measure volume, response times, agent performance and satisfaction.",
         "STEPS": {
           "CONCEPT": {
@@ -1151,7 +1154,7 @@
         }
       },
       "CONTACTS_BULK_IMPORT": {
-        "NAME": "Bulk actions",
+        "NAME": "Import and edit in bulk",
         "DESCRIPTION": "Label or delete many contacts at once and bring your database in from CSV or another tool.",
         "STEPS": {
           "WHY": {
@@ -2931,11 +2934,13 @@
     },
     "LAUNCHER": {
       "ARIA_LABEL": "Open the tutorials for this screen",
+      "ARIA_LABEL_COUNT": "Open the {count} tutorials for this screen",
       "TITLE": "On this screen",
       "VIEW_LIBRARY": "View the full library"
     },
     "COMMANDS": {
       "SECTION": "Tutorials",
+      "TITLE": "Tutorials",
       "OPEN_HUB": "Open the tutorial center",
       "START_PREFIX": "Tutorial: {name}"
     },
