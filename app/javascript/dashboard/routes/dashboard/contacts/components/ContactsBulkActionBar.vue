@@ -81,6 +81,7 @@ const handleRemoveLabels = labels => {
 
 <template>
   <div
+    data-tour="contacts-bulk-bar"
     class="sticky top-0 z-10 bg-gradient-to-b from-n-surface-1 from-90% to-transparent pt-1 pb-2"
   >
     <BulkSelectBar

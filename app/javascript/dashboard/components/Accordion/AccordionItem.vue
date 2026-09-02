@@ -6,6 +6,12 @@ defineProps({
     type: String,
     required: true,
   },
+  // Guided tutorials need to point at a section and, separately, at the header
+  // that expands it. Both anchors derive from this one name.
+  tourAnchor: {
+    type: String,
+    default: '',
+  },
   compact: {
     type: Boolean,
     default: false,
@@ -32,8 +38,9 @@ const onToggle = () => {
 </script>
 
 <template>
-  <div class="text-sm">
+  <div :data-tour="tourAnchor || null" class="text-sm">
     <button
+      :data-tour="tourAnchor ? `${tourAnchor}-toggle` : null"
       class="flex items-center select-none w-full rounded-lg bg-n-slate-2 outline outline-1 outline-n-weak m-0 cursor-grab justify-between py-2 px-4 drag-handle"
       :class="{ 'rounded-bl-none rounded-br-none': isOpen }"
       @click.stop="onToggle"

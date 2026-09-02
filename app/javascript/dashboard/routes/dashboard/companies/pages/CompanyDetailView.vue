@@ -207,6 +207,7 @@ onBeforeUnmount(() => {
 
 <template>
   <CompaniesDetailsLayout
+    data-tour="company-detail"
     :breadcrumb-items="breadcrumbItems"
     @back="goToCompaniesList"
   >
@@ -278,6 +279,7 @@ onBeforeUnmount(() => {
       />
       <CompanyContactsSidebar
         v-if="activeSidebarTab === 'contacts'"
+        data-tour="company-contacts"
         :company="company"
         :contacts="companyContacts"
         :meta="companyContactsMeta"

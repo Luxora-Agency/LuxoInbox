@@ -785,6 +785,7 @@ export default {
         <woot-tabs-item
           v-for="(tab, index) in tabs"
           :key="tab.key"
+          :data-tour="'inbox-tab-' + tab.key"
           :index="index"
           :name="tab.name"
           :show-badge="false"

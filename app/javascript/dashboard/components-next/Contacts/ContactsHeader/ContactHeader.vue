@@ -40,7 +40,11 @@ const emit = defineEmits([
         {{ headerTitle }}
       </span>
       <div class="flex items-center flex-col sm:flex-row flex-shrink-0 gap-4">
-        <div v-if="showSearch" class="flex items-center gap-2 w-full">
+        <div
+          v-if="showSearch"
+          data-tour="contacts-search"
+          class="flex items-center gap-2 w-full"
+        >
           <Input
             :model-value="searchValue"
             type="search"
@@ -64,6 +68,7 @@ const emit = defineEmits([
             <div v-if="!isLabelView && !isActiveView" class="relative">
               <Button
                 id="toggleContactsFilterButton"
+                data-tour="contacts-filter"
                 :icon="
                   isSegmentsView ? 'i-lucide-pen-line' : 'i-lucide-list-filter'
                 "
@@ -87,6 +92,7 @@ const emit = defineEmits([
                 !isLabelView &&
                 !isActiveView
               "
+              data-tour="contacts-create-segment"
               icon="i-lucide-save"
               color="slate"
               size="sm"
@@ -95,6 +101,7 @@ const emit = defineEmits([
             />
             <Button
               v-if="isSegmentsView && !isLabelView && !isActiveView"
+              data-tour="contacts-delete-segment"
               icon="i-lucide-trash"
               color="slate"
               size="sm"

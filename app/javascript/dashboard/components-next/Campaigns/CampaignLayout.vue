@@ -37,6 +37,7 @@ const handleButtonClick = () => {
             class="relative group/campaign-button"
           >
             <Button
+              data-tour="campaigns-create"
               :label="buttonLabel"
               icon="i-lucide-plus"
               size="sm"

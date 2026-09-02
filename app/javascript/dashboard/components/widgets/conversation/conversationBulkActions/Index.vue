@@ -156,10 +156,14 @@ onUnmounted(() => {
         {{ $t('BULK_ACTION.ALL_CONVERSATIONS_SELECTED_ALERT') }}
       </div>
       <div
+        data-tour="conversation-bulk-actions"
         class="flex items-center justify-between gap-2 p-2 bg-n-button-color outline outline-1 -outline-offset-1 rounded-[10px] outline-n-weak shadow-[0_0_12px_0_rgba(27,40,59,0.08)]"
       >
         <div class="ms-0.5 flex items-center gap-1 min-w-0">
-          <label class="cursor-pointer flex items-center gap-1.5 min-w-0">
+          <label
+            data-tour="conversation-bulk-select-all"
+            class="cursor-pointer flex items-center gap-1.5 min-w-0"
+          >
             <Checkbox
               v-model="allSelected"
               :indeterminate="!allConversationsSelected"

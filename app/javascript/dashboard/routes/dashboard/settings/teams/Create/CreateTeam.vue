@@ -44,6 +44,7 @@ export default {
     />
     <div class="flex flex-wrap">
       <TeamForm
+        data-tour="teams-dialog"
         :on-submit="createTeam"
         :submit-in-progress="false"
         :submit-button-text="$t('TEAMS_SETTINGS.FORM.SUBMIT_CREATE')"

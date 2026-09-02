@@ -87,6 +87,7 @@ onMounted(() => {
 
 <template>
   <div
+    data-tour="reports-filters"
     class="flex flex-col justify-between gap-3 md:flex-row"
     :class="{ 'pointer-events-none opacity-50': disabled }"
   >

@@ -162,6 +162,7 @@ const addAllExample = () => {
 
 <template>
   <SettingsPageLayout
+    data-tour="captain-guardrails"
     :heading="t('CAPTAIN.ASSISTANTS.GUARDRAILS.TITLE')"
     :description="t('CAPTAIN.ASSISTANTS.GUARDRAILS.DESCRIPTION')"
   >

@@ -167,6 +167,7 @@ export default {
 <template>
   <ReportHeader :header-title="reportTitle" :has-back-button="hasBackButton">
     <V4Button
+      data-tour="reports-download"
       :label="downloadButtonLabel"
       icon="i-ph-download-simple"
       size="sm"

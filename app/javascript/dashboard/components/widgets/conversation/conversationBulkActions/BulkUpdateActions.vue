@@ -76,7 +76,7 @@ const handleUpdate = item => {
 </script>
 
 <template>
-  <div ref="containerRef" class="relative">
+  <div ref="containerRef" data-tour="conversation-bulk-update" class="relative">
     <Button
       v-tooltip="$t('BULK_ACTION.UPDATE.CHANGE_STATUS')"
       icon="i-lucide-circle-fading-arrow-up"

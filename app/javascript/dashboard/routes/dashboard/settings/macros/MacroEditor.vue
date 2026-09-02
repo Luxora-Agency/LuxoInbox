@@ -141,6 +141,7 @@ const saveMacro = async macroData => {
     />
     <MacroForm
       v-if="macro && !uiFlags.isFetchingItem"
+      data-tour="macro-editor"
       :macro-data="macro"
       :can-manage-public-macros="isAdmin"
       :read-only="isPublicMacroReadOnly"

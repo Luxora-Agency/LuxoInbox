@@ -157,6 +157,7 @@ export default {
         <template v-if="apiAndWebhooksEnabled" #actions>
           <NextButton
             blue
+            data-tour="webhooks-add"
             :label="$t('INTEGRATION_SETTINGS.WEBHOOK.HEADER_BTN_TXT')"
             size="sm"
             @click="openAddPopup"
@@ -191,7 +192,11 @@ export default {
       v-model:show="showAddPopup"
       :on-close="hideAddPopup"
     >
-      <NewWebhook v-if="showAddPopup" :on-close="hideAddPopup" />
+      <NewWebhook
+        v-if="showAddPopup"
+        data-tour="webhooks-dialog"
+        :on-close="hideAddPopup"
+      />
     </woot-modal>
 
     <woot-modal

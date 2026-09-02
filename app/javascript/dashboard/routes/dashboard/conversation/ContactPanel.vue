@@ -134,10 +134,15 @@ onMounted(() => {
 <template>
   <div class="w-full">
     <SidebarActionsHeader
+      data-tour="contact-panel-actions-header"
       :title="$t('CONVERSATION.SIDEBAR.CONTACT')"
       @close="closeContactPanel"
     />
-    <ContactInfo :contact="contact" :channel-type="channelType" />
+    <ContactInfo
+      data-tour="contact-panel-info"
+      :contact="contact"
+      :channel-type="channelType"
+    />
     <div class="px-2 pb-8 list-group">
       <Draggable
         :list="conversationSidebarItems"
@@ -156,6 +161,7 @@ onMounted(() => {
           >
             <AccordionItem
               :title="$t('CONVERSATION_SIDEBAR.ACCORDION.CONVERSATION_ACTIONS')"
+              tour-anchor="contact-panel-actions"
               :is-open="isContactSidebarItemOpen('is_conv_actions_open')"
               @toggle="
                 value => toggleSidebarUIState('is_conv_actions_open', value)
@@ -173,6 +179,7 @@ onMounted(() => {
           >
             <AccordionItem
               :title="$t('CONVERSATION_PARTICIPANTS.SIDEBAR_TITLE')"
+              tour-anchor="contact-panel-participants"
               :is-open="isContactSidebarItemOpen('is_conv_participants_open')"
               @toggle="
                 value =>
@@ -188,6 +195,7 @@ onMounted(() => {
           <div v-else-if="element.name === 'conversation_info'">
             <AccordionItem
               :title="$t('CONVERSATION_SIDEBAR.ACCORDION.CONVERSATION_INFO')"
+              tour-anchor="contact-panel-conversation-info"
               :is-open="isContactSidebarItemOpen('is_conv_details_open')"
               compact
               @toggle="
@@ -203,6 +211,7 @@ onMounted(() => {
           <div v-else-if="element.name === 'contact_attributes'">
             <AccordionItem
               :title="$t('CONVERSATION_SIDEBAR.ACCORDION.CONTACT_ATTRIBUTES')"
+              tour-anchor="contact-panel-attributes"
               :is-open="isContactSidebarItemOpen('is_contact_attributes_open')"
               compact
               @toggle="
@@ -226,6 +235,7 @@ onMounted(() => {
               :title="
                 $t('CONVERSATION_SIDEBAR.ACCORDION.PREVIOUS_CONVERSATION')
               "
+              tour-anchor="contact-panel-previous-conversations"
               :is-open="isContactSidebarItemOpen('is_previous_conv_open')"
               compact
               @toggle="
@@ -244,6 +254,7 @@ onMounted(() => {
           >
             <AccordionItem
               :title="$t('CONVERSATION_SIDEBAR.ACCORDION.MACROS')"
+              tour-anchor="contact-panel-macros"
               :is-open="isContactSidebarItemOpen('is_macro_open')"
               compact
               @toggle="value => toggleSidebarUIState('is_macro_open', value)"
@@ -260,6 +271,7 @@ onMounted(() => {
           >
             <AccordionItem
               :title="$t('CONVERSATION_SIDEBAR.ACCORDION.LINEAR_ISSUES')"
+              tour-anchor="contact-panel-linear"
               :is-open="isContactSidebarItemOpen('is_linear_issues_open')"
               compact
               @toggle="
@@ -277,6 +289,7 @@ onMounted(() => {
           >
             <AccordionItem
               :title="$t('CONVERSATION_SIDEBAR.ACCORDION.SHOPIFY_ORDERS')"
+              tour-anchor="contact-panel-shopify"
               :is-open="isContactSidebarItemOpen('is_shopify_orders_open')"
               compact
               @toggle="
@@ -289,6 +302,7 @@ onMounted(() => {
           <div v-else-if="element.name === 'contact_notes'">
             <AccordionItem
               :title="$t('CONVERSATION_SIDEBAR.ACCORDION.CONTACT_NOTES')"
+              tour-anchor="contact-panel-notes"
               :is-open="isContactSidebarItemOpen('is_contact_notes_open')"
               compact
               @toggle="
@@ -301,6 +315,7 @@ onMounted(() => {
           <div v-else-if="element.name === 'shared_files'">
             <AccordionItem
               :title="$t('CONVERSATION_SIDEBAR.ACCORDION.SHARED_FILES')"
+              tour-anchor="contact-panel-shared-files"
               :is-open="isContactSidebarItemOpen('is_shared_files_open')"
               compact
               @toggle="

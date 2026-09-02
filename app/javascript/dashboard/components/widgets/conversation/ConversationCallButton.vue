@@ -132,6 +132,7 @@ const startCall = () => {
   <NextButton
     v-if="isVoiceCallInbox"
     v-tooltip.bottom="callButtonTooltip"
+    data-tour="conversation-call"
     sm
     ghost
     slate

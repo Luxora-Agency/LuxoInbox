@@ -75,6 +75,7 @@ const slaPopoverClass = computed(() => {
 <template>
   <div
     v-if="hasSlaThreshold"
+    data-tour="conversation-sla"
     class="relative flex items-center cursor-pointer min-w-fit group"
     :class="groupClass"
   >

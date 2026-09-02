@@ -159,6 +159,7 @@ export default {
         </template>
         <template v-if="!isBehindAPaywall" #actions>
           <NextButton
+            data-tour="sla-add"
             :label="$t('SLA.ADD_ACTION')"
             size="sm"
             @click="openAddPopup"
@@ -300,7 +301,7 @@ export default {
       </BaseTable>
 
       <woot-modal v-model:show="showAddPopup" :on-close="hideAddPopup">
-        <AddSLA @close="hideAddPopup" />
+        <AddSLA data-tour="sla-dialog" @close="hideAddPopup" />
       </woot-modal>
 
       <woot-delete-modal

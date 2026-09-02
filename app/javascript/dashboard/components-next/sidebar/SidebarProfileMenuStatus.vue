@@ -78,7 +78,11 @@ function changeAvailabilityStatus(availability) {
 <template>
   <DropdownSection class="[&>ul]:overflow-visible">
     <div class="grid gap-0">
-      <DropdownItem preserve-open class="gap-1">
+      <DropdownItem
+        preserve-open
+        data-tour="profile-menu-availability"
+        class="gap-1"
+      >
         <div class="flex-grow flex items-center gap-1 min-w-0">
           {{ $t('SIDEBAR.SET_YOUR_AVAILABILITY') }}
         </div>
@@ -114,7 +118,7 @@ function changeAvailabilityStatus(availability) {
           </DropdownBody>
         </DropdownContainer>
       </DropdownItem>
-      <DropdownItem>
+      <DropdownItem data-tour="profile-menu-auto-offline">
         <div class="flex-grow min-w-0">
           {{ $t('SIDEBAR.SET_AUTO_OFFLINE.TEXT') }}
           <Icon

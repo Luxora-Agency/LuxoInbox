@@ -298,7 +298,11 @@ defineExpose({ dialogRef });
     :show-confirm-button="false"
     @close="closeModal"
   >
-    <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
+    <form
+      data-tour="agent-bots-dialog"
+      class="flex flex-col gap-4"
+      @submit.prevent="handleSubmit"
+    >
       <div
         v-if="!showAccessToken || type === MODAL_TYPES.EDIT"
         class="flex flex-col gap-4"

@@ -225,6 +225,7 @@ onBeforeUnmount(() => {
             @click="refresh({ showLoader: false })"
           />
           <Button
+            data-tour="data-import-add"
             size="sm"
             :label="$t('DATA_IMPORTS.TABLE.NEW_IMPORT')"
             :disabled="hasActiveIntegrationImport"
@@ -267,6 +268,7 @@ onBeforeUnmount(() => {
 
       <div
         v-else-if="!dataImports.length"
+        data-tour="data-import-list"
         class="flex min-h-80 flex-col items-center justify-center gap-4 rounded-xl border border-n-weak bg-n-solid-1 px-6 py-16 text-center"
       >
         <span
@@ -290,7 +292,11 @@ onBeforeUnmount(() => {
         />
       </div>
 
-      <div v-else class="divide-y divide-n-weak border-t border-n-weak">
+      <div
+        v-else
+        data-tour="data-import-list"
+        class="divide-y divide-n-weak border-t border-n-weak"
+      >
         <div
           v-for="dataImport in dataImports"
           :key="dataImport.id"

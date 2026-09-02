@@ -302,7 +302,11 @@ defineExpose({ open, close });
 
 <template>
   <SidePanel ref="panelRef" width="3xl" :title="$t(titleKey)">
-    <div v-if="automation" class="flex flex-col w-full gap-6">
+    <div
+      v-if="automation"
+      data-tour="automation-dialog"
+      class="flex flex-col w-full gap-6"
+    >
       <div class="flex flex-col">
         <woot-input
           v-model="automation.name"

@@ -280,6 +280,7 @@ const tableHeaders = computed(() => {
         </template>
         <template #actions>
           <Button
+            data-tour="automation-add"
             :label="$t('AUTOMATION.HEADER_BTN_TXT')"
             size="sm"
             @click="openAddPopup"

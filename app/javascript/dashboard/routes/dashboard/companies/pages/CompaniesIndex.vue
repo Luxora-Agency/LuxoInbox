@@ -163,6 +163,7 @@ onMounted(() => {
 
 <template>
   <CompaniesListLayout
+    data-tour="companies-page"
     :search-value="searchValue"
     :header-title="t('COMPANIES.HEADER')"
     :current-page="pageNumber"

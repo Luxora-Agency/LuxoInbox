@@ -216,6 +216,7 @@ useEmitter(CMD_RESOLVE_CONVERSATION, onCmdResolveConversation);
       <Button
         v-if="showAdditionalActions"
         ref="arrowDownButtonRef"
+        data-tour="conversation-resolve-more"
         icon="i-lucide-chevron-down"
         :disabled="isLoading"
         size="sm"
@@ -235,6 +236,7 @@ useEmitter(CMD_RESOLVE_CONVERSATION, onCmdResolveConversation);
         <WootDropdownItem v-if="!isPending">
           <Button
             :label="t('CONVERSATION.RESOLVE_DROPDOWN.SNOOZE_UNTIL')"
+            data-tour="conversation-resolve-snooze"
             ghost
             slate
             sm
@@ -247,6 +249,7 @@ useEmitter(CMD_RESOLVE_CONVERSATION, onCmdResolveConversation);
         <WootDropdownItem v-if="!isPending">
           <Button
             :label="t('CONVERSATION.RESOLVE_DROPDOWN.MARK_PENDING')"
+            data-tour="conversation-resolve-pending"
             ghost
             slate
             sm

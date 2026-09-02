@@ -167,6 +167,7 @@ const confirmDeletion = () => {
         </template>
         <template #actions>
           <Button
+            data-tour="agents-add"
             :label="$t('AGENT_MGMT.HEADER_BTN_TXT')"
             size="sm"
             @click="openAddPopup"
@@ -278,7 +279,7 @@ const confirmDeletion = () => {
     </template>
 
     <woot-modal v-model:show="showAddPopup" :on-close="hideAddPopup">
-      <AddAgent @close="hideAddPopup" />
+      <AddAgent data-tour="agents-dialog" @close="hideAddPopup" />
     </woot-modal>
 
     <woot-modal v-model:show="showEditPopup" :on-close="hideEditPopup">

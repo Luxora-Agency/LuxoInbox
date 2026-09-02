@@ -118,7 +118,7 @@ const handleDismiss = () => {
 </script>
 
 <template>
-  <div ref="containerRef" class="relative">
+  <div ref="containerRef" data-tour="conversation-bulk-label" class="relative">
     <NextButton
       v-tooltip="tooltipLabel"
       :label="buttonLabel"

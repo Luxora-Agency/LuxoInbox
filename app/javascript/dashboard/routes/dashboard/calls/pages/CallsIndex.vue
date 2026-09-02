@@ -127,6 +127,7 @@ onMounted(async () => {
   <CallsEmptyState v-else-if="!isVoiceEnabled" />
   <section
     v-else
+    data-tour="calls-page"
     class="flex flex-col w-full h-full overflow-hidden bg-n-surface-1"
   >
     <header class="shrink-0">

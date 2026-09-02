@@ -120,6 +120,7 @@ onBeforeMount(() => {
         </template>
         <template #actions>
           <Button
+            data-tour="labels-add"
             :label="$t('LABEL_MGMT.HEADER_BTN_TXT')"
             size="sm"
             @click="openAddPopup"
@@ -190,7 +191,7 @@ onBeforeMount(() => {
     </template>
 
     <woot-modal v-model:show="showAddPopup" :on-close="hideAddPopup">
-      <AddLabel @close="hideAddPopup" />
+      <AddLabel data-tour="labels-dialog" @close="hideAddPopup" />
     </woot-modal>
 
     <woot-modal v-model:show="showEditPopup" :on-close="hideEditPopup">

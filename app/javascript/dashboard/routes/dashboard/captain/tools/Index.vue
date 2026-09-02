@@ -89,6 +89,7 @@ onMounted(() => {
 
 <template>
   <PageLayout
+    data-tour="captain-tools"
     :header-title="$t('CAPTAIN.CUSTOM_TOOLS.HEADER')"
     :button-label="$t('CAPTAIN.CUSTOM_TOOLS.ADD_NEW')"
     :button-policy="['administrator']"

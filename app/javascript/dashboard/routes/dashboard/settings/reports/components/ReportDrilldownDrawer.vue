@@ -158,7 +158,7 @@ watch(
 <template>
   <SidePanel ref="panelRef" :title="title" width="xl" @close="emit('close')">
     <template #header>
-      <div class="min-w-0">
+      <div data-tour="reports-drilldown" class="min-w-0">
         <h3 class="truncate text-base font-medium text-n-slate-12">
           {{ title }}
         </h3>

@@ -87,6 +87,7 @@ export default {
     />
     <form
       v-if="!uiFlags.isCreating"
+      data-tour="channel-website-form"
       class="flex flex-wrap flex-col mx-0"
       @submit.prevent="createChannel"
     >

@@ -99,7 +99,7 @@ defineExpose({
 </script>
 
 <template>
-  <div v-if="mfaEnabled">
+  <div v-if="mfaEnabled" data-tour="mfa-actions">
     <!-- Actions Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Regenerate Backup Codes -->

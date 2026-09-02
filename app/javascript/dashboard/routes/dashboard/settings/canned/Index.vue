@@ -161,6 +161,7 @@ const tableHeaders = computed(() => {
         </template>
         <template #actions>
           <Button
+            data-tour="canned-add"
             :label="$t('CANNED_MGMT.HEADER_BTN_TXT')"
             size="sm"
             @click="openAddPopup"

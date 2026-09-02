@@ -62,6 +62,7 @@ watch(
 
 <template>
   <PageLayout
+    data-tour="captain-inboxes"
     :header-title="$t('CAPTAIN.INBOXES.HEADER')"
     :button-label="$t('CAPTAIN.INBOXES.ADD_NEW')"
     :button-policy="['administrator']"

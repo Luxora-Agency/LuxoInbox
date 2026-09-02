@@ -162,7 +162,10 @@ export default {
 
 <template>
   <woot-modal v-model:show="show" :on-close="onClose">
-    <div class="flex flex-col h-auto overflow-auto">
+    <div
+      data-tour="attributes-dialog"
+      class="flex flex-col h-auto overflow-auto"
+    >
       <woot-modal-header :header-title="$t('ATTRIBUTES_MGMT.ADD.TITLE')" />
 
       <form class="flex w-full" @submit.prevent="addAttributes">

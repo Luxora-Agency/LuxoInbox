@@ -10,6 +10,7 @@ const assistantId = computed(() => Number(route.params.assistantId));
 
 <template>
   <PageLayout
+    data-tour="captain-playground"
     show-assistant-switcher
     :show-pagination-footer="false"
     :show-know-more="false"

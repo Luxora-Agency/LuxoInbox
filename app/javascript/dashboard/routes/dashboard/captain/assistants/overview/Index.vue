@@ -200,6 +200,7 @@ const closeDrilldown = () => {
 
 <template>
   <PageLayout
+    data-tour="captain-overview"
     :header-title="$t('CAPTAIN.OVERVIEW.HEADER')"
     :is-empty="false"
     :show-pagination-footer="false"

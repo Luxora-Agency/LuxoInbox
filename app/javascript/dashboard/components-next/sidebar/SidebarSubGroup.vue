@@ -9,6 +9,7 @@ import SidebarGroupLeaf from './SidebarGroupLeaf.vue';
 import SidebarGroupSeparator from './SidebarGroupSeparator.vue';
 
 import { useSidebarContext } from './provider';
+import { toTourSlug } from './tourAnchor';
 
 const props = defineProps({
   name: { type: String, required: true },
@@ -43,6 +44,12 @@ const getMinimizedSections = () => {
 };
 
 const minimizedSections = ref(getMinimizedSections());
+
+// `name` is namespaced by the parent group (`Conversation:Folders`), and the
+// label is translated. The tutorial anchor uses the sub-group's own English
+// name so `sidebar-subgroup-folders` resolves in every locale.
+const tourSlug = computed(() => toTourSlug(props.name.split(':').pop()));
+
 const storageKey = computed(() =>
   accountId.value ? `${accountId.value}:${props.name}` : props.name
 );
@@ -138,6 +145,7 @@ watch([hasActiveChild, storageKey], expandSubGroupOnActiveChild, {
         :end-tree-line="endTreeLine"
         :sort-options="sortOptions"
         :active-sort="activeSort"
+        :tour-slug="tourSlug"
         class="my-1"
         @toggle="toggleSubGroup"
         @update-sort="sortBy => emit('update-sort', sortBy)"

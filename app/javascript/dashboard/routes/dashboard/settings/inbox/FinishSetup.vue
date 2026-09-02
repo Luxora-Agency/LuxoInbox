@@ -176,7 +176,7 @@ onMounted(() => {
       :message="isAnEmailChannel && !currentInbox.provider ? '' : message"
       :button-text="$t('INBOX_MGMT.FINISH.BUTTON_TEXT')"
     >
-      <div class="w-full text-center">
+      <div data-tour="inbox-finish-script" class="w-full text-center">
         <div class="my-4 mx-auto w-full max-w-xl">
           <woot-code
             v-if="currentInbox.web_widget_script"

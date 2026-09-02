@@ -231,7 +231,7 @@ export default {
   <div class="grid gap-5 max-w-2xl ltr:mr-auto rtl:ml-auto">
     <BaseSettingsHeader :title="$t('PROFILE_SETTINGS.TITLE')" description="" />
     <SectionLayout title="" description="">
-      <div class="flex flex-col gap-6">
+      <div data-tour="profile-form" class="flex flex-col gap-6">
         <UserProfilePicture
           :src="avatarUrl"
           :name="name"

@@ -188,6 +188,7 @@ const filteredAttributes = computed(() => {
         </template>
         <template #actions>
           <Button
+            data-tour="attributes-add"
             :label="$t('ATTRIBUTES_MGMT.HEADER_BTN_TXT')"
             size="sm"
             @click="openAddPopup"

@@ -10,6 +10,7 @@ const { assistant, updateAssistant } = useAssistantSettings();
 
 <template>
   <SettingsPageLayout
+    data-tour="captain-settings-schedule"
     :heading="t('CAPTAIN.ASSISTANTS.SETTINGS.SCHEDULE.TITLE')"
     :description="t('CAPTAIN.ASSISTANTS.SETTINGS.SCHEDULE.DESCRIPTION')"
   >

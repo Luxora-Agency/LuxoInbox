@@ -24,7 +24,7 @@ const handleAnalytics = campaign => emit('analytics', campaign);
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div data-tour="campaigns-list" class="flex flex-col gap-4">
     <CampaignCard
       v-for="campaign in campaigns"
       :key="campaign.id"
