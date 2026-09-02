@@ -56,11 +56,12 @@ export function useTutorials() {
   const route = useRoute();
   const { accountId } = useAccount();
   const { isAdmin } = useAdmin();
-  const { shouldShow } = usePolicy();
+  const { shouldShow, shouldShowPaywall } = usePolicy();
   const { uiSettings, updateUISettings } = useUISettings();
   const allConversations = useMapGetter('getAllConversations');
   const allContacts = useMapGetter('contacts/getContacts');
   const allInboxes = useMapGetter('inboxes/getInboxes');
+  const userAccounts = useMapGetter('getUserAccounts');
 
   const settings = computed(() => uiSettings.value?.tutorials ?? {});
   const completedIds = computed(() => settings.value.completed ?? []);
@@ -72,8 +73,12 @@ export function useTutorials() {
   // Tours and steps copy their route's `meta` verbatim, so the third argument
   // is what keeps a cloud-only or enterprise-only page from being taught on an
   // installation that does not have it.
+  // `shouldShow` deliberately keeps a premium feature visible when the plan
+  // does not include it, so the screen itself can sell the upgrade. A tour of
+  // a paywall teaches nothing, so it is dropped here.
   const isVisible = entry => {
     if (entry.audience === 'admin' && !isAdmin.value) return false;
+    if (shouldShowPaywall(entry.featureFlag)) return false;
     return shouldShow(
       entry.featureFlag,
       entry.permissions,
@@ -222,6 +227,10 @@ export function useTutorials() {
 
   const firstInboxId = computed(() => allInboxes.value?.[0]?.id ?? null);
 
+  const hasMultipleAccounts = computed(
+    () => (userAccounts.value?.length ?? 0) > 1
+  );
+
   /**
    * Steps the current user is allowed to see. Filtering here — not while the
    * tour runs — keeps the progress counter honest.
@@ -235,9 +244,22 @@ export function useTutorials() {
       if (step.requiresConversation && !firstConversationId.value) return false;
       if (step.requiresContact && !firstContactId.value) return false;
       if (step.requiresInbox && !firstInboxId.value) return false;
+      // The account switcher only opens for a user who belongs to more than
+      // one account; on a single-account install its dropdown never renders.
+      if (step.requiresMultipleAccounts && !hasMultipleAccounts.value)
+        return false;
       return isVisible(step);
     });
   };
+
+  /**
+   * A tour whose every step needs a conversation, a contact or an inbox this
+   * account does not have yet. Starting it would close the hub and show
+   * nothing at all, so the card is disabled and the launcher drops it.
+   * @param {Object} tour
+   * @returns {boolean}
+   */
+  const isBlockedByData = tour => Boolean(tour) && !resolveSteps(tour).length;
 
   /**
    * Where the tour has to start. Record-scoped tours resolve to a real
@@ -271,7 +293,7 @@ export function useTutorials() {
 
   const startTour = (tourId, stepIndex = 0) => {
     const tour = getTourById(tourId);
-    if (!tour || !canRunOnThisScreen(tour)) return;
+    if (!tour || !canRunOnThisScreen(tour) || isBlockedByData(tour)) return;
 
     finishedTourId.value = null;
     activeStepIndex.value = stepIndex;
@@ -378,7 +400,7 @@ export function useTutorials() {
     dismissHint,
     clearFinishedTour,
     canRunOnThisScreen,
-    toursForRoute,
+    isBlockedByData,
     searchTours,
     tourI18nKey,
     // engine internals

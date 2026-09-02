@@ -193,9 +193,27 @@ const { isRunning: isTourRunning, requestedSidebarGroup } = useTutorialsUI();
 
 // A tour step can point at a leaf inside a collapsible group. `expandedItem` is
 // local to this component, so the engine asks through the shared ref instead.
-// Only the ref moves: the stored preference stays whatever the user chose.
-watch(requestedSidebarGroup, name => {
-  if (name) expandedItem.value = name;
+// Only the ref moves: the stored preference stays whatever the user chose, and
+// the group the user had open is put back when the tour clears the request.
+// The engine sends a fresh object every time, so a step re-requesting the group
+// a previous step already opened still fires this watcher.
+let groupBeforeTour = null;
+let hasTourGroupRequest = false;
+
+watch(requestedSidebarGroup, request => {
+  if (request) {
+    if (!hasTourGroupRequest) {
+      hasTourGroupRequest = true;
+      groupBeforeTour = expandedItem.value;
+    }
+    expandedItem.value = request.name;
+    return;
+  }
+
+  if (!hasTourGroupRequest) return;
+  hasTourGroupRequest = false;
+  expandedItem.value = groupBeforeTour;
+  groupBeforeTour = null;
 });
 
 // On mobile, sidebar is always expanded (flyout mode)
