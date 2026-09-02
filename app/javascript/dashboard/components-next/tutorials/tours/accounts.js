@@ -1,3 +1,9 @@
+// The switcher only opens for a user who belongs to more than one account, and
+// its dropdown closes on any outside click. Probing a row keeps the toggle from
+// re-opening the list the tour's own "Next" already closed.
+const ACCOUNT_SWITCHER = '#sidebar-account-switcher';
+const ACCOUNT_ROW = '[id^="account-"]';
+
 export default {
   id: 'accounts',
   category: 'start',
@@ -33,15 +39,15 @@ export default {
       align: 'start',
     },
     {
-      // The account list only renders when the user belongs to more than one
-      // account, so `[id^="account-"]` resolves to the first row of the open
-      // dropdown or the step is dropped for single-account users.
-      target: '[id^="account-"]',
+      // The switcher's trigger is inert for a single-account user, so the step
+      // is dropped up front instead of waiting on a row that cannot render.
+      target: ACCOUNT_ROW,
       i18nKey: 'ACCOUNTS.SWITCH',
       side: 'right',
       align: 'start',
-      before: { click: '#sidebar-account-switcher' },
-      after: { click: '#sidebar-account-switcher' },
+      requiresMultipleAccounts: true,
+      before: { click: ACCOUNT_SWITCHER, probe: ACCOUNT_ROW },
+      after: { click: ACCOUNT_SWITCHER, probe: ACCOUNT_ROW },
     },
     {
       target: null,

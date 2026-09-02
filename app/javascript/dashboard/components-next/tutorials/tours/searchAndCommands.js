@@ -1,3 +1,10 @@
+// The profile dropdown closes on any outside click, the tour's own "Next"
+// included, so the toggle is probed before it is flipped either way.
+const profileMenuToggle = {
+  click: '[data-tour="sidebar-profile"]',
+  probe: '[data-tour="profile-menu-availability"]',
+};
+
 export default {
   id: 'search-and-commands',
   category: 'start',
@@ -62,8 +69,8 @@ export default {
       i18nKey: 'SEARCH_AND_COMMANDS.SHORTCUTS',
       side: 'right',
       align: 'end',
-      before: { click: '[data-tour="sidebar-profile"]' },
-      after: { click: '[data-tour="sidebar-profile"]' },
+      before: profileMenuToggle,
+      after: profileMenuToggle,
     },
     {
       target: null,

@@ -5,6 +5,12 @@ export default {
   order: 200,
   audience: 'all',
   featureFlag: null,
+  // Verbatim from the `home` route meta.
+  permissions: [
+    'conversation_manage',
+    'conversation_unassigned_manage',
+    'conversation_participating_manage',
+  ],
   estimatedMinutes: 5,
   route: { name: 'home' },
   // The card, header and contact panel only exist with a chat open, so the

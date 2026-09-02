@@ -6,7 +6,9 @@ export default {
   icon: 'i-lucide-users',
   order: 500,
   audience: 'admin',
-  featureFlag: null,
+  // Verbatim from the `agent_list` route meta.
+  permissions: ['administrator'],
+  featureFlag: FEATURE_FLAGS.AGENT_MANAGEMENT,
   estimatedMinutes: 5,
   route: { name: 'agent_list' },
   mobileSafe: false,

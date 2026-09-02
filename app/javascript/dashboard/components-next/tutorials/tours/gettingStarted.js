@@ -5,6 +5,14 @@ export default {
   order: 100,
   audience: 'all',
   featureFlag: null,
+  // Verbatim from the `inbox_view` route meta.
+  permissions: [
+    'administrator',
+    'agent',
+    'conversation_manage',
+    'conversation_unassigned_manage',
+    'conversation_participating_manage',
+  ],
   estimatedMinutes: 4,
   route: { name: 'inbox_view' },
   mobileSafe: false,

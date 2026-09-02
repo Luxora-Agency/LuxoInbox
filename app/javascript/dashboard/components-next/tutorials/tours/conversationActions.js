@@ -1,5 +1,11 @@
 import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
+// The resolve chevron toggles its menu, and the menu's own click-away listener
+// is on `document` in the bubble phase, which driver.js stops. So the menu
+// survives the tour's "Next" and the probe closes it exactly once.
+const RESOLVE_MORE = '[data-tour="conversation-resolve-more"]';
+const RESOLVE_MENU = '[data-tour="conversation-resolve-menu"]';
+
 export default {
   id: 'conversation-actions',
   category: 'conversations',
@@ -60,8 +66,8 @@ export default {
       side: 'bottom',
       align: 'end',
       requiresConversation: true,
-      before: { click: '[data-tour="conversation-resolve-more"]' },
-      after: { click: '[data-tour="conversation-resolve-more"]' },
+      before: { click: RESOLVE_MORE, probe: RESOLVE_MENU },
+      after: { click: RESOLVE_MORE, probe: RESOLVE_MENU },
     },
     {
       target: '[data-tour="conversation-resolve-pending"]',
@@ -69,8 +75,8 @@ export default {
       side: 'bottom',
       align: 'end',
       requiresConversation: true,
-      before: { click: '[data-tour="conversation-resolve-more"]' },
-      after: { click: '[data-tour="conversation-resolve-more"]' },
+      before: { click: RESOLVE_MORE, probe: RESOLVE_MENU },
+      after: { click: RESOLVE_MORE, probe: RESOLVE_MENU },
     },
     {
       target: '[data-tour="conversation-more-actions"]',

@@ -1,3 +1,20 @@
+// The condensed list — the default layout — only renders the per-card checkbox
+// while the pointer is over the avatar, and the pointer sits on the tour
+// popover. Every step that needs a selection synthesises that hover first, then
+// clicks the checkbox; `probe` keeps both halves idempotent, so a step entered
+// with the bar already open does not toggle the selection back off.
+const CARD_HOVER = '[data-tour="conversation-card-thumbnail"]';
+const CARD_SELECT = '[data-tour="conversation-card-select"]';
+const BULK_BAR = '[data-tour="conversation-bulk-actions"]';
+
+const selectFirstCard = {
+  hover: CARD_HOVER,
+  click: CARD_SELECT,
+  probe: BULK_BAR,
+};
+
+const deselectFirstCard = { click: CARD_SELECT, probe: BULK_BAR };
+
 export default {
   id: 'bulk-actions',
   category: 'conversations',
@@ -33,22 +50,21 @@ export default {
       align: 'start',
     },
     {
-      target: '[data-tour="conversation-card-select"]',
+      target: CARD_SELECT,
       i18nKey: 'BULK_ACTIONS.SELECT',
       side: 'right',
       align: 'start',
       requiresConversation: true,
+      before: { hover: CARD_HOVER },
     },
     {
-      // Selecting is a toggle, so every step that needs the bar open selects
-      // the first card on entry and deselects it on the way out.
-      target: '[data-tour="conversation-bulk-actions"]',
+      target: BULK_BAR,
       i18nKey: 'BULK_ACTIONS.BAR',
       side: 'top',
       align: 'center',
       requiresConversation: true,
-      before: { click: '[data-tour="conversation-card-select"]' },
-      after: { click: '[data-tour="conversation-card-select"]' },
+      before: selectFirstCard,
+      after: deselectFirstCard,
     },
     {
       target: '[data-tour="conversation-bulk-agent"]',
@@ -56,8 +72,8 @@ export default {
       side: 'top',
       align: 'center',
       requiresConversation: true,
-      before: { click: '[data-tour="conversation-card-select"]' },
-      after: { click: '[data-tour="conversation-card-select"]' },
+      before: selectFirstCard,
+      after: deselectFirstCard,
     },
     {
       target: '[data-tour="conversation-bulk-team"]',
@@ -65,8 +81,8 @@ export default {
       side: 'top',
       align: 'center',
       requiresConversation: true,
-      before: { click: '[data-tour="conversation-card-select"]' },
-      after: { click: '[data-tour="conversation-card-select"]' },
+      before: selectFirstCard,
+      after: deselectFirstCard,
     },
     {
       target: '[data-tour="conversation-bulk-label"]',
@@ -74,8 +90,8 @@ export default {
       side: 'top',
       align: 'center',
       requiresConversation: true,
-      before: { click: '[data-tour="conversation-card-select"]' },
-      after: { click: '[data-tour="conversation-card-select"]' },
+      before: selectFirstCard,
+      after: deselectFirstCard,
     },
     {
       target: '[data-tour="conversation-bulk-update"]',
@@ -83,8 +99,8 @@ export default {
       side: 'top',
       align: 'center',
       requiresConversation: true,
-      before: { click: '[data-tour="conversation-card-select"]' },
-      after: { click: '[data-tour="conversation-card-select"]' },
+      before: selectFirstCard,
+      after: deselectFirstCard,
     },
     {
       target: '[data-tour="conversation-bulk-select-all"]',
@@ -92,8 +108,8 @@ export default {
       side: 'top',
       align: 'start',
       requiresConversation: true,
-      before: { click: '[data-tour="conversation-card-select"]' },
-      after: { click: '[data-tour="conversation-card-select"]' },
+      before: selectFirstCard,
+      after: deselectFirstCard,
     },
     {
       target: null,

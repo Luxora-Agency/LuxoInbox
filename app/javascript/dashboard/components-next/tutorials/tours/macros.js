@@ -18,7 +18,9 @@ export default {
   ],
   estimatedMinutes: 5,
   route: { name: 'macros_wrapper' },
-  pageRoutes: ['macros_wrapper', 'macros_new', 'macros_edit'],
+  // The editor is deliberately absent: starting the tour navigates away and a
+  // macro in progress does not autosave.
+  pageRoutes: ['macros_wrapper'],
   keywords: ['macros', 'acciones', 'flujo', 'automatizar', 'macro'],
   mobileSafe: false,
   steps: [

@@ -6,6 +6,8 @@ export default {
   icon: 'i-lucide-user-cog',
   order: 610,
   audience: 'admin',
+  // Verbatim from the `assignment_policy_index` route meta.
+  permissions: ['administrator'],
   featureFlag: FEATURE_FLAGS.ASSIGNMENT_V2,
   estimatedMinutes: 4,
   route: { name: 'assignment_policy_index' },

@@ -6,7 +6,15 @@ export default {
   icon: 'i-lucide-zap',
   order: 600,
   audience: 'all',
-  featureFlag: null,
+  featureFlag: FEATURE_FLAGS.CANNED_RESPONSES,
+  // Verbatim from the `canned_list` route meta.
+  permissions: [
+    'administrator',
+    'agent',
+    'conversation_manage',
+    'conversation_unassigned_manage',
+    'conversation_participating_manage',
+  ],
   estimatedMinutes: 6,
   route: { name: 'canned_list' },
   mobileSafe: false,

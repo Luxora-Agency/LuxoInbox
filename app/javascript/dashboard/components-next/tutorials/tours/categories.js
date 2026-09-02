@@ -21,6 +21,3 @@ export const CATEGORIES = [
 ];
 
 export const categoryI18nKey = id => id.toUpperCase().replace(/-/g, '_');
-
-export const getCategoryById = id =>
-  CATEGORIES.find(category => category.id === id);

@@ -7,6 +7,12 @@ export default {
   order: 210,
   audience: 'all',
   featureFlag: null,
+  // Verbatim from the `home` route meta.
+  permissions: [
+    'conversation_manage',
+    'conversation_unassigned_manage',
+    'conversation_participating_manage',
+  ],
   estimatedMinutes: 5,
   route: { name: 'home' },
   // Every composer anchor lives inside an open conversation.

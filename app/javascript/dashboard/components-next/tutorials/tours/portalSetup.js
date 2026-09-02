@@ -11,7 +11,9 @@ export default {
   permissions: ['administrator', 'knowledge_base_manage'],
   estimatedMinutes: 4,
   route: { name: 'portals_new' },
-  pageRoutes: ['portals_new', 'portals_settings_index'],
+  // The creation wizard is deliberately absent: offering the tour inside it
+  // would restart it from the first step and lose what was already typed.
+  pageRoutes: ['portals_settings_index'],
   keywords: [
     'portal',
     'centro de ayuda',

@@ -49,12 +49,11 @@ export default {
       i18nKey: 'CONTACTS_SEARCH_SEGMENTS.CONDITIONS',
     },
     {
-      // Only rendered once a filter is applied; without one the step drops out
-      // and the narrative step below still explains where it appears.
-      target: '[data-tour="contacts-create-segment"]',
+      // The control only exists once a filter is applied, and the tour lands on
+      // a clean list every time, so anchoring it would drop the step on every
+      // run. Taught without an anchor instead.
+      target: null,
       i18nKey: 'CONTACTS_SEARCH_SEGMENTS.SAVE_SEGMENT',
-      side: 'bottom',
-      align: 'end',
     },
     {
       target: '[data-tour="sidebar-subgroup-segments"]',

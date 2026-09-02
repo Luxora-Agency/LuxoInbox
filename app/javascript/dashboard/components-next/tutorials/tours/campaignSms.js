@@ -1,5 +1,12 @@
 import { FEATURE_FLAGS } from 'dashboard/featureFlags';
 
+// The create button is a plain toggle and the dialog closes itself on any
+// outside click — the tour's own "Next" included, because `@vueuse/core`
+// listens on `window` in the capture phase, ahead of driver.js. Probing the
+// dialog keeps the toggle from re-opening a form the click already dismissed.
+const CREATE_BUTTON = '[data-tour="campaigns-create"]';
+const CAMPAIGN_DIALOG = '[data-tour="campaign-dialog"]';
+
 export default {
   id: 'campaign-sms',
   category: 'campaigns',
@@ -53,8 +60,8 @@ export default {
       i18nKey: 'CAMPAIGN_SMS.FORM',
       side: 'left',
       align: 'start',
-      before: { click: '[data-tour="campaigns-create"]' },
-      after: { click: '[data-tour="campaigns-create"]' },
+      before: { click: CREATE_BUTTON, probe: CAMPAIGN_DIALOG },
+      after: { click: CREATE_BUTTON, probe: CAMPAIGN_DIALOG },
     },
     {
       target: null,

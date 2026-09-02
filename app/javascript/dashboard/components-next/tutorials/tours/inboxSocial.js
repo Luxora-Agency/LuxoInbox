@@ -11,11 +11,9 @@ export default {
   permissions: ['administrator'],
   estimatedMinutes: 4,
   route: { name: 'settings_inbox_new' },
-  pageRoutes: [
-    'settings_inbox_list',
-    'settings_inbox_new',
-    'settings_inboxes_page_channel',
-  ],
+  // The channel form is deliberately absent: starting the tour navigates away,
+  // and a half-filled channel form is not recoverable.
+  pageRoutes: ['settings_inbox_list', 'settings_inbox_new'],
   keywords: [
     'facebook',
     'messenger',

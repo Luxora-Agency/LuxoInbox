@@ -5,7 +5,10 @@ export default {
   category: 'help-center',
   icon: 'i-lucide-library-big',
   order: 900,
-  audience: 'admin',
+  audience: 'all',
+  // Verbatim from the `portals_index` route meta: a custom role holding
+  // `knowledge_base_manage` reaches the screen without being an administrator.
+  permissions: ['administrator', 'knowledge_base_manage'],
   featureFlag: FEATURE_FLAGS.HELP_CENTER,
   estimatedMinutes: 4,
   route: {

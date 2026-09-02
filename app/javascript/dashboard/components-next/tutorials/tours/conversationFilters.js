@@ -1,3 +1,9 @@
+// The advanced filter panel closes itself on any outside click — including the
+// tour's own "Next", which reaches `@vueuse/core`'s window-capture listener
+// before driver.js can stop it. Probing the panel makes the toggle idempotent.
+const FILTER_TOGGLE = '#toggleConversationFilterButton';
+const FILTER_PANEL = '[data-tour="conversation-filter-panel"]';
+
 export default {
   id: 'conversation-filters',
   category: 'conversations',
@@ -56,8 +62,8 @@ export default {
       i18nKey: 'CONVERSATION_FILTERS.PANEL',
       side: 'bottom',
       align: 'start',
-      before: { click: '#toggleConversationFilterButton' },
-      after: { click: '#toggleConversationFilterButton' },
+      before: { click: FILTER_TOGGLE, probe: FILTER_PANEL },
+      after: { click: FILTER_TOGGLE, probe: FILTER_PANEL },
     },
     {
       // Both controls live in the header only while a filter is applied, so
