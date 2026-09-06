@@ -1,6 +1,13 @@
 {
   "MESSENGER_SIMULATOR": {
     "TEMPLATES": {
+      "CONVERSATION_EXPORT": "Download template screenshot",
+      "EXPORT_HINT": "Only the saved fictional script is exported, not this conversation's messages. Contact changes below apply only to this download.",
+      "CHOOSE": "Choose a template",
+      "EMPTY": "No templates yet. Ask an administrator to save a script in Messenger simulator.",
+      "MISSING": "Required for this export only; the contact record will not change.",
+      "STALE": "The template or contact changed. Reload the context before downloading.",
+      "CONTEXT_ERROR": "The template export is unavailable or failed. Check your access and try again.",
       "VARIABLE_LIMIT": "Shorten the message or select text to replace before inserting this variable.",
       "INSERT": "Insert contact variable:",
       "VARIABLE_NAME": "Name",
