@@ -62,6 +62,7 @@ Rails.application.routes.draw do
           namespace :actions do
             resource :contact_merge, only: [:create]
           end
+          resources :messenger_templates, only: [:index, :show, :create, :update, :destroy]
           resource :messenger_simulator, only: [:show], controller: :messenger_simulator
           resource :bulk_actions, only: [:create]
           resource :onboarding, only: [:update] do
