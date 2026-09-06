@@ -26,7 +26,7 @@ class MessengerScreenshot::MessagePresenter
     return plain_text if plain_text.present?
 
     html = email.dig('html_content', 'full').presence || @message.content.to_s
-    html = html.gsub(/<br\s*\/?\s*>|<\/(?:p|div|li)>/i, "\n")
+    html = html.gsub(%r{<br\s*/?\s*>|</(?:p|div|li)>}i, "\n")
     CGI.unescapeHTML(ActionController::Base.helpers.strip_tags(html))
   end
 end

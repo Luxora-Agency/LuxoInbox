@@ -43,12 +43,7 @@ class SuperAdmin::AccountsController < SuperAdmin::ApplicationController
     permitted_params.extract!(:suspension_category, :suspension_reason, :contact_hiding_policy)
     permitted_params[:limits] = permitted_params[:limits].to_h.compact if permitted_params.key?(:limits)
     permitted_params[:captain_models] = permitted_params[:captain_models].to_h.compact_blank.presence if permitted_params.key?(:captain_models)
-    if params[:features_submitted].present? || params[:enabled_features].present?
-      permitted_params[:selected_feature_flags] = (params[:enabled_features]&.keys || []).map(&:to_sym)
-    end
-    if permitted_params.key?(:feature_messenger_simulator)
-      permitted_params[:feature_messenger_simulator] = ActiveModel::Type::Boolean.new.cast(permitted_params[:feature_messenger_simulator])
-    end
+    assign_feature_params(permitted_params)
     permitted_params
   end
 
@@ -85,6 +80,15 @@ class SuperAdmin::AccountsController < SuperAdmin::ApplicationController
   end
 
   private
+
+  def assign_feature_params(permitted_params)
+    if params[:features_submitted].present? || params[:enabled_features].present?
+      permitted_params[:selected_feature_flags] = (params[:enabled_features]&.keys || []).map(&:to_sym)
+    end
+    if permitted_params.key?(:feature_messenger_simulator)
+      permitted_params[:feature_messenger_simulator] = ActiveModel::Type::Boolean.new.cast(permitted_params[:feature_messenger_simulator])
+    end
+  end
 
   def contact_hiding_params
     @contact_hiding_params ||= params.dig(:account, :contact_hiding_policy)

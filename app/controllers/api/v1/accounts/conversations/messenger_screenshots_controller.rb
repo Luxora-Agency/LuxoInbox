@@ -29,10 +29,15 @@ class Api::V1::Accounts::Conversations::MessengerScreenshotsController < Api::V1
     if after_id > snapshot_id || (after_id.positive? && !params.key?(:snapshot_max_id))
       raise ActionController::BadRequest, 'Invalid screenshot cursor'
     end
-    [after_id, snapshot_id].select(&:positive?).each do |id|
+
+    validate_cursor_ids!([after_id, snapshot_id])
+    [after_id, snapshot_id]
+  end
+
+  def validate_cursor_ids!(ids)
+    ids.select(&:positive?).each do |id|
       raise ActionController::BadRequest, 'Invalid screenshot cursor' unless @conversation.messages.exists?(id: id)
     end
-    [after_id, snapshot_id]
   end
 
   def message_page(after_id, snapshot_id)
