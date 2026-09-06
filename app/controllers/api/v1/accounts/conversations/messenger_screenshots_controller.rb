@@ -56,12 +56,6 @@ class Api::V1::Accounts::Conversations::MessengerScreenshotsController < Api::V1
   end
 
   def contact_payload
-    contact = @conversation.contact
-    avatar = contact.avatar
-    avatar_data = nil
-    if avatar.attached? && avatar.byte_size <= 2.megabytes && %w[image/png image/jpeg image/webp].include?(avatar.content_type)
-      avatar_data = "data:#{avatar.content_type};base64,#{Base64.strict_encode64(avatar.download)}"
-    end
-    { name: contact.name, avatar_data: avatar_data }
+    MessengerScreenshot::ContactPresenter.new(@conversation.contact).as_json.except(:phone)
   end
 end
