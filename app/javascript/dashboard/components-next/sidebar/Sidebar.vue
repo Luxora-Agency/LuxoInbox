@@ -827,6 +827,20 @@ const menuItems = computed(() => {
         },
       ],
     },
+    ...(isFeatureEnabledonAccount.value(
+      accountId.value,
+      FEATURE_FLAGS.MESSENGER_SIMULATOR
+    )
+      ? [
+          {
+            name: 'Messenger Simulator',
+            label: t('MESSENGER_SIMULATOR.TITLE'),
+            icon: 'i-lucide-image',
+            to: accountScopedRoute('messenger_simulator'),
+            activeOn: ['messenger_simulator'],
+          },
+        ]
+      : []),
     {
       name: 'Portals',
       label: t('SIDEBAR.HELP_CENTER.TITLE'),

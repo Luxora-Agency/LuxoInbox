@@ -62,6 +62,7 @@ Rails.application.routes.draw do
           namespace :actions do
             resource :contact_merge, only: [:create]
           end
+          resource :messenger_simulator, only: [:show], controller: :messenger_simulator
           resource :bulk_actions, only: [:create]
           resource :onboarding, only: [:update] do
             get :help_center_generation
@@ -185,6 +186,7 @@ Rails.application.routes.draw do
               resource :participants, only: [:show, :create, :update, :destroy]
               resource :direct_uploads, only: [:create]
               resource :draft_messages, only: [:show, :update, :destroy]
+              resource :messenger_screenshot, only: [:show], controller: :messenger_screenshots
             end
             member do
               post :mute
