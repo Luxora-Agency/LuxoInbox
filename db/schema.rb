@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_08_31_000000) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_06_000000) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -1288,6 +1288,15 @@ ActiveRecord::Schema[7.1].define(version: 2026_08_31_000000) do
     t.index ["source_id"], name: "index_messages_on_source_id"
   end
 
+  create_table "messenger_templates", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.string "title", limit: 100, null: false
+    t.jsonb "definition", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_messenger_templates_on_account_id"
+  end
+
   create_table "notes", force: :cascade do |t|
     t.text "content", null: false
     t.bigint "account_id", null: false
@@ -1620,6 +1629,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_08_31_000000) do
   add_foreign_key "campaign_recipients", "inboxes", on_delete: :cascade
   add_foreign_key "contacts", "users", column: "assignee_id"
   add_foreign_key "inboxes", "portals"
+  add_foreign_key "messenger_templates", "accounts"
   add_foreign_key "user_sessions", "users"
   create_trigger("accounts_after_insert_row_tr", :generated => true, :compatibility => 1).
       on("accounts").
