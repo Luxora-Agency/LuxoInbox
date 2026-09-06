@@ -20,6 +20,7 @@ export const FEATURE_FLAGS = {
   INTEGRATIONS: 'integrations',
   LABELS: 'labels',
   MACROS: 'macros',
+  MESSENGER_SIMULATOR: 'messenger_simulator',
   HELP_CENTER: 'help_center',
   REPORTS: 'reports',
   TEAM_MANAGEMENT: 'team_management',

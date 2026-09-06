@@ -1,4 +1,5 @@
 import settings from './settings/settings.routes';
+import { routes as messengerSimulatorRoutes } from './messengerSimulator/routes';
 import conversation from './conversation/conversation.routes';
 import { routes as searchRoutes } from '../../modules/search/search.routes';
 import { routes as callRoutes } from './calls/routes';
@@ -22,6 +23,7 @@ export default {
       component: AppContainer,
       children: [
         ...captainRoutes,
+        ...messengerSimulatorRoutes,
         ...inboxRoutes,
         ...conversation.routes,
         ...settings.routes,

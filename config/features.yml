@@ -270,3 +270,7 @@
   display_name: Delayed Automations
   enabled: false
   column: feature_flags_ext_1
+- name: messenger_simulator
+  display_name: Messenger Simulator
+  enabled: false
+  column: feature_flags_ext_1

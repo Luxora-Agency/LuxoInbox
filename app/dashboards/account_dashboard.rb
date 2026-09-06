@@ -37,7 +37,8 @@ class AccountDashboard < Administrate::BaseDashboard
     suspension_history: SuspensionHistoryField,
     account_users: Field::HasMany,
     custom_attributes: Field::String,
-    contact_hiding_policy: ContactHidingPolicyField
+    contact_hiding_policy: ContactHidingPolicyField,
+    feature_messenger_simulator: Field::Boolean
   }.merge(enterprise_attribute_types).freeze
 
   # COLLECTION_ATTRIBUTES
@@ -95,7 +96,7 @@ class AccountDashboard < Administrate::BaseDashboard
     locale
     status
     contact_hiding_policy
-  ] + enterprise_form_attributes).freeze
+  ] + enterprise_form_attributes + (ChatwootApp.enterprise? ? [] : [:feature_messenger_simulator])).freeze
 
   # COLLECTION_FILTERS
   # a hash that defines filters that can be used while searching via the search

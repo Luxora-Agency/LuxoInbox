@@ -17,6 +17,8 @@ permissions:
 jobs:
   deployment_check:
     name: Check Deployment
+    # Heroku review apps are provisioned only for the upstream repository.
+    if: github.repository == 'chatwoot/chatwoot'
     runs-on: ubuntu-latest
     steps:
       - name: Install jq
@@ -50,4 +52,3 @@ jobs:
           done
           echo "Deployment failed after $max_attempts attempts"
           exit  1
-          fi
