@@ -2,6 +2,8 @@
 import { computed, ref, watch, onBeforeUnmount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useEventListener } from '@vueuse/core';
+import { useAdmin } from 'dashboard/composables/useAdmin';
+import MessengerTemplateLibrary from 'dashboard/components-next/messengerSimulator/MessengerTemplateLibrary.vue';
 import { useAccount } from 'dashboard/composables/useAccount';
 import { useMapGetter } from 'dashboard/composables/store';
 import { FEATURE_FLAGS } from 'dashboard/featureFlags';
@@ -10,6 +12,7 @@ import Button from 'dashboard/components-next/button/Button.vue';
 import MessengerSimulatorEditor from 'dashboard/components-next/messengerSimulator/MessengerSimulatorEditor.vue';
 
 const { t } = useI18n();
+const { isAdmin } = useAdmin();
 const { accountId } = useAccount();
 const isFeatureEnabled = useMapGetter('accounts/isFeatureEnabledonAccount');
 const featureEnabled = computed(() =>
@@ -103,7 +106,8 @@ onBeforeUnmount(() => {
         {{ t('MESSENGER_SIMULATOR.LOADING') }}
       </p>
     </div>
-    <MessengerSimulatorEditor
+    <component
+      :is="isAdmin ? MessengerTemplateLibrary : MessengerSimulatorEditor"
       v-else-if="access === 'allowed'"
       :key="accountId"
       :account-id="accountId"
