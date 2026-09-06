@@ -85,9 +85,9 @@ class SuperAdmin::AccountsController < SuperAdmin::ApplicationController
     if params[:features_submitted].present? || params[:enabled_features].present?
       permitted_params[:selected_feature_flags] = (params[:enabled_features]&.keys || []).map(&:to_sym)
     end
-    if permitted_params.key?(:feature_messenger_simulator)
-      permitted_params[:feature_messenger_simulator] = ActiveModel::Type::Boolean.new.cast(permitted_params[:feature_messenger_simulator])
-    end
+    return unless permitted_params.key?(:feature_messenger_simulator)
+
+    permitted_params[:feature_messenger_simulator] = ActiveModel::Type::Boolean.new.cast(permitted_params[:feature_messenger_simulator])
   end
 
   def contact_hiding_params
