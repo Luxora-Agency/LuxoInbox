@@ -118,10 +118,14 @@ const emptyDefinition = () => ({
 
 const goToList = () => router.push(listRoute.value);
 
+// A missing key is the one failure the dashboard can phrase itself, next to the link that
+// fixes it; every other failure only the server can explain.
 const reportExtractError = error => {
   const data = error?.response?.data;
   isNotConfigured.value = data?.code === 'not_configured';
-  extractError.value = data?.message || t('MESSENGER_TEMPLATES.AI.FAILED');
+  extractError.value = isNotConfigured.value
+    ? t('MESSENGER_TEMPLATES.AI.NOT_CONFIGURED')
+    : data?.message || t('MESSENGER_TEMPLATES.AI.FAILED');
 };
 
 const extractFromScreenshot = async event => {

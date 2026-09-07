@@ -180,7 +180,7 @@ it('points to the OpenAI integration when LuxoIA has no key', async () => {
   await uploadScreenshot(wrapper, png());
 
   const error = wrapper.find('[role="alert"]');
-  expect(error.text()).toContain('LuxoIA no está configurada.');
+  expect(error.text()).toContain('MESSENGER_TEMPLATES.AI.NOT_CONFIGURED');
   expect(wrapper.findComponent(RouterLinkStub).props('to')).toEqual({
     name: 'settings_applications_integration',
     params: { integration_id: 'openai' },
