@@ -40,9 +40,17 @@ class Api::V1::Accounts::Conversations::MessengerTemplateContextsController < Ap
 
   def context_token(template, contact)
     # Unrelated messages must not invalidate a template-only export.
-    Digest::SHA256.hexdigest([
-      Current.account.id, @conversation.id, template.cache_key_with_version,
-      contact.name, contact.phone_number, contact.avatar.attachment&.blob_id
-    ].to_json)
+    Digest::SHA256.hexdigest([Current.account.id, @conversation.id, template.cache_key_with_version, contact_digest(contact)].to_json)
+  end
+
+  # Covers every field ContactPresenter exposes, so a stale export is always caught.
+  # Built from the record directly: revalidation must never download the avatar.
+  def contact_digest(contact)
+    attributes = contact.additional_attributes.to_h
+    [
+      contact.name, contact.last_name, contact.email, contact.phone_number, contact.identifier,
+      contact.country_code, attributes['city'], attributes['company_name'],
+      contact.custom_attributes.to_h.sort, contact.avatar.attachment&.blob_id
+    ]
   end
 end

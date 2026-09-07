@@ -23,7 +23,11 @@ RSpec.describe 'Messenger template context API', type: :request do
     expect(response).to have_http_status(:ok)
     expect(response.headers['Cache-Control']).to include('no-store')
     expect(response.parsed_body.keys).to contain_exactly('template', 'contact', 'context_token')
-    expect(response.parsed_body['contact']).to eq('name' => 'Taylor', 'phone' => '+15551234567', 'avatar_data' => nil)
+    expect(response.parsed_body['contact']).to eq(
+      'name' => 'Taylor', 'first_name' => 'Taylor', 'last_name' => '', 'email' => '',
+      'phone' => '+15551234567', 'phone_number' => '+15551234567', 'identifier' => '',
+      'country_code' => '', 'city' => '', 'company_name' => '', 'custom_attribute' => {}, 'avatar_data' => nil
+    )
     expect(response.parsed_body['template']['id']).to eq(template.id)
     expect(response.body).not_to include('Not part of the script')
   end
@@ -64,6 +68,18 @@ RSpec.describe 'Messenger template context API', type: :request do
     conversation.contact.avatar.attach(io: Rails.root.join('spec/assets/avatar.png').open, filename: 'avatar.png', content_type: 'image/png')
     get path, params: params.merge(authorize_only: true, context_token: token), headers: headers
     expect(response).to have_http_status(:conflict)
+  end
+
+  it 'invalidates the token when any other exposed contact field changes' do
+    changes = [{ email: 'taylor@example.com' }, { identifier: 'CU-10482' }, { last_name: 'Reed' },
+               { additional_attributes: { 'city' => 'Austin' } }, { additional_attributes: { 'company_name' => 'Acme' } },
+               { custom_attributes: { 'plan' => 'gold' } }]
+    changes.each do |change|
+      get path, params: params, headers: headers
+      conversation.contact.update!(change)
+      get path, params: params.merge(authorize_only: true, context_token: response.parsed_body['context_token']), headers: headers
+      expect(response).to have_http_status(:conflict)
+    end
   end
 
   it 'denies deleted templates and revoked feature access' do

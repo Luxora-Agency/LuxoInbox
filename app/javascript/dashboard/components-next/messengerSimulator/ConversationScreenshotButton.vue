@@ -2,17 +2,24 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAccount } from 'dashboard/composables/useAccount';
-import { useMapGetter } from 'dashboard/composables/store';
+import { useMapGetter, useStore } from 'dashboard/composables/store';
 import { useAlert } from 'dashboard/composables';
 import { FEATURE_FLAGS } from 'dashboard/featureFlags';
-import { getConversationScreenshot } from 'dashboard/api/messengerSimulator';
+import {
+  authorizeMessengerTemplateContext,
+  getConversationScreenshot,
+  getMessengerTemplateContext,
+} from 'dashboard/api/messengerSimulator';
 import Button from 'dashboard/components-next/button/Button.vue';
+import DropdownMenu from 'dashboard/components-next/dropdown-menu/DropdownMenu.vue';
 import MessengerScreenshotRenderer from './MessengerScreenshotRenderer.vue';
 import { loadConversationScreenshot } from './conversationScreenshot';
+import { resolveMessengerTemplate } from './templateDefinition';
 
 const props = defineProps({ conversationId: { type: Number, required: true } });
 const { t } = useI18n();
 const { accountId } = useAccount();
+const store = useStore();
 const isFeatureEnabled = useMapGetter('accounts/isFeatureEnabledonAccount');
 const enabled = computed(() =>
   isFeatureEnabled.value(accountId.value, FEATURE_FLAGS.MESSENGER_SIMULATOR)
@@ -21,11 +28,23 @@ const rendererRef = ref(null);
 const busy = ref(false);
 let version = 0;
 let active = true;
+const showMenu = ref(false);
+const menuView = ref('actions');
+const templatesRequested = ref(false);
+const storedTemplates = useMapGetter('messengerTemplates/getTemplates');
+const currentUser = useMapGetter('getCurrentUser');
+const selectedChat = useMapGetter('getSelectedChat');
+const templates = computed(() =>
+  Array.isArray(storedTemplates.value) ? storedTemplates.value : []
+);
 watch(
   [accountId, () => props.conversationId, enabled],
   () => {
     version += 1;
     busy.value = false;
+    showMenu.value = false;
+    menuView.value = 'actions';
+    templatesRequested.value = false;
   },
   { flush: 'sync' }
 );
@@ -76,35 +95,219 @@ const download = async () => {
     if (isCurrent()) busy.value = false;
   }
 };
+
+// Names are normalized like the backend drops so {{agent.first_name}} matches.
+const splitName = name => {
+  const words = String(name || '')
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+  return {
+    name: words.join(' '),
+    first_name: words[0] || '',
+    last_name: words.length > 1 ? words[words.length - 1] : '',
+  };
+};
+
+const agentContext = computed(() => {
+  const chat = selectedChat.value;
+  const assignee =
+    chat && chat.id === props.conversationId ? chat.meta?.assignee : null;
+  const user = assignee || currentUser.value || {};
+  return { ...user, ...splitName(user.name), email: user.email || '' };
+});
+
+const downloadFromTemplate = async template => {
+  if (busy.value || !enabled.value) return;
+  busy.value = true;
+  version += 1;
+  const operation = version;
+  const requestedAccount = accountId.value;
+  const requestedConversation = props.conversationId;
+  const isCurrent = () => active && version === operation && enabled.value;
+  try {
+    const { data } = await getMessengerTemplateContext(
+      requestedAccount,
+      requestedConversation,
+      { template_id: template.id }
+    );
+    if (!isCurrent()) return;
+    // The server copy is the one the context token was digested from.
+    const definition = data.template?.definition || template.definition;
+    const content = resolveMessengerTemplate(definition, {
+      contact: data.contact,
+      agent: agentContext.value,
+    });
+    const count = await rendererRef.value.download({
+      participants: content.participants,
+      messages: content.messages.map(message => ({ ...message })),
+      isCurrent,
+      authorize: () =>
+        authorizeMessengerTemplateContext(
+          requestedAccount,
+          requestedConversation,
+          {
+            template_id: template.id,
+            context_token: data.context_token,
+          }
+        ),
+      filename: `messenger-template-${requestedAccount}-${requestedConversation}`,
+    });
+    if (isCurrent())
+      useAlert(
+        count > 1
+          ? t('MESSENGER_SIMULATOR.EXPORT_SUCCESS_PARTS', { count })
+          : t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.SUCCESS')
+      );
+  } catch (error) {
+    if (!isCurrent()) return;
+    if (error.response?.status === 409) {
+      useAlert(t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.CONTACT_CHANGED'));
+    } else if ([401, 403, 404].includes(error.response?.status)) {
+      useAlert(t('MESSENGER_SIMULATOR.CONVERSATION_UNAVAILABLE'));
+    } else if (error.message === 'empty') {
+      useAlert(t('MESSENGER_SIMULATOR.CONVERSATION_EMPTY'));
+    } else if (error.message === 'limit') {
+      useAlert(t('MESSENGER_SIMULATOR.EXPORT_LIMIT'));
+    } else {
+      useAlert(t('MESSENGER_SIMULATOR.EXPORT_ERROR'));
+    }
+  } finally {
+    if (isCurrent()) busy.value = false;
+  }
+};
+
+const loadTemplates = async () => {
+  if (templatesRequested.value) return;
+  templatesRequested.value = true;
+  try {
+    await store.dispatch('messengerTemplates/get');
+  } catch {
+    // The template entry simply stays hidden; the real-history export still works.
+    templatesRequested.value = false;
+  }
+};
+
+const closeMenu = () => {
+  showMenu.value = false;
+  menuView.value = 'actions';
+};
+
+const toggleMenu = () => {
+  if (showMenu.value) {
+    closeMenu();
+    return;
+  }
+  showMenu.value = true;
+  menuView.value = 'actions';
+  loadTemplates();
+};
+
+const actionItems = computed(() => [
+  {
+    label: t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.REAL_HISTORY'),
+    action: 'history',
+    value: 'history',
+    icon: 'i-lucide-history',
+  },
+  ...(templates.value.length
+    ? [
+        {
+          label: t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'),
+          action: 'template',
+          value: 'template',
+          icon: 'i-lucide-layout-template',
+        },
+      ]
+    : []),
+]);
+
+const templateItems = computed(() =>
+  templates.value.map(template => ({
+    label: template.title,
+    action: 'pick',
+    value: template.id,
+    icon: 'i-lucide-image',
+  }))
+);
+
+const menuItems = computed(() =>
+  menuView.value === 'templates' ? templateItems.value : actionItems.value
+);
+
+const handleAction = ({ action, value }) => {
+  if (action === 'history') {
+    closeMenu();
+    download();
+  } else if (action === 'template') {
+    menuView.value = 'templates';
+  } else if (action === 'pick') {
+    const template = templates.value.find(record => record.id === value);
+    closeMenu();
+    if (template) downloadFromTemplate(template);
+  }
+};
+
 onBeforeUnmount(() => {
   active = false;
   version += 1;
 });
 </script>
 
+<!-- eslint-disable-next-line vue/no-root-v-if -->
 <template>
-  <Button
+  <div
     v-if="enabled"
-    v-tooltip="t('MESSENGER_SIMULATOR.CONVERSATION_TOOLTIP')"
-    variant="ghost"
-    color="slate"
-    size="sm"
-    icon="i-lucide-image-down"
-    :aria-label="
-      busy
-        ? t('MESSENGER_SIMULATOR.EXPORTING')
-        : t('MESSENGER_SIMULATOR.CONVERSATION_EXPORT')
-    "
-    :disabled="busy"
-    :is-loading="busy"
-    @click="download"
-  />
-  <span v-if="busy" class="sr-only" role="status">{{
-    t('MESSENGER_SIMULATOR.EXPORTING')
-  }}</span>
-  <MessengerScreenshotRenderer
-    v-if="enabled"
-    :key="`${accountId}-${conversationId}`"
-    ref="rendererRef"
-  />
+    v-on-clickaway="closeMenu"
+    class="relative flex items-center"
+    @keydown.esc="closeMenu"
+  >
+    <Button
+      v-tooltip="t('MESSENGER_SIMULATOR.CONVERSATION_TOOLTIP')"
+      variant="ghost"
+      color="slate"
+      size="sm"
+      icon="i-lucide-image-down"
+      aria-haspopup="menu"
+      :aria-expanded="showMenu"
+      :aria-label="
+        busy
+          ? t('MESSENGER_SIMULATOR.EXPORTING')
+          : t('MESSENGER_SIMULATOR.CONVERSATION_EXPORT')
+      "
+      :class="showMenu ? 'bg-n-alpha-2' : ''"
+      :disabled="busy"
+      :is-loading="busy"
+      @click="toggleMenu"
+    />
+    <span v-if="busy" class="sr-only" role="status">
+      {{ t('MESSENGER_SIMULATOR.EXPORTING') }}
+    </span>
+    <DropdownMenu
+      v-if="showMenu"
+      :menu-items="menuItems"
+      :show-search="menuView === 'templates'"
+      :search-placeholder="t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.SEARCH')"
+      empty-state-message="MESSENGER_TEMPLATES.CONVERSATION_EXPORT.EMPTY"
+      class="top-full mt-1 w-64 ltr:right-0 rtl:left-0"
+      @action="handleAction($event)"
+    >
+      <template v-if="menuView === 'templates'" #footer>
+        <div class="border-t border-n-weak px-2 py-2">
+          <button
+            type="button"
+            class="inline-flex h-8 w-full items-center justify-start gap-2 rounded-lg border-0 bg-transparent px-2 py-1.5 text-sm font-420 text-n-slate-11 hover:bg-n-alpha-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-n-slate-12 dark:hover:bg-n-alpha-2 dark:focus-visible:ring-orbis-neon"
+            @click="menuView = 'actions'"
+          >
+            <span class="i-lucide-arrow-left size-3.5 flex-shrink-0" />
+            {{ t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.BACK') }}
+          </button>
+        </div>
+      </template>
+    </DropdownMenu>
+    <MessengerScreenshotRenderer
+      :key="`${accountId}-${conversationId}`"
+      ref="rendererRef"
+    />
+  </div>
 </template>
