@@ -109,7 +109,7 @@ class MessengerTemplate < ApplicationRecord
     add_definition_error('expression_not_allowed')
   end
 
-  def add_definition_error(key, **options)
-    errors.add(:definition, I18n.t("errors.messenger_template.definition.#{key}", **options))
+  def add_definition_error(key, **)
+    errors.add(:definition, I18n.t("errors.messenger_template.definition.#{key}", **))
   end
 end
