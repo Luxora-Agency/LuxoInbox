@@ -1,4 +1,4 @@
-import { actions, getters, mutations } from '../../messengerTemplates';
+import { actions, mutations } from '../../messengerTemplates';
 
 const api = vi.hoisted(() => ({
   list: vi.fn(),
@@ -46,13 +46,6 @@ it('keeps the default first when a record is upserted', () => {
   });
   expect(titles(state)[0]).toBe('Renamed default');
   expect(state.records).toHaveLength(3);
-});
-
-it('exposes the account default through a getter', () => {
-  expect(getters.getDefaultTemplate({ records: [last, seeded] })).toEqual(
-    seeded
-  );
-  expect(getters.getDefaultTemplate({ records: [last] })).toBeNull();
 });
 
 it('restores the default and merges the row back into the list', async () => {

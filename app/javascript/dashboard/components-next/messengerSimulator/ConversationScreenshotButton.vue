@@ -231,12 +231,12 @@ const actionItems = computed(() => [
   },
 ]);
 
-// The store lists the account default first; the badge marks it inside the menu label.
+// The store lists the account default first; the badge marks it in its own element, so a
+// long title truncates without taking the mark down with it.
 const templateItems = computed(() =>
   templates.value.map(template => ({
-    label: template.is_default
-      ? `${template.title} · ${t('MESSENGER_TEMPLATES.DEFAULT.BADGE')}`
-      : template.title,
+    label: template.title,
+    isDefault: Boolean(template.is_default),
     action: 'pick',
     value: template.id,
     icon: 'i-lucide-image',
@@ -305,6 +305,14 @@ onBeforeUnmount(() => {
       class="top-full mt-1 w-64 ltr:right-0 rtl:left-0"
       @action="handleAction($event)"
     >
+      <template #trailing-icon="{ item }">
+        <span
+          v-if="item.isDefault"
+          class="ms-auto flex-shrink-0 rounded-md bg-orbis-navy px-1.5 py-0.5 text-xs font-medium text-orbis-neon ring-1 ring-orbis-neon/25 dark:ring-orbis-neon/40"
+        >
+          {{ t('MESSENGER_TEMPLATES.DEFAULT.BADGE') }}
+        </span>
+      </template>
       <template v-if="menuView === 'templates'" #footer>
         <div class="border-t border-n-weak px-2 py-2">
           <button

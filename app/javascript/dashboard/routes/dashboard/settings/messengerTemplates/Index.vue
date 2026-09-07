@@ -176,6 +176,7 @@ onMounted(fetchRecords);
               size="sm"
               :label="t('MESSENGER_TEMPLATES.DEFAULT.RESTORE')"
               :confirm-label="t('MESSENGER_TEMPLATES.DEFAULT.RESTORE_CONFIRM')"
+              :confirm-hint="t('MESSENGER_TEMPLATES.DEFAULT.RESTORE_HINT')"
               :is-loading="uiFlags.isRestoring"
               @click="restoreDefault"
             />

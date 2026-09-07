@@ -171,6 +171,27 @@ it('keeps the one-click history export when the account has no templates', async
   wrapper.unmount();
 });
 
+it('marks the account default in the menu without truncating it into the title', async () => {
+  const seeded = {
+    id: 3,
+    title: 'A very long default script title',
+    is_default: true,
+  };
+  mocks.state.templates = [seeded, template];
+  const wrapper = mountButton();
+  await clickTrigger(wrapper);
+  await clickItem(
+    wrapper,
+    'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
+  );
+
+  const badges = wrapper.findAll('span.bg-orbis-navy');
+  expect(badges).toHaveLength(1);
+  expect(badges[0].text()).toBe('MESSENGER_TEMPLATES.DEFAULT.BADGE');
+  expect(wrapper.text()).toContain('A very long default script title');
+  wrapper.unmount();
+});
+
 it('discards the template search when the menu returns to the actions', async () => {
   mocks.state.templates = [template];
   const wrapper = mountButton();

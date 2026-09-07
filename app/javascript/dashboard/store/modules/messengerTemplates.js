@@ -47,9 +47,6 @@ export const getters = {
     return id =>
       _state.records.find(record => record.id === Number(id)) ?? null;
   },
-  getDefaultTemplate(_state) {
-    return _state.records.find(record => record.is_default) ?? null;
-  },
 };
 
 // Callers outside an account-scoped page may omit the account id, so it falls
