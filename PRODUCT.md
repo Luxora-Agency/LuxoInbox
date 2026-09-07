@@ -18,6 +18,8 @@ The account-scoped Messenger template API stores reusable fictional scripts, not
 
 Administrators manage saved scripts from the simulator page using the same composer and preview as manual simulations; draft replacement and deletion require confirmation. Name and phone chips insert literal variables at the cursor; sample values appear only in previews and sample downloads, never in saved definitions.
 
+Conversation More Actions offers template-only screenshots with automatic contact values, export-only missing-field corrections and a freshness/permission recheck before delivery. The direct real-history screenshot action remains separate.
+
 ## Brand Personality
 
 Professional, clear and task-oriented. Preserve the existing Orbis identity and shared dashboard components; this feature is not a redesign.

@@ -7,3 +7,12 @@ export const saveMessengerTemplate = (accountId, id, template) =>
     : axios.post(url(accountId), { messenger_template: template });
 export const deleteMessengerTemplate = (accountId, id) =>
   axios.delete(`${url(accountId)}/${id}`);
+export const getMessengerTemplateContext = (
+  accountId,
+  conversationId,
+  params
+) =>
+  axios.get(
+    `/api/v1/accounts/${accountId}/conversations/${conversationId}/messenger_template_context`,
+    { params }
+  );
