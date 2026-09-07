@@ -13,9 +13,11 @@ import {
 import Button from 'dashboard/components-next/button/Button.vue';
 import DropdownMenu from 'dashboard/components-next/dropdown-menu/DropdownMenu.vue';
 import MessengerScreenshotRenderer from './MessengerScreenshotRenderer.vue';
+import MessengerManualVariablesModal from './MessengerManualVariablesModal.vue';
 import { loadConversationScreenshot } from './conversationScreenshot';
 import {
   buildAgentContext,
+  manualKeysIn,
   resolveMessengerTemplate,
 } from './templateDefinition';
 
@@ -35,6 +37,9 @@ const showMenu = ref(false);
 const menuView = ref('actions');
 const templatesRequested = ref(false);
 const preparing = ref(false);
+const manualModalRef = ref(null);
+const manualSlugs = ref([]);
+const pendingTemplate = ref(null);
 const storedTemplates = useMapGetter('messengerTemplates/getTemplates');
 const currentUser = useMapGetter('getCurrentUser');
 const selectedChat = useMapGetter('getSelectedChat');
@@ -50,6 +55,8 @@ watch(
     showMenu.value = false;
     menuView.value = 'actions';
     templatesRequested.value = false;
+    pendingTemplate.value = null;
+    manualSlugs.value = [];
   },
   { flush: 'sync' }
 );
@@ -110,7 +117,7 @@ const agentContext = computed(() => {
   return buildAgentContext(assignee || currentUser.value);
 });
 
-const downloadFromTemplate = async template => {
+const downloadFromTemplate = async (template, manual = {}) => {
   if (busy.value || !enabled.value) return;
   busy.value = true;
   version += 1;
@@ -129,6 +136,7 @@ const downloadFromTemplate = async template => {
     const content = resolveMessengerTemplate(data.template.definition, {
       contact: data.contact,
       agent: agentContext.value,
+      manual,
     });
     const count = await rendererRef.value.download({
       participants: content.participants,
@@ -167,6 +175,25 @@ const downloadFromTemplate = async template => {
   } finally {
     if (isCurrent()) busy.value = false;
   }
+};
+
+// Manual values belong to this one screenshot, so they are asked for here rather than
+// stored: the list of slugs comes from the library copy the menu was just built from.
+const pickTemplate = template => {
+  const slugs = manualKeysIn(template.definition);
+  if (!slugs.length) {
+    downloadFromTemplate(template);
+    return;
+  }
+  pendingTemplate.value = template;
+  manualSlugs.value = slugs;
+  manualModalRef.value.open();
+};
+
+const onManualConfirm = values => {
+  const template = pendingTemplate.value;
+  pendingTemplate.value = null;
+  if (template) downloadFromTemplate(template, values);
 };
 
 const loadTemplates = async () => {
@@ -256,7 +283,7 @@ const handleAction = ({ action, value }) => {
   } else if (action === 'pick') {
     const template = templates.value.find(record => record.id === value);
     closeMenu();
-    if (template) downloadFromTemplate(template);
+    if (template) pickTemplate(template);
   }
 };
 
@@ -326,6 +353,12 @@ onBeforeUnmount(() => {
         </div>
       </template>
     </DropdownMenu>
+    <MessengerManualVariablesModal
+      ref="manualModalRef"
+      :slugs="manualSlugs"
+      @confirm="onManualConfirm"
+      @cancel="pendingTemplate = null"
+    />
     <MessengerScreenshotRenderer
       :key="`${accountId}-${conversationId}`"
       ref="rendererRef"
