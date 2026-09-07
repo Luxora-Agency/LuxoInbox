@@ -188,6 +188,23 @@ it('discards the template search when the menu returns to the actions', async ()
   wrapper.unmount();
 });
 
+it('closes the menu on escape once the view swap moved focus out', async () => {
+  mocks.state.templates = [template];
+  const wrapper = mountButton();
+  await clickTrigger(wrapper);
+  await clickItem(
+    wrapper,
+    'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
+  );
+  expect(wrapper.text()).toContain('Welcome');
+
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+  await flushPromises();
+
+  expect(wrapper.text()).not.toContain('Welcome');
+  wrapper.unmount();
+});
+
 it('resolves a template with the real contact and re-authorizes with the token', async () => {
   mocks.state.templates = [template];
   const wrapper = mountButton();

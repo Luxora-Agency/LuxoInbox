@@ -186,6 +186,18 @@ const closeMenu = () => {
   menuView.value = 'actions';
 };
 
+// Switching to the template list removes the button that had focus, so focus falls back
+// to the body and a wrapper-scoped handler never sees the key. The listener lives on the
+// document for exactly as long as the menu is open.
+const onEscape = event => {
+  if (event.key === 'Escape') closeMenu();
+};
+
+watch(showMenu, open => {
+  if (open) document.addEventListener('keydown', onEscape);
+  else document.removeEventListener('keydown', onEscape);
+});
+
 // The library is fetched before the menu opens: an account with no templates keeps the
 // one-click real-history export, and the template entry never pops in under the cursor.
 const toggleMenu = async () => {
@@ -248,6 +260,7 @@ const handleAction = ({ action, value }) => {
 onBeforeUnmount(() => {
   active = false;
   version += 1;
+  document.removeEventListener('keydown', onEscape);
 });
 </script>
 
@@ -257,7 +270,6 @@ onBeforeUnmount(() => {
     v-if="enabled"
     v-on-clickaway="closeMenu"
     class="relative flex items-center"
-    @keydown.esc="closeMenu"
   >
     <Button
       v-tooltip="t('MESSENGER_SIMULATOR.CONVERSATION_TOOLTIP')"
