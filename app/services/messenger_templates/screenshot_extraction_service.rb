@@ -16,12 +16,21 @@ class MessengerTemplates::ScreenshotExtractionService < Captain::BaseTaskService
     # The request carries the screenshot, so only the two fields the caller needs travel back.
     return { error: response[:error], error_code: response[:error_code] } if response[:error]
 
-    payload = response[:message].is_a?(Hash) ? response[:message].deep_symbolize_keys : {}
-    definition = build_definition(payload)
-    { definition: definition, suggestions: build_suggestions(payload[:variables], definition), usage: response[:usage] }
+    build_result(response)
   end
 
   private
+
+  # ruby_llm keeps the raw string when the structured answer does not parse, and a model that
+  # refuses or truncates returns no bubble at all. Both leave nothing to load, so they travel
+  # back as a failure instead of a definition that would silently wipe the draft in the editor.
+  def build_result(response)
+    payload = response[:message].is_a?(Hash) ? response[:message].deep_symbolize_keys : {}
+    definition = build_definition(payload)
+    return { error: 'screenshot extraction returned no message', error_code: 502 } if definition['messages'].empty?
+
+    { definition: definition, suggestions: build_suggestions(payload[:variables], definition), usage: response[:usage] }
+  end
 
   def messages
     [

@@ -87,6 +87,12 @@ RSpec.describe MessengerTemplates::ScreenshotExtractionService do
     )
   end
 
+  it 'reports a failure when the model answers with nothing the editor could load' do
+    allow(service).to receive(:make_api_call).and_return(message: 'Sorry, I cannot read this image.')
+
+    expect(service.perform).to eq(error: 'screenshot extraction returned no message', error_code: 502)
+  end
+
   it 'passes the engine error through without the request that carried the screenshot' do
     allow(service).to receive(:make_api_call).and_return(error: 'No API key', error_code: 401, request_messages: [{ role: 'user' }])
 
