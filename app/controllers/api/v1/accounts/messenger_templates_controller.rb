@@ -6,6 +6,12 @@ class Api::V1::Accounts::MessengerTemplatesController < Api::V1::Accounts::BaseC
     render json: Current.account.messenger_templates.order(:title, :id).map { |template| template_payload(template) }
   end
 
+  # Static allowlist shared with the dashboard so the variable picker never drifts
+  # from the validation. Account custom attributes are merged client side.
+  def variables
+    render json: MessengerTemplates::Variables.catalog
+  end
+
   def show
     render json: template_payload(@template)
   end
@@ -28,8 +34,13 @@ class Api::V1::Accounts::MessengerTemplatesController < Api::V1::Accounts::BaseC
   private
 
   def authorize_templates
-    authorize :messenger_template, "#{action_name}?"
+    authorize :messenger_template, "#{policy_action}?"
     response.headers['Cache-Control'] = 'no-store'
+  end
+
+  # Reading the registry is a read of the library itself, so it reuses the index rule.
+  def policy_action
+    action_name == 'variables' ? 'index' : action_name
   end
 
   def fetch_template

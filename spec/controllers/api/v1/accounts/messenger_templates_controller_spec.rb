@@ -34,6 +34,50 @@ RSpec.describe 'Messenger templates API', type: :request do
     expect(response).to have_http_status(:not_found)
   end
 
+  it 'rejects a duplicate title within the account and names the field' do
+    template
+    post path, params: { messenger_template: attributes }, headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response.parsed_body['attributes']).to include('title')
+    expect(response.parsed_body['message']).to include(I18n.t('errors.messenger_template.title.taken'))
+    expect(account.messenger_templates.count).to eq(1)
+  end
+
+  it 'explains which variable a definition may not use' do
+    definition = attributes[:definition].merge(messages: [{ sender: 'outgoing', text: 'Hi {{contact.nickname}}', time: '' }])
+    post path, params: { messenger_template: attributes.merge(definition: definition) },
+               headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response.parsed_body['message']).to include('{{contact.nickname}}')
+    expect(account.messenger_templates.count).to be_zero
+  end
+
+  it 'accepts the widened registry, spaced tokens and custom attributes' do
+    definition = attributes[:definition].merge(
+      messages: [{ sender: 'outgoing', text: 'Hi {{ contact.first_name }} on {{contact.custom_attribute.plan}} - {{agent.name}}', time: '' }]
+    )
+    post path, params: { messenger_template: attributes.merge(definition: definition) },
+               headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:created)
+    expect(response.parsed_body['definition']['messages'][0]['text']).to include('{{contact.custom_attribute.plan}}')
+  end
+
+  it 'serves the shared variable registry to anyone who can read the library' do
+    get "#{path}/variables", headers: agent.create_new_auth_token
+    expect(response).to have_http_status(:ok)
+    expect(response.parsed_body.pluck('key')).to include('contact.name', 'contact.phone', 'contact.company_name', 'agent.first_name')
+    expect(response.parsed_body.map { |variable| variable['group'] }.uniq).to contain_exactly('contact', 'agent')
+    expect(response.parsed_body.first.keys).to contain_exactly('key', 'label_key', 'group', 'sample')
+  end
+
+  it 'denies the variable registry to nonmembers and disabled accounts' do
+    get "#{path}/variables", headers: create(:user).create_new_auth_token
+    expect(response).to have_http_status(:unauthorized)
+    account.disable_features!('messenger_simulator')
+    get "#{path}/variables", headers: admin.create_new_auth_token
+    expect(response).to have_http_status(:unauthorized)
+  end
+
   it 'denies agent writes' do
     headers = agent.create_new_auth_token
     post path, params: { messenger_template: attributes }, headers: headers, as: :json

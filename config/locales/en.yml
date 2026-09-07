@@ -199,6 +199,23 @@ en:
     custom_attribute_definition:
       attribute_key_format: must only contain letters, numbers, underscores, hyphens, and dots
       key_conflict: The provided key is not allowed as it might conflict with default attributes.
+    messenger_template:
+      title:
+        taken: has already been used by another Messenger template in this account
+      definition:
+        invalid: must be a valid Messenger template
+        invalid_avatar: must use a supported contact photo option
+        business_name_blank: must include a business name
+        business_name_too_long: 'business name must be at most %{limit} characters'
+        messages_missing: must include at least one message
+        messages_limit: 'must include at most %{limit} messages'
+        message_invalid: 'message %{position} has unexpected fields'
+        message_blank: 'message %{position} must not be empty'
+        message_too_long: 'message %{position} must be at most %{limit} characters'
+        invalid_sender: 'message %{position} must be sent by the contact or by the business'
+        invalid_time: 'message %{position} has an invalid timestamp'
+        unknown_variable: 'uses an unsupported variable: %{token}'
+        expression_not_allowed: must not contain template expressions or unmatched braces
     mfa:
       already_enabled: MFA is already enabled
       not_enabled: MFA is not enabled
