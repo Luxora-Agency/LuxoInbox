@@ -82,7 +82,8 @@
       "GROUPS": {
         "CONTACT": "Contacto",
         "CUSTOM_ATTRIBUTES": "Atributos personalizados",
-        "AGENT": "Agente"
+        "AGENT": "Agente",
+        "MANUAL": "Manuales"
       },
       "LABELS": {
         "CONTACT_NAME": "Nombre completo",
@@ -122,7 +123,15 @@
         "AGENT_NAME": "Valeria Gómez",
         "AGENT_FIRST_NAME": "Valeria",
         "AGENT_LAST_NAME": "Gómez",
-        "AGENT_EMAIL": "valeria.gomez{'@'}ejemplo.com"
+        "AGENT_EMAIL": "valeria.gomez{'@'}ejemplo.com",
+        "MANUAL": "[{label}]"
+      },
+      "MANUAL": {
+        "NEW": "Nueva variable manual",
+        "PLACEHOLDER": "Por ejemplo: Fecha de la cita",
+        "ADD": "Insertar",
+        "HINT": "Su valor lo escribes al exportar la plantilla desde una conversación.",
+        "INVALID": "Usa letras o números para que podamos armar el nombre de la variable."
       }
     },
     "SIMULATOR": {
@@ -150,6 +159,39 @@
       "SUCCESS": "Se descargó la captura de la plantilla.",
       "BACK": "Volver",
       "SEARCH": "Buscar plantillas"
+    },
+    "MANUAL_MODAL": {
+      "TITLE": "Completa las variables manuales",
+      "DESCRIPTION": "Estos valores no se guardan en ningún lado: van directo a esta captura.",
+      "CONTINUE": "Continuar",
+      "CANCEL": "Cancelar"
+    },
+    "AI": {
+      "TITLE": "Crear con LuxoIA",
+      "DESCRIPTION": "Sube una captura de una conversación de Messenger. LuxoIA extrae los textos y sugiere variables.",
+      "UPLOAD": "Subir pantallazo de Messenger",
+      "UPLOADING": "LuxoIA está leyendo la captura",
+      "HINT": "PNG, JPG o WebP, hasta 5 MB.",
+      "TOO_LARGE": "La imagen pesa más de 5 MB. Prueba con una captura más liviana.",
+      "WRONG_TYPE": "Sube una imagen PNG, JPG o WebP.",
+      "SUCCESS": "Cargamos la conversación de la captura.",
+      "NOT_CONFIGURED": "LuxoIA todavía no está configurada. Agrega tu clave de OpenAI para usarla.",
+      "CONFIGURE_LINK": "Configurar OpenAI",
+      "FAILED": "LuxoIA no pudo leer la captura. Intenta con una imagen más nítida.",
+      "TITLE_FALLBACK": "Plantilla desde captura",
+      "COLLAPSE": "Ocultar el panel de LuxoIA",
+      "EXPAND": "Crear con LuxoIA",
+      "SUGGESTIONS": {
+        "TITLE": "Variables sugeridas",
+        "DESCRIPTION": "Elige los valores que cambian de una conversación a otra. Reemplazamos todas sus apariciones en el guion.",
+        "APPLY": "Aplicar seleccionadas",
+        "SKIP": "Omitir",
+        "DYNAMIC": "Dinámica",
+        "MANUAL": "Manual",
+        "ORIGINAL": "Texto original",
+        "REASON": "Por qué",
+        "EMPTY": "LuxoIA no encontró ningún valor que convenga convertir en variable."
+      }
     }
   }
 }

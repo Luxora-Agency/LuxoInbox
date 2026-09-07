@@ -82,7 +82,8 @@
       "GROUPS": {
         "CONTACT": "Contact",
         "CUSTOM_ATTRIBUTES": "Custom attributes",
-        "AGENT": "Agent"
+        "AGENT": "Agent",
+        "MANUAL": "Manual"
       },
       "LABELS": {
         "CONTACT_NAME": "Full name",
@@ -122,7 +123,15 @@
         "AGENT_NAME": "Jordan Lee",
         "AGENT_FIRST_NAME": "Jordan",
         "AGENT_LAST_NAME": "Lee",
-        "AGENT_EMAIL": "jordan.lee{'@'}example.com"
+        "AGENT_EMAIL": "jordan.lee{'@'}example.com",
+        "MANUAL": "[{label}]"
+      },
+      "MANUAL": {
+        "NEW": "New manual variable",
+        "PLACEHOLDER": "e.g. Appointment date",
+        "ADD": "Insert",
+        "HINT": "You type its value when you export the template from a conversation.",
+        "INVALID": "Use letters or numbers so we can build a name for this variable."
       }
     },
     "SIMULATOR": {
@@ -150,6 +159,39 @@
       "SUCCESS": "Template screenshot downloaded.",
       "BACK": "Back",
       "SEARCH": "Search templates"
+    },
+    "MANUAL_MODAL": {
+      "TITLE": "Fill in the manual variables",
+      "DESCRIPTION": "These values are not stored anywhere: they go straight into this screenshot.",
+      "CONTINUE": "Continue",
+      "CANCEL": "Cancel"
+    },
+    "AI": {
+      "TITLE": "Create with LuxoIA",
+      "DESCRIPTION": "Upload a screenshot of a Messenger conversation. LuxoIA extracts the texts and suggests variables.",
+      "UPLOAD": "Upload a Messenger screenshot",
+      "UPLOADING": "LuxoIA is reading the screenshot",
+      "HINT": "PNG, JPG or WebP, up to 5 MB.",
+      "TOO_LARGE": "The image is over 5 MB. Try a smaller screenshot.",
+      "WRONG_TYPE": "Upload a PNG, JPG or WebP image.",
+      "SUCCESS": "We loaded the conversation from the screenshot.",
+      "NOT_CONFIGURED": "LuxoIA is not set up yet. Add your OpenAI key to use it.",
+      "CONFIGURE_LINK": "Set up OpenAI",
+      "FAILED": "LuxoIA could not read the screenshot. Try a sharper image.",
+      "TITLE_FALLBACK": "Template from a screenshot",
+      "COLLAPSE": "Hide the LuxoIA panel",
+      "EXPAND": "Create with LuxoIA",
+      "SUGGESTIONS": {
+        "TITLE": "Suggested variables",
+        "DESCRIPTION": "Pick the values that change from one conversation to the next. We replace every occurrence in the script.",
+        "APPLY": "Apply selected",
+        "SKIP": "Skip",
+        "DYNAMIC": "Dynamic",
+        "MANUAL": "Manual",
+        "ORIGINAL": "Original text",
+        "REASON": "Why",
+        "EMPTY": "LuxoIA found no value worth turning into a variable."
+      }
     }
   }
 }
