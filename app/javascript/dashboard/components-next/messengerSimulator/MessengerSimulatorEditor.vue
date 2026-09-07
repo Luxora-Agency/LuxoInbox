@@ -13,6 +13,7 @@ import {
   buildSampleContact,
   buildVariableCatalog,
   resolveMessengerTemplate,
+  splitDisplayName,
   validateTemplateVariables,
 } from './templateDefinition';
 import MessengerVariablePicker from './MessengerVariablePicker.vue';
@@ -123,10 +124,12 @@ const variableErrors = computed(() => {
     .flatMap(text => validateTemplateVariables(text, allowedVariableKeys.value))
     .filter((token, index, tokens) => tokens.indexOf(token) === index);
 });
+// The preview contact is one identity: the name shown in the bubble header also drives
+// `{{contact.first_name}}` and `{{contact.last_name}}`, split like the server presenter.
 const previewContext = computed(() => ({
   contact: {
     ...buildSampleContact(variableCatalog.value),
-    name: participants.value.incoming.name,
+    ...splitDisplayName(participants.value.incoming.name),
     avatar_data: participants.value.incoming.avatar,
   },
   agent: buildAgentContext(currentUser.value),
@@ -241,8 +244,17 @@ const isValid = computed(
 );
 const participantLabels = computed(() => ({
   incoming: t('MESSENGER_SIMULATOR.INCOMING'),
-  outgoing: t('MESSENGER_SIMULATOR.OUTGOING'),
+  outgoing: props.initialDefinition
+    ? t('MESSENGER_SIMULATOR.TEMPLATES.BUSINESS_NAME')
+    : t('MESSENGER_SIMULATOR.OUTGOING'),
 }));
+// In template mode the contact comes from the conversation at export time, so only the
+// business name is authored here.
+const editableParticipants = computed(() =>
+  props.initialDefinition
+    ? { outgoing: participants.value.outgoing }
+    : participants.value
+);
 const exportLabel = computed(() => {
   if (isExporting.value) return t('MESSENGER_SIMULATOR.EXPORTING');
   return props.initialDefinition
@@ -417,7 +429,10 @@ onBeforeUnmount(() => {
     <div
       class="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-3 border-b border-n-weak bg-n-solid-1 px-5 py-3 lg:px-8"
     >
-      <p class="mb-0 max-w-prose text-xs text-n-slate-11">
+      <p
+        v-if="!initialDefinition"
+        class="mb-0 max-w-prose text-xs text-n-slate-11"
+      >
         {{ t('MESSENGER_SIMULATOR.LOCAL_ONLY') }}
       </p>
       <Button
@@ -446,7 +461,11 @@ onBeforeUnmount(() => {
         role="status"
         class="mb-0 text-sm text-n-slate-11"
       >
-        {{ t('MESSENGER_SIMULATOR.VALIDATION') }}
+        {{
+          initialDefinition
+            ? t('MESSENGER_SIMULATOR.TEMPLATES.VALIDATION')
+            : t('MESSENGER_SIMULATOR.VALIDATION')
+        }}
       </p>
       <p v-else-if="success" role="status" class="mb-0 text-sm text-n-teal-11">
         {{
@@ -470,21 +489,24 @@ onBeforeUnmount(() => {
             class="cursor-pointer rounded-lg text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-n-brand"
           >
             <span class="font-semibold">{{
-              participants.incoming.name || participantLabels.incoming
+              initialDefinition
+                ? participants.outgoing.name || participantLabels.outgoing
+                : participants.incoming.name || participantLabels.incoming
             }}</span>
             <span class="ml-2 text-n-slate-11">{{
-              t('MESSENGER_SIMULATOR.EDIT_PARTICIPANTS')
+              initialDefinition
+                ? t('MESSENGER_SIMULATOR.TEMPLATES.EDIT_BUSINESS')
+                : t('MESSENGER_SIMULATOR.EDIT_PARTICIPANTS')
             }}</span>
           </summary>
           <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
-              v-for="(person, sender) in participants"
+              v-for="(person, sender) in editableParticipants"
               :id="`simulator-name-${sender}`"
               :key="sender"
               v-model="person.name"
               :label="participantLabels[sender]"
               :maxlength="60"
-              :disabled="Boolean(initialDefinition) && sender === 'incoming'"
               required
             />
             <label

@@ -13,7 +13,7 @@
         "UPDATED_AT": "Última actualización",
         "ACTIONS": "Acciones"
       },
-      "MESSAGE_COUNT": "{count} mensajes",
+      "MESSAGE_COUNT": "{count} mensaje | {count} mensajes",
       "NEVER_UPDATED": "Nunca",
       "EDIT": "Editar plantilla",
       "DUPLICATE": "Duplicar plantilla",
@@ -24,20 +24,18 @@
         "ACTION": "Crea tu primera plantilla"
       },
       "NO_RESULTS": {
-        "TITLE": "No se encontraron plantillas",
         "DESCRIPTION": "Ninguna plantilla coincide con “{query}”. Prueba con otro título."
       },
       "DELETE_CONFIRM": {
-        "TITLE": "Eliminar plantilla",
-        "MESSAGE": "“{title}” se eliminará para todos en esta cuenta. Esta acción no se puede deshacer.",
-        "CONFIRM": "Sí, eliminarla",
-        "CANCEL": "No, conservarla"
+        "MESSAGE": "Se elimina para todo el equipo de esta cuenta.",
+        "CONFIRM": "Sí, eliminarla"
       },
       "DELETE_SUCCESS": "Plantilla eliminada.",
       "DELETE_ERROR": "No pudimos eliminar la plantilla. Vuelve a intentarlo.",
       "DUPLICATE_SUCCESS": "Plantilla duplicada.",
       "DUPLICATE_ERROR": "No pudimos duplicar la plantilla. Vuelve a intentarlo.",
-      "DUPLICATE_TITLE": "{title} (copia)"
+      "DUPLICATE_TITLE": "{title} (copia)",
+      "DUPLICATE_TITLE_N": "{title} (copia {count})"
     },
     "EDITOR": {
       "NEW_TITLE": "Nueva plantilla de Messenger",
@@ -48,15 +46,13 @@
       "NAME": {
         "LABEL": "Título de la plantilla",
         "PLACEHOLDER": "Por ejemplo: Confirmación de entrega",
-        "REQUIRED": "Agrega un título para poder encontrar esta plantilla más adelante.",
-        "TOO_LONG": "Usa 100 caracteres o menos.",
-        "TAKEN": "Ya tienes una plantilla con este título. Elige uno distinto."
+        "REQUIRED": "Agrega un título para poder encontrar esta plantilla más adelante."
       },
       "SAVE": "Guardar plantilla",
       "SAVE_COPY": "Guardar una copia",
       "CANCEL": "Cancelar",
       "SAVING": "Guardando",
-      "INVALID": "Agrega un título, el nombre del negocio y al menos un mensaje válido antes de guardar.",
+      "INVALID": "Revisa los avisos del editor antes de guardar.",
       "DEFINITION_ERROR": "Corrige los mensajes marcados antes de guardar.",
       "CREATE_SUCCESS": "Plantilla creada.",
       "UPDATE_SUCCESS": "Plantilla actualizada.",
@@ -67,18 +63,15 @@
         "MESSAGE": "Tienes cambios sin guardar en esta plantilla. Se van a perder.",
         "CONFIRM": "Sí, descartar los cambios",
         "CANCEL": "No, seguir editando"
-      },
-      "DRAFT_RESTORED": "Restauramos el borrador que tenías abierto."
+      }
     },
     "VARIABLES": {
       "BUTTON": "Insertar variable",
-      "TOOLTIP": "Insertar una variable",
       "SEARCH_PLACEHOLDER": "Buscar variables",
       "EMPTY": "Ninguna variable coincide con tu búsqueda.",
       "LOAD_ERROR": "No pudimos cargar las variables disponibles. Vuelve a intentarlo.",
       "SAMPLE": "Por ejemplo: {sample}",
       "UNKNOWN": "{token} no es una variable disponible. Elige una de la lista.",
-      "LIMIT": "Acorta el mensaje o selecciona el texto que quieres reemplazar antes de insertar esta variable.",
       "GROUPS": {
         "CONTACT": "Contacto",
         "CUSTOM_ATTRIBUTES": "Atributos personalizados",
@@ -108,37 +101,45 @@
         "LIST": "Premium",
         "CHECKBOX": "Sí",
         "LINK": "https://ejemplo.com",
-        "FALLBACK": "Valor de ejemplo"
+        "FALLBACK": "Valor de ejemplo",
+        "CONTACT_NAME": "Camila Torres",
+        "CONTACT_FIRST_NAME": "Camila",
+        "CONTACT_LAST_NAME": "Torres",
+        "CONTACT_EMAIL": "camila.torres@ejemplo.com",
+        "CONTACT_PHONE": "+57 300 123 4567",
+        "CONTACT_PHONE_NUMBER": "+57 300 123 4567",
+        "CONTACT_IDENTIFIER": "CU-10482",
+        "CONTACT_COUNTRY_CODE": "CO",
+        "CONTACT_CITY": "Bogotá",
+        "CONTACT_COMPANY_NAME": "Acme S.A.S.",
+        "AGENT_NAME": "Valeria Gómez",
+        "AGENT_FIRST_NAME": "Valeria",
+        "AGENT_LAST_NAME": "Gómez",
+        "AGENT_EMAIL": "valeria.gomez@ejemplo.com"
       }
     },
     "SIMULATOR": {
       "LOAD_TEMPLATE": "Cargar plantilla",
+      "SELECT_LABEL": "Elige una plantilla",
       "MANUAL": "Simulación manual",
       "MANAGE": "Administrar plantillas",
-      "PLACEHOLDER": "Elige una plantilla",
       "LOADING": "Cargando plantillas",
       "EMPTY": "Todavía no hay plantillas guardadas.",
       "ERROR": "No pudimos cargar tus plantillas. Tu borrador no cambió; vuelve a intentarlo.",
       "LOADED": "Plantilla cargada en el editor.",
       "DISCARD_DRAFT": "Descartar el borrador y cargar",
-      "DRAFT_AVAILABLE": "Guardamos el borrador que estabas trabajando en esta cuenta.",
+      "DRAFT_AVAILABLE": "Guardamos el borrador en el que estabas trabajando en esta cuenta.",
       "RESTORE_DRAFT": "Restaurar borrador",
-      "DISCARD_SAVED_DRAFT": "Descartar borrador"
+      "DISCARD_SAVED_DRAFT": "Descartar borrador",
+      "DRAFT_RESTORED": "Restauramos el borrador que tenías abierto."
     },
     "CONVERSATION_EXPORT": {
       "MENU_LABEL": "Opciones de captura de Messenger",
       "REAL_HISTORY": "Historial real",
-      "REAL_HISTORY_HINT": "Exporta los mensajes públicos de esta conversación.",
       "FROM_TEMPLATE": "Desde una plantilla…",
-      "FROM_TEMPLATE_HINT": "Exporta un guion guardado con los datos de este contacto.",
-      "CHOOSE_TEMPLATE": "Elige una plantilla",
-      "CHOOSE_TEMPLATE_HINT": "Las variables se reemplazan con el contacto y el agente de esta conversación.",
-      "EXPORT": "Descargar captura",
-      "CANCEL": "Cancelar",
-      "LOADING": "Cargando plantillas",
       "EMPTY": "Todavía no hay plantillas guardadas. Crea una en Ajustes.",
       "ERROR": "No pudimos exportar esta plantilla. Revisa tu conexión y vuelve a intentarlo.",
-      "CONTACT_CHANGED": "El contacto de esta conversación cambió. Vuelve a abrir el menú e inténtalo de nuevo.",
+      "CONTACT_CHANGED": "Los datos del contacto cambiaron mientras preparábamos la imagen. Abre el menú y vuelve a intentarlo.",
       "SUCCESS": "Se descargó la captura de la plantilla.",
       "BACK": "Volver",
       "SEARCH": "Buscar plantillas"

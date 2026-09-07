@@ -54,7 +54,7 @@ onMounted(async () => {
         for="messenger-template-picker"
         class="mb-0 flex min-w-0 flex-1 flex-col gap-1 text-sm text-n-slate-12"
       >
-        {{ t('MESSENGER_TEMPLATES.SIMULATOR.PLACEHOLDER') }}
+        {{ t('MESSENGER_TEMPLATES.SIMULATOR.SELECT_LABEL') }}
         <select
           id="messenger-template-picker"
           v-model="selection"
@@ -106,6 +106,9 @@ onMounted(async () => {
     </p>
     <p v-else-if="!records.length" class="mb-0 mt-2 text-xs text-n-slate-11">
       {{ t('MESSENGER_TEMPLATES.SIMULATOR.EMPTY') }}
+    </p>
+    <p v-if="!isAdmin" class="mb-0 mt-2 text-xs text-n-slate-11">
+      {{ t('MESSENGER_SIMULATOR.TEMPLATES.HINT') }}
     </p>
   </section>
 </template>

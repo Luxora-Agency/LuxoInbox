@@ -34,6 +34,9 @@ en:
     attributes:
       account:
         feature_messenger_simulator: Messenger Simulator
+      messenger_template:
+        title: Title
+        definition: Template
   hello: 'Hello world'
   inbox:
     reauthorization:
@@ -201,19 +204,19 @@ en:
       key_conflict: The provided key is not allowed as it might conflict with default attributes.
     messenger_template:
       title:
-        taken: has already been used by another Messenger template in this account
+        taken: is already used by another Messenger template in this account
       definition:
-        invalid: must be a valid Messenger template
-        invalid_avatar: must use a supported contact photo option
-        business_name_blank: must include a business name
-        business_name_too_long: 'business name must be at most %{limit} characters'
-        messages_missing: must include at least one message
-        messages_limit: 'must include at most %{limit} messages'
-        message_invalid: 'message %{position} has unexpected fields'
-        message_blank: 'message %{position} must not be empty'
-        message_too_long: 'message %{position} must be at most %{limit} characters'
-        invalid_sender: 'message %{position} must be sent by the contact or by the business'
-        invalid_time: 'message %{position} has an invalid timestamp'
+        invalid: is not a valid Messenger template
+        invalid_avatar: uses a contact photo option that does not exist
+        business_name_blank: needs a business name
+        business_name_too_long: 'has a business name longer than %{limit} characters'
+        messages_missing: needs at least one message
+        messages_limit: 'cannot have more than %{limit} messages'
+        message_invalid: 'has unexpected fields in message %{position}'
+        message_blank: 'has message %{position} empty'
+        message_too_long: 'has message %{position} longer than %{limit} characters'
+        invalid_sender: 'does not say who sends message %{position}: it must be the contact or the business'
+        invalid_time: 'has an invalid time in message %{position}'
         unknown_variable: 'uses an unsupported variable: %{token}'
         expression_not_allowed: must not contain template expressions or unmatched braces
     mfa:

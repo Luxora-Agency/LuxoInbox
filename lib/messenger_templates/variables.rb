@@ -7,8 +7,10 @@ module MessengerTemplates::Variables
   CONTACT_PREFIX = 'contact.'.freeze
   AGENT_PREFIX = 'agent.'.freeze
   CUSTOM_ATTRIBUTE_PREFIX = 'contact.custom_attribute.'.freeze
-  # Dashboard i18n path each catalog entry is rendered with: `t(entry.label_key)`.
+  # Dashboard i18n paths each catalog entry is rendered with: `t(entry.label_key)` and
+  # `t(entry.sample_key)`, so labels and placeholder values follow the dashboard locale.
   LABEL_KEY_PREFIX = 'MESSENGER_TEMPLATES.VARIABLES.LABELS.'.freeze
+  SAMPLE_KEY_PREFIX = 'MESSENGER_TEMPLATES.VARIABLES.SAMPLES.'.freeze
 
   STANDARD_CONTACT_KEYS = %w[name first_name last_name email phone phone_number identifier country_code city company_name].freeze
   AGENT_KEYS = %w[name first_name last_name email].freeze
@@ -17,7 +19,11 @@ module MessengerTemplates::Variables
   CUSTOM_ATTRIBUTE_KEY_FORMAT = /\A[\p{L}\p{N}_.\-]+\z/
   # Generic capture of `{{ namespace.path }}`, tolerating inner spaces. Whether the captured
   # key is usable is decided by `allowed?`, never by the pattern itself.
-  KEY_PATTERN = /\{\{\s*([a-z_]+(?:\.[\p{L}\p{N}_.\-]+)+)\s*\}\}/
+  # Exactly the code points JavaScript's `\s` matches, so a token pasted with a
+  # non-breaking space or a BOM reads the same here as in the dashboard mirror.
+  # `\p{Space}` would also take U+0085, which JavaScript does not.
+  INNER_SPACE = /[\t\n\v\f\r \u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*/
+  KEY_PATTERN = /\{\{#{INNER_SPACE.source}([a-z_]+(?:\.[\p{L}\p{N}_.\-]+)+)#{INNER_SPACE.source}\}\}/
 
   SAMPLES = {
     'contact.name' => 'Alex Morgan',
@@ -64,6 +70,8 @@ module MessengerTemplates::Variables
   end
 
   def entry(key, group)
-    { key: key, label_key: "#{LABEL_KEY_PREFIX}#{key.tr('.', '_').upcase}", group: group, sample: SAMPLES[key].to_s }
+    suffix = key.tr('.', '_').upcase
+    { key: key, label_key: "#{LABEL_KEY_PREFIX}#{suffix}", sample_key: "#{SAMPLE_KEY_PREFIX}#{suffix}",
+      group: group, sample: SAMPLES[key].to_s }
   end
 end

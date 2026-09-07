@@ -121,7 +121,7 @@ const restoreDraft = () => {
   selection.value = draft.templateId ? String(draft.templateId) : 'manual';
   restorableDraft.value = null;
   revision.value += 1;
-  useAlert(t('MESSENGER_TEMPLATES.EDITOR.DRAFT_RESTORED'));
+  useAlert(t('MESSENGER_TEMPLATES.SIMULATOR.DRAFT_RESTORED'));
 };
 
 const discardDraft = () => {

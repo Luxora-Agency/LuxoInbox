@@ -142,6 +142,18 @@ it('reports unknown variables with the exact token the author typed', () => {
   expect(validateTemplateVariables('Nothing to replace', allowed)).toEqual([]);
 });
 
+it('accepts any well-formed custom attribute key, like the server does', () => {
+  expect(
+    validateTemplateVariables(
+      '{{contact.custom_attribute.plan}} {{ contact.custom_attribute.fecha-alta }}',
+      ['contact.name']
+    )
+  ).toEqual([]);
+  expect(
+    validateTemplateVariables('{{contact.custom_attribute.plan}}', [])
+  ).toEqual([]);
+});
+
 it('merges the server catalog with contact attributes into ordered groups', () => {
   const catalog = buildVariableCatalog(
     [
@@ -213,13 +225,13 @@ it('falls back to a generic sample for display types without their own key', () 
   expect(entry.sample).toBe('t:MESSENGER_TEMPLATES.VARIABLES.SAMPLES.FALLBACK');
 });
 
-it('splits the agent name without re-casing it', () => {
+it('splits a name like the server presenter and never re-cases it', () => {
   expect(
     buildAgentContext({ name: 'Ana de McDonald', email: 'a@b.co' })
   ).toEqual({
     name: 'Ana de McDonald',
     first_name: 'Ana',
-    last_name: 'McDonald',
+    last_name: 'de McDonald',
     email: 'a@b.co',
   });
   expect(buildAgentContext(undefined)).toEqual({
@@ -228,4 +240,8 @@ it('splits the agent name without re-casing it', () => {
     last_name: '',
     email: '',
   });
+  // Nothing but the four catalog fields is carried over from the user record.
+  expect(
+    Object.keys(buildAgentContext({ name: 'Ana', access_token: 'secret' }))
+  ).toEqual(['name', 'first_name', 'last_name', 'email']);
 });

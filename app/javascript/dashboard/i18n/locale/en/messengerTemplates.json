@@ -13,7 +13,7 @@
         "UPDATED_AT": "Last updated",
         "ACTIONS": "Actions"
       },
-      "MESSAGE_COUNT": "{count} messages",
+      "MESSAGE_COUNT": "{count} message | {count} messages",
       "NEVER_UPDATED": "Never",
       "EDIT": "Edit template",
       "DUPLICATE": "Duplicate template",
@@ -24,20 +24,18 @@
         "ACTION": "Create your first template"
       },
       "NO_RESULTS": {
-        "TITLE": "No templates found",
         "DESCRIPTION": "No template matches “{query}”. Try a different title."
       },
       "DELETE_CONFIRM": {
-        "TITLE": "Delete template",
-        "MESSAGE": "“{title}” will be removed for everyone in this account. This cannot be undone.",
-        "CONFIRM": "Yes, delete it",
-        "CANCEL": "No, keep it"
+        "MESSAGE": "Removed for everyone in this account.",
+        "CONFIRM": "Yes, delete it"
       },
       "DELETE_SUCCESS": "Template deleted.",
       "DELETE_ERROR": "We could not delete the template. Try again.",
       "DUPLICATE_SUCCESS": "Template duplicated.",
       "DUPLICATE_ERROR": "We could not duplicate the template. Try again.",
-      "DUPLICATE_TITLE": "{title} (copy)"
+      "DUPLICATE_TITLE": "{title} (copy)",
+      "DUPLICATE_TITLE_N": "{title} (copy {count})"
     },
     "EDITOR": {
       "NEW_TITLE": "New Messenger template",
@@ -48,15 +46,13 @@
       "NAME": {
         "LABEL": "Template title",
         "PLACEHOLDER": "e.g. Delivery confirmation",
-        "REQUIRED": "Add a title so you can find this template later.",
-        "TOO_LONG": "Use 100 characters or fewer.",
-        "TAKEN": "You already have a template with this title. Choose a different one."
+        "REQUIRED": "Add a title so you can find this template later."
       },
       "SAVE": "Save template",
       "SAVE_COPY": "Save a copy",
       "CANCEL": "Cancel",
       "SAVING": "Saving",
-      "INVALID": "Add a title, a business name and at least one valid message before saving.",
+      "INVALID": "Check the warnings in the editor before saving.",
       "DEFINITION_ERROR": "Fix the highlighted messages before saving.",
       "CREATE_SUCCESS": "Template created.",
       "UPDATE_SUCCESS": "Template updated.",
@@ -67,18 +63,15 @@
         "MESSAGE": "You have unsaved changes in this template. They will be lost.",
         "CONFIRM": "Yes, discard changes",
         "CANCEL": "No, keep editing"
-      },
-      "DRAFT_RESTORED": "We restored the draft you had open."
+      }
     },
     "VARIABLES": {
       "BUTTON": "Insert variable",
-      "TOOLTIP": "Insert a variable",
       "SEARCH_PLACEHOLDER": "Search variables",
       "EMPTY": "No variable matches your search.",
       "LOAD_ERROR": "We could not load the available variables. Try again.",
       "SAMPLE": "e.g. {sample}",
       "UNKNOWN": "{token} is not an available variable. Pick one from the list.",
-      "LIMIT": "Shorten the message or select text to replace before inserting this variable.",
       "GROUPS": {
         "CONTACT": "Contact",
         "CUSTOM_ATTRIBUTES": "Custom attributes",
@@ -108,14 +101,28 @@
         "LIST": "Premium",
         "CHECKBOX": "Yes",
         "LINK": "https://example.com",
-        "FALLBACK": "Sample value"
+        "FALLBACK": "Sample value",
+        "CONTACT_NAME": "Alex Morgan",
+        "CONTACT_FIRST_NAME": "Alex",
+        "CONTACT_LAST_NAME": "Morgan",
+        "CONTACT_EMAIL": "alex.morgan@example.com",
+        "CONTACT_PHONE": "+1 202-555-0123",
+        "CONTACT_PHONE_NUMBER": "+1 202-555-0123",
+        "CONTACT_IDENTIFIER": "CU-10482",
+        "CONTACT_COUNTRY_CODE": "US",
+        "CONTACT_CITY": "Austin",
+        "CONTACT_COMPANY_NAME": "Acme Inc.",
+        "AGENT_NAME": "Jordan Lee",
+        "AGENT_FIRST_NAME": "Jordan",
+        "AGENT_LAST_NAME": "Lee",
+        "AGENT_EMAIL": "jordan.lee@example.com"
       }
     },
     "SIMULATOR": {
       "LOAD_TEMPLATE": "Load template",
+      "SELECT_LABEL": "Choose a template",
       "MANUAL": "Manual simulation",
       "MANAGE": "Manage templates",
-      "PLACEHOLDER": "Choose a template",
       "LOADING": "Loading templates",
       "EMPTY": "No templates saved yet.",
       "ERROR": "We could not load your templates. Your draft is unchanged; try again.",
@@ -123,22 +130,16 @@
       "DISCARD_DRAFT": "Discard draft and load",
       "DRAFT_AVAILABLE": "We kept the draft you were working on in this account.",
       "RESTORE_DRAFT": "Restore draft",
-      "DISCARD_SAVED_DRAFT": "Discard draft"
+      "DISCARD_SAVED_DRAFT": "Discard draft",
+      "DRAFT_RESTORED": "We restored the draft you had open."
     },
     "CONVERSATION_EXPORT": {
       "MENU_LABEL": "Messenger screenshot options",
       "REAL_HISTORY": "Real history",
-      "REAL_HISTORY_HINT": "Export the public messages of this conversation.",
       "FROM_TEMPLATE": "From template…",
-      "FROM_TEMPLATE_HINT": "Export a saved script filled in with the details of this contact.",
-      "CHOOSE_TEMPLATE": "Choose a template",
-      "CHOOSE_TEMPLATE_HINT": "Variables are replaced with the contact and the agent of this conversation.",
-      "EXPORT": "Download screenshot",
-      "CANCEL": "Cancel",
-      "LOADING": "Loading templates",
       "EMPTY": "No templates saved yet. Create one in Settings.",
       "ERROR": "We could not export this template. Check your connection and try again.",
-      "CONTACT_CHANGED": "The contact of this conversation changed. Reopen the menu and try again.",
+      "CONTACT_CHANGED": "The contact details changed while the screenshot was being prepared. Reopen the menu and try again.",
       "SUCCESS": "Template screenshot downloaded.",
       "BACK": "Back",
       "SEARCH": "Search templates"

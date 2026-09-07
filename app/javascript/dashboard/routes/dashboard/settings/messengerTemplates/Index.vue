@@ -18,12 +18,11 @@ import {
   BaseTableRow,
   BaseTableCell,
 } from 'dashboard/components-next/table';
+import { buildDuplicateTitle } from './duplicateTitle';
 
 defineOptions({
   name: 'MessengerTemplatesSettings',
 });
-
-const MAX_TITLE_LENGTH = 100;
 
 const { t } = useI18n();
 const router = useRouter();
@@ -50,10 +49,10 @@ const tableHeaders = computed(() => [
   t('MESSENGER_TEMPLATES.SETTINGS.TABLE.ACTIONS'),
 ]);
 
-const messageCount = record =>
-  t('MESSENGER_TEMPLATES.SETTINGS.MESSAGE_COUNT', {
-    count: record.definition?.messages?.length ?? 0,
-  });
+const messageCount = record => {
+  const count = record.definition?.messages?.length ?? 0;
+  return t('MESSENGER_TEMPLATES.SETTINGS.MESSAGE_COUNT', { count }, count);
+};
 
 const updatedAt = record => {
   const timestamp = Date.parse(record.updated_at);
@@ -65,7 +64,6 @@ const updatedAt = record => {
 
 const reportError = (error, fallback) => {
   errorMessage.value = error?.response?.data?.message ?? fallback;
-  useAlert(errorMessage.value);
 };
 
 const fetchRecords = async () => {
@@ -94,9 +92,19 @@ const duplicate = async record => {
     await store.dispatch('messengerTemplates/create', {
       accountId: accountId.value,
       template: {
-        title: t('MESSENGER_TEMPLATES.SETTINGS.DUPLICATE_TITLE', {
-          title: record.title,
-        }).slice(0, MAX_TITLE_LENGTH),
+        title: buildDuplicateTitle(
+          record.title,
+          records.value.map(existing => existing.title),
+          (base, copy) =>
+            copy === 1
+              ? t('MESSENGER_TEMPLATES.SETTINGS.DUPLICATE_TITLE', {
+                  title: base,
+                })
+              : t('MESSENGER_TEMPLATES.SETTINGS.DUPLICATE_TITLE_N', {
+                  title: base,
+                  count: copy,
+                })
+        ),
         definition: record.definition,
       },
     });
@@ -153,15 +161,11 @@ onMounted(fetchRecords);
     </template>
 
     <template #body>
-      <p
-        v-if="errorMessage"
-        role="alert"
-        class="mb-3 text-sm text-n-ruby-11 dark:text-n-ruby-11"
-      >
+      <p v-if="errorMessage" role="alert" class="mb-3 text-sm text-n-ruby-11">
         {{ errorMessage }}
       </p>
       <div
-        v-if="!records.length"
+        v-if="!records.length && !errorMessage"
         class="flex flex-col items-center justify-center gap-3 py-20 text-center"
       >
         <span
@@ -210,7 +214,7 @@ onMounted(fetchRecords);
                   {{ updatedAt(record) }}
                 </span>
               </BaseTableCell>
-              <BaseTableCell align="end" class="w-44">
+              <BaseTableCell align="end" class="whitespace-nowrap">
                 <div class="flex flex-shrink-0 items-center justify-end gap-3">
                   <Button
                     v-tooltip.top="t('MESSENGER_TEMPLATES.SETTINGS.EDIT')"
@@ -236,6 +240,9 @@ onMounted(fetchRecords);
                     :label="t('MESSENGER_TEMPLATES.SETTINGS.DELETE')"
                     :confirm-label="
                       t('MESSENGER_TEMPLATES.SETTINGS.DELETE_CONFIRM.CONFIRM')
+                    "
+                    :confirm-hint="
+                      t('MESSENGER_TEMPLATES.SETTINGS.DELETE_CONFIRM.MESSAGE')
                     "
                     :is-loading="pendingId === record.id && uiFlags.isDeleting"
                     @click="remove(record)"

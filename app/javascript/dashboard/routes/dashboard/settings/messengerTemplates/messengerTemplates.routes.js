@@ -14,6 +14,9 @@ export default {
     {
       path: frontendURL('accounts/:accountId/settings/messenger-templates'),
       component: SettingsWrapper,
+      // The editor must reload its record and reset its draft on every visit; a cached
+      // instance would hand the previous template back to "New template".
+      props: { keepAlive: false },
       children: [
         {
           path: '',

@@ -20,8 +20,10 @@ vi.mock('dashboard/api/messengerSimulator');
 vi.mock('../conversationScreenshot', () => ({
   loadConversationScreenshot: mocks.loadConversationScreenshot,
 }));
-// The resolver is owned by templateDefinition.js and covered by its own spec.
-vi.mock('../templateDefinition', () => ({
+// The resolver is owned by templateDefinition.js and covered by its own spec; the rest
+// of the module stays real so the agent context is built the way the editor builds it.
+vi.mock('../templateDefinition', async importOriginal => ({
+  ...(await importOriginal()),
   resolveMessengerTemplate: mocks.resolveMessengerTemplate,
 }));
 vi.mock('dashboard/composables', () => ({ useAlert: mocks.useAlert }));
@@ -133,6 +135,7 @@ beforeEach(() => {
 });
 
 it('exports the real history through the unchanged renderer path', async () => {
+  mocks.state.templates = [template];
   const wrapper = mountButton();
   await clickTrigger(wrapper);
   await clickItem(
@@ -154,13 +157,33 @@ it('exports the real history through the unchanged renderer path', async () => {
   wrapper.unmount();
 });
 
-it('hides the template entry until the account has templates', async () => {
+it('keeps the one-click history export when the account has no templates', async () => {
   const wrapper = mountButton();
   await clickTrigger(wrapper);
 
   expect(mocks.dispatch).toHaveBeenCalledWith('messengerTemplates/get');
   expect(wrapper.text()).not.toContain(
+    'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.REAL_HISTORY'
+  );
+  expect(mocks.loadConversationScreenshot).toHaveBeenCalledWith(
+    expect.objectContaining({ accountId: 1, conversationId: 7 })
+  );
+  wrapper.unmount();
+});
+
+it('discards the template search when the menu returns to the actions', async () => {
+  mocks.state.templates = [template];
+  const wrapper = mountButton();
+  await clickTrigger(wrapper);
+  await clickItem(
+    wrapper,
     'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
+  );
+  await wrapper.find('input[type="search"]').setValue('zzz');
+  await clickItem(wrapper, 'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.BACK');
+
+  expect(wrapper.text()).toContain(
+    'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.REAL_HISTORY'
   );
   wrapper.unmount();
 });
@@ -180,12 +203,12 @@ it('resolves a template with the real contact and re-authorizes with the token',
   });
   expect(mocks.resolveMessengerTemplate).toHaveBeenCalledWith(definition, {
     contact,
-    agent: expect.objectContaining({
-      name: 'Ana Lopez',
-      first_name: 'Ana',
-      last_name: 'Lopez',
+    agent: {
+      name: 'ana lopez',
+      first_name: 'ana',
+      last_name: 'lopez',
       email: 'ana@luxora.test',
-    }),
+    },
   });
   const options = mocks.rendererDownload.mock.calls[0][0];
   expect(options.filename).toBe('messenger-template-1-7');
@@ -218,12 +241,12 @@ it('prefers the conversation assignee over the current user', async () => {
   expect(mocks.resolveMessengerTemplate).toHaveBeenCalledWith(
     definition,
     expect.objectContaining({
-      agent: expect.objectContaining({
-        name: 'Bruno Díaz',
-        first_name: 'Bruno',
-        last_name: 'Díaz',
+      agent: {
+        name: 'bruno díaz',
+        first_name: 'bruno',
+        last_name: 'díaz',
         email: 'bruno@luxora.test',
-      }),
+      },
     })
   );
   wrapper.unmount();

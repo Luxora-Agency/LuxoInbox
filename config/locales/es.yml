@@ -17,6 +17,11 @@
 #To learn more, please read the Rails Internationalization guide
 #available at https://guides.rubyonrails.org/i18n.html.
 es:
+  activerecord:
+    attributes:
+      messenger_template:
+        title: El título
+        definition: La plantilla
   hello: 'Hola mundo'
   inbox:
     reauthorization:
@@ -179,19 +184,19 @@ es:
       key_conflict: The provided key is not allowed as it might conflict with default attributes.
     messenger_template:
       title:
-        taken: ya lo usa otra plantilla de Messenger de esta cuenta
+        taken: ya está en uso por otra plantilla de Messenger de esta cuenta
       definition:
-        invalid: debe ser una plantilla de Messenger válida
-        invalid_avatar: debe usar una opción de foto de contacto admitida
-        business_name_blank: debe incluir un nombre de negocio
-        business_name_too_long: 'el nombre del negocio debe tener como máximo %{limit} caracteres'
-        messages_missing: debe incluir al menos un mensaje
-        messages_limit: 'debe incluir como máximo %{limit} mensajes'
-        message_invalid: 'el mensaje %{position} tiene campos inesperados'
-        message_blank: 'el mensaje %{position} no puede estar vacío'
-        message_too_long: 'el mensaje %{position} debe tener como máximo %{limit} caracteres'
-        invalid_sender: 'el mensaje %{position} debe enviarlo el contacto o el negocio'
-        invalid_time: 'el mensaje %{position} tiene una hora inválida'
+        invalid: no es una plantilla de Messenger válida
+        invalid_avatar: usa una opción de foto de contacto que no existe
+        business_name_blank: necesita un nombre de negocio
+        business_name_too_long: 'tiene un nombre de negocio de más de %{limit} caracteres'
+        messages_missing: necesita al menos un mensaje
+        messages_limit: 'no puede tener más de %{limit} mensajes'
+        message_invalid: 'tiene campos inesperados en el mensaje %{position}'
+        message_blank: 'tiene el mensaje %{position} vacío'
+        message_too_long: 'tiene el mensaje %{position} con más de %{limit} caracteres'
+        invalid_sender: 'no indica quién envía el mensaje %{position}: debe ser el contacto o el negocio'
+        invalid_time: 'tiene una hora inválida en el mensaje %{position}'
         unknown_variable: 'usa una variable no permitida: %{token}'
         expression_not_allowed: no debe contener expresiones de plantilla ni llaves sin cerrar
     mfa:

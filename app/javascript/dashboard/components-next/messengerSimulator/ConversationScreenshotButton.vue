@@ -14,7 +14,10 @@ import Button from 'dashboard/components-next/button/Button.vue';
 import DropdownMenu from 'dashboard/components-next/dropdown-menu/DropdownMenu.vue';
 import MessengerScreenshotRenderer from './MessengerScreenshotRenderer.vue';
 import { loadConversationScreenshot } from './conversationScreenshot';
-import { resolveMessengerTemplate } from './templateDefinition';
+import {
+  buildAgentContext,
+  resolveMessengerTemplate,
+} from './templateDefinition';
 
 const props = defineProps({ conversationId: { type: Number, required: true } });
 const { t } = useI18n();
@@ -31,6 +34,7 @@ let active = true;
 const showMenu = ref(false);
 const menuView = ref('actions');
 const templatesRequested = ref(false);
+const preparing = ref(false);
 const storedTemplates = useMapGetter('messengerTemplates/getTemplates');
 const currentUser = useMapGetter('getCurrentUser');
 const selectedChat = useMapGetter('getSelectedChat');
@@ -42,6 +46,7 @@ watch(
   () => {
     version += 1;
     busy.value = false;
+    preparing.value = false;
     showMenu.value = false;
     menuView.value = 'actions';
     templatesRequested.value = false;
@@ -96,25 +101,13 @@ const download = async () => {
   }
 };
 
-// Names are normalized like the backend drops so {{agent.first_name}} matches.
-const splitName = name => {
-  const words = String(name || '')
-    .split(/\s+/)
-    .filter(Boolean)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
-  return {
-    name: words.join(' '),
-    first_name: words[0] || '',
-    last_name: words.length > 1 ? words[words.length - 1] : '',
-  };
-};
-
+// The same builder the editor preview uses, so `{{agent.name}}` reads identically in
+// both places and nothing but the four catalog fields reaches the screenshot.
 const agentContext = computed(() => {
   const chat = selectedChat.value;
   const assignee =
     chat && chat.id === props.conversationId ? chat.meta?.assignee : null;
-  const user = assignee || currentUser.value || {};
-  return { ...user, ...splitName(user.name), email: user.email || '' };
+  return buildAgentContext(assignee || currentUser.value);
 });
 
 const downloadFromTemplate = async template => {
@@ -133,8 +126,7 @@ const downloadFromTemplate = async template => {
     );
     if (!isCurrent()) return;
     // The server copy is the one the context token was digested from.
-    const definition = data.template?.definition || template.definition;
-    const content = resolveMessengerTemplate(definition, {
+    const content = resolveMessengerTemplate(data.template.definition, {
       contact: data.contact,
       agent: agentContext.value,
     });
@@ -170,7 +162,7 @@ const downloadFromTemplate = async template => {
     } else if (error.message === 'limit') {
       useAlert(t('MESSENGER_SIMULATOR.EXPORT_LIMIT'));
     } else {
-      useAlert(t('MESSENGER_SIMULATOR.EXPORT_ERROR'));
+      useAlert(t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.ERROR'));
     }
   } finally {
     if (isCurrent()) busy.value = false;
@@ -183,7 +175,8 @@ const loadTemplates = async () => {
   try {
     await store.dispatch('messengerTemplates/get');
   } catch {
-    // The template entry simply stays hidden; the real-history export still works.
+    // No library, so the click falls through to the real-history export, and the
+    // next click retries the fetch.
     templatesRequested.value = false;
   }
 };
@@ -193,14 +186,22 @@ const closeMenu = () => {
   menuView.value = 'actions';
 };
 
-const toggleMenu = () => {
+// The library is fetched before the menu opens: an account with no templates keeps the
+// one-click real-history export, and the template entry never pops in under the cursor.
+const toggleMenu = async () => {
   if (showMenu.value) {
     closeMenu();
     return;
   }
+  preparing.value = true;
+  await loadTemplates();
+  preparing.value = false;
+  if (!templates.value.length) {
+    download();
+    return;
+  }
   showMenu.value = true;
   menuView.value = 'actions';
-  loadTemplates();
 };
 
 const actionItems = computed(() => [
@@ -210,16 +211,12 @@ const actionItems = computed(() => [
     value: 'history',
     icon: 'i-lucide-history',
   },
-  ...(templates.value.length
-    ? [
-        {
-          label: t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'),
-          action: 'template',
-          value: 'template',
-          icon: 'i-lucide-layout-template',
-        },
-      ]
-    : []),
+  {
+    label: t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'),
+    action: 'template',
+    value: 'template',
+    icon: 'i-lucide-layout-template',
+  },
 ]);
 
 const templateItems = computed(() =>
@@ -273,11 +270,11 @@ onBeforeUnmount(() => {
       :aria-label="
         busy
           ? t('MESSENGER_SIMULATOR.EXPORTING')
-          : t('MESSENGER_SIMULATOR.CONVERSATION_EXPORT')
+          : t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.MENU_LABEL')
       "
       :class="showMenu ? 'bg-n-alpha-2' : ''"
-      :disabled="busy"
-      :is-loading="busy"
+      :disabled="busy || preparing"
+      :is-loading="busy || preparing"
       @click="toggleMenu"
     />
     <span v-if="busy" class="sr-only" role="status">
@@ -285,6 +282,7 @@ onBeforeUnmount(() => {
     </span>
     <DropdownMenu
       v-if="showMenu"
+      :key="menuView"
       :menu-items="menuItems"
       :show-search="menuView === 'templates'"
       :search-placeholder="t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.SEARCH')"

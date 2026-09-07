@@ -9,6 +9,15 @@ export const templateVariablePattern = () => new RegExp(VARIABLE_SOURCE, 'gu');
 // `contact.custom_attribute.<key>` reads from the `custom_attribute` bag of the scope.
 export const CUSTOM_ATTRIBUTE_SEGMENT = 'custom_attribute';
 
+const CUSTOM_ATTRIBUTE_PREFIX = `contact.${CUSTOM_ATTRIBUTE_SEGMENT}.`;
+// Same shape-only rule the server applies: an attribute the account deleted, or one the
+// picker has not loaded yet, must not turn a stored template into an unsavable one.
+const CUSTOM_ATTRIBUTE_KEY_FORMAT = /^[\p{L}\p{N}_.-]+$/u;
+
+const isCustomAttributeKey = key =>
+  key.startsWith(CUSTOM_ATTRIBUTE_PREFIX) &&
+  CUSTOM_ATTRIBUTE_KEY_FORMAT.test(key.slice(CUSTOM_ATTRIBUTE_PREFIX.length));
+
 // i18n keys of the placeholder value shown for a custom attribute, by
 // `attribute_display_type`. Static keys carry their sample from the server catalog.
 export const CUSTOM_ATTRIBUTE_SAMPLE_KEYS = {
@@ -92,7 +101,7 @@ export const resolveMessengerTemplate = (definition, context) => {
 export const validateTemplateVariables = (text, allowedKeys) => {
   const allowed = new Set(allowedKeys);
   return Array.from(`${text}`.matchAll(templateVariablePattern()))
-    .filter(match => !allowed.has(match[1]))
+    .filter(match => !allowed.has(match[1]) && !isCustomAttributeKey(match[1]))
     .map(match => match[0])
     .filter((token, index, tokens) => tokens.indexOf(token) === index);
 };
@@ -101,7 +110,7 @@ export const validateTemplateVariables = (text, allowedKeys) => {
  * Merges the server catalog with the account's contact attribute definitions.
  * The static keys stay server-owned so the allowlist is never duplicated here.
  *
- * @param {Array} serverCatalog `[{key, label_key, group, sample}]`.
+ * @param {Array} serverCatalog `[{key, label_key, sample_key, group, sample}]`.
  * @param {Array} customAttributeDefinitions `attributes/getAttributes` records.
  * @param {Function} translate resolves the i18n key of a custom attribute sample.
  * @returns {Array} `[{key, group, labelKey, label, description, sample}]`.
@@ -117,7 +126,7 @@ export const buildVariableCatalog = (
     labelKey: entry.label_key || '',
     label: '',
     description: '',
-    sample: entry.sample || '',
+    sample: entry.sample_key ? translate(entry.sample_key) : entry.sample || '',
   }));
   const custom = (customAttributeDefinitions || [])
     .filter(attribute => attribute.attribute_model === 'contact_attribute')
@@ -158,18 +167,29 @@ export const buildSampleContact = catalog => {
 };
 
 /**
- * `agent` scope for a dashboard user. Names are split but never re-cased: the export
- * shows the agent's own display name.
+ * Splits a display name the way `MessengerScreenshot::ContactPresenter` does, so the
+ * authoring preview and the exported screenshot read the same. Never re-cased.
+ *
+ * @param {string} name display name.
+ * @returns {Object} `{name, first_name, last_name}`.
+ */
+export const splitDisplayName = name => {
+  const parts = `${name || ''}`.split(/\s+/).filter(Boolean);
+  return {
+    name: parts.join(' '),
+    first_name: parts[0] || '',
+    last_name: parts.length > 1 ? parts.slice(1).join(' ') : '',
+  };
+};
+
+/**
+ * `agent` scope for a dashboard user. Only the four catalog fields are copied, so no
+ * other property of the user record can ever reach a rendered screenshot.
  *
  * @param {Object} user `getCurrentUser` (or the assignee) record.
  * @returns {Object} `{name, first_name, last_name, email}`.
  */
-export const buildAgentContext = user => {
-  const names = `${user?.name || ''}`.split(/\s+/).filter(Boolean);
-  return {
-    name: names.join(' '),
-    first_name: names[0] || '',
-    last_name: names.length > 1 ? names[names.length - 1] : '',
-    email: user?.email || '',
-  };
-};
+export const buildAgentContext = user => ({
+  ...splitDisplayName(user?.name),
+  email: user?.email || '',
+});

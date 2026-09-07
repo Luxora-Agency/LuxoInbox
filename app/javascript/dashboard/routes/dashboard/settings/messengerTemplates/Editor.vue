@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted, ref, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { useAlert } from 'dashboard/composables';
 import { useAccount } from 'dashboard/composables/useAccount';
 import { useStore, useMapGetter } from 'dashboard/composables/store';
@@ -9,15 +9,14 @@ import { useStore, useMapGetter } from 'dashboard/composables/store';
 import SettingsLayout from '../SettingsLayout.vue';
 import BaseSettingsHeader from '../components/BaseSettingsHeader.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
-import ConfirmButton from 'dashboard/components-next/button/ConfirmButton.vue';
+import Dialog from 'dashboard/components-next/dialog/Dialog.vue';
 import Input from 'dashboard/components-next/input/Input.vue';
 import MessengerSimulatorEditor from 'dashboard/components-next/messengerSimulator/MessengerSimulatorEditor.vue';
+import { buildDuplicateTitle, MAX_TITLE_LENGTH } from './duplicateTitle';
 
 defineOptions({
   name: 'MessengerTemplateEditorSettings',
 });
-
-const MAX_TITLE_LENGTH = 100;
 
 const { t } = useI18n();
 const route = useRoute();
@@ -27,6 +26,7 @@ const { accountId, accountScopedRoute } = useAccount();
 
 const uiFlags = useMapGetter('messengerTemplates/getUIFlags');
 const findTemplate = useMapGetter('messengerTemplates/getTemplate');
+const records = useMapGetter('messengerTemplates/getTemplates');
 
 const templateId = computed(() => {
   const id = Number(route.params.templateId);
@@ -37,6 +37,7 @@ const isEditing = computed(() => Boolean(templateId.value));
 const title = ref('');
 const definition = ref(null);
 const editorRef = ref(null);
+const leaveDialogRef = ref(null);
 const baseline = ref('');
 const isLoading = ref(true);
 const notFound = ref(false);
@@ -46,11 +47,24 @@ const errorAttributes = ref([]);
 const isSaving = computed(
   () => uiFlags.value.isCreating || uiFlags.value.isUpdating
 );
+// `render_record_invalid` joins every message into one string, so it can sit under the
+// title input only when the title is the one attribute the server rejected.
+const isTitleOnlyError = computed(
+  () =>
+    errorAttributes.value.length === 1 && errorAttributes.value[0] === 'title'
+);
 const titleError = computed(() =>
-  errorAttributes.value.includes('title') ? errorMessage.value : ''
+  isTitleOnlyError.value ? errorMessage.value : ''
 );
 const formError = computed(() =>
-  errorMessage.value && !titleError.value ? errorMessage.value : ''
+  isTitleOnlyError.value ? '' : errorMessage.value
+);
+// W1: an unknown variable is the one invalid state the editor can name precisely.
+const variableErrors = computed(
+  () => editorRef.value?.getValidationErrors() ?? []
+);
+const listRoute = computed(() =>
+  accountScopedRoute('messenger_templates_list')
 );
 const dirty = computed(
   () =>
@@ -72,8 +86,7 @@ const emptyDefinition = () => ({
   messages: [],
 });
 
-const goToList = () =>
-  router.push(accountScopedRoute('messenger_templates_list'));
+const goToList = () => router.push(listRoute.value);
 
 const reportError = error => {
   const data = error?.response?.data;
@@ -86,6 +99,21 @@ const onAccessDenied = () => {
   errorMessage.value = t('MESSENGER_SIMULATOR.UNAVAILABLE');
   errorAttributes.value = [];
 };
+
+const duplicateTitle = base =>
+  buildDuplicateTitle(
+    base,
+    records.value.map(record => record.title),
+    (candidate, copy) =>
+      copy === 1
+        ? t('MESSENGER_TEMPLATES.SETTINGS.DUPLICATE_TITLE', {
+            title: candidate,
+          })
+        : t('MESSENGER_TEMPLATES.SETTINGS.DUPLICATE_TITLE_N', {
+            title: candidate,
+            count: copy,
+          })
+  );
 
 const load = async () => {
   isLoading.value = true;
@@ -126,15 +154,13 @@ const submit = async duplicate => {
     return;
   }
   if (!payloadDefinition) {
-    errorMessage.value = t('MESSENGER_TEMPLATES.EDITOR.INVALID');
+    errorMessage.value = variableErrors.value.length
+      ? t('MESSENGER_TEMPLATES.EDITOR.DEFINITION_ERROR')
+      : t('MESSENGER_TEMPLATES.EDITOR.INVALID');
     return;
   }
   const template = {
-    title: duplicate
-      ? t('MESSENGER_TEMPLATES.SETTINGS.DUPLICATE_TITLE', {
-          title: title.value.trim(),
-        }).slice(0, MAX_TITLE_LENGTH)
-      : title.value.trim(),
+    title: duplicate ? duplicateTitle(title.value.trim()) : title.value.trim(),
     definition: payloadDefinition,
   };
   try {
@@ -170,6 +196,28 @@ watch(editorRef, async instance => {
   baseline.value = instance.getSnapshot();
 });
 
+let confirmLeave = null;
+
+// `Dialog.close()` emits `close` again, so the pending resolver is what tells a real
+// answer apart from that echo; without it the two would call each other forever.
+const resolveLeave = allowed => {
+  const resolve = confirmLeave;
+  if (!resolve) return;
+  confirmLeave = null;
+  leaveDialogRef.value.close();
+  resolve(allowed);
+};
+
+// Every exit is guarded, not only the Cancel button: the back link, the sidebar and any
+// other route change all reach this before the draft is dropped.
+onBeforeRouteLeave(() => {
+  if (!dirty.value) return true;
+  leaveDialogRef.value.open();
+  return new Promise(resolve => {
+    confirmLeave = resolve;
+  });
+});
+
 onMounted(load);
 </script>
 
@@ -185,6 +233,7 @@ onMounted(load);
         :title="headerTitle"
         :description="t('MESSENGER_TEMPLATES.EDITOR.DESCRIPTION')"
         :back-button-label="t('MESSENGER_TEMPLATES.EDITOR.BACK')"
+        :back-url="listRoute"
       />
     </template>
 
@@ -201,11 +250,7 @@ onMounted(load);
           :message-type="titleError ? 'error' : 'info'"
           required
         />
-        <p
-          v-if="formError"
-          role="alert"
-          class="mb-0 text-sm text-n-ruby-11 dark:text-n-ruby-11"
-        >
+        <p v-if="formError" role="alert" class="mb-0 text-sm text-n-ruby-11">
           {{ formError }}
         </p>
         <div
@@ -221,16 +266,7 @@ onMounted(load);
           />
         </div>
         <div class="flex flex-wrap items-center justify-end gap-3">
-          <ConfirmButton
-            v-if="dirty"
-            color="slate"
-            variant="ghost"
-            :label="t('MESSENGER_TEMPLATES.EDITOR.CANCEL')"
-            :confirm-label="t('MESSENGER_TEMPLATES.EDITOR.UNSAVED.CONFIRM')"
-            @click="goToList"
-          />
           <Button
-            v-else
             color="slate"
             variant="ghost"
             :label="t('MESSENGER_TEMPLATES.EDITOR.CANCEL')"
@@ -241,7 +277,7 @@ onMounted(load);
             color="slate"
             variant="outline"
             :label="t('MESSENGER_TEMPLATES.EDITOR.SAVE_COPY')"
-            :disabled="isSaving"
+            :disabled="isSaving || variableErrors.length > 0"
             @click="submit(true)"
           />
           <Button
@@ -251,10 +287,22 @@ onMounted(load);
                 : t('MESSENGER_TEMPLATES.EDITOR.SAVE')
             "
             :is-loading="isSaving"
-            :disabled="isSaving"
+            :disabled="isSaving || variableErrors.length > 0"
             @click="submit(false)"
           />
         </div>
+        <Dialog
+          ref="leaveDialogRef"
+          type="alert"
+          :title="t('MESSENGER_TEMPLATES.EDITOR.UNSAVED.TITLE')"
+          :description="t('MESSENGER_TEMPLATES.EDITOR.UNSAVED.MESSAGE')"
+          :confirm-button-label="
+            t('MESSENGER_TEMPLATES.EDITOR.UNSAVED.CONFIRM')
+          "
+          :cancel-button-label="t('MESSENGER_TEMPLATES.EDITOR.UNSAVED.CANCEL')"
+          @confirm="resolveLeave(true)"
+          @close="resolveLeave(false)"
+        />
       </div>
     </template>
   </SettingsLayout>
