@@ -206,7 +206,7 @@ en:
       title:
         taken: is already used by another Messenger template in this account
       definition:
-        invalid: is not a valid Messenger template
+        invalid: is not in the format Messenger expects
         invalid_avatar: uses a contact photo option that does not exist
         business_name_blank: needs a business name
         business_name_too_long: 'has a business name longer than %{limit} characters'

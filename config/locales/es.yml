@@ -186,7 +186,7 @@ es:
       title:
         taken: ya está en uso por otra plantilla de Messenger de esta cuenta
       definition:
-        invalid: no es una plantilla de Messenger válida
+        invalid: no tiene el formato que espera Messenger
         invalid_avatar: usa una opción de foto de contacto que no existe
         business_name_blank: necesita un nombre de negocio
         business_name_too_long: 'tiene un nombre de negocio de más de %{limit} caracteres'
