@@ -120,7 +120,7 @@ RSpec.describe 'Messenger templates API', type: :request do
     expect(response).to have_http_status(:ok)
     expect(response.parsed_body.pluck('key')).to include('contact.name', 'contact.phone', 'contact.company_name', 'agent.first_name')
     expect(response.parsed_body.map { |variable| variable['group'] }.uniq).to contain_exactly('contact', 'agent')
-    expect(response.parsed_body.first.keys).to contain_exactly('key', 'label_key', 'group', 'sample')
+    expect(response.parsed_body.first.keys).to contain_exactly('key', 'label_key', 'sample_key', 'group', 'sample')
   end
 
   it 'denies the variable registry to nonmembers and disabled accounts' do

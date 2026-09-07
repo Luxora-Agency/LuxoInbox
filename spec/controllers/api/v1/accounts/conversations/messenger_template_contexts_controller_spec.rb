@@ -24,7 +24,7 @@ RSpec.describe 'Messenger template context API', type: :request do
     expect(response.headers['Cache-Control']).to include('no-store')
     expect(response.parsed_body.keys).to contain_exactly('template', 'contact', 'context_token')
     expect(response.parsed_body['contact']).to eq(
-      'name' => 'Taylor', 'first_name' => 'Taylor', 'last_name' => '', 'email' => '',
+      'name' => 'Taylor', 'first_name' => 'Taylor', 'last_name' => '', 'email' => conversation.contact.email,
       'phone' => '+15551234567', 'phone_number' => '+15551234567', 'identifier' => '',
       'country_code' => '', 'city' => '', 'company_name' => '', 'custom_attribute' => {}, 'avatar_data' => nil
     )
