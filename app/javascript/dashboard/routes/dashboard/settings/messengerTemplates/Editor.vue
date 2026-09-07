@@ -59,9 +59,17 @@ const titleError = computed(() =>
 const formError = computed(() =>
   isTitleOnlyError.value ? '' : errorMessage.value
 );
-// W1: an unknown variable is the one invalid state the editor can name precisely.
+// An unknown variable is the one invalid state the editor can name precisely, so it
+// blocks saving and says which token to fix instead of the generic "add a title" text.
 const variableErrors = computed(
   () => editorRef.value?.getValidationErrors() ?? []
+);
+const variableError = computed(() =>
+  variableErrors.value.length
+    ? t('MESSENGER_TEMPLATES.VARIABLES.UNKNOWN', {
+        token: variableErrors.value[0],
+      })
+    : ''
 );
 const listRoute = computed(() =>
   accountScopedRoute('messenger_templates_list')
@@ -154,9 +162,7 @@ const submit = async duplicate => {
     return;
   }
   if (!payloadDefinition) {
-    errorMessage.value = variableErrors.value.length
-      ? t('MESSENGER_TEMPLATES.EDITOR.DEFINITION_ERROR')
-      : t('MESSENGER_TEMPLATES.EDITOR.INVALID');
+    errorMessage.value = t('MESSENGER_TEMPLATES.EDITOR.INVALID');
     return;
   }
   const template = {
@@ -265,6 +271,13 @@ onMounted(load);
             @access-denied="onAccessDenied"
           />
         </div>
+        <p
+          v-if="variableError"
+          role="alert"
+          class="mb-0 text-sm text-n-ruby-11"
+        >
+          {{ variableError }}
+        </p>
         <div class="flex flex-wrap items-center justify-end gap-3">
           <Button
             color="slate"
