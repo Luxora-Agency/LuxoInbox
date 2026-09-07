@@ -112,7 +112,7 @@
         "CONTACT_NAME": "Alex Morgan",
         "CONTACT_FIRST_NAME": "Alex",
         "CONTACT_LAST_NAME": "Morgan",
-        "CONTACT_EMAIL": "alex.morgan@example.com",
+        "CONTACT_EMAIL": "alex.morgan{'@'}example.com",
         "CONTACT_PHONE": "+1 202-555-0123",
         "CONTACT_PHONE_NUMBER": "+1 202-555-0123",
         "CONTACT_IDENTIFIER": "CU-10482",
@@ -122,7 +122,7 @@
         "AGENT_NAME": "Jordan Lee",
         "AGENT_FIRST_NAME": "Jordan",
         "AGENT_LAST_NAME": "Lee",
-        "AGENT_EMAIL": "jordan.lee@example.com"
+        "AGENT_EMAIL": "jordan.lee{'@'}example.com"
       }
     },
     "SIMULATOR": {

@@ -112,7 +112,7 @@
         "CONTACT_NAME": "Camila Torres",
         "CONTACT_FIRST_NAME": "Camila",
         "CONTACT_LAST_NAME": "Torres",
-        "CONTACT_EMAIL": "camila.torres@ejemplo.com",
+        "CONTACT_EMAIL": "camila.torres{'@'}ejemplo.com",
         "CONTACT_PHONE": "+57 300 123 4567",
         "CONTACT_PHONE_NUMBER": "+57 300 123 4567",
         "CONTACT_IDENTIFIER": "CU-10482",
@@ -122,7 +122,7 @@
         "AGENT_NAME": "Valeria Gómez",
         "AGENT_FIRST_NAME": "Valeria",
         "AGENT_LAST_NAME": "Gómez",
-        "AGENT_EMAIL": "valeria.gomez@ejemplo.com"
+        "AGENT_EMAIL": "valeria.gomez{'@'}ejemplo.com"
       }
     },
     "SIMULATOR": {
