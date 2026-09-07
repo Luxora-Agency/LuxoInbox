@@ -29,6 +29,7 @@ import labelsMgmt from './labelsMgmt.json';
 import login from './login.json';
 import macros from './macros.json';
 import messengerSimulator from './messengerSimulator.json';
+import messengerTemplates from './messengerTemplates.json';
 import report from './report.json';
 import resetPassword from './resetPassword.json';
 import search from './search.json';
@@ -79,6 +80,7 @@ export default {
   ...login,
   ...macros,
   ...messengerSimulator,
+  ...messengerTemplates,
   ...report,
   ...resetPassword,
   ...search,

@@ -1,0 +1,147 @@
+{
+  "MESSENGER_TEMPLATES": {
+    "SETTINGS": {
+      "TITLE": "Plantillas de Messenger",
+      "DESCRIPTION": "Guarda guiones de Messenger reutilizables con variables dinámicas. Cárgalos en el simulador o expórtalos desde una conversación con los datos reales del contacto.",
+      "NEW": "Nueva plantilla",
+      "SEARCH_PLACEHOLDER": "Buscar plantillas",
+      "LOADING": "Cargando plantillas",
+      "LOAD_ERROR": "No pudimos cargar tus plantillas. Revisa tu conexión y vuelve a intentarlo.",
+      "TABLE": {
+        "TITLE": "Título",
+        "MESSAGES": "Mensajes",
+        "UPDATED_AT": "Última actualización",
+        "ACTIONS": "Acciones"
+      },
+      "MESSAGE_COUNT": "{count} mensajes",
+      "NEVER_UPDATED": "Nunca",
+      "EDIT": "Editar plantilla",
+      "DUPLICATE": "Duplicar plantilla",
+      "DELETE": "Eliminar plantilla",
+      "EMPTY": {
+        "TITLE": "Todavía no hay plantillas",
+        "DESCRIPTION": "Una plantilla guarda un guion ficticio de Messenger. Agrega variables como el nombre del contacto o un atributo personalizado y se completan cuando exportas desde una conversación.",
+        "ACTION": "Crea tu primera plantilla"
+      },
+      "NO_RESULTS": {
+        "TITLE": "No se encontraron plantillas",
+        "DESCRIPTION": "Ninguna plantilla coincide con “{query}”. Prueba con otro título."
+      },
+      "DELETE_CONFIRM": {
+        "TITLE": "Eliminar plantilla",
+        "MESSAGE": "“{title}” se eliminará para todos en esta cuenta. Esta acción no se puede deshacer.",
+        "CONFIRM": "Sí, eliminarla",
+        "CANCEL": "No, conservarla"
+      },
+      "DELETE_SUCCESS": "Plantilla eliminada.",
+      "DELETE_ERROR": "No pudimos eliminar la plantilla. Vuelve a intentarlo.",
+      "DUPLICATE_SUCCESS": "Plantilla duplicada.",
+      "DUPLICATE_ERROR": "No pudimos duplicar la plantilla. Vuelve a intentarlo.",
+      "DUPLICATE_TITLE": "{title} (copia)"
+    },
+    "EDITOR": {
+      "NEW_TITLE": "Nueva plantilla de Messenger",
+      "EDIT_TITLE": "Editar plantilla de Messenger",
+      "DESCRIPTION": "Escribe el guion una sola vez. Las variables se reemplazan con datos reales cuando exportas la plantilla desde una conversación.",
+      "BACK": "Volver a las plantillas",
+      "NOT_FOUND": "Esta plantilla ya no existe. Es posible que se haya eliminado.",
+      "NAME": {
+        "LABEL": "Título de la plantilla",
+        "PLACEHOLDER": "Por ejemplo: Confirmación de entrega",
+        "REQUIRED": "Agrega un título para poder encontrar esta plantilla más adelante.",
+        "TOO_LONG": "Usa 100 caracteres o menos.",
+        "TAKEN": "Ya tienes una plantilla con este título. Elige uno distinto."
+      },
+      "SAVE": "Guardar plantilla",
+      "SAVE_COPY": "Guardar una copia",
+      "CANCEL": "Cancelar",
+      "SAVING": "Guardando",
+      "INVALID": "Agrega un título, el nombre del negocio y al menos un mensaje válido antes de guardar.",
+      "DEFINITION_ERROR": "Corrige los mensajes marcados antes de guardar.",
+      "CREATE_SUCCESS": "Plantilla creada.",
+      "UPDATE_SUCCESS": "Plantilla actualizada.",
+      "COPY_SUCCESS": "La copia se guardó como una plantilla nueva.",
+      "SAVE_ERROR": "No pudimos guardar la plantilla. Revisa tu conexión y vuelve a intentarlo.",
+      "UNSAVED": {
+        "TITLE": "¿Salir sin guardar?",
+        "MESSAGE": "Tienes cambios sin guardar en esta plantilla. Se van a perder.",
+        "CONFIRM": "Sí, descartar los cambios",
+        "CANCEL": "No, seguir editando"
+      },
+      "DRAFT_RESTORED": "Restauramos el borrador que tenías abierto."
+    },
+    "VARIABLES": {
+      "BUTTON": "Insertar variable",
+      "TOOLTIP": "Insertar una variable",
+      "SEARCH_PLACEHOLDER": "Buscar variables",
+      "EMPTY": "Ninguna variable coincide con tu búsqueda.",
+      "LOAD_ERROR": "No pudimos cargar las variables disponibles. Vuelve a intentarlo.",
+      "SAMPLE": "Por ejemplo: {sample}",
+      "UNKNOWN": "{token} no es una variable disponible. Elige una de la lista.",
+      "LIMIT": "Acorta el mensaje o selecciona el texto que quieres reemplazar antes de insertar esta variable.",
+      "GROUPS": {
+        "CONTACT": "Contacto",
+        "CUSTOM_ATTRIBUTES": "Atributos personalizados",
+        "AGENT": "Agente"
+      },
+      "LABELS": {
+        "CONTACT_NAME": "Nombre completo",
+        "CONTACT_FIRST_NAME": "Nombre",
+        "CONTACT_LAST_NAME": "Apellido",
+        "CONTACT_EMAIL": "Correo electrónico",
+        "CONTACT_PHONE": "Teléfono",
+        "CONTACT_PHONE_NUMBER": "Número de teléfono",
+        "CONTACT_IDENTIFIER": "Identificador",
+        "CONTACT_COUNTRY_CODE": "Código de país",
+        "CONTACT_CITY": "Ciudad",
+        "CONTACT_COMPANY_NAME": "Empresa",
+        "AGENT_NAME": "Nombre completo del agente",
+        "AGENT_FIRST_NAME": "Nombre del agente",
+        "AGENT_LAST_NAME": "Apellido del agente",
+        "AGENT_EMAIL": "Correo electrónico del agente"
+      },
+      "SAMPLES": {
+        "TEXT": "Plan Gold",
+        "NUMBER": "42",
+        "CURRENCY": "1.250,00",
+        "DATE": "14/03/2026",
+        "LIST": "Premium",
+        "CHECKBOX": "Sí",
+        "LINK": "https://ejemplo.com",
+        "FALLBACK": "Valor de ejemplo"
+      }
+    },
+    "SIMULATOR": {
+      "LOAD_TEMPLATE": "Cargar plantilla",
+      "MANUAL": "Simulación manual",
+      "MANAGE": "Administrar plantillas",
+      "PLACEHOLDER": "Elige una plantilla",
+      "LOADING": "Cargando plantillas",
+      "EMPTY": "Todavía no hay plantillas guardadas.",
+      "ERROR": "No pudimos cargar tus plantillas. Tu borrador no cambió; vuelve a intentarlo.",
+      "LOADED": "Plantilla cargada en el editor.",
+      "DISCARD_DRAFT": "Descartar el borrador y cargar",
+      "DRAFT_AVAILABLE": "Guardamos el borrador que estabas trabajando en esta cuenta.",
+      "RESTORE_DRAFT": "Restaurar borrador",
+      "DISCARD_SAVED_DRAFT": "Descartar borrador"
+    },
+    "CONVERSATION_EXPORT": {
+      "MENU_LABEL": "Opciones de captura de Messenger",
+      "REAL_HISTORY": "Historial real",
+      "REAL_HISTORY_HINT": "Exporta los mensajes públicos de esta conversación.",
+      "FROM_TEMPLATE": "Desde una plantilla…",
+      "FROM_TEMPLATE_HINT": "Exporta un guion guardado con los datos de este contacto.",
+      "CHOOSE_TEMPLATE": "Elige una plantilla",
+      "CHOOSE_TEMPLATE_HINT": "Las variables se reemplazan con el contacto y el agente de esta conversación.",
+      "EXPORT": "Descargar captura",
+      "CANCEL": "Cancelar",
+      "LOADING": "Cargando plantillas",
+      "EMPTY": "Todavía no hay plantillas guardadas. Crea una en Ajustes.",
+      "ERROR": "No pudimos exportar esta plantilla. Revisa tu conexión y vuelve a intentarlo.",
+      "CONTACT_CHANGED": "El contacto de esta conversación cambió. Vuelve a abrir el menú e inténtalo de nuevo.",
+      "SUCCESS": "Se descargó la captura de la plantilla.",
+      "BACK": "Volver",
+      "SEARCH": "Buscar plantillas"
+    }
+  }
+}
