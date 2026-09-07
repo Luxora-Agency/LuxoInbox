@@ -190,6 +190,7 @@ it('restores the default template only after the confirmation step', async () =>
     'messengerTemplates/restoreDefault',
     expect.anything()
   );
+  expect(wrapper.text()).toContain('MESSENGER_TEMPLATES.DEFAULT.RESTORE_HINT');
   await clickLabel(wrapper, 'MESSENGER_TEMPLATES.DEFAULT.RESTORE_CONFIRM');
   expect(dispatch).toHaveBeenLastCalledWith(
     'messengerTemplates/restoreDefault',
