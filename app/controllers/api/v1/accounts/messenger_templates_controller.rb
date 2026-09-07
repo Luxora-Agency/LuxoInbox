@@ -96,7 +96,7 @@ class Api::V1::Accounts::MessengerTemplatesController < Api::V1::Accounts::BaseC
   end
 
   def render_extraction_error(key, status, **)
-    render json: { message: I18n.t("messenger_templates.extraction.#{key}"), **}, status: status
+    render json: { message: I18n.t("messenger_templates.extraction.#{key}"), ** }, status: status
   end
 
   def fetch_template

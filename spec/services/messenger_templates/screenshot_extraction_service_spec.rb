@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe MessengerTemplates::ScreenshotExtractionService do
-  subject(:service) { described_class.new(account: account, image: 'raw-png-bytes', content_type: 'image/png') }
-
   let(:account) { create(:account) }
+  let(:service) { described_class.new(account: account, image: 'raw-png-bytes', content_type: 'image/png') }
   let(:payload) do
     {
       'business_name' => '  Ana Suárez  ',
