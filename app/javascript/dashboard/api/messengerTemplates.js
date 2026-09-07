@@ -11,3 +11,9 @@ export const deleteMessengerTemplate = (accountId, id) =>
   axios.delete(`${url(accountId)}/${id}`);
 export const restoreDefaultMessengerTemplate = accountId =>
   axios.post(`${url(accountId)}/restore_default`);
+// The browser sets the multipart boundary itself, so the content type is left alone.
+export const extractMessengerTemplate = (accountId, file) => {
+  const formData = new FormData();
+  formData.append('screenshot', file);
+  return axios.post(`${url(accountId)}/extract`, formData);
+};

@@ -1,4 +1,5 @@
 import {
+  extractMessengerTemplate,
   listMessengerTemplates,
   listMessengerTemplateVariables,
   saveMessengerTemplate,
@@ -30,6 +31,7 @@ export const state = {
     isUpdating: false,
     isDeleting: false,
     isRestoring: false,
+    isExtracting: false,
   },
 };
 
@@ -136,6 +138,24 @@ export const actions = {
       return data;
     } finally {
       commit(SET_UI_FLAG, { isRestoring: false });
+    }
+  },
+
+  // The extraction is a read of the uploaded image: it returns a draft definition the
+  // editor loads, and nothing is persisted until the admin saves the template.
+  extract: async function extract(
+    { commit, rootGetters },
+    { accountId, file }
+  ) {
+    commit(SET_UI_FLAG, { isExtracting: true });
+    try {
+      const { data } = await extractMessengerTemplate(
+        resolveAccountId(rootGetters, accountId),
+        file
+      );
+      return data;
+    } finally {
+      commit(SET_UI_FLAG, { isExtracting: false });
     }
   },
 
