@@ -38,6 +38,9 @@ es:
     login_saml_user: This account uses SAML authentication. Please sign in through your organization's SAML provider.
     saml_not_available: SAML authentication is not available in this installation.
     inbox_deletetion_response: Su solicitud de eliminación de la bandeja de entrada será procesada en algún tiempo.
+  messenger_templates:
+    default:
+      title: Captación Ana Suárez (por defecto)
   data_imports:
     intercom:
       activities:
@@ -185,6 +188,8 @@ es:
     messenger_template:
       title:
         taken: ya está en uso por otra plantilla de Messenger de esta cuenta
+      is_default:
+        taken: ya es la plantilla por defecto de esta cuenta
       definition:
         invalid: no tiene el formato que espera Messenger
         invalid_avatar: usa una opción de foto de contacto que no existe

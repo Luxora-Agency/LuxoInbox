@@ -28,10 +28,55 @@ RSpec.describe 'Messenger templates API', type: :request do
     other_template = create(:messenger_template)
     template
     get path, headers: agent.create_new_auth_token
-    expect(response.parsed_body.pluck('id')).to eq([template.id])
+    expect(response.parsed_body.pluck('id')).to include(template.id)
+    expect(response.parsed_body.pluck('id')).not_to include(other_template.id)
     expect(response.headers['Cache-Control']).to include('no-store')
     get "#{path}/#{other_template.id}", headers: agent.create_new_auth_token
     expect(response).to have_http_status(:not_found)
+  end
+
+  it 'seeds the default script once and lists it ahead of a title that sorts earlier' do
+    create(:messenger_template, account: account, title: 'A script that sorts first')
+    get path, headers: agent.create_new_auth_token
+    expect(response.parsed_body.first['is_default']).to be(true)
+    expect(response.parsed_body.first['title']).to eq(MessengerTemplates::DefaultTemplate.title)
+    get path, headers: admin.create_new_auth_token
+    expect(response.parsed_body.count { |item| item['is_default'] }).to eq(1)
+    expect(account.messenger_templates.count).to eq(2)
+  end
+
+  it 'recreates the default after a delete and resets it after an edit' do
+    get path, headers: admin.create_new_auth_token
+    delete "#{path}/#{response.parsed_body.first['id']}", headers: admin.create_new_auth_token
+    post "#{path}/restore_default", headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:ok)
+    expect(response.parsed_body['is_default']).to be(true)
+    restored_id = response.parsed_body['id']
+    patch "#{path}/#{restored_id}", params: { messenger_template: { title: 'Renamed' } },
+                                    headers: admin.create_new_auth_token, as: :json
+    post "#{path}/restore_default", headers: admin.create_new_auth_token, as: :json
+    expect(response.parsed_body['id']).to eq(restored_id)
+    expect(response.parsed_body['title']).to eq(MessengerTemplates::DefaultTemplate.title)
+    expect(account.messenger_templates.count).to eq(1)
+  end
+
+  it 'denies restoring the default to agents and to other accounts' do
+    post "#{path}/restore_default", headers: agent.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:unauthorized)
+    post "/api/v1/accounts/#{create(:account).id}/messenger_templates/restore_default",
+         headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:unauthorized)
+    expect(account.messenger_templates.count).to be_zero
+  end
+
+  it 'ignores a default flag sent by the client on create and on update' do
+    post path, params: { messenger_template: attributes.merge(is_default: true) },
+               headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:created)
+    expect(response.parsed_body['is_default']).to be(false)
+    patch "#{path}/#{response.parsed_body['id']}", params: { messenger_template: { is_default: true } },
+                                                   headers: admin.create_new_auth_token, as: :json
+    expect(response.parsed_body['is_default']).to be(false)
   end
 
   it 'rejects a duplicate title within the account and names the field' do

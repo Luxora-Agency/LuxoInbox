@@ -3,7 +3,15 @@ class Api::V1::Accounts::MessengerTemplatesController < Api::V1::Accounts::BaseC
   before_action :fetch_template, only: [:show, :update, :destroy]
 
   def index
-    render json: Current.account.messenger_templates.order(:title, :id).map { |template| template_payload(template) }
+    # Seeding here keeps every account, new or existing, one visit away from the default
+    # script without a data migration and without touching the Account lifecycle.
+    MessengerTemplates::EnsureDefaultService.new(Current.account).perform
+    render json: Current.account.messenger_templates.default_first.map { |template| template_payload(template) }
+  end
+
+  # Recreates the default script when it was deleted, and resets it when it was edited.
+  def restore_default
+    render json: template_payload(MessengerTemplates::EnsureDefaultService.restore!(Current.account))
   end
 
   # Static allowlist shared with the dashboard so the variable picker never drifts
@@ -52,6 +60,7 @@ class Api::V1::Accounts::MessengerTemplatesController < Api::V1::Accounts::BaseC
     raise ActionController::ParameterMissing, :messenger_template unless input.is_a?(ActionController::Parameters)
     raise ActionController::ParameterMissing, :title if input.key?(:title) && !input[:title].is_a?(String)
 
+    # `is_default` is deliberately absent: only the seeding service marks a row default.
     attributes = input.permit(:title).to_h
     # Preserve malformed JSON types so model validation rejects them on updates too.
     attributes[:definition] = input[:definition].as_json if input.key?(:definition)
@@ -59,6 +68,6 @@ class Api::V1::Accounts::MessengerTemplatesController < Api::V1::Accounts::BaseC
   end
 
   def template_payload(template)
-    template.as_json(only: [:id, :title, :definition, :updated_at])
+    template.as_json(only: [:id, :title, :definition, :updated_at, :is_default])
   end
 end

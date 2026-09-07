@@ -32,6 +32,21 @@ RSpec.describe MessengerTemplate do
     expect(template).to be_valid
   end
 
+  it 'keeps at most one default template per account' do
+    seeded = create(:messenger_template, :default, account: template.account)
+    expect(seeded).to be_valid
+    rival = build(:messenger_template, :default, account: template.account, title: 'Another default')
+    expect(rival).not_to be_valid
+    expect(rival.errors[:is_default]).to include(I18n.t('errors.messenger_template.is_default.taken'))
+    expect(build(:messenger_template, :default, account: create(:account))).to be_valid
+  end
+
+  it 'lets the database reject a second default when validation is skipped' do
+    create(:messenger_template, :default, account: template.account)
+    rival = build(:messenger_template, :default, account: template.account, title: 'Another default')
+    expect { rival.save!(validate: false) }.to raise_error(ActiveRecord::RecordNotUnique)
+  end
+
   it 'accepts every registry variable, spaced tokens and custom attributes' do
     texts = ['{{contact.name}}: {{contact.phone}}', '{{ contact.name }}', '{{contact.email}} at {{contact.company_name}}',
              '{{contact.first_name}} {{contact.last_name}} {{contact.identifier}}',

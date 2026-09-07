@@ -13,11 +13,26 @@ class MessengerTemplate < ApplicationRecord
 
   belongs_to :account
 
+  # The account's default script leads every list: settings, the simulator picker and the
+  # conversation export chooser all read this order.
+  scope :default_first, -> { order(is_default: :desc, title: :asc, id: :asc) }
+
   validates :title, presence: true, length: { maximum: TITLE_LIMIT }
   validate :unique_title_per_account
+  validate :single_default_per_account
   validate :valid_definition
 
   private
+
+  # Backed by the partial unique index on (account_id) WHERE is_default; the model check
+  # turns the race the index catches into a readable error for everyone else.
+  def single_default_per_account
+    return unless is_default? && account_id.present?
+
+    scope = self.class.where(account_id: account_id, is_default: true)
+    scope = scope.where.not(id: id) if persisted?
+    errors.add(:is_default, I18n.t('errors.messenger_template.is_default.taken')) if scope.exists?
+  end
 
   # Model-level only: existing accounts may already hold duplicates, so no unique index backs this.
   def unique_title_per_account

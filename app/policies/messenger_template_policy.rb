@@ -14,4 +14,9 @@ class MessengerTemplatePolicy < MessengerSimulatorPolicy
   def destroy?
     create?
   end
+
+  # Restoring rewrites the account library, so it is a write like any other.
+  def restore_default?
+    create?
+  end
 end

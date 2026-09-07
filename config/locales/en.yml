@@ -54,6 +54,9 @@ en:
     saml_not_available: SAML authentication is not available in this installation.
     inbox_deletetion_response: Your inbox deletion request will be processed in some time.
 
+  messenger_templates:
+    default:
+      title: Ana Suárez lead capture (default)
   data_imports:
     intercom:
       activities:
@@ -205,6 +208,8 @@ en:
     messenger_template:
       title:
         taken: is already used by another Messenger template in this account
+      is_default:
+        taken: is already the default template in this account
       definition:
         invalid: is not in the format Messenger expects
         invalid_avatar: uses a contact photo option that does not exist

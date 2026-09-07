@@ -8,5 +8,11 @@ FactoryBot.define do
         messages: [{ sender: 'outgoing', text: 'Hello {{contact.name}}', time: '' }]
       }
     end
+
+    trait :default do
+      is_default { true }
+      title { MessengerTemplates::DefaultTemplate.title }
+      definition { MessengerTemplates::DefaultTemplate.definition }
+    end
   end
 end

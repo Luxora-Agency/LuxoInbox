@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_09_06_000000) do
+ActiveRecord::Schema[7.2].define(version: 2026_09_07_000000) do
   # These extensions should be enabled to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
@@ -1294,7 +1294,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_06_000000) do
     t.jsonb "definition", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_default", default: false, null: false
     t.index ["account_id"], name: "index_messenger_templates_on_account_id"
+    t.index ["account_id"], name: "index_messenger_templates_on_account_id_where_default", unique: true, where: "is_default"
   end
 
   create_table "notes", force: :cascade do |t|
