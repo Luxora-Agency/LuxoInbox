@@ -62,6 +62,8 @@ const extracted = {
   ],
 };
 
+const simulatorDraft = ref(null);
+
 const SettingsLayoutStub = {
   name: 'SettingsLayout',
   props: ['isLoading'],
@@ -79,9 +81,11 @@ const SimulatorStub = {
   props: ['initialDefinition'],
   template: '<div class="simulator" />',
   setup(props, { expose }) {
+    // `simulatorDraft` stands in for an admin editing the script inside the simulator.
+    const current = () => simulatorDraft.value ?? props.initialDefinition;
     expose({
-      getSnapshot: () => JSON.stringify(props.initialDefinition),
-      getDefinition: () => props.initialDefinition,
+      getSnapshot: () => JSON.stringify(current()),
+      getDefinition: () => current(),
       getValidationErrors: () => [],
     });
   },
@@ -119,6 +123,7 @@ const uploadScreenshot = async (wrapper, file) => {
 const png = () => new File(['x'], 'shot.png', { type: 'image/png' });
 
 beforeEach(() => {
+  simulatorDraft.value = null;
   records.value = [];
   uiFlags.value = { isCreating: false, isUpdating: false, isExtracting: false };
   dispatch.mockResolvedValue(extracted);
@@ -207,5 +212,50 @@ it('rejects an oversized or wrongly typed file before calling the server', async
   );
 
   expect(dispatch).not.toHaveBeenCalled();
+  wrapper.unmount();
+});
+
+it('rewrites the draft the admin is looking at, not the extracted payload', async () => {
+  const wrapper = mountEditor();
+  await flushPromises();
+  await uploadScreenshot(wrapper, png());
+  simulatorDraft.value = {
+    ...extracted.definition,
+    messages: [
+      { sender: 'outgoing', text: 'Hola Dana, nos vemos el 15/03.', time: '' },
+    ],
+  };
+  await flushPromises();
+  await wrapper
+    .findAll('button')
+    .find(
+      button => button.text() === 'MESSENGER_TEMPLATES.AI.SUGGESTIONS.APPLY'
+    )
+    .trigger('click');
+  await flushPromises();
+
+  expect(
+    wrapper.findComponent(SimulatorStub).props('initialDefinition').messages[0]
+      .text
+  ).toBe('Hola {{contact.first_name}}, nos vemos el 15/03.');
+  wrapper.unmount();
+});
+
+it('keeps the current business name when the screenshot shows no header', async () => {
+  dispatch.mockResolvedValue({
+    ...extracted,
+    definition: { ...extracted.definition, business_name: '' },
+  });
+  const wrapper = mountEditor();
+  await flushPromises();
+  await uploadScreenshot(wrapper, png());
+
+  expect(
+    wrapper.findComponent(SimulatorStub).props('initialDefinition')
+      .business_name
+  ).toBe('MESSENGER_SIMULATOR.EXAMPLE_OUTGOING_NAME');
+  expect(wrapper.find('#messenger-template-title').element.value).toBe(
+    'MESSENGER_TEMPLATES.AI.TITLE_FALLBACK'
+  );
   wrapper.unmount();
 });

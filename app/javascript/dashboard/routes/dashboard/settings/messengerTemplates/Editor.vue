@@ -11,6 +11,7 @@ import BaseSettingsHeader from '../components/BaseSettingsHeader.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
 import Dialog from 'dashboard/components-next/dialog/Dialog.vue';
 import Input from 'dashboard/components-next/input/Input.vue';
+import Spinner from 'dashboard/components-next/spinner/Spinner.vue';
 import MessengerSimulatorEditor from 'dashboard/components-next/messengerSimulator/MessengerSimulatorEditor.vue';
 import MessengerVariableSuggestions from 'dashboard/components-next/messengerSimulator/MessengerVariableSuggestions.vue';
 import { buildDuplicateTitle, MAX_TITLE_LENGTH } from './duplicateTitle';
@@ -93,6 +94,12 @@ const variableError = computed(() =>
 const listRoute = computed(() =>
   accountScopedRoute('messenger_templates_list')
 );
+// The simulator owns the draft once it is mounted, so suggestions rewrite what the admin
+// is looking at rather than the payload the extraction returned. `getDefinition()` is null
+// while the draft is invalid, and then the extraction is still the closest thing there is.
+const suggestionTarget = computed(
+  () => editorRef.value?.getDefinition() ?? definition.value
+);
 // A remount resets the snapshot baseline, so an extraction has to say for itself that
 // the draft moved away from what was loaded.
 const dirty = computed(
@@ -147,7 +154,13 @@ const extractFromScreenshot = async event => {
       accountId: accountId.value,
       file,
     });
-    definition.value = data.definition;
+    // The model returns an empty header when the screenshot does not show one, and the
+    // template model rejects a blank business name, so the current draft keeps its own.
+    definition.value = {
+      ...data.definition,
+      business_name:
+        data.definition.business_name || definition.value.business_name,
+    };
     suggestions.value = data.suggestions ?? [];
     if (!title.value.trim()) {
       title.value =
@@ -363,21 +376,23 @@ onMounted(load);
                   : t('MESSENGER_TEMPLATES.AI.EXPAND')
               "
               :aria-expanded="isPanelOpen"
+              aria-controls="messenger-ai-panel"
               @click="isPanelOpen = !isPanelOpen"
             />
           </div>
-          <div v-if="isPanelOpen" class="flex flex-col gap-2">
+          <div
+            v-if="isPanelOpen"
+            id="messenger-ai-panel"
+            class="flex flex-col gap-2"
+          >
             <label
               for="messenger-ai-screenshot"
               class="mb-0 flex cursor-pointer flex-col items-center gap-1 rounded-xl border border-dashed border-n-strong px-4 py-6 text-center hover:bg-n-alpha-1 focus-within:outline focus-within:outline-2 focus-within:outline-n-brand"
+              :class="{ 'pointer-events-none opacity-60': isExtracting }"
             >
               <span class="i-lucide-image-plus size-5 text-n-slate-11" />
               <span class="text-sm font-medium text-n-slate-12">
-                {{
-                  isExtracting
-                    ? t('MESSENGER_TEMPLATES.AI.UPLOADING')
-                    : t('MESSENGER_TEMPLATES.AI.UPLOAD')
-                }}
+                {{ t('MESSENGER_TEMPLATES.AI.UPLOAD') }}
               </span>
               <span class="text-xs text-n-slate-11">
                 {{ t('MESSENGER_TEMPLATES.AI.HINT') }}
@@ -394,8 +409,9 @@ onMounted(load);
             <p
               v-if="isExtracting"
               role="status"
-              class="mb-0 text-xs text-n-slate-11"
+              class="mb-0 flex items-center gap-2 text-xs text-n-slate-11"
             >
+              <Spinner :size="14" />
               {{ t('MESSENGER_TEMPLATES.AI.UPLOADING') }}
             </p>
             <p
@@ -415,9 +431,9 @@ onMounted(load);
           </div>
         </section>
         <MessengerVariableSuggestions
-          v-if="suggestions && definition"
+          v-if="suggestions && suggestionTarget"
           :suggestions="suggestions"
-          :definition="definition"
+          :definition="suggestionTarget"
           @apply="applySuggestions"
           @skip="suggestions = null"
         />

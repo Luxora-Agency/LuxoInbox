@@ -130,7 +130,7 @@
         "NEW": "Nueva variable manual",
         "PLACEHOLDER": "Por ejemplo: Fecha de la cita",
         "ADD": "Insertar",
-        "HINT": "Su valor lo escribes al exportar la plantilla desde una conversación.",
+        "HINT": "El valor lo escribes al exportar la plantilla desde una conversación.",
         "INVALID": "Usa letras o números para que podamos armar el nombre de la variable."
       }
     },
@@ -170,7 +170,7 @@
       "TITLE": "Crear con LuxoIA",
       "DESCRIPTION": "Sube una captura de una conversación de Messenger. LuxoIA extrae los textos y sugiere variables.",
       "UPLOAD": "Subir pantallazo de Messenger",
-      "UPLOADING": "LuxoIA está leyendo la captura",
+      "UPLOADING": "LuxoIA está leyendo la captura\u2026",
       "HINT": "PNG, JPG o WebP, hasta 5 MB.",
       "TOO_LARGE": "La imagen pesa más de 5 MB. Prueba con una captura más liviana.",
       "WRONG_TYPE": "Sube una imagen PNG, JPG o WebP.",
@@ -180,7 +180,7 @@
       "FAILED": "LuxoIA no pudo leer la captura. Intenta con una imagen más nítida.",
       "TITLE_FALLBACK": "Plantilla desde captura",
       "COLLAPSE": "Ocultar el panel de LuxoIA",
-      "EXPAND": "Crear con LuxoIA",
+      "EXPAND": "Mostrar el panel de LuxoIA",
       "SUGGESTIONS": {
         "TITLE": "Variables sugeridas",
         "DESCRIPTION": "Elige los valores que cambian de una conversación a otra. Reemplazamos todas sus apariciones en el guion.",

@@ -170,7 +170,7 @@
       "TITLE": "Create with LuxoIA",
       "DESCRIPTION": "Upload a screenshot of a Messenger conversation. LuxoIA extracts the texts and suggests variables.",
       "UPLOAD": "Upload a Messenger screenshot",
-      "UPLOADING": "LuxoIA is reading the screenshot",
+      "UPLOADING": "LuxoIA is reading the screenshot\u2026",
       "HINT": "PNG, JPG or WebP, up to 5 MB.",
       "TOO_LARGE": "The image is over 5 MB. Try a smaller screenshot.",
       "WRONG_TYPE": "Upload a PNG, JPG or WebP image.",
@@ -180,7 +180,7 @@
       "FAILED": "LuxoIA could not read the screenshot. Try a sharper image.",
       "TITLE_FALLBACK": "Template from a screenshot",
       "COLLAPSE": "Hide the LuxoIA panel",
-      "EXPAND": "Create with LuxoIA",
+      "EXPAND": "Show the LuxoIA panel",
       "SUGGESTIONS": {
         "TITLE": "Suggested variables",
         "DESCRIPTION": "Pick the values that change from one conversation to the next. We replace every occurrence in the script.",
