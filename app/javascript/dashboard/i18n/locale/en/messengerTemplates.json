@@ -53,7 +53,6 @@
       "CANCEL": "Cancel",
       "SAVING": "Saving",
       "INVALID": "Check the warnings in the editor before saving.",
-      "DEFINITION_ERROR": "Fix the highlighted messages before saving.",
       "CREATE_SUCCESS": "Template created.",
       "UPDATE_SUCCESS": "Template updated.",
       "COPY_SUCCESS": "Copy saved as a new template.",
