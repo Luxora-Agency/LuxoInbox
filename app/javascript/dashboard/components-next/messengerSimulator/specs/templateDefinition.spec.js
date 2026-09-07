@@ -154,6 +154,38 @@ it('accepts any well-formed custom attribute key, like the server does', () => {
   ).toEqual([]);
 });
 
+// `MessengerTemplates::Variables::INNER_SPACE` enumerates exactly the code points
+// JavaScript's `\s` matches, so a token pasted with a non-breaking space or a BOM is
+// accepted here and stripped there instead of tripping `expression_not_allowed`.
+it('tolerates the same unicode spacing the server pattern tolerates', () => {
+  const allowed = ['contact.name'];
+  expect(
+    validateTemplateVariables('{{\u00A0contact.name\u00A0}}', allowed)
+  ).toEqual([]);
+  expect(
+    validateTemplateVariables('{{\uFEFFcontact.name\u3000}}', allowed)
+  ).toEqual([]);
+  expect(
+    validateTemplateVariables('{{\u00A0contact.plan\u00A0}}', allowed)
+  ).toEqual(['{{\u00A0contact.plan\u00A0}}']);
+  expect(
+    resolveMessengerTemplate(
+      {
+        ...definition,
+        business_name: 'Luxora',
+        messages: [
+          {
+            sender: 'outgoing',
+            text: '{{\u00A0contact.name\u00A0}}',
+            time: '',
+          },
+        ],
+      },
+      context
+    ).messages[0].text
+  ).toBe('Taylor');
+});
+
 it('merges the server catalog with contact attributes into ordered groups', () => {
   const catalog = buildVariableCatalog(
     [
