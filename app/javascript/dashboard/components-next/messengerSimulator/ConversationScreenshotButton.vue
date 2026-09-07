@@ -341,7 +341,7 @@ onBeforeUnmount(() => {
       :show-search="menuView === 'templates'"
       :search-placeholder="t('MESSENGER_TEMPLATES.CONVERSATION_EXPORT.SEARCH')"
       empty-state-message="MESSENGER_TEMPLATES.CONVERSATION_EXPORT.EMPTY"
-      class="top-full mt-1 w-64 ltr:right-0 rtl:left-0"
+      class="top-full mt-1 w-64 ltr:left-0 rtl:right-0 xl:ltr:left-auto xl:ltr:right-0 xl:rtl:right-auto xl:rtl:left-0"
       @action="handleAction($event)"
     >
       <template #trailing-icon="{ item }">
