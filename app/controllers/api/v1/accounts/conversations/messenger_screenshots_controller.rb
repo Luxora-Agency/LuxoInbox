@@ -56,6 +56,8 @@ class Api::V1::Accounts::Conversations::MessengerScreenshotsController < Api::V1
   end
 
   def contact_payload
-    MessengerScreenshot::ContactPresenter.new(@conversation.contact).as_json.except(:phone)
+    # The real-history export keeps its original shape; the presenter's wider template
+    # fields belong to the template context endpoint only.
+    MessengerScreenshot::ContactPresenter.new(@conversation.contact).as_json.slice(:name, :avatar_data)
   end
 end

@@ -27,6 +27,12 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  // Without a target the back button walks the history, which can leave the section
+  // entirely when the page was deep-linked or reloaded.
+  backUrl: {
+    type: [String, Object],
+    default: '',
+  },
   searchPlaceholder: {
     type: String,
     default: '',
@@ -46,6 +52,7 @@ const helpURL = getHelpUrlForFeature(props.featureName);
       v-if="backButtonLabel"
       compact
       :button-label="backButtonLabel"
+      :back-url="backUrl"
       class="my-1"
     />
     <div

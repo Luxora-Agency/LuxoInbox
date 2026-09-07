@@ -1,15 +1,22 @@
 <script setup>
-import { computed, ref, nextTick, onBeforeUnmount } from 'vue';
+import { computed, ref, nextTick, onBeforeUnmount, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { authorizeMessengerSimulator } from 'dashboard/api/messengerSimulator';
+import { listMessengerTemplateVariables } from 'dashboard/api/messengerTemplates';
+import { useStore } from 'dashboard/composables/store';
 import Button from 'dashboard/components-next/button/Button.vue';
 import Input from 'dashboard/components-next/input/Input.vue';
 import MessengerSimulatorPreview from './MessengerSimulatorPreview.vue';
 import { readAvatar } from './avatar';
 import {
-  TEMPLATE_VARIABLES,
+  buildAgentContext,
+  buildSampleContact,
+  buildVariableCatalog,
   resolveMessengerTemplate,
+  splitDisplayName,
+  validateTemplateVariables,
 } from './templateDefinition';
+import MessengerVariablePicker from './MessengerVariablePicker.vue';
 import MessengerScreenshotRenderer from './MessengerScreenshotRenderer.vue';
 
 const props = defineProps({
@@ -60,6 +67,7 @@ const loadExample = () => {
 };
 const rendererRef = ref(null);
 const composerRef = ref(null);
+const composerBoxRef = ref(null);
 const editingId = ref(null);
 const showTime = ref(false);
 const draft = ref({ sender: 'incoming', text: '', time: '' });
@@ -83,24 +91,122 @@ const templateDefinition = computed(() => ({
     time,
   })),
 }));
+const store = useStore();
+const customAttributes = computed(
+  () => store?.getters['attributes/getAttributes'] ?? []
+);
+const currentUser = computed(() => store?.getters.getCurrentUser ?? {});
+// Static keys stay server-owned so the allowlist is never duplicated on the client.
+// Settings loads them into the store; the simulator fetches them on its own.
+const fetchedVariables = ref([]);
+const storeVariables = computed(
+  () => store?.getters['messengerTemplates/getVariables'] ?? []
+);
+const serverVariables = computed(() =>
+  storeVariables.value.length ? storeVariables.value : fetchedVariables.value
+);
+const variableLoadError = ref(false);
+const variableCatalog = computed(() =>
+  buildVariableCatalog(serverVariables.value, customAttributes.value, t)
+);
+const allowedVariableKeys = computed(() =>
+  variableCatalog.value.map(entry => entry.key)
+);
+// Without the server catalog there is no allowlist to mirror, so authoring is not
+// blocked here; the server still rejects unknown variables on save.
+const variableErrors = computed(() => {
+  if (!props.initialDefinition || !serverVariables.value.length) return [];
+  const definition = templateDefinition.value;
+  return [
+    definition.business_name,
+    ...definition.messages.flatMap(message => [message.text, message.time]),
+  ]
+    .flatMap(text => validateTemplateVariables(text, allowedVariableKeys.value))
+    .filter((token, index, tokens) => tokens.indexOf(token) === index);
+});
+// The preview contact is one identity: the name shown in the bubble header also drives
+// `{{contact.first_name}}` and `{{contact.last_name}}`, split like the server presenter.
+const previewContext = computed(() => ({
+  contact: {
+    ...buildSampleContact(variableCatalog.value),
+    ...splitDisplayName(participants.value.incoming.name),
+    avatar_data: participants.value.incoming.avatar,
+  },
+  agent: buildAgentContext(currentUser.value),
+}));
 const renderedContent = computed(() =>
   props.initialDefinition
-    ? resolveMessengerTemplate(templateDefinition.value, {
-        name: participants.value.incoming.name,
-        phone: t('MESSENGER_SIMULATOR.TEMPLATES.SAMPLE_PHONE'),
-        avatar_data: participants.value.incoming.avatar,
-      })
+    ? resolveMessengerTemplate(templateDefinition.value, previewContext.value)
     : { participants: participants.value, messages: previewMessages.value }
 );
 const variableLimit = ref(false);
-const variableLabels = computed(() => ({
-  name: t('MESSENGER_SIMULATOR.TEMPLATES.VARIABLE_NAME'),
-  phone: t('MESSENGER_SIMULATOR.TEMPLATES.VARIABLE_PHONE'),
-}));
-const insertVariable = async variable => {
+const showVariablePicker = ref(false);
+const variableAnchor = ref(null);
+
+const CARET_MIRROR_STYLES = [
+  'boxSizing',
+  'width',
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+  'borderTopWidth',
+  'borderRightWidth',
+  'borderBottomWidth',
+  'borderLeftWidth',
+  'fontFamily',
+  'fontSize',
+  'fontWeight',
+  'fontStyle',
+  'letterSpacing',
+  'lineHeight',
+  'textIndent',
+  'textTransform',
+  'wordSpacing',
+];
+
+// A textarea exposes no caret coordinates, so an off-screen mirror of the text before
+// the caret gives the line offset the picker anchors to, relative to the composer box.
+const measureCaret = () => {
+  const input = composerRef.value;
+  const box = composerBoxRef.value;
+  if (!input || !box) return null;
+  const styles = window.getComputedStyle(input);
+  const mirror = document.createElement('div');
+  CARET_MIRROR_STYLES.forEach(name => {
+    mirror.style[name] = styles[name];
+  });
+  mirror.style.position = 'absolute';
+  mirror.style.top = '0';
+  mirror.style.left = '-9999px';
+  mirror.style.height = 'auto';
+  mirror.style.visibility = 'hidden';
+  mirror.style.whiteSpace = 'pre-wrap';
+  mirror.style.overflowWrap = 'break-word';
+  mirror.textContent = input.value.slice(0, input.selectionStart);
+  const caret = document.createElement('span');
+  caret.textContent = '\u200b';
+  mirror.appendChild(caret);
+  document.body.appendChild(mirror);
+  const caretTop = caret.offsetTop;
+  mirror.remove();
+  const inputRect = input.getBoundingClientRect();
+  const boxRect = box.getBoundingClientRect();
+  return {
+    top: inputRect.top - boxRect.top + caretTop - input.scrollTop,
+    height: parseFloat(styles.lineHeight) || input.clientHeight,
+  };
+};
+
+const openVariablePicker = () => {
+  variableAnchor.value = measureCaret();
+  showVariablePicker.value = true;
+};
+
+const insertVariable = async token => {
+  showVariablePicker.value = false;
   const input = composerRef.value;
   if (!input || input.disabled) return;
-  const token = `{{contact.${variable}}}`;
   const start = input.selectionStart;
   const end = input.selectionEnd;
   const text =
@@ -133,12 +239,22 @@ const isValid = computed(
     (editingId.value === null || Boolean(draft.value.text.trim())) &&
     (!draft.value.text.trim() || Boolean(canSubmit.value)) &&
     previewMessages.value.length > 0 &&
-    previewMessages.value.every(message => message.text.trim())
+    previewMessages.value.every(message => message.text.trim()) &&
+    variableErrors.value.length === 0
 );
 const participantLabels = computed(() => ({
   incoming: t('MESSENGER_SIMULATOR.INCOMING'),
-  outgoing: t('MESSENGER_SIMULATOR.OUTGOING'),
+  outgoing: props.initialDefinition
+    ? t('MESSENGER_SIMULATOR.TEMPLATES.BUSINESS_NAME')
+    : t('MESSENGER_SIMULATOR.OUTGOING'),
 }));
+// In template mode the contact comes from the conversation at export time, so only the
+// business name is authored here.
+const editableParticipants = computed(() =>
+  props.initialDefinition
+    ? { outgoing: participants.value.outgoing }
+    : participants.value
+);
 const exportLabel = computed(() => {
   if (isExporting.value) return t('MESSENGER_SIMULATOR.EXPORTING');
   return props.initialDefinition
@@ -289,6 +405,18 @@ defineExpose({
       avatar: avatarSource.value,
     }),
   getDefinition: () => (isValid.value ? templateDefinition.value : null),
+  getValidationErrors: () => [...variableErrors.value],
+});
+
+onMounted(async () => {
+  if (!props.initialDefinition || storeVariables.value.length) return;
+  try {
+    const { data } = await listMessengerTemplateVariables(props.accountId);
+    if (isActive) fetchedVariables.value = data || [];
+  } catch {
+    fetchedVariables.value = [];
+    variableLoadError.value = true;
+  }
 });
 
 onBeforeUnmount(() => {
@@ -301,7 +429,10 @@ onBeforeUnmount(() => {
     <div
       class="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-3 border-b border-n-weak bg-n-solid-1 px-5 py-3 lg:px-8"
     >
-      <p class="mb-0 max-w-prose text-xs text-n-slate-11">
+      <p
+        v-if="!initialDefinition"
+        class="mb-0 max-w-prose text-xs text-n-slate-11"
+      >
         {{ t('MESSENGER_SIMULATOR.LOCAL_ONLY') }}
       </p>
       <Button
@@ -316,12 +447,25 @@ onBeforeUnmount(() => {
       <p v-if="errorKey" role="alert" class="mb-0 text-sm text-n-ruby-11">
         {{ errorMessage }}
       </p>
+      <ul
+        v-else-if="variableErrors.length"
+        role="alert"
+        class="m-0 list-none space-y-1 p-0 text-sm text-n-ruby-11"
+      >
+        <li v-for="token in variableErrors" :key="token">
+          {{ t('MESSENGER_TEMPLATES.VARIABLES.UNKNOWN', { token }) }}
+        </li>
+      </ul>
       <p
         v-else-if="!isValid"
         role="status"
         class="mb-0 text-sm text-n-slate-11"
       >
-        {{ t('MESSENGER_SIMULATOR.VALIDATION') }}
+        {{
+          initialDefinition
+            ? t('MESSENGER_SIMULATOR.TEMPLATES.VALIDATION')
+            : t('MESSENGER_SIMULATOR.VALIDATION')
+        }}
       </p>
       <p v-else-if="success" role="status" class="mb-0 text-sm text-n-teal-11">
         {{
@@ -345,21 +489,24 @@ onBeforeUnmount(() => {
             class="cursor-pointer rounded-lg text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-n-brand"
           >
             <span class="font-semibold">{{
-              participants.incoming.name || participantLabels.incoming
+              initialDefinition
+                ? participants.outgoing.name || participantLabels.outgoing
+                : participants.incoming.name || participantLabels.incoming
             }}</span>
             <span class="ml-2 text-n-slate-11">{{
-              t('MESSENGER_SIMULATOR.EDIT_PARTICIPANTS')
+              initialDefinition
+                ? t('MESSENGER_SIMULATOR.TEMPLATES.EDIT_BUSINESS')
+                : t('MESSENGER_SIMULATOR.EDIT_PARTICIPANTS')
             }}</span>
           </summary>
           <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
-              v-for="(person, sender) in participants"
+              v-for="(person, sender) in editableParticipants"
               :id="`simulator-name-${sender}`"
               :key="sender"
               v-model="person.name"
               :label="participantLabels[sender]"
               :maxlength="60"
-              :disabled="Boolean(initialDefinition) && sender === 'incoming'"
               required
             />
             <label
@@ -524,7 +671,17 @@ onBeforeUnmount(() => {
               </div>
             </li>
           </ol>
-          <div class="mt-4 rounded-xl border border-n-weak bg-n-solid-1 p-3">
+          <div
+            ref="composerBoxRef"
+            class="relative mt-4 rounded-xl border border-n-weak bg-n-solid-1 p-3"
+          >
+            <MessengerVariablePicker
+              v-if="showVariablePicker"
+              :caret-position="variableAnchor"
+              :entries="variableCatalog"
+              @insert="insertVariable"
+              @close="showVariablePicker = false"
+            />
             <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
               <div
                 class="flex min-w-0 gap-1"
@@ -551,21 +708,26 @@ onBeforeUnmount(() => {
               v-if="initialDefinition"
               class="mb-2 flex flex-wrap items-center gap-2"
             >
-              <span class="text-xs text-n-slate-11">{{
-                t('MESSENGER_SIMULATOR.TEMPLATES.INSERT')
-              }}</span>
               <Button
-                v-for="variable in TEMPLATE_VARIABLES"
-                :key="variable"
                 variant="ghost"
+                color="slate"
                 size="sm"
-                :label="variableLabels[variable]"
+                icon="i-lucide-braces"
+                :label="t('MESSENGER_TEMPLATES.VARIABLES.BUTTON')"
                 :disabled="
                   editingId === null && messages.length >= MAX_MESSAGES
                 "
+                :aria-expanded="showVariablePicker"
                 @mousedown.prevent
-                @click="insertVariable(variable)"
+                @click="openVariablePicker"
               />
+              <span
+                v-if="variableLoadError"
+                role="status"
+                class="text-xs text-n-ruby-11"
+              >
+                {{ t('MESSENGER_TEMPLATES.VARIABLES.LOAD_ERROR') }}
+              </span>
             </div>
             <p
               v-if="variableLimit"

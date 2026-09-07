@@ -28,10 +28,107 @@ RSpec.describe 'Messenger templates API', type: :request do
     other_template = create(:messenger_template)
     template
     get path, headers: agent.create_new_auth_token
-    expect(response.parsed_body.pluck('id')).to eq([template.id])
+    expect(response.parsed_body.pluck('id')).to include(template.id)
+    expect(response.parsed_body.pluck('id')).not_to include(other_template.id)
     expect(response.headers['Cache-Control']).to include('no-store')
     get "#{path}/#{other_template.id}", headers: agent.create_new_auth_token
     expect(response).to have_http_status(:not_found)
+  end
+
+  it 'seeds the default script once and lists it ahead of a title that sorts earlier' do
+    create(:messenger_template, account: account, title: 'A script that sorts first')
+    get path, headers: agent.create_new_auth_token
+    expect(response.parsed_body.first['is_default']).to be(true)
+    expect(response.parsed_body.first['title']).to eq(MessengerTemplates::DefaultTemplate.title(account.locale))
+    get path, headers: admin.create_new_auth_token
+    expect(response.parsed_body.count { |item| item['is_default'] }).to eq(1)
+    expect(account.messenger_templates.count).to eq(2)
+  end
+
+  it 'keeps the default deleted until the admin asks for it back' do
+    get path, headers: admin.create_new_auth_token
+    delete "#{path}/#{response.parsed_body.first['id']}", headers: admin.create_new_auth_token
+    get path, headers: admin.create_new_auth_token
+    expect(response.parsed_body).to be_empty
+    expect(account.messenger_templates.count).to be_zero
+  end
+
+  it 'recreates the default after a delete and resets it after an edit' do
+    get path, headers: admin.create_new_auth_token
+    delete "#{path}/#{response.parsed_body.first['id']}", headers: admin.create_new_auth_token
+    post "#{path}/restore_default", headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:ok)
+    expect(response.parsed_body['is_default']).to be(true)
+    restored_id = response.parsed_body['id']
+    patch "#{path}/#{restored_id}", params: { messenger_template: { title: 'Renamed' } },
+                                    headers: admin.create_new_auth_token, as: :json
+    post "#{path}/restore_default", headers: admin.create_new_auth_token, as: :json
+    expect(response.parsed_body['id']).to eq(restored_id)
+    expect(response.parsed_body['title']).to eq(MessengerTemplates::DefaultTemplate.title(account.locale))
+    expect(account.messenger_templates.count).to eq(1)
+  end
+
+  it 'denies restoring the default to agents and to other accounts' do
+    post "#{path}/restore_default", headers: agent.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:unauthorized)
+    post "/api/v1/accounts/#{create(:account).id}/messenger_templates/restore_default",
+         headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:unauthorized)
+    expect(account.messenger_templates.count).to be_zero
+  end
+
+  it 'ignores a default flag sent by the client on create and on update' do
+    post path, params: { messenger_template: attributes.merge(is_default: true) },
+               headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:created)
+    expect(response.parsed_body['is_default']).to be(false)
+    patch "#{path}/#{response.parsed_body['id']}", params: { messenger_template: { is_default: true } },
+                                                   headers: admin.create_new_auth_token, as: :json
+    expect(response.parsed_body['is_default']).to be(false)
+  end
+
+  it 'rejects a duplicate title within the account and names the field' do
+    template
+    post path, params: { messenger_template: attributes }, headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response.parsed_body['attributes']).to include('title')
+    expect(response.parsed_body['message']).to include(I18n.t('errors.messenger_template.title.taken'))
+    expect(account.messenger_templates.count).to eq(1)
+  end
+
+  it 'explains which variable a definition may not use' do
+    definition = attributes[:definition].merge(messages: [{ sender: 'outgoing', text: 'Hi {{contact.nickname}}', time: '' }])
+    post path, params: { messenger_template: attributes.merge(definition: definition) },
+               headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:unprocessable_entity)
+    expect(response.parsed_body['message']).to include('{{contact.nickname}}')
+    expect(account.messenger_templates.count).to be_zero
+  end
+
+  it 'accepts the widened registry, spaced tokens and custom attributes' do
+    definition = attributes[:definition].merge(
+      messages: [{ sender: 'outgoing', text: 'Hi {{ contact.first_name }} on {{contact.custom_attribute.plan}} - {{agent.name}}', time: '' }]
+    )
+    post path, params: { messenger_template: attributes.merge(definition: definition) },
+               headers: admin.create_new_auth_token, as: :json
+    expect(response).to have_http_status(:created)
+    expect(response.parsed_body['definition']['messages'][0]['text']).to include('{{contact.custom_attribute.plan}}')
+  end
+
+  it 'serves the shared variable registry to anyone who can read the library' do
+    get "#{path}/variables", headers: agent.create_new_auth_token
+    expect(response).to have_http_status(:ok)
+    expect(response.parsed_body.pluck('key')).to include('contact.name', 'contact.phone', 'contact.company_name', 'agent.first_name')
+    expect(response.parsed_body.map { |variable| variable['group'] }.uniq).to contain_exactly('contact', 'agent')
+    expect(response.parsed_body.first.keys).to contain_exactly('key', 'label_key', 'sample_key', 'group', 'sample')
+  end
+
+  it 'denies the variable registry to nonmembers and disabled accounts' do
+    get "#{path}/variables", headers: create(:user).create_new_auth_token
+    expect(response).to have_http_status(:unauthorized)
+    account.disable_features!('messenger_simulator')
+    get "#{path}/variables", headers: admin.create_new_auth_token
+    expect(response).to have_http_status(:unauthorized)
   end
 
   it 'denies agent writes' do

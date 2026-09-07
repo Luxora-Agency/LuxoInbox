@@ -34,6 +34,10 @@ en:
     attributes:
       account:
         feature_messenger_simulator: Messenger Simulator
+      messenger_template:
+        title: Title
+        definition: Template
+        is_default: This template
   hello: 'Hello world'
   inbox:
     reauthorization:
@@ -51,6 +55,9 @@ en:
     saml_not_available: SAML authentication is not available in this installation.
     inbox_deletetion_response: Your inbox deletion request will be processed in some time.
 
+  messenger_templates:
+    default:
+      title: Ana Suárez lead capture (default)
   data_imports:
     intercom:
       activities:
@@ -199,6 +206,25 @@ en:
     custom_attribute_definition:
       attribute_key_format: must only contain letters, numbers, underscores, hyphens, and dots
       key_conflict: The provided key is not allowed as it might conflict with default attributes.
+    messenger_template:
+      title:
+        taken: is already used by another Messenger template in this account
+      is_default:
+        taken: is already the default template in this account
+      definition:
+        invalid: is not in the format Messenger expects
+        invalid_avatar: uses a contact photo option that does not exist
+        business_name_blank: needs a business name
+        business_name_too_long: 'has a business name longer than %{limit} characters'
+        messages_missing: needs at least one message
+        messages_limit: 'cannot have more than %{limit} messages'
+        message_invalid: 'has unexpected fields in message %{position}'
+        message_blank: 'has message %{position} empty'
+        message_too_long: 'has message %{position} longer than %{limit} characters'
+        invalid_sender: 'does not say who sends message %{position}: it must be the contact or the business'
+        invalid_time: 'has an invalid time in message %{position}'
+        unknown_variable: 'uses an unsupported variable: %{token}'
+        expression_not_allowed: must not contain template expressions or unmatched braces
     mfa:
       already_enabled: MFA is already enabled
       not_enabled: MFA is not enabled

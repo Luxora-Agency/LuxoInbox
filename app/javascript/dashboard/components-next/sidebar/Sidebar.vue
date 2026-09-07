@@ -975,6 +975,24 @@ const menuItems = computed(() => {
           icon: 'i-lucide-layout-template',
           to: accountScopedRoute('settings_templates'),
         },
+        ...(isFeatureEnabledonAccount.value(
+          accountId.value,
+          FEATURE_FLAGS.MESSENGER_SIMULATOR
+        )
+          ? [
+              {
+                name: 'Settings Messenger Templates',
+                label: t('SIDEBAR.MESSENGER_TEMPLATES'),
+                icon: 'i-lucide-image',
+                activeOn: [
+                  'messenger_templates_list',
+                  'messenger_templates_new',
+                  'messenger_templates_edit',
+                ],
+                to: accountScopedRoute('messenger_templates_list'),
+              },
+            ]
+          : []),
         {
           name: 'Settings Automation',
           label: t('SIDEBAR.AUTOMATION'),

@@ -1,0 +1,155 @@
+{
+  "MESSENGER_TEMPLATES": {
+    "SETTINGS": {
+      "TITLE": "Messenger templates",
+      "DESCRIPTION": "Save reusable Messenger scripts with dynamic variables. Load them in the simulator or export them from a conversation with the real contact details.",
+      "NEW": "New template",
+      "SEARCH_PLACEHOLDER": "Search templates",
+      "LOADING": "Loading templates",
+      "LOAD_ERROR": "We could not load your templates. Check your connection and try again.",
+      "TABLE": {
+        "TITLE": "Title",
+        "MESSAGES": "Messages",
+        "UPDATED_AT": "Last updated",
+        "ACTIONS": "Actions"
+      },
+      "MESSAGE_COUNT": "{count} message | {count} messages",
+      "NEVER_UPDATED": "Never",
+      "EDIT": "Edit template",
+      "DUPLICATE": "Duplicate template",
+      "DELETE": "Delete template",
+      "EMPTY": {
+        "TITLE": "No templates yet",
+        "DESCRIPTION": "A template stores a fictional Messenger script. Add variables such as the contact name or a custom attribute and they are filled in when you export from a conversation.",
+        "ACTION": "Create your first template"
+      },
+      "NO_RESULTS": {
+        "DESCRIPTION": "No template matches “{query}”. Try a different title."
+      },
+      "DELETE_CONFIRM": {
+        "MESSAGE": "Removed for everyone in this account.",
+        "CONFIRM": "Yes, delete it"
+      },
+      "DELETE_SUCCESS": "Template deleted.",
+      "DELETE_ERROR": "We could not delete the template. Try again.",
+      "DUPLICATE_SUCCESS": "Template duplicated.",
+      "DUPLICATE_ERROR": "We could not duplicate the template. Try again.",
+      "DUPLICATE_TITLE": "{title} (copy)",
+      "DUPLICATE_TITLE_N": "{title} (copy {count})"
+    },
+    "DEFAULT": {
+      "BADGE": "Default",
+      "RESTORE": "Restore the default template",
+      "RESTORE_CONFIRM": "Yes, restore it",
+      "RESTORE_HINT": "Replaces the title and the messages of the default template.",
+      "RESTORED": "Default template restored.",
+      "RESTORE_ERROR": "We could not restore the default template. Try again."
+    },
+    "EDITOR": {
+      "NEW_TITLE": "New Messenger template",
+      "EDIT_TITLE": "Edit Messenger template",
+      "DESCRIPTION": "Write the script once. Variables are replaced with real data when you export the template from a conversation.",
+      "BACK": "Back to templates",
+      "NOT_FOUND": "This template no longer exists. It may have been deleted.",
+      "NAME": {
+        "LABEL": "Template title",
+        "PLACEHOLDER": "e.g. Delivery confirmation",
+        "REQUIRED": "Add a title so you can find this template later."
+      },
+      "SAVE": "Save template",
+      "SAVE_COPY": "Save a copy",
+      "CANCEL": "Cancel",
+      "SAVING": "Saving",
+      "INVALID": "Check the warnings in the editor before saving.",
+      "CREATE_SUCCESS": "Template created.",
+      "UPDATE_SUCCESS": "Template updated.",
+      "COPY_SUCCESS": "Copy saved as a new template.",
+      "SAVE_ERROR": "We could not save the template. Check your connection and try again.",
+      "UNSAVED": {
+        "TITLE": "Leave without saving?",
+        "MESSAGE": "You have unsaved changes in this template. They will be lost.",
+        "CONFIRM": "Yes, discard changes",
+        "CANCEL": "No, keep editing"
+      }
+    },
+    "VARIABLES": {
+      "BUTTON": "Insert variable",
+      "SEARCH_PLACEHOLDER": "Search variables",
+      "EMPTY": "No variable matches your search.",
+      "LOAD_ERROR": "We could not load the available variables. Try again.",
+      "SAMPLE": "e.g. {sample}",
+      "UNKNOWN": "{token} is not an available variable. Pick one from the list.",
+      "GROUPS": {
+        "CONTACT": "Contact",
+        "CUSTOM_ATTRIBUTES": "Custom attributes",
+        "AGENT": "Agent"
+      },
+      "LABELS": {
+        "CONTACT_NAME": "Full name",
+        "CONTACT_FIRST_NAME": "First name",
+        "CONTACT_LAST_NAME": "Last name",
+        "CONTACT_EMAIL": "Email",
+        "CONTACT_PHONE": "Phone",
+        "CONTACT_PHONE_NUMBER": "Phone number",
+        "CONTACT_IDENTIFIER": "Identifier",
+        "CONTACT_COUNTRY_CODE": "Country code",
+        "CONTACT_CITY": "City",
+        "CONTACT_COMPANY_NAME": "Company",
+        "AGENT_NAME": "Agent full name",
+        "AGENT_FIRST_NAME": "Agent first name",
+        "AGENT_LAST_NAME": "Agent last name",
+        "AGENT_EMAIL": "Agent email"
+      },
+      "SAMPLES": {
+        "TEXT": "Gold plan",
+        "NUMBER": "42",
+        "CURRENCY": "1,250.00",
+        "DATE": "2026-03-14",
+        "LIST": "Premium",
+        "CHECKBOX": "Yes",
+        "LINK": "https://example.com",
+        "FALLBACK": "Sample value",
+        "CONTACT_NAME": "Alex Morgan",
+        "CONTACT_FIRST_NAME": "Alex",
+        "CONTACT_LAST_NAME": "Morgan",
+        "CONTACT_EMAIL": "alex.morgan{'@'}example.com",
+        "CONTACT_PHONE": "+1 202-555-0123",
+        "CONTACT_PHONE_NUMBER": "+1 202-555-0123",
+        "CONTACT_IDENTIFIER": "CU-10482",
+        "CONTACT_COUNTRY_CODE": "US",
+        "CONTACT_CITY": "Austin",
+        "CONTACT_COMPANY_NAME": "Acme Inc.",
+        "AGENT_NAME": "Jordan Lee",
+        "AGENT_FIRST_NAME": "Jordan",
+        "AGENT_LAST_NAME": "Lee",
+        "AGENT_EMAIL": "jordan.lee{'@'}example.com"
+      }
+    },
+    "SIMULATOR": {
+      "LOAD_TEMPLATE": "Load template",
+      "SELECT_LABEL": "Choose a template",
+      "MANUAL": "Manual simulation",
+      "MANAGE": "Manage templates",
+      "LOADING": "Loading templates",
+      "EMPTY": "No templates saved yet.",
+      "ERROR": "We could not load your templates. Your draft is unchanged; try again.",
+      "LOADED": "Template loaded in the editor.",
+      "DISCARD_DRAFT": "Discard draft and load",
+      "DRAFT_AVAILABLE": "We kept the draft you were working on in this account.",
+      "RESTORE_DRAFT": "Restore draft",
+      "DISCARD_SAVED_DRAFT": "Discard draft",
+      "DRAFT_RESTORED": "We restored the draft you had open."
+    },
+    "CONVERSATION_EXPORT": {
+      "MENU_LABEL": "Messenger screenshot options",
+      "REAL_HISTORY": "Real history",
+      "FROM_TEMPLATE": "From template…",
+      "EMPTY": "No templates saved yet. Create one in Settings.",
+      "ERROR": "We could not export this template. Check your connection and try again.",
+      "CONTACT_CHANGED": "The contact details changed while the screenshot was being prepared. Reopen the menu and try again.",
+      "SUCCESS": "Template screenshot downloaded.",
+      "BACK": "Back",
+      "SEARCH": "Search templates"
+    }
+  }
+}

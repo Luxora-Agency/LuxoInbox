@@ -17,6 +17,12 @@
 #To learn more, please read the Rails Internationalization guide
 #available at https://guides.rubyonrails.org/i18n.html.
 es:
+  activerecord:
+    attributes:
+      messenger_template:
+        title: El título
+        definition: La plantilla
+        is_default: Esta plantilla
   hello: 'Hola mundo'
   inbox:
     reauthorization:
@@ -33,6 +39,9 @@ es:
     login_saml_user: This account uses SAML authentication. Please sign in through your organization's SAML provider.
     saml_not_available: SAML authentication is not available in this installation.
     inbox_deletetion_response: Su solicitud de eliminación de la bandeja de entrada será procesada en algún tiempo.
+  messenger_templates:
+    default:
+      title: Captación Ana Suárez (por defecto)
   data_imports:
     intercom:
       activities:
@@ -177,6 +186,25 @@ es:
     custom_attribute_definition:
       attribute_key_format: must only contain letters, numbers, underscores, hyphens, and dots
       key_conflict: The provided key is not allowed as it might conflict with default attributes.
+    messenger_template:
+      title:
+        taken: ya está en uso por otra plantilla de Messenger de esta cuenta
+      is_default:
+        taken: ya es la plantilla por defecto de esta cuenta
+      definition:
+        invalid: no tiene el formato que espera Messenger
+        invalid_avatar: usa una opción de foto de contacto que no existe
+        business_name_blank: necesita un nombre de negocio
+        business_name_too_long: 'tiene un nombre de negocio de más de %{limit} caracteres'
+        messages_missing: necesita al menos un mensaje
+        messages_limit: 'no puede tener más de %{limit} mensajes'
+        message_invalid: 'tiene campos inesperados en el mensaje %{position}'
+        message_blank: 'tiene el mensaje %{position} vacío'
+        message_too_long: 'tiene el mensaje %{position} con más de %{limit} caracteres'
+        invalid_sender: 'no indica quién envía el mensaje %{position}: debe ser el contacto o el negocio'
+        invalid_time: 'tiene una hora inválida en el mensaje %{position}'
+        unknown_variable: 'usa una variable no permitida: %{token}'
+        expression_not_allowed: no debe contener expresiones de plantilla ni llaves sin cerrar
     mfa:
       already_enabled: MFA is already enabled
       not_enabled: MFA is not enabled
