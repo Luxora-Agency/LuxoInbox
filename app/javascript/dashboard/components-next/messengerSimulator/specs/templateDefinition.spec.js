@@ -415,3 +415,53 @@ it('replaces every occurrence of an accepted suggestion without adding keys', ()
     'Hola Dana, tu cita en Clínica Luxora es el 14/03.'
   );
 });
+
+it('never re-scans a token it just inserted', () => {
+  const script = {
+    version: 1,
+    business_name: 'Tu name es Ana',
+    avatar: 'contact',
+    messages: [{ sender: 'incoming', text: 'Tu name es Ana', time: '' }],
+  };
+  const applied = applySuggestionsToDefinition(script, [
+    { key: 'contact.name', original_text: 'Ana' },
+    { key: 'manual.name', original_text: 'name' },
+  ]);
+  expect(applied.messages[0].text).toBe(
+    'Tu {{manual.name}} es {{contact.name}}'
+  );
+});
+
+it('prefers the longest original text when two suggestions overlap', () => {
+  const script = {
+    version: 1,
+    business_name: 'Luxora',
+    avatar: 'contact',
+    messages: [
+      { sender: 'incoming', text: 'Hola Ana Maria, soy Ana Maria', time: '' },
+    ],
+  };
+  const applied = applySuggestionsToDefinition(script, [
+    { key: 'contact.first_name', original_text: 'Ana' },
+    { key: 'contact.name', original_text: 'Ana Maria' },
+  ]);
+  expect(applied.messages[0].text).toBe(
+    'Hola {{contact.name}}, soy {{contact.name}}'
+  );
+});
+
+it('leaves an occurrence alone when its token would push the text past the limit', () => {
+  const script = {
+    version: 1,
+    business_name: 'Luxora',
+    avatar: 'contact',
+    messages: [
+      { sender: 'outgoing', text: `${'a'.repeat(495)} Ana`, time: '' },
+    ],
+  };
+  const applied = applySuggestionsToDefinition(script, [
+    { key: 'contact.name', original_text: 'Ana' },
+  ]);
+  expect(applied.messages[0].text).toBe(`${'a'.repeat(495)} Ana`);
+  expect(applied.messages[0].text.length).toBeLessThanOrEqual(500);
+});

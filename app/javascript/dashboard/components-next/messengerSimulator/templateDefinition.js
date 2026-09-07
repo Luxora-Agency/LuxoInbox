@@ -25,6 +25,13 @@ export const MANUAL_PREFIX = 'manual.';
 
 const MANUAL_SLUG_FORMAT = /^[a-z0-9_]{1,40}$/;
 
+// The lengths `app/models/messenger_template.rb` rejects a definition over. Only the
+// suggestion rewrite reads them: everywhere else the composer's own `maxlength` caps
+// what an admin can type.
+const BUSINESS_NAME_LIMIT = 60;
+const MESSAGE_TEXT_LIMIT = 500;
+const MESSAGE_TIME_LIMIT = 30;
+
 const MANUAL_SAMPLE_KEY = 'MESSENGER_TEMPLATES.VARIABLES.SAMPLES.MANUAL';
 
 export const isManualKey = key =>
@@ -259,31 +266,54 @@ export const buildSampleManual = catalog =>
 
 /**
  * Rewrites a definition so every occurrence of a suggestion's `original_text` becomes
- * its token. Literal replacement, so a suggestion carrying regex punctuation is safe,
- * and a token already inserted by an earlier suggestion is never re-scanned.
+ * its token. One left-to-right pass over the source text: matching is literal, so a
+ * suggestion carrying regex punctuation is safe, the longest `original_text` wins when
+ * two overlap, and a token already inserted is never re-scanned. A replacement that
+ * would push the text past the limit the server enforces is left as it was, so the
+ * result of applying suggestions is always a definition the admin can still save.
  *
  * @param {Object} definition v1 definition.
  * @param {Array} suggestions `[{key, original_text}]` the admin accepted.
  * @returns {Object} a new v1 definition with the exact same keys.
  */
 export const applySuggestionsToDefinition = (definition, suggestions) => {
-  const replacements = (suggestions || []).filter(
-    suggestion => suggestion?.key && suggestion?.original_text
-  );
-  const replace = text =>
-    replacements.reduce(
-      (result, { key, original_text: original }) =>
-        result.split(original).join(`{{${key}}}`),
-      `${text ?? ''}`
-    );
+  const replacements = (suggestions || [])
+    .filter(suggestion => suggestion?.key && suggestion?.original_text)
+    .map(({ key, original_text: original }) => ({
+      original: `${original}`,
+      token: `{{${key}}}`,
+    }))
+    .sort((left, right) => right.original.length - left.original.length);
+  const replace = (value, limit) => {
+    const source = `${value ?? ''}`;
+    let result = '';
+    let index = 0;
+    while (index < source.length) {
+      const from = index;
+      const match = replacements.find(({ original }) =>
+        source.startsWith(original, from)
+      );
+      if (match && result.length + match.token.length <= limit) {
+        result += match.token;
+        index += match.original.length;
+      } else if (match) {
+        result += match.original;
+        index += match.original.length;
+      } else {
+        result += source[index];
+        index += 1;
+      }
+    }
+    return result;
+  };
   return {
     version: definition.version,
-    business_name: replace(definition.business_name),
+    business_name: replace(definition.business_name, BUSINESS_NAME_LIMIT),
     avatar: definition.avatar,
     messages: (definition.messages || []).map(({ sender, text, time }) => ({
       sender,
-      text: replace(text),
-      time: replace(time),
+      text: replace(text, MESSAGE_TEXT_LIMIT),
+      time: replace(time, MESSAGE_TIME_LIMIT),
     })),
   };
 };
