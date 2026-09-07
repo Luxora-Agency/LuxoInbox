@@ -41,6 +41,7 @@
       "BADGE": "Por defecto",
       "RESTORE": "Restaurar plantilla por defecto",
       "RESTORE_CONFIRM": "Sí, restaurarla",
+      "RESTORE_HINT": "Reemplaza el título y los mensajes de la plantilla por defecto.",
       "RESTORED": "Restauramos la plantilla por defecto.",
       "RESTORE_ERROR": "No pudimos restaurar la plantilla por defecto. Vuelve a intentarlo."
     },

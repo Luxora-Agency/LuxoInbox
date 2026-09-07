@@ -41,6 +41,7 @@
       "BADGE": "Default",
       "RESTORE": "Restore the default template",
       "RESTORE_CONFIRM": "Yes, restore it",
+      "RESTORE_HINT": "Replaces the title and the messages of the default template.",
       "RESTORED": "Default template restored.",
       "RESTORE_ERROR": "We could not restore the default template. Try again."
     },
