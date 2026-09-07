@@ -27,6 +27,13 @@ const manageRoute = computed(() => ({
   params: { accountId: String(props.accountId) },
 }));
 
+// The store lists the account default first; the badge repeats that in the option text,
+// which is the only place a `<select>` can carry it.
+const optionLabel = record =>
+  record.is_default
+    ? `${record.title} · ${t('MESSENGER_TEMPLATES.DEFAULT.BADGE')}`
+    : record.title;
+
 const load = () => {
   const record =
     records.value.find(item => String(item.id) === selection.value) || null;
@@ -69,7 +76,7 @@ onMounted(async () => {
             :key="record.id"
             :value="String(record.id)"
           >
-            {{ record.title }}
+            {{ optionLabel(record) }}
           </option>
         </select>
       </label>

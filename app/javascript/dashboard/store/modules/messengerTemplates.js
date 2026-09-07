@@ -3,12 +3,16 @@ import {
   listMessengerTemplateVariables,
   saveMessengerTemplate,
   deleteMessengerTemplate,
+  restoreDefaultMessengerTemplate,
 } from 'dashboard/api/messengerTemplates';
 
-// Mirrors the server ordering (`ORDER BY title, id`) so a record created or
-// renamed locally lands where the API would have returned it.
-const byTitleThenId = (a, b) =>
-  String(a.title).localeCompare(String(b.title)) || a.id - b.id;
+// Mirrors the server ordering (`ORDER BY is_default DESC, title, id`) so a record
+// created or renamed locally lands where the API would have returned it, and the
+// account default always leads the list.
+const byDefaultThenTitle = (a, b) =>
+  Number(Boolean(b.is_default)) - Number(Boolean(a.is_default)) ||
+  String(a.title).localeCompare(String(b.title)) ||
+  a.id - b.id;
 
 const SET_UI_FLAG = 'SET_MESSENGER_TEMPLATE_UI_FLAG';
 const SET_RECORDS = 'SET_MESSENGER_TEMPLATES';
@@ -25,6 +29,7 @@ export const state = {
     isCreating: false,
     isUpdating: false,
     isDeleting: false,
+    isRestoring: false,
   },
 };
 
@@ -41,6 +46,9 @@ export const getters = {
   getTemplate(_state) {
     return id =>
       _state.records.find(record => record.id === Number(id)) ?? null;
+  },
+  getDefaultTemplate(_state) {
+    return _state.records.find(record => record.is_default) ?? null;
   },
 };
 
@@ -118,6 +126,22 @@ export const actions = {
     }
   },
 
+  restoreDefault: async function restoreDefault(
+    { commit, rootGetters },
+    accountId
+  ) {
+    commit(SET_UI_FLAG, { isRestoring: true });
+    try {
+      const { data } = await restoreDefaultMessengerTemplate(
+        resolveAccountId(rootGetters, accountId)
+      );
+      commit(UPSERT_RECORD, data);
+      return data;
+    } finally {
+      commit(SET_UI_FLAG, { isRestoring: false });
+    }
+  },
+
   getVariables: async function getVariables(
     { commit, rootGetters },
     accountId
@@ -144,14 +168,14 @@ export const mutations = {
   },
 
   [SET_RECORDS](_state, data) {
-    _state.records = [...data].sort(byTitleThenId);
+    _state.records = [...data].sort(byDefaultThenTitle);
   },
 
   [UPSERT_RECORD](_state, data) {
     _state.records = [
       ..._state.records.filter(record => record.id !== data.id),
       data,
-    ].sort(byTitleThenId);
+    ].sort(byDefaultThenTitle);
   },
 
   [REMOVE_RECORD](_state, id) {

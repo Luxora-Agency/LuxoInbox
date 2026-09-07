@@ -100,3 +100,16 @@ it('surfaces the server reason when the library cannot be listed', async () => {
   );
   wrapper.unmount();
 });
+
+it('lists the account default first with its badge', async () => {
+  const seeded = { id: 3, title: 'Ana', definition, is_default: true };
+  records.value = [seeded, record];
+  const wrapper = mount(Picker, { props: { accountId: 1 }, global });
+  await flushPromises();
+  expect(wrapper.findAll('option').map(option => option.text())).toEqual([
+    'MESSENGER_TEMPLATES.SIMULATOR.MANUAL',
+    'Ana \u00b7 MESSENGER_TEMPLATES.DEFAULT.BADGE',
+    'Welcome',
+  ]);
+  wrapper.unmount();
+});

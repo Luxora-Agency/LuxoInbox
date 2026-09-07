@@ -36,10 +36,19 @@ const searchQuery = ref('');
 const errorMessage = ref('');
 const pendingId = ref(null);
 
+// The store already returns the account default first; a search ranks by relevance, so
+// the default is pinned back to the top before the table renders.
+const pinDefaultFirst = list =>
+  [...list].sort(
+    (a, b) => Number(Boolean(b.is_default)) - Number(Boolean(a.is_default))
+  );
+
 const filteredRecords = computed(() => {
   const query = searchQuery.value.trim();
   if (!query) return records.value;
-  return picoSearch(records.value, query, [{ name: 'title', weight: 4 }]);
+  return pinDefaultFirst(
+    picoSearch(records.value, query, [{ name: 'title', weight: 4 }])
+  );
 });
 
 const tableHeaders = computed(() => [
@@ -116,6 +125,16 @@ const duplicate = async record => {
   }
 };
 
+const restoreDefault = async () => {
+  errorMessage.value = '';
+  try {
+    await store.dispatch('messengerTemplates/restoreDefault', accountId.value);
+    useAlert(t('MESSENGER_TEMPLATES.DEFAULT.RESTORED'));
+  } catch (error) {
+    reportError(error, t('MESSENGER_TEMPLATES.DEFAULT.RESTORE_ERROR'));
+  }
+};
+
 const remove = async record => {
   errorMessage.value = '';
   pendingId.value = record.id;
@@ -150,12 +169,23 @@ onMounted(fetchRecords);
         "
       >
         <template #actions>
-          <Button
-            data-tour="messenger-template-add"
-            :label="t('MESSENGER_TEMPLATES.SETTINGS.NEW')"
-            size="sm"
-            @click="goToNew"
-          />
+          <div class="flex flex-wrap items-center gap-2">
+            <ConfirmButton
+              color="slate"
+              variant="ghost"
+              size="sm"
+              :label="t('MESSENGER_TEMPLATES.DEFAULT.RESTORE')"
+              :confirm-label="t('MESSENGER_TEMPLATES.DEFAULT.RESTORE_CONFIRM')"
+              :is-loading="uiFlags.isRestoring"
+              @click="restoreDefault"
+            />
+            <Button
+              data-tour="messenger-template-add"
+              :label="t('MESSENGER_TEMPLATES.SETTINGS.NEW')"
+              size="sm"
+              @click="goToNew"
+            />
+          </div>
         </template>
       </BaseSettingsHeader>
     </template>
@@ -200,9 +230,17 @@ onMounted(fetchRecords);
           <BaseTableRow v-for="record in items" :key="record.id" :item="record">
             <template #default>
               <BaseTableCell class="max-w-0">
-                <span class="block truncate text-heading-3 text-n-slate-12">
-                  {{ record.title }}
-                </span>
+                <div class="flex min-w-0 items-center gap-2">
+                  <span class="truncate text-heading-3 text-n-slate-12">
+                    {{ record.title }}
+                  </span>
+                  <span
+                    v-if="record.is_default"
+                    class="flex-shrink-0 rounded-md bg-orbis-navy px-2 py-0.5 text-xs font-medium text-orbis-neon ring-1 ring-orbis-neon/25 dark:ring-orbis-neon/40"
+                  >
+                    {{ t('MESSENGER_TEMPLATES.DEFAULT.BADGE') }}
+                  </span>
+                </div>
               </BaseTableCell>
               <BaseTableCell class="w-32 whitespace-nowrap">
                 <span class="text-body-main text-n-slate-11">

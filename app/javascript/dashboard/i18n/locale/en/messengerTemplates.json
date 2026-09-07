@@ -37,6 +37,13 @@
       "DUPLICATE_TITLE": "{title} (copy)",
       "DUPLICATE_TITLE_N": "{title} (copy {count})"
     },
+    "DEFAULT": {
+      "BADGE": "Default",
+      "RESTORE": "Restore the default template",
+      "RESTORE_CONFIRM": "Yes, restore it",
+      "RESTORED": "Default template restored.",
+      "RESTORE_ERROR": "We could not restore the default template. Try again."
+    },
     "EDITOR": {
       "NEW_TITLE": "New Messenger template",
       "EDIT_TITLE": "Edit Messenger template",

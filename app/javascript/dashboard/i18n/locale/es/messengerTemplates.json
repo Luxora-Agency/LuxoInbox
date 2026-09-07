@@ -37,6 +37,13 @@
       "DUPLICATE_TITLE": "{title} (copia)",
       "DUPLICATE_TITLE_N": "{title} (copia {count})"
     },
+    "DEFAULT": {
+      "BADGE": "Por defecto",
+      "RESTORE": "Restaurar plantilla por defecto",
+      "RESTORE_CONFIRM": "Sí, restaurarla",
+      "RESTORED": "Restauramos la plantilla por defecto.",
+      "RESTORE_ERROR": "No pudimos restaurar la plantilla por defecto. Vuelve a intentarlo."
+    },
     "EDITOR": {
       "NEW_TITLE": "Nueva plantilla de Messenger",
       "EDIT_TITLE": "Editar plantilla de Messenger",

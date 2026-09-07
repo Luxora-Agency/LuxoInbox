@@ -231,9 +231,12 @@ const actionItems = computed(() => [
   },
 ]);
 
+// The store lists the account default first; the badge marks it inside the menu label.
 const templateItems = computed(() =>
   templates.value.map(template => ({
-    label: template.title,
+    label: template.is_default
+      ? `${template.title} · ${t('MESSENGER_TEMPLATES.DEFAULT.BADGE')}`
+      : template.title,
     action: 'pick',
     value: template.id,
     icon: 'i-lucide-image',

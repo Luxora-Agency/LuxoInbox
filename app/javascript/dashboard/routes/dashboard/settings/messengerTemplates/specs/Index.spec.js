@@ -10,6 +10,7 @@ const uiFlags = ref({
   isFetching: false,
   isCreating: false,
   isDeleting: false,
+  isRestoring: false,
 });
 
 vi.mock('dashboard/composables/store', () => ({
@@ -84,7 +85,12 @@ const clickLabel = async (wrapper, label) => {
 beforeEach(() => {
   dispatch.mockResolvedValue([record]);
   records.value = [record];
-  uiFlags.value = { isFetching: false, isCreating: false, isDeleting: false };
+  uiFlags.value = {
+    isFetching: false,
+    isCreating: false,
+    isDeleting: false,
+    isRestoring: false,
+  };
 });
 
 it('loads the account library and renders one row per template', async () => {
@@ -161,5 +167,46 @@ it('shows the server reason when a delete is rejected', async () => {
     'MESSENGER_TEMPLATES.SETTINGS.DELETE_CONFIRM.CONFIRM'
   );
   expect(wrapper.find('[role="alert"]').text()).toBe('Template is in use');
+  wrapper.unmount();
+});
+
+it('pins the account default first and marks it with a badge', async () => {
+  const seeded = { ...record, id: 3, title: 'Ana', is_default: true };
+  records.value = [seeded, record];
+  const wrapper = mountIndex();
+  await flushPromises();
+  const rows = wrapper.findAll('tbody tr');
+  expect(rows[0].text()).toContain('Ana');
+  expect(rows[0].text()).toContain('MESSENGER_TEMPLATES.DEFAULT.BADGE');
+  expect(rows[1].text()).not.toContain('MESSENGER_TEMPLATES.DEFAULT.BADGE');
+  wrapper.unmount();
+});
+
+it('restores the default template only after the confirmation step', async () => {
+  const wrapper = mountIndex();
+  await flushPromises();
+  await clickLabel(wrapper, 'MESSENGER_TEMPLATES.DEFAULT.RESTORE');
+  expect(dispatch).not.toHaveBeenCalledWith(
+    'messengerTemplates/restoreDefault',
+    expect.anything()
+  );
+  await clickLabel(wrapper, 'MESSENGER_TEMPLATES.DEFAULT.RESTORE_CONFIRM');
+  expect(dispatch).toHaveBeenLastCalledWith(
+    'messengerTemplates/restoreDefault',
+    1
+  );
+  expect(alert).toHaveBeenCalledWith('MESSENGER_TEMPLATES.DEFAULT.RESTORED');
+  wrapper.unmount();
+});
+
+it('shows the server reason when the restore is rejected', async () => {
+  const wrapper = mountIndex();
+  await flushPromises();
+  dispatch.mockRejectedValue({
+    response: { data: { message: 'Restore is unavailable' } },
+  });
+  await clickLabel(wrapper, 'MESSENGER_TEMPLATES.DEFAULT.RESTORE');
+  await clickLabel(wrapper, 'MESSENGER_TEMPLATES.DEFAULT.RESTORE_CONFIRM');
+  expect(wrapper.find('[role="alert"]').text()).toBe('Restore is unavailable');
   wrapper.unmount();
 });
