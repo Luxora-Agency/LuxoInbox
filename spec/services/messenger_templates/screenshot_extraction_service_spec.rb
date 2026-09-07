@@ -68,13 +68,15 @@ RSpec.describe MessengerTemplates::ScreenshotExtractionService do
     expect(service.perform[:definition]['messages']).to eq([{ 'sender' => 'incoming', 'text' => 'Hola', 'time' => '' }])
   end
 
-  it 'keeps only suggestions the dashboard can apply, and derives the kind from the key' do
+  it 'keeps only suggestions the dashboard can apply, repairs manual keys and derives the kind from the key' do
     payload['variables'] = [
       { 'kind' => 'manual', 'key' => 'manual.fecha_cita', 'original_text' => '12 de mayo', 'label' => 'Fecha', 'reason' => 'Cambia' },
       { 'kind' => 'manual', 'key' => 'manual.fecha_cita', 'original_text' => '12 de mayo', 'label' => 'Otra', 'reason' => 'Repetida' },
       { 'kind' => 'manual', 'key' => 'contact.name', 'original_text' => 'Ana Suárez', 'label' => 'Nombre', 'reason' => 'Es el contacto' },
       { 'kind' => 'dynamic', 'key' => 'contact.nickname', 'original_text' => 'Gracias', 'label' => 'x', 'reason' => 'y' },
       { 'kind' => 'manual', 'key' => 'manual.Precio', 'original_text' => 'Gracias', 'label' => 'x', 'reason' => 'y' },
+      { 'kind' => 'manual', 'key' => 'manual_razon_consulta', 'original_text' => 'Tu cita', 'label' => 'Razón', 'reason' => 'z' },
+      { 'kind' => 'manual', 'key' => 'Día de la cita', 'original_text' => '12 de mayo', 'label' => 'Día', 'reason' => 'z' },
       { 'kind' => 'manual', 'key' => 'manual.precio', 'original_text' => 'no está en la captura', 'label' => 'x', 'reason' => 'y' },
       { 'kind' => 'manual', 'key' => 'manual.vacio', 'original_text' => '', 'label' => 'x', 'reason' => 'y' }
     ]
@@ -82,7 +84,10 @@ RSpec.describe MessengerTemplates::ScreenshotExtractionService do
     expect(service.perform[:suggestions]).to eq(
       [
         { kind: 'manual', key: 'manual.fecha_cita', original_text: '12 de mayo', label: 'Fecha', reason: 'Cambia' },
-        { kind: 'dynamic', key: 'contact.name', original_text: 'Ana Suárez', label: 'Nombre', reason: 'Es el contacto' }
+        { kind: 'dynamic', key: 'contact.name', original_text: 'Ana Suárez', label: 'Nombre', reason: 'Es el contacto' },
+        { kind: 'manual', key: 'manual.precio', original_text: 'Gracias', label: 'x', reason: 'y' },
+        { kind: 'manual', key: 'manual.razon_consulta', original_text: 'Tu cita', label: 'Razón', reason: 'z' },
+        { kind: 'manual', key: 'manual.dia_de_la_cita', original_text: '12 de mayo', label: 'Día', reason: 'z' }
       ]
     )
   end

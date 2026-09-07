@@ -69,7 +69,12 @@ class MessengerTemplates::ScreenshotExtractionService < Captain::BaseTaskService
       times, prices, product names, appointment slots — with `key` set to manual.<slug>, where the slug is
       lowercase ASCII, digits and underscores only (up to 40 characters), and `label` a short Spanish name.
       `original_text` must be the exact substring as it appears in a message text or in the business name,
-      never a paraphrase. `reason` is one short Spanish sentence. Suggest nothing when nothing varies.
+      never a paraphrase. `reason` is one short Spanish sentence.
+      A phone number, an email or the customer's name always becomes a `dynamic` suggestion (contact.phone,
+      contact.email, contact.first_name); dates, times, prices, product names and appointment slots always
+      become `manual` suggestions. A manual `key` is the literal prefix `manual.` followed by the slug, for
+      example manual.fecha_cita, never manual_fecha_cita. Return an empty list only when nothing varies
+      between customers.
     PROMPT
   end
 
@@ -118,13 +123,23 @@ class MessengerTemplates::ScreenshotExtractionService < Captain::BaseTaskService
   def build_suggestion(variable, haystack)
     return unless variable.is_a?(Hash)
 
-    key = variable[:key].to_s.strip
+    key = normalize_key(variable[:key], variable[:kind])
     original_text = variable[:original_text].to_s
     return unless MessengerTemplates::Variables.allowed?(key)
     return if original_text.blank? || haystack.none? { |text| text.include?(original_text) }
 
     { kind: kind_for(key), key: key, original_text: original_text,
       label: clamp(variable[:label], SUGGESTION_LABEL_LIMIT), reason: clamp(variable[:reason], SUGGESTION_REASON_LIMIT) }
+  end
+
+  # The model sometimes writes `manual_fecha`, `manual.Fecha` or a bare slug for a manual value; the
+  # registry only accepts `manual.<slug>`, so the prefix and slug are repaired before the key is checked.
+  def normalize_key(raw_key, kind)
+    key = raw_key.to_s.strip
+    return key if MessengerTemplates::Variables.allowed?(key) || !(kind.to_s == 'manual' || key.match?(/\Amanual/i))
+
+    slug = I18n.transliterate(key.sub(/\Amanual[._\s-]*/i, '')).downcase.gsub(/[^a-z0-9_]+/, '_').gsub(/\A_+|_+\z/, '')
+    slug.present? ? "#{MessengerTemplates::Variables::MANUAL_PREFIX}#{slug.first(40)}" : key
   end
 
   # The prefix decides the kind: a mislabelled `kind` would preselect the wrong rows in the dashboard.
