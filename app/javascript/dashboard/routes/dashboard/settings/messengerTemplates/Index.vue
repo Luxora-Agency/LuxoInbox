@@ -235,7 +235,7 @@ onMounted(fetchRecords);
           <BaseTableRow v-for="record in items" :key="record.id" :item="record">
             <template #default>
               <BaseTableCell class="max-w-0">
-                <div class="flex min-w-0 items-center gap-2">
+                <div class="flex min-w-0 flex-wrap items-center gap-2">
                   <span class="truncate text-heading-3 text-n-slate-12">
                     {{ record.title }}
                   </span>
@@ -247,17 +247,17 @@ onMounted(fetchRecords);
                   </span>
                 </div>
               </BaseTableCell>
-              <BaseTableCell class="w-32 whitespace-nowrap">
+              <BaseTableCell class="w-px whitespace-nowrap">
                 <span class="text-body-main text-n-slate-11">
                   {{ messageCount(record) }}
                 </span>
               </BaseTableCell>
-              <BaseTableCell class="w-40 whitespace-nowrap">
+              <BaseTableCell class="w-px whitespace-nowrap">
                 <span class="text-body-main text-n-slate-11">
                   {{ updatedAt(record) }}
                 </span>
               </BaseTableCell>
-              <BaseTableCell align="end" class="w-64 whitespace-nowrap">
+              <BaseTableCell align="end" class="w-px whitespace-nowrap">
                 <div class="flex flex-shrink-0 items-center justify-end gap-3">
                   <Button
                     v-tooltip.top="t('MESSENGER_TEMPLATES.SETTINGS.EDIT')"
