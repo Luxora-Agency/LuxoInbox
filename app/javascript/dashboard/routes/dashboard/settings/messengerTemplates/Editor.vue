@@ -11,7 +11,9 @@ import BaseSettingsHeader from '../components/BaseSettingsHeader.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
 import Dialog from 'dashboard/components-next/dialog/Dialog.vue';
 import Input from 'dashboard/components-next/input/Input.vue';
+import Spinner from 'dashboard/components-next/spinner/Spinner.vue';
 import MessengerSimulatorEditor from 'dashboard/components-next/messengerSimulator/MessengerSimulatorEditor.vue';
+import MessengerVariableSuggestions from 'dashboard/components-next/messengerSimulator/MessengerVariableSuggestions.vue';
 import { buildDuplicateTitle, MAX_TITLE_LENGTH } from './duplicateTitle';
 
 defineOptions({
@@ -44,8 +46,26 @@ const notFound = ref(false);
 const errorMessage = ref('');
 const errorAttributes = ref([]);
 
+const MAX_SCREENSHOT_BYTES = 5 * 1024 * 1024;
+const SCREENSHOT_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+
+// Remounting is how a fresh definition reaches the simulator: it reads
+// `initialDefinition` once, on setup, so a new key is what swaps the script.
+const editorKey = ref(0);
+const isPanelOpen = ref(true);
+const extractError = ref('');
+const isNotConfigured = ref(false);
+const suggestions = ref(null);
+const hasExtracted = ref(false);
+
 const isSaving = computed(
   () => uiFlags.value.isCreating || uiFlags.value.isUpdating
+);
+const isExtracting = computed(() => uiFlags.value.isExtracting);
+const openAiRoute = computed(() =>
+  accountScopedRoute('settings_applications_integration', {
+    integration_id: 'openai',
+  })
 );
 // `render_record_invalid` joins every message into one string, so it can sit under the
 // title input only when the title is the one attribute the server rejected.
@@ -74,12 +94,21 @@ const variableError = computed(() =>
 const listRoute = computed(() =>
   accountScopedRoute('messenger_templates_list')
 );
+// The simulator owns the draft once it is mounted, so suggestions rewrite what the admin
+// is looking at rather than the payload the extraction returned. `getDefinition()` is null
+// while the draft is invalid, and then the extraction is still the closest thing there is.
+const suggestionTarget = computed(
+  () => editorRef.value?.getDefinition() ?? definition.value
+);
+// A remount resets the snapshot baseline, so an extraction has to say for itself that
+// the draft moved away from what was loaded.
 const dirty = computed(
   () =>
-    Boolean(baseline.value) &&
-    (editorRef.value?.getSnapshot() !== baseline.value ||
-      title.value.trim() !==
-        (findTemplate.value(templateId.value)?.title ?? ''))
+    hasExtracted.value ||
+    (Boolean(baseline.value) &&
+      (editorRef.value?.getSnapshot() !== baseline.value ||
+        title.value.trim() !==
+          (findTemplate.value(templateId.value)?.title ?? '')))
 );
 const headerTitle = computed(() =>
   isEditing.value
@@ -95,6 +124,64 @@ const emptyDefinition = () => ({
 });
 
 const goToList = () => router.push(listRoute.value);
+
+// A missing key is the one failure the dashboard can phrase itself, next to the link that
+// fixes it; every other failure only the server can explain.
+const reportExtractError = error => {
+  const data = error?.response?.data;
+  isNotConfigured.value = data?.code === 'not_configured';
+  extractError.value = isNotConfigured.value
+    ? t('MESSENGER_TEMPLATES.AI.NOT_CONFIGURED')
+    : data?.message || t('MESSENGER_TEMPLATES.AI.FAILED');
+};
+
+const extractFromScreenshot = async event => {
+  const [file] = event.target.files;
+  event.target.value = '';
+  if (!file) return;
+  extractError.value = '';
+  isNotConfigured.value = false;
+  if (!SCREENSHOT_TYPES.includes(file.type)) {
+    extractError.value = t('MESSENGER_TEMPLATES.AI.WRONG_TYPE');
+    return;
+  }
+  if (file.size > MAX_SCREENSHOT_BYTES) {
+    extractError.value = t('MESSENGER_TEMPLATES.AI.TOO_LARGE');
+    return;
+  }
+  try {
+    const data = await store.dispatch('messengerTemplates/extract', {
+      accountId: accountId.value,
+      file,
+    });
+    // The model returns an empty header when the screenshot does not show one, and the
+    // template model rejects a blank business name, so the current draft keeps its own.
+    definition.value = {
+      ...data.definition,
+      business_name:
+        data.definition.business_name || definition.value.business_name,
+    };
+    suggestions.value = data.suggestions ?? [];
+    if (!title.value.trim()) {
+      title.value =
+        data.definition.business_name ||
+        t('MESSENGER_TEMPLATES.AI.TITLE_FALLBACK');
+    }
+    hasExtracted.value = true;
+    isPanelOpen.value = false;
+    editorKey.value += 1;
+    useAlert(t('MESSENGER_TEMPLATES.AI.SUCCESS'));
+  } catch (error) {
+    reportExtractError(error);
+  }
+};
+
+const applySuggestions = applied => {
+  definition.value = applied;
+  suggestions.value = null;
+  hasExtracted.value = true;
+  editorKey.value += 1;
+};
 
 const reportError = error => {
   const data = error?.response?.data;
@@ -189,6 +276,7 @@ const submit = async duplicate => {
       );
     }
     baseline.value = '';
+    hasExtracted.value = false;
     goToList();
   } catch (error) {
     reportError(error);
@@ -259,11 +347,102 @@ onMounted(load);
         <p v-if="formError" role="alert" class="mb-0 text-sm text-n-ruby-11">
           {{ formError }}
         </p>
+        <section
+          aria-labelledby="messenger-ai-title"
+          class="flex flex-col gap-3 rounded-xl border border-n-weak bg-n-solid-1 p-4"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div class="flex min-w-0 flex-col gap-1">
+              <h3
+                id="messenger-ai-title"
+                class="mb-0 text-sm font-semibold text-n-slate-12"
+              >
+                {{ t('MESSENGER_TEMPLATES.AI.TITLE') }}
+              </h3>
+              <p class="mb-0 max-w-prose text-xs leading-5 text-n-slate-11">
+                {{ t('MESSENGER_TEMPLATES.AI.DESCRIPTION') }}
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              color="slate"
+              size="sm"
+              :icon="
+                isPanelOpen ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'
+              "
+              :label="
+                isPanelOpen
+                  ? t('MESSENGER_TEMPLATES.AI.COLLAPSE')
+                  : t('MESSENGER_TEMPLATES.AI.EXPAND')
+              "
+              :aria-expanded="isPanelOpen"
+              aria-controls="messenger-ai-panel"
+              @click="isPanelOpen = !isPanelOpen"
+            />
+          </div>
+          <div
+            v-if="isPanelOpen"
+            id="messenger-ai-panel"
+            class="flex flex-col gap-2"
+          >
+            <label
+              for="messenger-ai-screenshot"
+              class="mb-0 flex cursor-pointer flex-col items-center gap-1 rounded-xl border border-dashed border-n-strong px-4 py-6 text-center hover:bg-n-alpha-1 focus-within:outline focus-within:outline-2 focus-within:outline-n-brand"
+              :class="{ 'pointer-events-none opacity-60': isExtracting }"
+            >
+              <span class="i-lucide-image-plus size-5 text-n-slate-11" />
+              <span class="text-sm font-medium text-n-slate-12">
+                {{ t('MESSENGER_TEMPLATES.AI.UPLOAD') }}
+              </span>
+              <span class="text-xs text-n-slate-11">
+                {{ t('MESSENGER_TEMPLATES.AI.HINT') }}
+              </span>
+              <input
+                id="messenger-ai-screenshot"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                class="sr-only"
+                :disabled="isExtracting || isSaving"
+                @change="extractFromScreenshot"
+              />
+            </label>
+            <p
+              v-if="isExtracting"
+              role="status"
+              class="mb-0 flex items-center gap-2 text-xs text-n-slate-11"
+            >
+              <Spinner :size="14" />
+              {{ t('MESSENGER_TEMPLATES.AI.UPLOADING') }}
+            </p>
+            <p
+              v-else-if="extractError"
+              role="alert"
+              class="mb-0 text-sm text-n-ruby-11"
+            >
+              {{ extractError }}
+              <router-link
+                v-if="isNotConfigured"
+                :to="openAiRoute"
+                class="underline"
+              >
+                {{ t('MESSENGER_TEMPLATES.AI.CONFIGURE_LINK') }}
+              </router-link>
+            </p>
+          </div>
+        </section>
+        <MessengerVariableSuggestions
+          v-if="suggestions && suggestionTarget"
+          :suggestions="suggestions"
+          :definition="suggestionTarget"
+          @apply="applySuggestions"
+          @skip="suggestions = null"
+        />
         <div
           class="flex min-w-0 flex-col overflow-hidden rounded-xl border border-n-weak bg-n-solid-1"
         >
           <MessengerSimulatorEditor
             v-if="definition"
+            :key="editorKey"
             ref="editorRef"
             :account-id="accountId"
             :initial-definition="definition"

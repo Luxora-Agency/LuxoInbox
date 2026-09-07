@@ -19,4 +19,9 @@ class MessengerTemplatePolicy < MessengerSimulatorPolicy
   def restore_default?
     create?
   end
+
+  # Extraction drafts a template for the editor, so only the people who may save one may ask for it.
+  def extract?
+    create?
+  end
 end

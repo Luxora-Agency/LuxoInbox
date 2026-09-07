@@ -94,6 +94,16 @@ const global = {
   stubs: { MessengerScreenshotRenderer: RendererStub },
 };
 
+// jsdom ships `<dialog>` without the modal methods the shared Dialog opens through.
+beforeAll(() => {
+  HTMLDialogElement.prototype.showModal = function showModal() {
+    this.open = true;
+  };
+  HTMLDialogElement.prototype.close = function close() {
+    this.open = false;
+  };
+});
+
 const mountButton = () =>
   mount(ConversationScreenshotButton, {
     props: { conversationId: 7 },
@@ -272,6 +282,7 @@ it('resolves a template with the real contact and re-authorizes with the token',
       last_name: 'lopez',
       email: 'ana@luxora.test',
     },
+    manual: {},
   });
   const options = mocks.rendererDownload.mock.calls[0][0];
   expect(options.filename).toBe('messenger-template-1-7');
@@ -329,5 +340,94 @@ it('reports a changed contact when revalidation conflicts', async () => {
   expect(mocks.useAlert).toHaveBeenLastCalledWith(
     'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.CONTACT_CHANGED'
   );
+  wrapper.unmount();
+});
+
+const manualDefinition = {
+  version: 1,
+  business_name: 'Luxora',
+  avatar: 'none',
+  messages: [
+    {
+      sender: 'outgoing',
+      text: 'Tu cita es el {{manual.fecha_cita}}',
+      time: '',
+    },
+  ],
+};
+const manualTemplate = { id: 11, title: 'Cita', definition: manualDefinition };
+
+const clickDocumentLabel = async label => {
+  Array.from(document.querySelectorAll('button'))
+    .find(element => element.textContent.trim() === label)
+    .click();
+  await flushPromises();
+};
+
+it('asks for the manual values before exporting a template that uses them', async () => {
+  mocks.state.templates = [manualTemplate];
+  api.getMessengerTemplateContext.mockResolvedValue({
+    data: {
+      template: manualTemplate,
+      contact,
+      context_token: 'b'.repeat(64),
+    },
+  });
+  const wrapper = mountButton();
+  await clickTrigger(wrapper);
+  await clickItem(
+    wrapper,
+    'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
+  );
+  await clickItem(wrapper, 'Cita');
+
+  expect(api.getMessengerTemplateContext).not.toHaveBeenCalled();
+  const field = document.querySelector('#messenger-manual-value-fecha_cita');
+  expect(document.querySelector('label').textContent.trim()).toBe('Fecha cita');
+  field.value = '14 de marzo';
+  field.dispatchEvent(new Event('input'));
+  await flushPromises();
+  await clickDocumentLabel('MESSENGER_TEMPLATES.MANUAL_MODAL.CONTINUE');
+
+  expect(mocks.resolveMessengerTemplate).toHaveBeenCalledWith(
+    manualDefinition,
+    expect.objectContaining({ manual: { fecha_cita: '14 de marzo' } })
+  );
+  expect(mocks.rendererDownload).toHaveBeenCalledTimes(1);
+  wrapper.unmount();
+});
+
+it('exports nothing when the manual values are dismissed', async () => {
+  mocks.state.templates = [manualTemplate];
+  const wrapper = mountButton();
+  await clickTrigger(wrapper);
+  await clickItem(
+    wrapper,
+    'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
+  );
+  await clickItem(wrapper, 'Cita');
+  await clickDocumentLabel('MESSENGER_TEMPLATES.MANUAL_MODAL.CANCEL');
+
+  expect(api.getMessengerTemplateContext).not.toHaveBeenCalled();
+  expect(mocks.rendererDownload).not.toHaveBeenCalled();
+  wrapper.unmount();
+});
+
+it('drops the pending manual export when the conversation changes', async () => {
+  mocks.state.templates = [manualTemplate];
+  const wrapper = mountButton();
+  await clickTrigger(wrapper);
+  await clickItem(
+    wrapper,
+    'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
+  );
+  await clickItem(wrapper, 'Cita');
+  expect(document.querySelector('dialog').open).toBe(true);
+
+  await wrapper.setProps({ conversationId: 12 });
+  await flushPromises();
+
+  expect(document.querySelector('dialog').open).toBe(false);
+  expect(mocks.rendererDownload).not.toHaveBeenCalled();
   wrapper.unmount();
 });

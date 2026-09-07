@@ -65,6 +65,7 @@ Rails.application.routes.draw do
           resources :messenger_templates, only: [:index, :show, :create, :update, :destroy] do
             get :variables, on: :collection
             post :restore_default, on: :collection
+            post :extract, on: :collection
           end
           resource :messenger_simulator, only: [:show], controller: :messenger_simulator
           resource :bulk_actions, only: [:create]

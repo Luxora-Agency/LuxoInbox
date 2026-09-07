@@ -1,8 +1,13 @@
 import {
+  applySuggestionsToDefinition,
   buildAgentContext,
   buildSampleContact,
+  buildSampleManual,
   buildVariableCatalog,
+  humanizeManualKey,
+  manualKeysIn,
   resolveMessengerTemplate,
+  slugifyManualKey,
   validateTemplateVariables,
 } from '../templateDefinition';
 
@@ -276,4 +281,187 @@ it('splits a name like the server presenter and never re-cases it', () => {
   expect(
     Object.keys(buildAgentContext({ name: 'Ana', access_token: 'secret' }))
   ).toEqual(['name', 'first_name', 'last_name', 'email']);
+});
+
+it('resolves the manual scope from the values typed at export time', () => {
+  const script = {
+    version: 1,
+    business_name: '{{manual.clinica}}',
+    avatar: 'none',
+    messages: [
+      {
+        sender: 'outgoing',
+        text: 'Cita el {{manual.fecha_cita}} por {{ manual.valor }}',
+        time: '{{manual.hora}}',
+      },
+    ],
+  };
+  const result = resolveMessengerTemplate(script, {
+    contact: { name: 'Taylor' },
+    manual: { clinica: 'Luxora', fecha_cita: '14/03', valor: '$120.000' },
+  });
+  expect(result.participants.outgoing.name).toBe('Luxora');
+  expect(result.messages[0].text).toBe('Cita el 14/03 por $120.000');
+  expect(result.messages[0].time).toBe('');
+});
+
+it('keeps manual slugs literal instead of aliasing phone to phone_number', () => {
+  const script = {
+    version: 1,
+    business_name: 'Luxora',
+    avatar: 'none',
+    messages: [
+      {
+        sender: 'outgoing',
+        text: '{{manual.phone}} {{manual.phone_number}}',
+        time: '',
+      },
+    ],
+  };
+  expect(
+    resolveMessengerTemplate(script, { manual: { phone: '900' } }).messages[0]
+      .text
+  ).toBe('900 ');
+});
+
+it('accepts well-formed manual keys and reports malformed ones', () => {
+  expect(
+    validateTemplateVariables('{{manual.fecha_cita}} {{ manual.valor2 }}', [
+      'contact.name',
+    ])
+  ).toEqual([]);
+  // A slug the server would reject (uppercase, or over 40 characters) is still a
+  // well-formed token, so the mirror names it instead of letting the save 422.
+  expect(
+    validateTemplateVariables('{{manual.FechaCita}} {{manual.con-guion}}', [
+      'contact.name',
+    ])
+  ).toEqual(['{{manual.FechaCita}}', '{{manual.con-guion}}']);
+});
+
+it('lists the manual slugs of a definition once, in reading order', () => {
+  expect(
+    manualKeysIn({
+      business_name: '{{manual.clinica}}',
+      messages: [
+        { text: 'Hola {{manual.fecha_cita}}', time: '{{manual.clinica}}' },
+        { text: '{{contact.name}} {{manual.valor}}', time: '' },
+      ],
+    })
+  ).toEqual(['clinica', 'fecha_cita', 'valor']);
+  expect(manualKeysIn({ business_name: 'Luxora', messages: [] })).toEqual([]);
+});
+
+it('humanizes a slug and slugifies a name typed with accents', () => {
+  expect(humanizeManualKey('fecha_cita')).toBe('Fecha cita');
+  expect(humanizeManualKey('')).toBe('');
+  expect(slugifyManualKey('Fecha de la Cita')).toBe('fecha_de_la_cita');
+  expect(slugifyManualKey('  Día  ')).toBe('dia');
+  expect(slugifyManualKey('¡!¿?')).toBe('');
+  expect(slugifyManualKey('a'.repeat(60))).toHaveLength(40);
+});
+
+it('appends manual entries last and samples them with their label', () => {
+  const catalog = buildVariableCatalog(
+    [{ key: 'contact.name', group: 'contact', sample: 'Alex Morgan' }],
+    [],
+    (key, params) => `${key}:${params.label}`,
+    ['fecha_cita']
+  );
+  expect(catalog.map(entry => entry.key)).toEqual([
+    'contact.name',
+    'manual.fecha_cita',
+  ]);
+  expect(catalog[1]).toMatchObject({
+    group: 'manual',
+    label: 'Fecha cita',
+    sample: 'MESSENGER_TEMPLATES.VARIABLES.SAMPLES.MANUAL:Fecha cita',
+  });
+  expect(buildSampleManual(catalog)).toEqual({
+    fecha_cita: 'MESSENGER_TEMPLATES.VARIABLES.SAMPLES.MANUAL:Fecha cita',
+  });
+});
+
+it('replaces every occurrence of an accepted suggestion without adding keys', () => {
+  const script = {
+    version: 1,
+    business_name: 'Clínica Luxora',
+    avatar: 'contact',
+    messages: [
+      {
+        sender: 'outgoing',
+        text: 'Hola Dana, tu cita en Clínica Luxora es el 14/03.',
+        time: '14/03',
+      },
+    ],
+  };
+  const applied = applySuggestionsToDefinition(script, [
+    { key: 'contact.first_name', original_text: 'Dana' },
+    { key: 'manual.fecha_cita', original_text: '14/03' },
+    { key: 'manual.ignored', original_text: '' },
+  ]);
+  expect(Object.keys(applied)).toEqual([
+    'version',
+    'business_name',
+    'avatar',
+    'messages',
+  ]);
+  expect(Object.keys(applied.messages[0])).toEqual(['sender', 'text', 'time']);
+  expect(applied.messages[0].text).toBe(
+    'Hola {{contact.first_name}}, tu cita en Clínica Luxora es el {{manual.fecha_cita}}.'
+  );
+  expect(applied.messages[0].time).toBe('{{manual.fecha_cita}}');
+  expect(script.messages[0].text).toBe(
+    'Hola Dana, tu cita en Clínica Luxora es el 14/03.'
+  );
+});
+
+it('never re-scans a token it just inserted', () => {
+  const script = {
+    version: 1,
+    business_name: 'Tu name es Ana',
+    avatar: 'contact',
+    messages: [{ sender: 'incoming', text: 'Tu name es Ana', time: '' }],
+  };
+  const applied = applySuggestionsToDefinition(script, [
+    { key: 'contact.name', original_text: 'Ana' },
+    { key: 'manual.name', original_text: 'name' },
+  ]);
+  expect(applied.messages[0].text).toBe(
+    'Tu {{manual.name}} es {{contact.name}}'
+  );
+});
+
+it('prefers the longest original text when two suggestions overlap', () => {
+  const script = {
+    version: 1,
+    business_name: 'Luxora',
+    avatar: 'contact',
+    messages: [
+      { sender: 'incoming', text: 'Hola Ana Maria, soy Ana Maria', time: '' },
+    ],
+  };
+  const applied = applySuggestionsToDefinition(script, [
+    { key: 'contact.first_name', original_text: 'Ana' },
+    { key: 'contact.name', original_text: 'Ana Maria' },
+  ]);
+  expect(applied.messages[0].text).toBe(
+    'Hola {{contact.name}}, soy {{contact.name}}'
+  );
+});
+
+it('leaves an occurrence alone when its token would push the text past the limit', () => {
+  const script = {
+    version: 1,
+    business_name: 'Luxora',
+    avatar: 'contact',
+    messages: [
+      { sender: 'outgoing', text: `${'a'.repeat(495)} Ana`, time: '' },
+    ],
+  };
+  const applied = applySuggestionsToDefinition(script, [
+    { key: 'contact.name', original_text: 'Ana' },
+  ]);
+  expect(applied.messages[0].text).toBe(`${'a'.repeat(495)} Ana`);
+  expect(applied.messages[0].text.length).toBeLessThanOrEqual(500);
 });

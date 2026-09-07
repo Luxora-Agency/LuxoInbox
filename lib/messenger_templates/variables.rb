@@ -7,6 +7,9 @@ module MessengerTemplates::Variables
   CONTACT_PREFIX = 'contact.'.freeze
   AGENT_PREFIX = 'agent.'.freeze
   CUSTOM_ATTRIBUTE_PREFIX = 'contact.custom_attribute.'.freeze
+  # Per template, never server data: the agent types the value when exporting, so the slug carries
+  # its own label (`fecha_cita` reads as "Fecha cita") and nothing about it is stored or catalogued.
+  MANUAL_PREFIX = 'manual.'.freeze
   # Dashboard i18n paths each catalog entry is rendered with: `t(entry.label_key)` and
   # `t(entry.sample_key)`, so labels and placeholder values follow the dashboard locale.
   LABEL_KEY_PREFIX = 'MESSENGER_TEMPLATES.VARIABLES.LABELS.'.freeze
@@ -17,6 +20,8 @@ module MessengerTemplates::Variables
 
   # Mirrors CustomAttributeDefinition#attribute_key so every attribute an account defines is usable.
   CUSTOM_ATTRIBUTE_KEY_FORMAT = /\A[\p{L}\p{N}_.\-]+\z/
+  # Same shape the dashboard slugifies to, so a token typed on either side reads the same on the other.
+  MANUAL_KEY_FORMAT = /\A[a-z0-9_]{1,40}\z/
   # Generic capture of `{{ namespace.path }}`, tolerating inner spaces. Whether the captured
   # key is usable is decided by `allowed?`, never by the pattern itself.
   # Exactly the code points JavaScript's `\s` matches, so a token pasted with a
@@ -54,12 +59,18 @@ module MessengerTemplates::Variables
     return custom_attribute_key?(key.delete_prefix(CUSTOM_ATTRIBUTE_PREFIX)) if key.start_with?(CUSTOM_ATTRIBUTE_PREFIX)
     return STANDARD_CONTACT_KEYS.include?(key.delete_prefix(CONTACT_PREFIX)) if key.start_with?(CONTACT_PREFIX)
     return AGENT_KEYS.include?(key.delete_prefix(AGENT_PREFIX)) if key.start_with?(AGENT_PREFIX)
+    return manual_key?(key) if key.start_with?(MANUAL_PREFIX)
 
     false
   end
 
   def custom_attribute_key?(key)
     key.present? && key.match?(CUSTOM_ATTRIBUTE_KEY_FORMAT)
+  end
+
+  # Manual keys are validated by shape alone: there is no registry to check them against.
+  def manual_key?(key)
+    key.to_s.delete_prefix(MANUAL_PREFIX).match?(MANUAL_KEY_FORMAT)
   end
 
   # Static half of the picker. Custom attributes are merged client side from the

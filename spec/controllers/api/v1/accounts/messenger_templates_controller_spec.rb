@@ -190,4 +190,82 @@ RSpec.describe 'Messenger templates API', type: :request do
       expect(template.reload.title).to eq('Welcome script')
     end
   end
+
+  describe 'POST /extract' do
+    let(:screenshot) { fixture_file_upload(Rails.root.join('spec/assets/sample.png'), 'image/png') }
+    let(:definition) { attributes_for(:messenger_template)[:definition].deep_stringify_keys }
+    let(:suggestions) { [{ kind: 'manual', key: 'manual.fecha_cita', original_text: '12 de mayo', label: 'Fecha', reason: 'Cambia' }] }
+    let(:extraction) { { definition: definition, suggestions: suggestions, usage: { 'total_tokens' => 42 } } }
+
+    before do
+      allow(MessengerTemplates::ScreenshotExtractionService).to receive(:new)
+        .and_return(instance_double(MessengerTemplates::ScreenshotExtractionService, perform: extraction))
+    end
+
+    it 'hands the administrator a definition and its suggestions without saving anything' do
+      post "#{path}/extract", params: { screenshot: screenshot }, headers: admin.create_new_auth_token
+
+      expect(response).to have_http_status(:ok)
+      expect(response.parsed_body).to eq('definition' => definition, 'suggestions' => suggestions.map(&:stringify_keys))
+      expect(MessengerTemplates::ScreenshotExtractionService).to have_received(:new)
+        .with(account: account, image: Rails.root.join('spec/assets/sample.png').binread, content_type: 'image/png')
+      expect(account.messenger_templates.count).to be_zero
+    end
+
+    it 'denies agents, nonmembers and accounts without the feature' do
+      post "#{path}/extract", params: { screenshot: screenshot }, headers: agent.create_new_auth_token
+      expect(response).to have_http_status(:unauthorized)
+      post "#{path}/extract", params: { screenshot: screenshot }, headers: create(:user).create_new_auth_token
+      expect(response).to have_http_status(:unauthorized)
+      account.disable_features!('messenger_simulator')
+      post "#{path}/extract", params: { screenshot: screenshot }, headers: admin.create_new_auth_token
+      expect(response).to have_http_status(:unauthorized)
+      expect(MessengerTemplates::ScreenshotExtractionService).not_to have_received(:new)
+    end
+
+    it 'refuses a missing file and a file that is not an image' do
+      post "#{path}/extract", headers: admin.create_new_auth_token
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.parsed_body['message']).to eq(I18n.t('messenger_templates.extraction.invalid_file'))
+      post "#{path}/extract", params: { screenshot: fixture_file_upload(Rails.root.join('spec/assets/sample.pdf'), 'application/pdf') },
+                              headers: admin.create_new_auth_token
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(MessengerTemplates::ScreenshotExtractionService).not_to have_received(:new)
+    end
+
+    it 'refuses a screenshot heavier than the upload limit' do
+      oversized = Tempfile.new(['screenshot', '.png'], binmode: true)
+      oversized.write('0' * (Api::V1::Accounts::MessengerTemplatesController::SCREENSHOT_SIZE_LIMIT + 1))
+      oversized.rewind
+      post "#{path}/extract", params: { screenshot: Rack::Test::UploadedFile.new(oversized.path, 'image/png') },
+                              headers: admin.create_new_auth_token
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.parsed_body['message']).to eq(I18n.t('messenger_templates.extraction.invalid_file'))
+      expect(MessengerTemplates::ScreenshotExtractionService).not_to have_received(:new)
+    end
+
+    it 'tells the administrator to connect OpenAI when no key is configured' do
+      allow(MessengerTemplates::ScreenshotExtractionService).to receive(:new)
+        .and_return(instance_double(MessengerTemplates::ScreenshotExtractionService,
+                                    perform: { error: 'API key missing', error_code: 401 }))
+
+      post "#{path}/extract", params: { screenshot: screenshot }, headers: admin.create_new_auth_token
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.parsed_body).to eq('message' => I18n.t('messenger_templates.extraction.not_configured'), 'code' => 'not_configured')
+    end
+
+    it 'hides the upstream failure behind a generic message' do
+      allow(MessengerTemplates::ScreenshotExtractionService).to receive(:new)
+        .and_return(instance_double(MessengerTemplates::ScreenshotExtractionService,
+                                    perform: { error: 'Incorrect API key sk-secret provided' }))
+
+      post "#{path}/extract", params: { screenshot: screenshot }, headers: admin.create_new_auth_token
+
+      expect(response).to have_http_status(:bad_gateway)
+      expect(response.parsed_body).to eq('message' => I18n.t('messenger_templates.extraction.failed'))
+      expect(response.body).not_to include('sk-secret')
+    end
+  end
 end

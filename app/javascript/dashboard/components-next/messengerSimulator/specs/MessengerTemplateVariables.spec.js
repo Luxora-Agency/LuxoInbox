@@ -273,3 +273,129 @@ it('lists variables with their token, label and sample in the picker', () => {
   ]);
   wrapper.unmount();
 });
+
+// The picker renders the manual-variable row through the `filters` slot of the shared
+// card, so the stub has to render slots for it to exist at all.
+const SlottedPicker = {
+  name: 'CaretAnchoredPicker',
+  props: ['items'],
+  template: '<div><slot name="filters" /></div>',
+};
+
+const mountPickerWithFilters = () =>
+  mount(VariablePicker, {
+    props: { caretPosition: { top: 0, height: 16 }, entries: [] },
+    global: {
+      plugins: [store],
+      stubs: { CaretAnchoredPicker: SlottedPicker },
+    },
+  });
+
+it('inserts a manual token from the name an admin types', async () => {
+  const wrapper = mountPickerWithFilters();
+  const field = wrapper.find('#messenger-manual-variable');
+  const add = () =>
+    wrapper
+      .findAll('button')
+      .find(
+        button => button.text() === 'MESSENGER_TEMPLATES.VARIABLES.MANUAL.ADD'
+      );
+  expect(add().attributes('disabled')).toBeDefined();
+
+  await field.setValue('Fecha de la Cita');
+  expect(add().attributes('disabled')).toBeUndefined();
+  await add().trigger('click');
+
+  expect(wrapper.emitted('insert')).toEqual([['{{manual.fecha_de_la_cita}}']]);
+  expect(field.element.value).toBe('');
+  wrapper.unmount();
+});
+
+it('keeps the add button disabled and explains a name with nothing to slugify', async () => {
+  const wrapper = mountPickerWithFilters();
+  await wrapper.find('#messenger-manual-variable').setValue('¿?');
+  expect(wrapper.find('#messenger-manual-variable-hint').text()).toBe(
+    'MESSENGER_TEMPLATES.VARIABLES.MANUAL.INVALID'
+  );
+  expect(
+    wrapper
+      .findAll('button')
+      .find(
+        button => button.text() === 'MESSENGER_TEMPLATES.VARIABLES.MANUAL.ADD'
+      )
+      .attributes('disabled')
+  ).toBeDefined();
+  expect(wrapper.emitted('insert')).toBeUndefined();
+  wrapper.unmount();
+});
+
+it('inserts a manual token on enter and keeps the picker keys to itself', async () => {
+  const wrapper = mountPickerWithFilters();
+  const field = wrapper.find('#messenger-manual-variable');
+  await field.setValue('Valor');
+  await field.trigger('keydown', { key: 'Enter' });
+  expect(wrapper.emitted('insert')).toEqual([['{{manual.valor}}']]);
+
+  await field.trigger('keydown', { key: 'Escape' });
+  expect(wrapper.emitted('close')).toHaveLength(1);
+  wrapper.unmount();
+});
+
+it('lists manual variables last and previews them with their humanized label', async () => {
+  const wrapper = mountEditor({
+    ...definition,
+    business_name: '{{manual.clinica}}',
+    messages: [
+      {
+        sender: 'outgoing',
+        text: 'Tu cita es el {{manual.fecha_cita}}',
+        time: '',
+      },
+    ],
+  });
+  await flushPromises();
+  const picker = await openPicker(wrapper);
+  expect(picker.props('entries').map(entry => entry.key)).toEqual([
+    'contact.name',
+    'contact.phone',
+    'contact.custom_attribute.plan',
+    'agent.name',
+    'manual.clinica',
+    'manual.fecha_cita',
+  ]);
+  expect(wrapper.vm.getValidationErrors()).toEqual([]);
+  expect(
+    wrapper.findComponent(Preview).props('participants').outgoing.name
+  ).toBe('MESSENGER_TEMPLATES.VARIABLES.SAMPLES.MANUAL');
+  expect(wrapper.vm.getDefinition().messages[0].text).toBe(
+    'Tu cita es el {{manual.fecha_cita}}'
+  );
+  wrapper.unmount();
+});
+
+// The shared picker swallows Tab on its focused search field to walk the list, so
+// without this the manual-variable row would be reachable with a mouse only.
+it('moves focus into the manual field when the picker swallows tab', async () => {
+  const SearchablePicker = {
+    name: 'CaretAnchoredPicker',
+    props: ['items'],
+    template:
+      '<div data-popover-content><input id="picker-search" /><slot name="filters" /></div>',
+  };
+  const wrapper = mount(VariablePicker, {
+    attachTo: document.body,
+    props: { caretPosition: { top: 0, height: 16 }, entries: [] },
+    global: {
+      plugins: [store],
+      stubs: { CaretAnchoredPicker: SearchablePicker },
+    },
+  });
+  const search = wrapper.find('#picker-search').element;
+  search.focus();
+  search.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'Tab', bubbles: true })
+  );
+
+  expect(document.activeElement.id).toBe('messenger-manual-variable');
+  wrapper.unmount();
+});

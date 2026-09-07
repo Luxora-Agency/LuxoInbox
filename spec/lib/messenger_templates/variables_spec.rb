@@ -32,6 +32,21 @@ RSpec.describe MessengerTemplates::Variables do
               'conversation.id', 'contact.custom_attribute.bad key', '', 'contact.']
       expect(keys.select { |key| described_class.allowed?(key) }).to be_empty
     end
+
+    it 'accepts manual slugs by shape and rejects everything the dashboard would not slugify to' do
+      expect(%w[manual.fecha_cita manual.precio manual.slot_2 manual.a].reject { |key| described_class.allowed?(key) }).to be_empty
+      expect(described_class.allowed?("manual.#{'a' * 40}")).to be(true)
+      rejected = ['manual.', 'manual.Fecha', 'manual.fecha cita', 'manual.fecha-cita', 'manual.fechá', "manual.#{'a' * 41}"]
+      expect(rejected.select { |key| described_class.allowed?(key) }).to be_empty
+    end
+  end
+
+  describe '.extract_keys with manual tokens' do
+    it 'captures manual slugs and leaves malformed ones for the residual delimiter check' do
+      expect(described_class.extract_keys('Te espero el {{manual.fecha_cita}} a las {{ manual.hora }}'))
+        .to eq(%w[manual.fecha_cita manual.hora])
+      expect(described_class.extract_keys('{{manual.Bad Slug}}')).to be_empty
+    end
   end
 
   describe '.catalog' do

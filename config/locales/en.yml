@@ -58,6 +58,10 @@ en:
   messenger_templates:
     default:
       title: Ana Suárez lead capture (default)
+    extraction:
+      invalid_file: 'Upload a PNG, JPG or WebP image of at most 5 MB.'
+      not_configured: 'LuxoIA is not set up. Add the OpenAI key in Settings → Integrations → OpenAI.'
+      failed: 'LuxoIA could not read the screenshot. Try again with a sharper image.'
   data_imports:
     intercom:
       activities:

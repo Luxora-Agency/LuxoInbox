@@ -59,6 +59,18 @@ RSpec.describe MessengerTemplate do
     end
   end
 
+  it 'accepts manual tokens the agent fills in at export time' do
+    template.definition['messages'][0]['text'] = 'Te espero el {{manual.fecha_cita}} a las {{ manual.hora }}'
+    expect(template).to be_valid
+  end
+
+  it 'rejects manual tokens the dashboard could not have produced' do
+    ['Hi {{manual.Fecha}}', 'Hi {{manual.Bad Slug}}', 'Hi {{manual.}}'].each do |text|
+      template.definition['messages'][0]['text'] = text
+      expect(template).not_to be_valid
+    end
+  end
+
   it 'names the offending token when a variable is outside the registry' do
     template.definition['messages'][0]['text'] = 'Hi {{contact.nickname}}'
     expect(template).not_to be_valid

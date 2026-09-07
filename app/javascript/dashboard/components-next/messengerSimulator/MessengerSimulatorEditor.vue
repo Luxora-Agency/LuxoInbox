@@ -11,7 +11,9 @@ import { readAvatar } from './avatar';
 import {
   buildAgentContext,
   buildSampleContact,
+  buildSampleManual,
   buildVariableCatalog,
+  manualKeysIn,
   resolveMessengerTemplate,
   splitDisplayName,
   validateTemplateVariables,
@@ -106,8 +108,16 @@ const serverVariables = computed(() =>
   storeVariables.value.length ? storeVariables.value : fetchedVariables.value
 );
 const variableLoadError = ref(false);
+// Manual variables live in the definition itself, so the catalog is rebuilt from the
+// tokens the author has already inserted rather than from an account-wide list.
+const manualKeys = computed(() => manualKeysIn(templateDefinition.value));
 const variableCatalog = computed(() =>
-  buildVariableCatalog(serverVariables.value, customAttributes.value, t)
+  buildVariableCatalog(
+    serverVariables.value,
+    customAttributes.value,
+    t,
+    manualKeys.value
+  )
 );
 const allowedVariableKeys = computed(() =>
   variableCatalog.value.map(entry => entry.key)
@@ -133,6 +143,7 @@ const previewContext = computed(() => ({
     avatar_data: participants.value.incoming.avatar,
   },
   agent: buildAgentContext(currentUser.value),
+  manual: buildSampleManual(variableCatalog.value),
 }));
 const renderedContent = computed(() =>
   props.initialDefinition

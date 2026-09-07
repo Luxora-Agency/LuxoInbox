@@ -18,6 +18,79 @@ const isCustomAttributeKey = key =>
   key.startsWith(CUSTOM_ATTRIBUTE_PREFIX) &&
   CUSTOM_ATTRIBUTE_KEY_FORMAT.test(key.slice(CUSTOM_ATTRIBUTE_PREFIX.length));
 
+// `manual.<slug>` is the per-template scope: the agent types the value at export time,
+// so nothing about it is stored server-side beyond the token itself. The slug rule is
+// the same one `MessengerTemplates::Variables::MANUAL_PREFIX` enforces in Ruby.
+export const MANUAL_PREFIX = 'manual.';
+
+const MANUAL_SLUG_FORMAT = /^[a-z0-9_]{1,40}$/;
+
+// The lengths `app/models/messenger_template.rb` rejects a definition over. Only the
+// suggestion rewrite reads them: everywhere else the composer's own `maxlength` caps
+// what an admin can type.
+const BUSINESS_NAME_LIMIT = 60;
+const MESSAGE_TEXT_LIMIT = 500;
+const MESSAGE_TIME_LIMIT = 30;
+
+const MANUAL_SAMPLE_KEY = 'MESSENGER_TEMPLATES.VARIABLES.SAMPLES.MANUAL';
+
+export const isManualKey = key =>
+  `${key}`.startsWith(MANUAL_PREFIX) &&
+  MANUAL_SLUG_FORMAT.test(`${key}`.slice(MANUAL_PREFIX.length));
+
+/**
+ * Label shown for a manual variable. There is no stored metadata, so the slug is the
+ * label: `fecha_cita` reads as `Fecha cita`.
+ *
+ * @param {string} slug manual slug.
+ * @returns {string} humanized label.
+ */
+export const humanizeManualKey = slug => {
+  const text = `${slug ?? ''}`.replace(/_+/g, ' ').trim();
+  return text ? `${text.charAt(0).toUpperCase()}${text.slice(1)}` : '';
+};
+
+/**
+ * Turns a name typed by an admin into a slug the server accepts. Accents are stripped
+ * rather than dropped, so `Fecha de la cita` becomes `fecha_de_la_cita`.
+ *
+ * @param {string} name free text typed in the picker.
+ * @returns {string} slug, or an empty string when nothing usable is left.
+ */
+export const slugifyManualKey = name =>
+  `${name ?? ''}`
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/gu, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .slice(0, 40)
+    .replace(/^_+|_+$/g, '');
+
+/**
+ * Manual slugs used by a definition, in the order a reader meets them.
+ *
+ * @param {Object} definition v1 definition.
+ * @returns {string[]} unique slugs.
+ */
+export const manualKeysIn = definition => {
+  const slugs = [];
+  [
+    definition?.business_name,
+    ...(definition?.messages || []).flatMap(message => [
+      message?.text,
+      message?.time,
+    ]),
+  ].forEach(text => {
+    Array.from(`${text ?? ''}`.matchAll(templateVariablePattern()))
+      .filter(match => isManualKey(match[1]))
+      .forEach(match => {
+        const slug = match[1].slice(MANUAL_PREFIX.length);
+        if (!slugs.includes(slug)) slugs.push(slug);
+      });
+  });
+  return slugs;
+};
+
 // i18n keys of the placeholder value shown for a custom attribute, by
 // `attribute_display_type`. Static keys carry their sample from the server catalog.
 export const CUSTOM_ATTRIBUTE_SAMPLE_KEYS = {
@@ -32,7 +105,14 @@ export const CUSTOM_ATTRIBUTE_SAMPLE_KEYS = {
 
 const SAMPLE_FALLBACK_KEY = 'MESSENGER_TEMPLATES.VARIABLES.SAMPLES.FALLBACK';
 
-const GROUP_ORDER = ['contact', CUSTOM_ATTRIBUTE_SEGMENT, 'agent'];
+const MANUAL_GROUP = 'manual';
+
+const GROUP_ORDER = [
+  'contact',
+  CUSTOM_ATTRIBUTE_SEGMENT,
+  'agent',
+  MANUAL_GROUP,
+];
 
 const groupWeight = group => {
   const index = GROUP_ORDER.indexOf(group);
@@ -52,8 +132,12 @@ const readVariable = (key, context) => {
   }
   if (path.length > 1) return '';
   const [field] = path;
-  // `phone` and `phone_number` are aliases so stored templates keep resolving.
-  if (field === 'phone' || field === 'phone_number') {
+  // `phone` and `phone_number` are aliases so stored templates keep resolving. The
+  // manual bag is keyed by the author's own slugs, so it never aliases anything.
+  if (
+    scope !== MANUAL_GROUP &&
+    (field === 'phone' || field === 'phone_number')
+  ) {
     return toText(source.phone ?? source.phone_number);
   }
   return toText(source[field]);
@@ -101,7 +185,12 @@ export const resolveMessengerTemplate = (definition, context) => {
 export const validateTemplateVariables = (text, allowedKeys) => {
   const allowed = new Set(allowedKeys);
   return Array.from(`${text}`.matchAll(templateVariablePattern()))
-    .filter(match => !allowed.has(match[1]) && !isCustomAttributeKey(match[1]))
+    .filter(
+      match =>
+        !allowed.has(match[1]) &&
+        !isCustomAttributeKey(match[1]) &&
+        !isManualKey(match[1])
+    )
     .map(match => match[0])
     .filter((token, index, tokens) => tokens.indexOf(token) === index);
 };
@@ -113,12 +202,14 @@ export const validateTemplateVariables = (text, allowedKeys) => {
  * @param {Array} serverCatalog `[{key, label_key, sample_key, group, sample}]`.
  * @param {Array} customAttributeDefinitions `attributes/getAttributes` records.
  * @param {Function} translate resolves the i18n key of a custom attribute sample.
+ * @param {string[]} manualSlugs manual slugs already used by the definition.
  * @returns {Array} `[{key, group, labelKey, label, description, sample}]`.
  */
 export const buildVariableCatalog = (
   serverCatalog,
   customAttributeDefinitions,
-  translate = key => key
+  translate = key => key,
+  manualSlugs = []
 ) => {
   const standard = (serverCatalog || []).map(entry => ({
     key: entry.key,
@@ -141,9 +232,90 @@ export const buildVariableCatalog = (
           SAMPLE_FALLBACK_KEY
       ),
     }));
-  return [...standard, ...custom].sort(
+  // Manual entries are not an account-wide allowlist: they exist only as long as the
+  // definition still carries the token, so they are rebuilt from it on every render.
+  const manual = (manualSlugs || []).map(slug => {
+    const label = humanizeManualKey(slug);
+    return {
+      key: `${MANUAL_PREFIX}${slug}`,
+      group: MANUAL_GROUP,
+      labelKey: '',
+      label,
+      description: '',
+      sample: translate(MANUAL_SAMPLE_KEY, { label }),
+    };
+  });
+  return [...standard, ...custom, ...manual].sort(
     (left, right) => groupWeight(left.group) - groupWeight(right.group)
   );
+};
+
+/**
+ * Sample `manual` scope for the authoring preview: the label between brackets, the same
+ * placeholder the agent replaces when exporting from a conversation.
+ *
+ * @param {Array} catalog output of `buildVariableCatalog`.
+ * @returns {Object} `{slug: '[Label]'}`.
+ */
+export const buildSampleManual = catalog =>
+  Object.fromEntries(
+    (catalog || [])
+      .filter(entry => isManualKey(entry.key))
+      .map(entry => [entry.key.slice(MANUAL_PREFIX.length), entry.sample])
+  );
+
+/**
+ * Rewrites a definition so every occurrence of a suggestion's `original_text` becomes
+ * its token. One left-to-right pass over the source text: matching is literal, so a
+ * suggestion carrying regex punctuation is safe, the longest `original_text` wins when
+ * two overlap, and a token already inserted is never re-scanned. A replacement that
+ * would push the text past the limit the server enforces is left as it was, so the
+ * result of applying suggestions is always a definition the admin can still save.
+ *
+ * @param {Object} definition v1 definition.
+ * @param {Array} suggestions `[{key, original_text}]` the admin accepted.
+ * @returns {Object} a new v1 definition with the exact same keys.
+ */
+export const applySuggestionsToDefinition = (definition, suggestions) => {
+  const replacements = (suggestions || [])
+    .filter(suggestion => suggestion?.key && suggestion?.original_text)
+    .map(({ key, original_text: original }) => ({
+      original: `${original}`,
+      token: `{{${key}}}`,
+    }))
+    .sort((left, right) => right.original.length - left.original.length);
+  const replace = (value, limit) => {
+    const source = `${value ?? ''}`;
+    let result = '';
+    let index = 0;
+    while (index < source.length) {
+      const from = index;
+      const match = replacements.find(({ original }) =>
+        source.startsWith(original, from)
+      );
+      if (match && result.length + match.token.length <= limit) {
+        result += match.token;
+        index += match.original.length;
+      } else if (match) {
+        result += match.original;
+        index += match.original.length;
+      } else {
+        result += source[index];
+        index += 1;
+      }
+    }
+    return result;
+  };
+  return {
+    version: definition.version,
+    business_name: replace(definition.business_name, BUSINESS_NAME_LIMIT),
+    avatar: definition.avatar,
+    messages: (definition.messages || []).map(({ sender, text, time }) => ({
+      sender,
+      text: replace(text, MESSAGE_TEXT_LIMIT),
+      time: replace(time, MESSAGE_TIME_LIMIT),
+    })),
+  };
 };
 
 /**

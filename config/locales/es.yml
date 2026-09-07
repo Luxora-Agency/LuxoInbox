@@ -42,6 +42,10 @@ es:
   messenger_templates:
     default:
       title: Captación Ana Suárez (por defecto)
+    extraction:
+      invalid_file: 'Sube una imagen PNG, JPG o WebP de máximo 5 MB.'
+      not_configured: 'LuxoIA no está configurada. Agrega la clave de OpenAI en Ajustes → Integraciones → OpenAI.'
+      failed: 'LuxoIA no pudo leer la captura. Intenta con una imagen más nítida.'
   data_imports:
     intercom:
       activities:
