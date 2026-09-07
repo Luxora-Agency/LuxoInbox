@@ -8,8 +8,13 @@ import MessengerSimulatorPreview from './MessengerSimulatorPreview.vue';
 import { readAvatar } from './avatar';
 import MessengerScreenshotRenderer from './MessengerScreenshotRenderer.vue';
 
-const props = defineProps({ accountId: { type: Number, required: true } });
+const props = defineProps({
+  accountId: { type: Number, required: true },
+  initialDefinition: { type: Object, default: null },
+  disabled: { type: Boolean, default: false },
+});
 const emit = defineEmits(['accessDenied']);
+const avatarSource = ref(props.initialDefinition?.avatar || 'contact');
 const { t } = useI18n();
 const MAX_MESSAGES = 30;
 const participants = ref({
@@ -18,7 +23,9 @@ const participants = ref({
     avatar: '',
   },
   outgoing: {
-    name: t('MESSENGER_SIMULATOR.EXAMPLE_OUTGOING_NAME'),
+    name:
+      props.initialDefinition?.business_name ||
+      t('MESSENGER_SIMULATOR.EXAMPLE_OUTGOING_NAME'),
     avatar: '',
   },
 });
@@ -37,7 +44,13 @@ const exampleMessages = () => [
     time: '',
   },
 ];
-const messages = ref([]);
+const messages = ref(
+  (props.initialDefinition?.messages || []).map((message, index) => ({
+    ...message,
+    id: index + 1,
+  }))
+);
+messageId = Math.max(messageId, messages.value.length);
 const loadExample = () => {
   messages.value = exampleMessages();
 };
@@ -224,6 +237,28 @@ const exportImage = async () => {
   }
 };
 
+defineExpose({
+  getSnapshot: () =>
+    JSON.stringify({
+      participants: participants.value,
+      messages: previewMessages.value,
+      avatar: avatarSource.value,
+    }),
+  getDefinition: () =>
+    isValid.value
+      ? {
+          version: 1,
+          business_name: participants.value.outgoing.name,
+          avatar: avatarSource.value,
+          messages: previewMessages.value.map(({ sender, text, time }) => ({
+            sender,
+            text,
+            time,
+          })),
+        }
+      : null,
+});
+
 onBeforeUnmount(() => {
   isActive = false;
 });
@@ -240,7 +275,7 @@ onBeforeUnmount(() => {
       <Button
         icon="i-lucide-download"
         :label="exportLabel"
-        :disabled="isExporting || isLoadingAvatar || !isValid"
+        :disabled="disabled || isExporting || isLoadingAvatar || !isValid"
         :is-loading="isExporting"
         @click="exportImage"
       />
@@ -269,7 +304,10 @@ onBeforeUnmount(() => {
     <div
       class="grid min-w-0 flex-1 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_355px] xl:grid-cols-[minmax(0,1fr)_410px]"
     >
-      <fieldset :disabled="isExporting" class="min-w-0 px-5 py-5 lg:px-8">
+      <fieldset
+        :disabled="disabled || isExporting"
+        class="min-w-0 px-5 py-5 lg:px-8"
+      >
         <details class="mb-5 border-b border-n-weak pb-4">
           <summary
             class="cursor-pointer rounded-lg text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-n-brand"
@@ -289,9 +327,27 @@ onBeforeUnmount(() => {
               v-model="person.name"
               :label="participantLabels[sender]"
               :maxlength="60"
+              :disabled="Boolean(initialDefinition) && sender === 'incoming'"
               required
             />
-            <div class="space-y-2 sm:col-span-2">
+            <label
+              v-if="initialDefinition"
+              class="mb-0 flex flex-col gap-1 text-sm"
+            >
+              {{ t('MESSENGER_SIMULATOR.TEMPLATES.AVATAR') }}
+              <select
+                v-model="avatarSource"
+                class="mb-0 rounded-lg border border-n-weak bg-n-solid-1 text-sm"
+              >
+                <option value="contact">
+                  {{ t('MESSENGER_SIMULATOR.TEMPLATES.CONTACT_AVATAR') }}
+                </option>
+                <option value="none">
+                  {{ t('MESSENGER_SIMULATOR.TEMPLATES.NO_AVATAR') }}
+                </option>
+              </select>
+            </label>
+            <div v-else class="space-y-2 sm:col-span-2">
               <label
                 for="simulator-avatar-incoming"
                 class="mb-0 block text-sm font-medium"

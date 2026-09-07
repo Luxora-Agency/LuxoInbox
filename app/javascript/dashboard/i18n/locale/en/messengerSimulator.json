@@ -1,5 +1,24 @@
 {
   "MESSENGER_SIMULATOR": {
+    "TEMPLATES": {
+      "LIBRARY": "Saved scripts",
+      "MANUAL": "Manual simulation",
+      "NEW": "New template",
+      "OPEN": "Open selection",
+      "DISCARD": "Discard draft and open",
+      "TITLE": "Template title",
+      "SAVE": "Save template",
+      "DUPLICATE": "Save a copy",
+      "DELETE": "Delete template",
+      "CONFIRM_DELETE": "Confirm deletion",
+      "SAVED": "Template saved.",
+      "ERROR": "Could not update the library. Your draft is unchanged; try again.",
+      "INVALID": "Add a title, business name and at least one valid message before saving.",
+      "HINT": "Save fictional scripts for your account. Only the script is stored; contact details are filled in when exporting from a conversation.",
+      "AVATAR": "Contact photo in exports",
+      "CONTACT_AVATAR": "Use the contact photo",
+      "NO_AVATAR": "No photo"
+    },
     "TITLE": "Messenger simulator",
     "DESCRIPTION": "Compose a fictional conversation and download a screenshot. Nothing is sent to Messenger.",
     "LOADING": "Checking account access\u2026",
