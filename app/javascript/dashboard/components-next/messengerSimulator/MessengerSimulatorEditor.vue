@@ -6,6 +6,10 @@ import Button from 'dashboard/components-next/button/Button.vue';
 import Input from 'dashboard/components-next/input/Input.vue';
 import MessengerSimulatorPreview from './MessengerSimulatorPreview.vue';
 import { readAvatar } from './avatar';
+import {
+  TEMPLATE_VARIABLES,
+  resolveMessengerTemplate,
+} from './templateDefinition';
 import MessengerScreenshotRenderer from './MessengerScreenshotRenderer.vue';
 
 const props = defineProps({
@@ -69,6 +73,45 @@ const previewMessages = computed(() => {
   if (messages.value.length >= MAX_MESSAGES) return messages.value;
   return [...messages.value, { id: 'draft', ...draft.value }];
 });
+const templateDefinition = computed(() => ({
+  version: 1,
+  business_name: participants.value.outgoing.name,
+  avatar: avatarSource.value,
+  messages: previewMessages.value.map(({ sender, text, time }) => ({
+    sender,
+    text,
+    time,
+  })),
+}));
+const renderedContent = computed(() =>
+  props.initialDefinition
+    ? resolveMessengerTemplate(templateDefinition.value, {
+        name: participants.value.incoming.name,
+        phone: t('MESSENGER_SIMULATOR.TEMPLATES.SAMPLE_PHONE'),
+        avatar_data: participants.value.incoming.avatar,
+      })
+    : { participants: participants.value, messages: previewMessages.value }
+);
+const variableLimit = ref(false);
+const variableLabels = computed(() => ({
+  name: t('MESSENGER_SIMULATOR.TEMPLATES.VARIABLE_NAME'),
+  phone: t('MESSENGER_SIMULATOR.TEMPLATES.VARIABLE_PHONE'),
+}));
+const insertVariable = async variable => {
+  const input = composerRef.value;
+  if (!input || input.disabled) return;
+  const token = `{{contact.${variable}}}`;
+  const start = input.selectionStart;
+  const end = input.selectionEnd;
+  const text =
+    draft.value.text.slice(0, start) + token + draft.value.text.slice(end);
+  variableLimit.value = text.length > 500;
+  if (variableLimit.value) return;
+  draft.value.text = text;
+  await nextTick();
+  input.focus();
+  input.setSelectionRange(start + token.length, start + token.length);
+};
 const canSubmit = computed(
   () =>
     draft.value.text.trim() &&
@@ -96,11 +139,12 @@ const participantLabels = computed(() => ({
   incoming: t('MESSENGER_SIMULATOR.INCOMING'),
   outgoing: t('MESSENGER_SIMULATOR.OUTGOING'),
 }));
-const exportLabel = computed(() =>
-  isExporting.value
-    ? t('MESSENGER_SIMULATOR.EXPORTING')
-    : t('MESSENGER_SIMULATOR.EXPORT')
-);
+const exportLabel = computed(() => {
+  if (isExporting.value) return t('MESSENGER_SIMULATOR.EXPORTING');
+  return props.initialDefinition
+    ? t('MESSENGER_SIMULATOR.TEMPLATES.DOWNLOAD_SAMPLE')
+    : t('MESSENGER_SIMULATOR.EXPORT');
+});
 const errorMessage = computed(
   () =>
     ({
@@ -218,8 +262,8 @@ const exportImage = async () => {
   success.value = false;
   try {
     exportedParts.value = await rendererRef.value.download({
-      participants: participants.value,
-      messages: messages.value.map(message => ({ ...message })),
+      participants: renderedContent.value.participants,
+      messages: renderedContent.value.messages.map(message => ({ ...message })),
       authorize: () => authorizeMessengerSimulator(requestedAccount),
       isCurrent: stillActive,
       filename: `messenger-simulation-${requestedAccount}`,
@@ -244,19 +288,7 @@ defineExpose({
       messages: previewMessages.value,
       avatar: avatarSource.value,
     }),
-  getDefinition: () =>
-    isValid.value
-      ? {
-          version: 1,
-          business_name: participants.value.outgoing.name,
-          avatar: avatarSource.value,
-          messages: previewMessages.value.map(({ sender, text, time }) => ({
-            sender,
-            text,
-            time,
-          })),
-        }
-      : null,
+  getDefinition: () => (isValid.value ? templateDefinition.value : null),
 });
 
 onBeforeUnmount(() => {
@@ -515,6 +547,33 @@ onBeforeUnmount(() => {
                 t('MESSENGER_SIMULATOR.EDITING')
               }}</span>
             </div>
+            <div
+              v-if="initialDefinition"
+              class="mb-2 flex flex-wrap items-center gap-2"
+            >
+              <span class="text-xs text-n-slate-11">{{
+                t('MESSENGER_SIMULATOR.TEMPLATES.INSERT')
+              }}</span>
+              <Button
+                v-for="variable in TEMPLATE_VARIABLES"
+                :key="variable"
+                variant="ghost"
+                size="sm"
+                :label="variableLabels[variable]"
+                :disabled="
+                  editingId === null && messages.length >= MAX_MESSAGES
+                "
+                @mousedown.prevent
+                @click="insertVariable(variable)"
+              />
+            </div>
+            <p
+              v-if="variableLimit"
+              role="alert"
+              class="mb-2 text-xs text-n-ruby-11"
+            >
+              {{ t('MESSENGER_SIMULATOR.TEMPLATES.VARIABLE_LIMIT') }}
+            </p>
             <label for="simulator-composer" class="sr-only">{{
               t('MESSENGER_SIMULATOR.TEXT')
             }}</label>
@@ -527,6 +586,7 @@ onBeforeUnmount(() => {
               :disabled="editingId === null && messages.length >= MAX_MESSAGES"
               :placeholder="t('MESSENGER_SIMULATOR.TEXT_PLACEHOLDER')"
               class="mb-0 w-full resize-y rounded-lg border-0 bg-transparent px-1 py-2 text-sm text-n-slate-12 placeholder:text-n-slate-11 focus:ring-0"
+              @input="variableLimit = false"
               @keydown="onComposerKeydown"
             />
             <div v-if="showTime" class="mb-3 max-w-[200px]">
@@ -589,7 +649,11 @@ onBeforeUnmount(() => {
             {{ t('MESSENGER_SIMULATOR.PREVIEW') }}
           </h2>
           <p class="mb-3 text-xs leading-5 text-n-slate-11">
-            {{ t('MESSENGER_SIMULATOR.PREVIEW_HINT') }}
+            {{
+              initialDefinition
+                ? t('MESSENGER_SIMULATOR.TEMPLATES.SAMPLE_HINT')
+                : t('MESSENGER_SIMULATOR.PREVIEW_HINT')
+            }}
           </p>
           <p
             role="note"
@@ -604,8 +668,8 @@ onBeforeUnmount(() => {
             <div class="mx-auto w-fit">
               <div class="w-[299px] bg-white">
                 <MessengerSimulatorPreview
-                  :participants="participants"
-                  :messages="previewMessages"
+                  :participants="renderedContent.participants"
+                  :messages="renderedContent.messages"
                 />
               </div>
             </div>

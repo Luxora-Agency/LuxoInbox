@@ -16,7 +16,7 @@ LuxoInbox is a self-hosted, Chatwoot-based support platform. Its dashboard prior
 
 The account-scoped Messenger template API stores reusable fictional scripts, not contact records or real conversation history. It is gated by the default-off Messenger simulator feature: administrators manage scripts, while authorized account agents can read them. Definitions accept only literal `{{contact.name}}` and `{{contact.phone}}` variables and a typed contact-avatar choice; personalization is not stored in the library. A conversation-authorized context endpoint supplies template export data without reading message history and revalidates the selected template and contact snapshot before file delivery.
 
-Administrators manage saved scripts from the simulator page using the same composer and preview as manual simulations; draft replacement and deletion require confirmation.
+Administrators manage saved scripts from the simulator page using the same composer and preview as manual simulations; draft replacement and deletion require confirmation. Name and phone chips insert literal variables at the cursor; sample values appear only in previews and sample downloads, never in saved definitions.
 
 ## Brand Personality
 

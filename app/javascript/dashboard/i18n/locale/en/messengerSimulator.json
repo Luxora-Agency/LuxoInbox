@@ -1,6 +1,13 @@
 {
   "MESSENGER_SIMULATOR": {
     "TEMPLATES": {
+      "VARIABLE_LIMIT": "Shorten the message or select text to replace before inserting this variable.",
+      "INSERT": "Insert contact variable:",
+      "VARIABLE_NAME": "Name",
+      "VARIABLE_PHONE": "Phone",
+      "SAMPLE_PHONE": "+1 202-555-0123",
+      "DOWNLOAD_SAMPLE": "Download sample",
+      "SAMPLE_HINT": "Preview and download use sample contact details. Saved scripts keep their variables.",
       "LIBRARY": "Saved scripts",
       "MANUAL": "Manual simulation",
       "NEW": "New template",
