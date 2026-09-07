@@ -112,7 +112,7 @@ const copyConversationId = async () => {
   <div
     ref="conversationHeader"
     data-tour="conversation-header"
-    class="flex flex-col gap-3 items-center justify-between flex-1 w-full min-w-0 xl:flex-row px-4 py-3 h-24 xl:h-14 bg-n-background/80 dark:bg-n-solid-3/80 backdrop-blur-sm border-b border-n-slate-2 dark:border-n-solid-2"
+    class="flex flex-col gap-3 items-center justify-between flex-1 w-full min-w-0 relative z-10 xl:flex-row px-4 py-3 h-24 xl:h-14 bg-n-background/80 dark:bg-n-solid-3/80 backdrop-blur-sm border-b border-n-slate-2 dark:border-n-solid-2"
   >
     <div
       class="flex items-center justify-start w-full xl:w-auto max-w-full min-w-0 xl:flex-1"
