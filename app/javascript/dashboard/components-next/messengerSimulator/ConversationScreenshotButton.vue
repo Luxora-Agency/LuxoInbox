@@ -221,9 +221,23 @@ const onEscape = event => {
   if (event.key === 'Escape') closeMenu();
 };
 
+// Outside clicks are detected on pointerdown, before any handler mutates the DOM. A click-based
+// check runs after the menu re-renders for the chosen view, so the item just pressed is already
+// detached, no longer counts as inside, and a real click closed the menu instead of opening the
+// template list.
+const wrapperRef = ref(null);
+const onPointerDown = event => {
+  if (!wrapperRef.value?.contains(event.target)) closeMenu();
+};
+
 watch(showMenu, open => {
-  if (open) document.addEventListener('keydown', onEscape);
-  else document.removeEventListener('keydown', onEscape);
+  if (open) {
+    document.addEventListener('keydown', onEscape);
+    document.addEventListener('pointerdown', onPointerDown);
+  } else {
+    document.removeEventListener('keydown', onEscape);
+    document.removeEventListener('pointerdown', onPointerDown);
+  }
 });
 
 // The library is fetched before the menu opens: an account with no templates keeps the
@@ -292,16 +306,13 @@ onBeforeUnmount(() => {
   active = false;
   version += 1;
   document.removeEventListener('keydown', onEscape);
+  document.removeEventListener('pointerdown', onPointerDown);
 });
 </script>
 
 <!-- eslint-disable-next-line vue/no-root-v-if -->
 <template>
-  <div
-    v-if="enabled"
-    v-on-clickaway="closeMenu"
-    class="relative flex items-center"
-  >
+  <div v-if="enabled" ref="wrapperRef" class="relative flex items-center">
     <Button
       v-tooltip="t('MESSENGER_SIMULATOR.CONVERSATION_TOOLTIP')"
       variant="ghost"

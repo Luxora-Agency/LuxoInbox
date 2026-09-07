@@ -92,7 +92,6 @@ const RendererStub = {
 };
 const global = {
   stubs: { MessengerScreenshotRenderer: RendererStub },
-  directives: { 'on-clickaway': {} },
 };
 
 // jsdom ships `<dialog>` without the modal methods the shared Dialog opens through.
@@ -232,6 +231,32 @@ it('closes the menu on escape once the view swap moved focus out', async () => {
   document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
   await flushPromises();
 
+  expect(wrapper.text()).not.toContain('Welcome');
+  wrapper.unmount();
+});
+
+it('keeps the menu open for a press inside and closes it from outside', async () => {
+  mocks.state.templates = [template];
+  const wrapper = mount(ConversationScreenshotButton, {
+    props: { conversationId: 7 },
+    global,
+    attachTo: document.body,
+  });
+  await clickTrigger(wrapper);
+  await clickItem(
+    wrapper,
+    'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
+  );
+  expect(wrapper.text()).toContain('Welcome');
+
+  wrapper
+    .find('input')
+    .element.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+  await flushPromises();
+  expect(wrapper.text()).toContain('Welcome');
+
+  document.body.dispatchEvent(new Event('pointerdown', { bubbles: true }));
+  await flushPromises();
   expect(wrapper.text()).not.toContain('Welcome');
   wrapper.unmount();
 });
