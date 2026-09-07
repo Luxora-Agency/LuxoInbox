@@ -57,6 +57,7 @@ watch(
     templatesRequested.value = false;
     pendingTemplate.value = null;
     manualSlugs.value = [];
+    manualModalRef.value?.close();
   },
   { flush: 'sync' }
 );

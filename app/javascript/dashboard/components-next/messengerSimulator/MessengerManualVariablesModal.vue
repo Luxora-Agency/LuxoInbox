@@ -43,7 +43,14 @@ const onClose = () => {
   emit('cancel');
 };
 
-defineExpose({ open });
+// A programmatic close (the agent moved to another conversation) is not a cancellation:
+// the caller already dropped the pending template.
+const close = () => {
+  isConfirming = true;
+  dialogRef.value.close();
+};
+
+defineExpose({ open, close });
 </script>
 
 <template>

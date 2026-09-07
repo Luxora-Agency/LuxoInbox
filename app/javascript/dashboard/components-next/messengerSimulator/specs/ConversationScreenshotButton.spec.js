@@ -387,3 +387,22 @@ it('exports nothing when the manual values are dismissed', async () => {
   expect(mocks.rendererDownload).not.toHaveBeenCalled();
   wrapper.unmount();
 });
+
+it('drops the pending manual export when the conversation changes', async () => {
+  mocks.state.templates = [manualTemplate];
+  const wrapper = mountButton();
+  await clickTrigger(wrapper);
+  await clickItem(
+    wrapper,
+    'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
+  );
+  await clickItem(wrapper, 'Cita');
+  expect(document.querySelector('dialog').open).toBe(true);
+
+  await wrapper.setProps({ conversationId: 12 });
+  await flushPromises();
+
+  expect(document.querySelector('dialog').open).toBe(false);
+  expect(mocks.rendererDownload).not.toHaveBeenCalled();
+  wrapper.unmount();
+});
