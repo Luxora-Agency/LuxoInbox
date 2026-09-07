@@ -22,6 +22,7 @@ es:
       messenger_template:
         title: El título
         definition: La plantilla
+        is_default: Esta plantilla
   hello: 'Hola mundo'
   inbox:
     reauthorization:

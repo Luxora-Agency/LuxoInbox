@@ -37,6 +37,7 @@ en:
       messenger_template:
         title: Title
         definition: Template
+        is_default: This template
   hello: 'Hello world'
   inbox:
     reauthorization:

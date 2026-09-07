@@ -39,10 +39,18 @@ RSpec.describe 'Messenger templates API', type: :request do
     create(:messenger_template, account: account, title: 'A script that sorts first')
     get path, headers: agent.create_new_auth_token
     expect(response.parsed_body.first['is_default']).to be(true)
-    expect(response.parsed_body.first['title']).to eq(MessengerTemplates::DefaultTemplate.title)
+    expect(response.parsed_body.first['title']).to eq(MessengerTemplates::DefaultTemplate.title(account.locale))
     get path, headers: admin.create_new_auth_token
     expect(response.parsed_body.count { |item| item['is_default'] }).to eq(1)
     expect(account.messenger_templates.count).to eq(2)
+  end
+
+  it 'keeps the default deleted until the admin asks for it back' do
+    get path, headers: admin.create_new_auth_token
+    delete "#{path}/#{response.parsed_body.first['id']}", headers: admin.create_new_auth_token
+    get path, headers: admin.create_new_auth_token
+    expect(response.parsed_body).to be_empty
+    expect(account.messenger_templates.count).to be_zero
   end
 
   it 'recreates the default after a delete and resets it after an edit' do
@@ -56,7 +64,7 @@ RSpec.describe 'Messenger templates API', type: :request do
                                     headers: admin.create_new_auth_token, as: :json
     post "#{path}/restore_default", headers: admin.create_new_auth_token, as: :json
     expect(response.parsed_body['id']).to eq(restored_id)
-    expect(response.parsed_body['title']).to eq(MessengerTemplates::DefaultTemplate.title)
+    expect(response.parsed_body['title']).to eq(MessengerTemplates::DefaultTemplate.title(account.locale))
     expect(account.messenger_templates.count).to eq(1)
   end
 

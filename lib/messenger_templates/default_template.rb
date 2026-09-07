@@ -28,9 +28,10 @@ module MessengerTemplates::DefaultTemplate
 
   module_function
 
-  # Localised so the row an account sees is named in its own dashboard language.
-  def title
-    I18n.t(TITLE_KEY)
+  # Localised against the account, never the request: the row keeps one name whoever lists
+  # or restores the library, so a restore can never rename it to the caller's language.
+  def title(locale = I18n.locale)
+    I18n.t(TITLE_KEY, locale: locale)
   end
 
   def definition
