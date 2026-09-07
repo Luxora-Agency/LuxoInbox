@@ -188,8 +188,8 @@
         "SKIP": "Omitir",
         "DYNAMIC": "Dinámica",
         "MANUAL": "Manual",
-        "ORIGINAL": "Texto original",
-        "REASON": "Por qué",
+        "ORIGINAL": "Texto original: {text}",
+        "REASON": "Por qué: {reason}",
         "EMPTY": "LuxoIA no encontró ningún valor que convenga convertir en variable."
       }
     }
