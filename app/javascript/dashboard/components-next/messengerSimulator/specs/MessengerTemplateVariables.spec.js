@@ -372,3 +372,30 @@ it('lists manual variables last and previews them with their humanized label', a
   );
   wrapper.unmount();
 });
+
+// The shared picker swallows Tab on its focused search field to walk the list, so
+// without this the manual-variable row would be reachable with a mouse only.
+it('moves focus into the manual field when the picker swallows tab', async () => {
+  const SearchablePicker = {
+    name: 'CaretAnchoredPicker',
+    props: ['items'],
+    template:
+      '<div data-popover-content><input id="picker-search" /><slot name="filters" /></div>',
+  };
+  const wrapper = mount(VariablePicker, {
+    attachTo: document.body,
+    props: { caretPosition: { top: 0, height: 16 }, entries: [] },
+    global: {
+      plugins: [store],
+      stubs: { CaretAnchoredPicker: SearchablePicker },
+    },
+  });
+  const search = wrapper.find('#picker-search').element;
+  search.focus();
+  search.dispatchEvent(
+    new KeyboardEvent('keydown', { key: 'Tab', bubbles: true })
+  );
+
+  expect(document.activeElement.id).toBe('messenger-manual-variable');
+  wrapper.unmount();
+});

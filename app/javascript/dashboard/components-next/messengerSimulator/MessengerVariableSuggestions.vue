@@ -83,7 +83,7 @@ const apply = () => {
           :id="row.id"
           v-model="selected[row.index]"
           type="checkbox"
-          class="mt-1 size-4 shrink-0 rounded border-n-weak text-n-blue-11 focus-visible:outline focus-visible:outline-2 focus-visible:outline-n-brand"
+          class="mt-1 size-4 shrink-0 accent-n-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-n-brand"
         />
         <div class="flex min-w-0 flex-col gap-1">
           <label

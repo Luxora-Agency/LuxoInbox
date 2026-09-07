@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import CaretAnchoredPicker from 'dashboard/components-next/preview-picker/CaretAnchoredPicker.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
@@ -22,6 +22,8 @@ const { t } = useI18n();
 
 const searchQuery = ref('');
 const manualName = ref('');
+const filtersRef = ref(null);
+const manualInputRef = ref(null);
 
 const searchTerm = computed(() => searchQuery.value.trim().toLowerCase());
 
@@ -73,6 +75,25 @@ const addManualVariable = () => {
   emit('insert', token);
 };
 
+// The picker walks its list with Tab even while the search field has focus, and swallows
+// the key there, so this row would be mouse-only. Claiming Tab first — in the capture
+// phase, and only for a key pressed inside this picker — is the one way into it; the
+// arrow keys still move the list selection.
+const onCapturedKeydown = event => {
+  const row = filtersRef.value;
+  if (event.key !== 'Tab' || event.shiftKey || !row) return;
+  if (row.contains(event.target)) return;
+  if (!row.closest('[data-popover-content]')?.contains(event.target)) return;
+  event.preventDefault();
+  event.stopPropagation();
+  manualInputRef.value?.focus();
+};
+
+onMounted(() => document.addEventListener('keydown', onCapturedKeydown, true));
+onBeforeUnmount(() =>
+  document.removeEventListener('keydown', onCapturedKeydown, true)
+);
+
 // The picker binds Tab, Backspace and Escape on the document with
 // `allowOnFocusedInput`, so this field keeps its own keys instead of driving the list.
 const onManualKeydown = event => {
@@ -100,7 +121,7 @@ const onManualKeydown = event => {
     <!-- The picker blocks mousedown on this row to keep the caret; stopping the event
          here first lets the field take focus without moving the selection. -->
     <template #filters>
-      <div class="flex flex-col gap-1 px-1" @mousedown.stop>
+      <div ref="filtersRef" class="flex flex-col gap-1 px-1" @mousedown.stop>
         <label
           for="messenger-manual-variable"
           class="mb-0 text-xs font-medium text-n-slate-11"
@@ -110,6 +131,7 @@ const onManualKeydown = event => {
         <div class="flex items-center gap-2">
           <input
             id="messenger-manual-variable"
+            ref="manualInputRef"
             v-model="manualName"
             type="text"
             maxlength="60"
