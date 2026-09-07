@@ -6,7 +6,6 @@ import { picoSearch } from '@chatwoot/pico-search';
 import { useAlert } from 'dashboard/composables';
 import { useAccount } from 'dashboard/composables/useAccount';
 import { useStore, useMapGetter } from 'dashboard/composables/store';
-import { dynamicTime } from 'shared/helpers/timeHelper';
 
 import SettingsLayout from '../SettingsLayout.vue';
 import BaseSettingsHeader from '../components/BaseSettingsHeader.vue';
@@ -24,7 +23,7 @@ defineOptions({
   name: 'MessengerTemplatesSettings',
 });
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const router = useRouter();
 const store = useStore();
 const { accountId, accountScopedRoute } = useAccount();
@@ -68,7 +67,12 @@ const updatedAt = record => {
   if (Number.isNaN(timestamp)) {
     return t('MESSENGER_TEMPLATES.SETTINGS.NEVER_UPDATED');
   }
-  return dynamicTime(Math.floor(timestamp / 1000));
+  // date-fns' relative strings are English-only; a localized absolute stamp
+  // reads correctly in every dashboard language.
+  return new Intl.DateTimeFormat(locale.value, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(timestamp);
 };
 
 const reportError = (error, fallback) => {
@@ -253,7 +257,7 @@ onMounted(fetchRecords);
                   {{ updatedAt(record) }}
                 </span>
               </BaseTableCell>
-              <BaseTableCell align="end" class="whitespace-nowrap">
+              <BaseTableCell align="end" class="w-64 whitespace-nowrap">
                 <div class="flex flex-shrink-0 items-center justify-end gap-3">
                   <Button
                     v-tooltip.top="t('MESSENGER_TEMPLATES.SETTINGS.EDIT')"
