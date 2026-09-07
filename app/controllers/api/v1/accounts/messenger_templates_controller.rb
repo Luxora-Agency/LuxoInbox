@@ -24,14 +24,21 @@ class Api::V1::Accounts::MessengerTemplatesController < Api::V1::Accounts::BaseC
     render json: template_payload(@template)
   end
 
+  # `rescue_from` handlers run after the locale around_actions unwind, so a failed save
+  # would name the attribute in the default language next to a message translated for
+  # the account. Rescuing inside the action keeps the whole message in the request locale.
   def create
     template = Current.account.messenger_templates.create!(template_params)
     render json: template_payload(template), status: :created
+  rescue ActiveRecord::RecordInvalid => e
+    render_record_invalid(e)
   end
 
   def update
     @template.update!(template_params)
     render json: template_payload(@template)
+  rescue ActiveRecord::RecordInvalid => e
+    render_record_invalid(e)
   end
 
   def destroy
