@@ -35,6 +35,7 @@
     "MESSAGES": "Messages",
     "SENDER": "Sender",
     "TIME": "Timestamp (optional)",
+    "TIME_REQUIRES_MESSAGE": "This timestamp needs a message. Add message text below, or select an existing message to apply this timestamp.",
     "TIME_PLACEHOLDER": "9:30 PM",
     "TEXT": "Message text",
     "TEXT_PLACEHOLDER": "Write a fictional message…",
