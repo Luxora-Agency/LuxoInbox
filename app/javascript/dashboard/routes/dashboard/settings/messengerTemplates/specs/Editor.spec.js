@@ -1,12 +1,14 @@
 import { flushPromises, mount } from '@vue/test-utils';
 import { computed, ref } from 'vue';
 import Editor from '../Editor.vue';
+import MessengerSimulatorEditor from 'dashboard/components-next/messengerSimulator/MessengerSimulatorEditor.vue';
 import MessengerVariableSuggestions from 'dashboard/components-next/messengerSimulator/MessengerVariableSuggestions.vue';
 
 const dispatch = vi.fn();
 const push = vi.fn();
 const alert = vi.fn();
 const records = ref([]);
+const routeParams = ref({});
 const uiFlags = ref({
   isCreating: false,
   isUpdating: false,
@@ -14,7 +16,7 @@ const uiFlags = ref({
 });
 
 vi.mock('dashboard/composables/store', () => ({
-  useStore: () => ({ dispatch }),
+  useStore: () => ({ dispatch, getters: {} }),
   useMapGetter: key =>
     computed(() => {
       if (key === 'messengerTemplates/getTemplates') return records.value;
@@ -37,7 +39,7 @@ vi.mock('dashboard/composables', () => ({
 
 vi.mock('vue-router', async importOriginal => ({
   ...(await importOriginal()),
-  useRoute: () => ({ params: {} }),
+  useRoute: () => ({ params: routeParams.value }),
   useRouter: () => ({ push }),
   onBeforeRouteLeave: () => {},
 }));
@@ -97,13 +99,16 @@ const RouterLinkStub = {
   template: '<a><slot /></a>',
 };
 
-const mountEditor = () =>
+const mountEditor = (realSimulator = false) =>
   mount(Editor, {
     global: {
       stubs: {
         SettingsLayout: SettingsLayoutStub,
         BaseSettingsHeader: BaseSettingsHeaderStub,
-        MessengerSimulatorEditor: SimulatorStub,
+        MessengerSimulatorEditor: realSimulator ? false : SimulatorStub,
+        MessengerScreenshotRenderer: true,
+        MessengerSimulatorPreview: true,
+        CaretAnchoredPicker: { template: '<div><slot name="filters" /></div>' },
         Dialog: true,
         RouterLink: RouterLinkStub,
       },
@@ -123,6 +128,7 @@ const uploadScreenshot = async (wrapper, file) => {
 const png = () => new File(['x'], 'shot.png', { type: 'image/png' });
 
 beforeEach(() => {
+  routeParams.value = {};
   simulatorDraft.value = null;
   records.value = [];
   uiFlags.value = { isCreating: false, isUpdating: false, isExtracting: false };
@@ -256,6 +262,196 @@ it('keeps the current business name when the screenshot shows no header', async 
   ).toBe('MESSENGER_SIMULATOR.EXAMPLE_OUTGOING_NAME');
   expect(wrapper.find('#messenger-template-title').element.value).toBe(
     'MESSENGER_TEMPLATES.AI.TITLE_FALLBACK'
+  );
+  wrapper.unmount();
+});
+
+it.each([false, true])(
+  'retains a time variable after saving and reopening with message committed: %s',
+  async commitMessage => {
+    routeParams.value = { templateId: '7' };
+    records.value = [
+      { id: 7, title: 'Synthetic template', definition: extracted.definition },
+    ];
+    dispatch.mockImplementation(async (action, { template }) => {
+      records.value = [{ id: 7, ...JSON.parse(JSON.stringify(template)) }];
+    });
+    const wrapper = mountEditor(true);
+    await flushPromises();
+    await wrapper
+      .find('button[aria-label="MESSENGER_SIMULATOR.EDIT_MESSAGE"]')
+      .trigger('click');
+    await wrapper
+      .findAll('button')
+      .find(button => button.text() === 'MESSENGER_SIMULATOR.TIMESTAMP')
+      .trigger('click');
+    await wrapper
+      .findAll('button')
+      .find(
+        button => button.text() === 'MESSENGER_TEMPLATES.VARIABLES.TIME_BUTTON'
+      )
+      .trigger('click');
+    await wrapper.find('#messenger-manual-variable').setValue('time');
+    await wrapper
+      .findAll('button')
+      .find(
+        button => button.text() === 'MESSENGER_TEMPLATES.VARIABLES.MANUAL.ADD'
+      )
+      .trigger('click');
+    if (commitMessage) {
+      await wrapper
+        .findAll('button')
+        .find(button => button.text() === 'MESSENGER_SIMULATOR.SAVE_MESSAGE')
+        .trigger('click');
+    }
+    await wrapper
+      .findAll('button')
+      .find(button => button.text() === 'MESSENGER_TEMPLATES.EDITOR.SAVE')
+      .trigger('click');
+    await flushPromises();
+    expect(dispatch).toHaveBeenCalledWith(
+      'messengerTemplates/update',
+      expect.objectContaining({
+        id: 7,
+        template: expect.objectContaining({
+          definition: expect.objectContaining({
+            messages: [expect.objectContaining({ time: '{{manual.time}}' })],
+          }),
+        }),
+      })
+    );
+    wrapper.unmount();
+    const reopened = mountEditor(true);
+    await flushPromises();
+    await reopened
+      .find('button[aria-label="MESSENGER_SIMULATOR.EDIT_MESSAGE"]')
+      .trigger('click');
+    expect(reopened.find('input#simulator-time').element.value).toBe(
+      '{{manual.time}}'
+    );
+    reopened.unmount();
+  }
+);
+
+it.each(['existing', 'new'])(
+  'keeps an unassigned timestamp until the author chooses a %s message',
+  async target => {
+    routeParams.value = { templateId: '7' };
+    records.value = [
+      { id: 7, title: 'Synthetic template', definition: extracted.definition },
+    ];
+    dispatch.mockImplementation(async (action, { template }) => {
+      records.value = [{ id: 7, ...JSON.parse(JSON.stringify(template)) }];
+    });
+    const wrapper = mountEditor(true);
+    await flushPromises();
+    const simulator = wrapper.findComponent(MessengerSimulatorEditor);
+    const baseline = simulator.vm.getSnapshot();
+    await wrapper
+      .findAll('button')
+      .find(button => button.text() === 'MESSENGER_SIMULATOR.TIMESTAMP')
+      .trigger('click');
+    await wrapper
+      .findAll('button')
+      .find(
+        button => button.text() === 'MESSENGER_TEMPLATES.VARIABLES.TIME_BUTTON'
+      )
+      .trigger('click');
+    await wrapper.find('#messenger-manual-variable').setValue('time');
+    await wrapper
+      .findAll('button')
+      .find(
+        button => button.text() === 'MESSENGER_TEMPLATES.VARIABLES.MANUAL.ADD'
+      )
+      .trigger('click');
+    expect(wrapper.find('input#simulator-time').element.value).toBe(
+      '{{manual.time}}'
+    );
+    await wrapper
+      .findAll('button')
+      .find(button => button.text() === 'MESSENGER_TEMPLATES.EDITOR.SAVE')
+      .trigger('click');
+    await flushPromises();
+    expect(dispatch).not.toHaveBeenCalled();
+    expect(wrapper.text()).toContain(
+      'MESSENGER_SIMULATOR.TIME_REQUIRES_MESSAGE'
+    );
+    expect(simulator.vm.getSnapshot()).not.toBe(baseline);
+    expect(wrapper.find('input#simulator-time').element.value).toBe(
+      '{{manual.time}}'
+    );
+    if (target === 'existing') {
+      await wrapper
+        .find('button[aria-label="MESSENGER_SIMULATOR.EDIT_MESSAGE"]')
+        .trigger('click');
+    } else {
+      await wrapper
+        .find('#simulator-composer')
+        .setValue('Synthetic new message');
+    }
+    expect(wrapper.find('input#simulator-time').element.value).toBe(
+      '{{manual.time}}'
+    );
+    await wrapper
+      .findAll('button')
+      .find(button => button.text() === 'MESSENGER_TEMPLATES.EDITOR.SAVE')
+      .trigger('click');
+    await flushPromises();
+    expect(records.value[0].definition.messages.at(-1).time).toBe(
+      '{{manual.time}}'
+    );
+    expect(records.value[0].definition.avatar).toBe('contact');
+    wrapper.unmount();
+    const reopened = mountEditor(true);
+    await flushPromises();
+    await reopened
+      .findAll('button[aria-label="MESSENGER_SIMULATOR.EDIT_MESSAGE"]')
+      .at(-1)
+      .trigger('click');
+    expect(reopened.find('input#simulator-time').element.value).toBe(
+      '{{manual.time}}'
+    );
+    reopened.unmount();
+  }
+);
+
+it('keeps each assigned timestamp when switching away from an empty edited message', async () => {
+  routeParams.value = { templateId: '7' };
+  const messages = [
+    { sender: 'incoming', text: 'Synthetic first message', time: '9:00' },
+    { sender: 'outgoing', text: 'Synthetic second message', time: '10:00' },
+  ];
+  records.value = [
+    {
+      id: 7,
+      title: 'Synthetic template',
+      definition: { ...extracted.definition, messages },
+    },
+  ];
+  const wrapper = mountEditor(true);
+  await flushPromises();
+  const rows = wrapper.findAll(
+    'button[aria-label="MESSENGER_SIMULATOR.EDIT_MESSAGE"]'
+  );
+  await rows[0].trigger('click');
+  await wrapper.find('#simulator-composer').setValue('');
+  expect(
+    wrapper.findComponent(MessengerSimulatorEditor).vm.getDefinition()
+  ).toBeNull();
+  await rows[1].trigger('click');
+  expect(wrapper.find('input#simulator-time').element.value).toBe('10:00');
+  await wrapper
+    .findAll('button')
+    .find(button => button.text() === 'MESSENGER_TEMPLATES.EDITOR.SAVE')
+    .trigger('click');
+  await flushPromises();
+  expect(dispatch).toHaveBeenCalledWith(
+    'messengerTemplates/update',
+    expect.objectContaining({
+      template: expect.objectContaining({
+        definition: expect.objectContaining({ messages }),
+      }),
+    })
   );
   wrapper.unmount();
 });

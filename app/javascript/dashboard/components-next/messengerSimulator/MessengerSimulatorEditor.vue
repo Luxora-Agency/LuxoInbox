@@ -74,6 +74,12 @@ const timeBoxRef = ref(null);
 const editingId = ref(null);
 const showTime = ref(false);
 const draft = ref({ sender: 'incoming', text: '', time: '' });
+const hasUnassignedTimestamp = computed(
+  () =>
+    editingId.value === null &&
+    !draft.value.text.trim() &&
+    Boolean(draft.value.time?.trim())
+);
 const previewMessages = computed(() => {
   if (!draft.value.text.trim()) return messages.value;
   if (editingId.value !== null) {
@@ -273,6 +279,7 @@ const isLoadingAvatar = computed(() =>
 );
 const isValid = computed(
   () =>
+    !hasUnassignedTimestamp.value &&
     Object.values(participants.value).every(person => person.name.trim()) &&
     (editingId.value === null || Boolean(draft.value.text.trim())) &&
     (!draft.value.text.trim() || Boolean(canSubmit.value)) &&
@@ -348,13 +355,14 @@ const editMessage = async message => {
   if (isExporting.value || editingId.value === message.id) return;
   // Keep an in-progress message when switching to another row.
   if (canSubmit.value) await saveMessage();
+  const time = hasUnassignedTimestamp.value ? draft.value.time : message.time;
   editingId.value = message.id;
   draft.value = {
     sender: message.sender,
     text: message.text,
-    time: message.time,
+    time,
   };
-  showTime.value = Boolean(message.time);
+  showTime.value = Boolean(time);
   await nextTick();
   composerRef.value?.focus();
 };
@@ -443,6 +451,7 @@ defineExpose({
       participants: participants.value,
       messages: previewMessages.value,
       avatar: avatarSource.value,
+      unassignedTimestamp: hasUnassignedTimestamp.value ? draft.value.time : '',
     }),
   getDefinition: () => (isValid.value ? templateDefinition.value : null),
   getValidationErrors: () => [...variableErrors.value],
@@ -496,6 +505,13 @@ onBeforeUnmount(() => {
           {{ t('MESSENGER_TEMPLATES.VARIABLES.UNKNOWN', { token }) }}
         </li>
       </ul>
+      <p
+        v-else-if="hasUnassignedTimestamp"
+        role="alert"
+        class="mb-0 text-sm text-n-ruby-11"
+      >
+        {{ t('MESSENGER_SIMULATOR.TIME_REQUIRES_MESSAGE') }}
+      </p>
       <p
         v-else-if="!isValid"
         role="status"
