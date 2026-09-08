@@ -74,6 +74,9 @@
     },
     "VARIABLES": {
       "BUTTON": "Insert variable",
+      "TIME_BUTTON": "Insert time variable",
+      "TIME_HINT": "Use a fixed time or a variable such as {token}. Manual values are filled in at download.",
+      "TIME_LIMIT": "The time field allows 30 characters, including variable tokens. Use a shorter variable name or replace the current time.",
       "SEARCH_PLACEHOLDER": "Search variables",
       "EMPTY": "No variable matches your search.",
       "LOAD_ERROR": "We could not load the available variables. Try again.",
@@ -162,6 +165,13 @@
     },
     "MANUAL_MODAL": {
       "TITLE": "Fill in the manual variables",
+      "PERSONALIZE_TITLE": "Personalize this screenshot",
+      "DOWNLOAD": "Download screenshot",
+      "AVATAR": "Profile photo (optional)",
+      "AVATAR_HINT": "Without an upload, the template's photo setting is used. A new photo affects only this PNG, not the contact or saved template.",
+      "AVATAR_LOADING": "Preparing photo…",
+      "AVATAR_PREVIEW": "Photo selected for this screenshot",
+      "RESET_AVATAR": "Use template photo setting",
       "DESCRIPTION": "These values are not stored anywhere: they go straight into this screenshot.",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel"
