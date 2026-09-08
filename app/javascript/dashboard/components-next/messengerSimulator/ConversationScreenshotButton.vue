@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAccount } from 'dashboard/composables/useAccount';
 import { useMapGetter, useStore } from 'dashboard/composables/store';
@@ -118,7 +118,7 @@ const agentContext = computed(() => {
   return buildAgentContext(assignee || currentUser.value);
 });
 
-const downloadFromTemplate = async (template, manual = {}) => {
+const downloadFromTemplate = async (template, manual = {}, avatar = '') => {
   if (busy.value || !enabled.value) return;
   busy.value = true;
   version += 1;
@@ -140,7 +140,13 @@ const downloadFromTemplate = async (template, manual = {}) => {
       manual,
     });
     const count = await rendererRef.value.download({
-      participants: content.participants,
+      participants: {
+        incoming: {
+          ...content.participants.incoming,
+          avatar: avatar || content.participants.incoming.avatar,
+        },
+        outgoing: { ...content.participants.outgoing },
+      },
       messages: content.messages.map(message => ({ ...message })),
       isCurrent,
       authorize: () =>
@@ -178,23 +184,27 @@ const downloadFromTemplate = async (template, manual = {}) => {
   }
 };
 
-// Manual values belong to this one screenshot, so they are asked for here rather than
-// stored: the list of slugs comes from the library copy the menu was just built from.
-const pickTemplate = template => {
-  const slugs = manualKeysIn(template.definition);
-  if (!slugs.length) {
-    downloadFromTemplate(template);
-    return;
-  }
+// Personalization belongs only to this PNG, never to the contact or saved template.
+const pickTemplate = async template => {
+  if (busy.value || !enabled.value) return;
   pendingTemplate.value = template;
-  manualSlugs.value = slugs;
-  manualModalRef.value.open();
+  manualSlugs.value = manualKeysIn(template.definition);
+  const operation = version;
+  await nextTick();
+  if (
+    active &&
+    operation === version &&
+    pendingTemplate.value?.id === template.id
+  ) {
+    manualModalRef.value?.open();
+  }
 };
 
-const onManualConfirm = values => {
+const onManualConfirm = (values, avatar) => {
   const template = pendingTemplate.value;
   pendingTemplate.value = null;
-  if (template) downloadFromTemplate(template, values);
+  manualSlugs.value = [];
+  if (template) downloadFromTemplate(template, values, avatar);
 };
 
 const loadTemplates = async () => {
@@ -368,6 +378,7 @@ onBeforeUnmount(() => {
     <MessengerManualVariablesModal
       ref="manualModalRef"
       :slugs="manualSlugs"
+      allow-avatar
       @confirm="onManualConfirm"
       @cancel="pendingTemplate = null"
     />

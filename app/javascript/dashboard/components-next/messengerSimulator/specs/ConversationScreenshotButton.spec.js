@@ -123,6 +123,13 @@ const clickItem = async (wrapper, label) => {
   await flushPromises();
 };
 
+const clickDocumentLabel = async label => {
+  Array.from(document.querySelectorAll('button'))
+    .find(element => element.textContent.trim() === label)
+    .click();
+  await flushPromises();
+};
+
 beforeEach(() => {
   mocks.state.featureEnabled = true;
   mocks.state.templates = [];
@@ -270,6 +277,7 @@ it('resolves a template with the real contact and re-authorizes with the token',
     'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
   );
   await clickItem(wrapper, 'Welcome');
+  await clickDocumentLabel('MESSENGER_TEMPLATES.MANUAL_MODAL.DOWNLOAD');
 
   expect(api.getMessengerTemplateContext).toHaveBeenCalledWith(1, 7, {
     template_id: 9,
@@ -311,6 +319,7 @@ it('prefers the conversation assignee over the current user', async () => {
     'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
   );
   await clickItem(wrapper, 'Welcome');
+  await clickDocumentLabel('MESSENGER_TEMPLATES.MANUAL_MODAL.DOWNLOAD');
 
   expect(mocks.resolveMessengerTemplate).toHaveBeenCalledWith(
     definition,
@@ -336,6 +345,7 @@ it('reports a changed contact when revalidation conflicts', async () => {
     'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.FROM_TEMPLATE'
   );
   await clickItem(wrapper, 'Welcome');
+  await clickDocumentLabel('MESSENGER_TEMPLATES.MANUAL_MODAL.DOWNLOAD');
 
   expect(mocks.useAlert).toHaveBeenLastCalledWith(
     'MESSENGER_TEMPLATES.CONVERSATION_EXPORT.CONTACT_CHANGED'
@@ -356,13 +366,6 @@ const manualDefinition = {
   ],
 };
 const manualTemplate = { id: 11, title: 'Cita', definition: manualDefinition };
-
-const clickDocumentLabel = async label => {
-  Array.from(document.querySelectorAll('button'))
-    .find(element => element.textContent.trim() === label)
-    .click();
-  await flushPromises();
-};
 
 it('asks for the manual values before exporting a template that uses them', async () => {
   mocks.state.templates = [manualTemplate];
@@ -387,7 +390,7 @@ it('asks for the manual values before exporting a template that uses them', asyn
   field.value = '14 de marzo';
   field.dispatchEvent(new Event('input'));
   await flushPromises();
-  await clickDocumentLabel('MESSENGER_TEMPLATES.MANUAL_MODAL.CONTINUE');
+  await clickDocumentLabel('MESSENGER_TEMPLATES.MANUAL_MODAL.DOWNLOAD');
 
   expect(mocks.resolveMessengerTemplate).toHaveBeenCalledWith(
     manualDefinition,

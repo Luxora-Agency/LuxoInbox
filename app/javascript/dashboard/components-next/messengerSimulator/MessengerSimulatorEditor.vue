@@ -70,6 +70,7 @@ const loadExample = () => {
 const rendererRef = ref(null);
 const composerRef = ref(null);
 const composerBoxRef = ref(null);
+const timeBoxRef = ref(null);
 const editingId = ref(null);
 const showTime = ref(false);
 const draft = ref({ sender: 'incoming', text: '', time: '' });
@@ -150,7 +151,11 @@ const renderedContent = computed(() =>
     ? resolveMessengerTemplate(templateDefinition.value, previewContext.value)
     : { participants: participants.value, messages: previewMessages.value }
 );
-const variableLimit = ref(false);
+const isExporting = ref(false);
+const timeVariableExample = '{{manual.time}}';
+const variableLimit = ref('');
+const variableTarget = ref('text');
+let variableSelection = { start: 0, end: 0 };
 const showVariablePicker = ref(false);
 const variableAnchor = ref(null);
 
@@ -209,22 +214,45 @@ const measureCaret = () => {
   };
 };
 
-const openVariablePicker = () => {
-  variableAnchor.value = measureCaret();
+const variableInput = () =>
+  variableTarget.value === 'time'
+    ? timeBoxRef.value?.querySelector('input')
+    : composerRef.value;
+
+const openVariablePicker = (target = 'text') => {
+  variableTarget.value = target;
+  const input = variableInput();
+  if (!input || input.disabled || props.disabled || isExporting.value) return;
+  variableSelection = { start: input.selectionStart, end: input.selectionEnd };
+  if (target === 'time') {
+    const rect = input.getBoundingClientRect();
+    variableAnchor.value = {
+      top: rect.top - composerBoxRef.value.getBoundingClientRect().top,
+      height: rect.height,
+    };
+  } else {
+    variableAnchor.value = measureCaret();
+  }
   showVariablePicker.value = true;
 };
 
 const insertVariable = async token => {
   showVariablePicker.value = false;
-  const input = composerRef.value;
-  if (!input || input.disabled) return;
-  const start = input.selectionStart;
-  const end = input.selectionEnd;
+  const input = variableInput();
+  if (!input || input.disabled || props.disabled || isExporting.value) return;
+  const target = variableTarget.value;
+  const { start, end } = variableSelection;
   const text =
-    draft.value.text.slice(0, start) + token + draft.value.text.slice(end);
-  variableLimit.value = text.length > 500;
-  if (variableLimit.value) return;
-  draft.value.text = text;
+    draft.value[target].slice(0, start) +
+    token +
+    draft.value[target].slice(end);
+  const limit = target === 'time' ? 30 : 500;
+  variableLimit.value = '';
+  if (text.length > limit) {
+    variableLimit.value = target;
+    return;
+  }
+  draft.value[target] = text;
   await nextTick();
   input.focus();
   input.setSelectionRange(start + token.length, start + token.length);
@@ -234,7 +262,6 @@ const canSubmit = computed(
     draft.value.text.trim() &&
     (editingId.value !== null || messages.value.length < MAX_MESSAGES)
 );
-const isExporting = ref(false);
 const avatarLoading = ref({ incoming: false, outgoing: false });
 const avatarVersions = { incoming: 0, outgoing: 0 };
 const errorKey = ref('');
@@ -291,6 +318,8 @@ const resetComposer = () => {
   editingId.value = null;
   draft.value = { sender: draft.value.sender, text: '', time: '' };
   showTime.value = false;
+  showVariablePicker.value = false;
+  variableLimit.value = '';
 };
 
 const commitMessage = () => {
@@ -728,9 +757,9 @@ onBeforeUnmount(() => {
                 :disabled="
                   editingId === null && messages.length >= MAX_MESSAGES
                 "
-                :aria-expanded="showVariablePicker"
+                :aria-expanded="showVariablePicker && variableTarget === 'text'"
                 @mousedown.prevent
-                @click="openVariablePicker"
+                @click="openVariablePicker('text')"
               />
               <span
                 v-if="variableLoadError"
@@ -745,7 +774,11 @@ onBeforeUnmount(() => {
               role="alert"
               class="mb-2 text-xs text-n-ruby-11"
             >
-              {{ t('MESSENGER_SIMULATOR.TEMPLATES.VARIABLE_LIMIT') }}
+              {{
+                variableLimit === 'time'
+                  ? t('MESSENGER_TEMPLATES.VARIABLES.TIME_LIMIT')
+                  : t('MESSENGER_SIMULATOR.TEMPLATES.VARIABLE_LIMIT')
+              }}
             </p>
             <label for="simulator-composer" class="sr-only">{{
               t('MESSENGER_SIMULATOR.TEXT')
@@ -759,17 +792,40 @@ onBeforeUnmount(() => {
               :disabled="editingId === null && messages.length >= MAX_MESSAGES"
               :placeholder="t('MESSENGER_SIMULATOR.TEXT_PLACEHOLDER')"
               class="mb-0 w-full resize-y rounded-lg border-0 bg-transparent px-1 py-2 text-sm text-n-slate-12 placeholder:text-n-slate-11 focus:ring-0"
-              @input="variableLimit = false"
+              @input="variableLimit = ''"
               @keydown="onComposerKeydown"
             />
-            <div v-if="showTime" class="mb-3 max-w-[200px]">
+            <div v-if="showTime" ref="timeBoxRef" class="mb-3 space-y-2">
               <Input
                 id="simulator-time"
                 v-model="draft.time"
+                class="max-w-xs"
                 :maxlength="30"
                 :placeholder="t('MESSENGER_SIMULATOR.TIME_PLACEHOLDER')"
                 :label="t('MESSENGER_SIMULATOR.TIME')"
+                @input="variableLimit = ''"
               />
+              <template v-if="initialDefinition">
+                <Button
+                  variant="ghost"
+                  color="slate"
+                  size="sm"
+                  icon="i-lucide-braces"
+                  :label="t('MESSENGER_TEMPLATES.VARIABLES.TIME_BUTTON')"
+                  :aria-expanded="
+                    showVariablePicker && variableTarget === 'time'
+                  "
+                  @mousedown.prevent
+                  @click="openVariablePicker('time')"
+                />
+                <p class="mb-0 text-xs text-n-slate-11">
+                  {{
+                    t('MESSENGER_TEMPLATES.VARIABLES.TIME_HINT', {
+                      token: timeVariableExample,
+                    })
+                  }}
+                </p>
+              </template>
             </div>
             <div
               class="flex flex-wrap items-center justify-between gap-2 border-t border-n-weak pt-3"
