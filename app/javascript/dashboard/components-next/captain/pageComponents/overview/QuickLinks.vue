@@ -3,11 +3,13 @@ import { computed } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAccount } from 'dashboard/composables/useAccount';
+import { useAdmin } from 'dashboard/composables/useAdmin';
 import { getHelpUrlForFeature } from 'dashboard/helper/featureHelper';
 
 const { t } = useI18n();
 const route = useRoute();
 const { isOnChatwootCloud } = useAccount();
+const { isAdmin } = useAdmin();
 
 const assistantParams = computed(() => ({
   accountId: route.params.accountId,
@@ -43,7 +45,9 @@ const links = computed(() =>
         params: { accountId: route.params.accountId },
       },
     },
-  ].filter(link => link.href || link.to)
+  ]
+    .filter(link => link.href || link.to)
+    .filter(link => link.key !== 'billing' || isAdmin.value)
 );
 </script>
 

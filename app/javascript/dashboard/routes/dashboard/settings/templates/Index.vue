@@ -339,6 +339,9 @@ onDeactivated(abortTemplateRequest);
       <BaseSettingsHeader
         v-model:search-query="searchQuery"
         :title="$t('WHATSAPP_TEMPLATE_MGMT.TITLE')"
+        :description="$t('WHATSAPP_TEMPLATE_MGMT.DESCRIPTION')"
+        :link-text="$t('WHATSAPP_TEMPLATE_MGMT.LEARN_MORE')"
+        feature-name="whatsapp_templates"
         :search-placeholder="
           showSearch ? $t('WHATSAPP_TEMPLATE_MGMT.SEARCH_PLACEHOLDER') : ''
         "

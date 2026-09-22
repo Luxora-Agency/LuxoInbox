@@ -1,5 +1,6 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { computed, getCurrentInstance, ref, watch } from 'vue';
+import Icon from 'dashboard/components-next/icon/Icon.vue';
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -7,6 +8,8 @@ const props = defineProps({
 });
 
 const isExpanded = ref(props.isOpen);
+const { uid } = getCurrentInstance();
+const contentId = computed(() => `accordion-content-${uid}`);
 
 const toggleAccordion = () => {
   isExpanded.value = !isExpanded.value;
@@ -25,16 +28,20 @@ watch(
     class="ring-1 ring-n-weak/50 rounded-xl bg-n-solid-2 transition-all duration-200 hover:ring-n-weak"
   >
     <button
-      class="flex items-center justify-between w-full p-4 text-left rounded-xl transition-colors duration-150 hover:bg-n-alpha-1"
+      type="button"
+      class="flex items-center justify-between w-full gap-3 p-4 text-start rounded-xl outline-none hover:bg-n-alpha-2 focus-visible:ring-1 focus-visible:ring-n-brand"
+      :aria-expanded="isExpanded"
+      :aria-controls="contentId"
       @click="toggleAccordion"
     >
       <span class="text-sm font-medium text-n-slate-12">{{ title }}</span>
-      <span
-        class="w-5 h-5 transition-transform duration-200 ease-out i-lucide-chevron-down text-n-slate-11"
+      <Icon
+        icon="i-lucide-chevron-down"
+        class="w-4 h-4 text-n-slate-11 transition-transform duration-200"
         :class="{ 'rotate-180': isExpanded }"
       />
     </button>
-    <div v-if="isExpanded" class="p-4 pt-0">
+    <div v-if="isExpanded" :id="contentId" class="p-4 pt-0">
       <slot />
     </div>
   </div>

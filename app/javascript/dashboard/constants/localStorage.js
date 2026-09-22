@@ -10,4 +10,5 @@ export const LOCAL_STORAGE_KEYS = {
   SIDEBAR_MINIMIZED_SECTIONS: 'sidebarMinimizedSections',
   SIDEBAR_EXPANDED_GROUP: 'sidebarExpandedGroup',
   TUTORIAL_PROGRESS: 'tutorialProgress',
+  CAPTAIN_OVERVIEW_V2: 'captain_overview_v2',
 };

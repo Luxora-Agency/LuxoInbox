@@ -33,6 +33,7 @@ const ERROR_MESSAGES = {
 
 const IMPERSONATION_URL_SEARCH_KEY = 'impersonation';
 const USER_NOT_CONFIRMED_ERROR_CODE = 'user_not_confirmed';
+const AUTH_ERROR_TOAST_DURATION = 6000;
 
 // Language display names
 const LANGUAGE_NAMES = {
@@ -149,18 +150,25 @@ export default {
     if (this.ssoAuthToken) {
       this.submitLogin();
     }
-    if (this.authError) {
-      const messageKey = ERROR_MESSAGES[this.authError] ?? 'LOGIN.API.UNAUTH';
-      const translatedMessage = this.getTranslatedMessage(messageKey);
-      useAlert(translatedMessage);
-      this.requestIdleCallbackPolyfill(() => {
-        const { query } = this.$route;
-        this.$router.replace({ query: { ...query, error: undefined } });
-      });
-    }
   },
   mounted() {
     document.addEventListener('click', this.handleClickOutside);
+
+    if (this.authError) {
+      // Wait for the sibling snackbar to mount and subscribe to toast events.
+      this.$nextTick(() => {
+        const messageKey = ERROR_MESSAGES[this.authError] ?? 'LOGIN.API.UNAUTH';
+        // Use a method to get the translated text to avoid dynamic key warning
+        const translatedMessage = this.getTranslatedMessage(messageKey);
+        useAlert(translatedMessage, { duration: AUTH_ERROR_TOAST_DURATION });
+        // wait for idle state
+        this.requestIdleCallbackPolyfill(() => {
+          // Remove the error query param from the url
+          const { query } = this.$route;
+          this.$router.replace({ query: { ...query, error: undefined } });
+        });
+      });
+    }
   },
   beforeUnmount() {
     document.removeEventListener('click', this.handleClickOutside);
