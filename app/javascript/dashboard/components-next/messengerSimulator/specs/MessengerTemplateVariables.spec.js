@@ -33,7 +33,7 @@ const serverVariables = [
     key: 'contact.phone',
     label_key: 'MESSENGER_TEMPLATES.VARIABLES.LABELS.CONTACT_PHONE',
     group: 'contact',
-    sample: '+1 202-555-0123',
+    sample: '202-555-0123',
   },
   {
     key: 'agent.name',

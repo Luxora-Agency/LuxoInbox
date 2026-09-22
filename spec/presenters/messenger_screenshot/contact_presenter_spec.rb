@@ -4,12 +4,12 @@ RSpec.describe MessengerScreenshot::ContactPresenter do
   let(:contact) { create(:contact) }
 
   it 'exposes every standard field the variable registry can substitute' do
-    contact.update!(name: 'Taylor Reed', email: 'taylor@example.com', phone_number: '+15551234567', identifier: 'CU-10482',
+    contact.update!(name: 'Taylor Reed', email: 'taylor@example.com', phone_number: '+12025550123', identifier: 'CU-10482',
                     custom_attributes: { 'plan' => 'gold' },
                     additional_attributes: { 'city' => 'Austin', 'company_name' => 'Acme Inc.', 'country' => 'US' })
     expect(described_class.new(contact).as_json).to eq(
       name: 'Taylor Reed', first_name: 'Taylor', last_name: 'Reed', email: 'taylor@example.com',
-      phone: '+15551234567', phone_number: '+15551234567', identifier: 'CU-10482', country_code: 'US',
+      phone: '2025550123', phone_number: '2025550123', identifier: 'CU-10482', country_code: 'US',
       city: 'Austin', company_name: 'Acme Inc.', custom_attribute: { 'plan' => 'gold' }, avatar_data: nil
     )
   end

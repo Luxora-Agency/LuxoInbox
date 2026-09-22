@@ -17,8 +17,16 @@ class MessengerScreenshot::ContactPresenter
 
   private
 
+  # The screenshot shows the number without its country code, the way a phone's contact list
+  # would. The prefix length varies by country (+1 vs +57), so this parses instead of slicing.
+  # A number the library cannot place in a country is shown as stored: without a country there
+  # is no way to tell where the prefix ends.
   def phone
-    @contact.phone_number.to_s
+    stored = @contact.phone_number.to_s
+    return stored if stored.blank?
+
+    parsed = TelephoneNumber.parse(stored)
+    parsed.valid? ? parsed.national_number(formatted: false) : stored
   end
 
   def first_name
