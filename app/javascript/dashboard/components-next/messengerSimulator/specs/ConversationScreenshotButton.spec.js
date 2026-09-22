@@ -63,7 +63,7 @@ const contact = {
   name: 'Dana Ruiz',
   first_name: 'Dana',
   last_name: 'Ruiz',
-  phone: '+1 202-555-0123',
+  phone: '202-555-0123',
   avatar_data: '',
 };
 const history = {

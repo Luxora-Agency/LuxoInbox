@@ -15,7 +15,7 @@ RSpec.describe 'Messenger template context API', type: :request do
   end
 
   it 'returns only the chosen script and authorized contact, without history or writes' do
-    conversation.contact.update!(name: 'Taylor', phone_number: '+15551234567')
+    conversation.contact.update!(name: 'Taylor', phone_number: '+12025550123')
     create(:message, conversation: conversation, content: 'Not part of the script')
     expect do
       get path, params: params, headers: headers
@@ -25,7 +25,7 @@ RSpec.describe 'Messenger template context API', type: :request do
     expect(response.parsed_body.keys).to contain_exactly('template', 'contact', 'context_token')
     expect(response.parsed_body['contact']).to eq(
       'name' => 'Taylor', 'first_name' => 'Taylor', 'last_name' => '', 'email' => conversation.contact.email,
-      'phone' => '+15551234567', 'phone_number' => '+15551234567', 'identifier' => '',
+      'phone' => '2025550123', 'phone_number' => '2025550123', 'identifier' => '',
       'country_code' => '', 'city' => '', 'company_name' => '', 'custom_attribute' => {}, 'avatar_data' => nil
     )
     expect(response.parsed_body['template']['id']).to eq(template.id)
