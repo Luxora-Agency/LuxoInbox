@@ -1,4 +1,4 @@
-# Builds the attachments of an incoming WhatsApp message from the webhook payload.
+# Builds the file and location attachments of an incoming WhatsApp message from the webhook payload.
 # Extracted from Whatsapp::IncomingMessageBaseService to keep that class focused on the
 # message/contact/conversation pipeline. Relies on @message, @inbox and the payload readers
 # (messages_data, message_type, file_content_type, download_attachment_file) of the includer.
@@ -34,25 +34,5 @@ module Whatsapp::IncomingMessageAttachmentHelper
       fallback_title: location_name,
       external_url: location['url']
     )
-  end
-
-  def attach_contact(contact)
-    phones = contact[:phones]
-    phones = [{ phone: 'Phone number is not available' }] if phones.blank?
-
-    name_info = contact['name'] || {}
-    contact_meta = {
-      firstName: name_info['first_name'],
-      lastName: name_info['last_name']
-    }.compact
-
-    phones.each do |phone|
-      @message.attachments.new(
-        account_id: @message.account_id,
-        file_type: file_content_type(message_type),
-        fallback_title: phone[:phone].to_s,
-        meta: contact_meta
-      )
-    end
   end
 end

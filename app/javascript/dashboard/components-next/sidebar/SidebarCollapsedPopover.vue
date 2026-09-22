@@ -1,7 +1,6 @@
 <script setup>
-import { computed, ref, onMounted, nextTick } from 'vue';
+import { computed, ref, onMounted, nextTick, isVNode } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import { useRouter } from 'vue-router';
 import { useSidebarContext, dropEmptySections } from './provider';
 import { useMapGetter } from 'dashboard/composables/store';
 import Icon from 'next/icon/Icon.vue';
@@ -19,7 +18,6 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'mouseenter', 'mouseleave', 'sortToggle']);
 
-const router = useRouter();
 const { isAllowed, sidebarWidth } = useSidebarContext();
 
 const expandedSubGroup = ref(null);
@@ -40,11 +38,6 @@ onClickOutside(popoverRef, () => emit('close'), {
   ignore: ['[data-popover-content]'],
 });
 
-const navigateAndClose = to => {
-  router.push(to);
-  emit('close');
-};
-
 const isActive = child => props.activeChild?.name === child.name;
 
 const getAccessibleSubChildren = children =>
@@ -54,6 +47,10 @@ const renderIcon = icon => ({
   component: typeof icon === 'object' ? icon : Icon,
   props: typeof icon === 'string' ? { icon } : null,
 });
+
+const shouldRenderComponent = child => {
+  return typeof child.component === 'function' || isVNode(child.component);
+};
 
 const transition = computed(() =>
   skipTransition.value
@@ -187,7 +184,8 @@ onMounted(async () => {
                     :key="subChild.name"
                     class="py-0.5"
                   >
-                    <button
+                    <router-link
+                      :to="subChild.to"
                       class="flex relative items-center gap-2 px-2 py-1.5 w-full rounded-lg text-sm text-left rtl:text-right transition-colors duration-150 ease-out"
                       :class="{
                         'text-n-blue-11 bg-n-brand/10 font-medium':
@@ -196,7 +194,7 @@ onMounted(async () => {
                           !isActive(subChild),
                       }"
                       :aria-current="isActive(subChild) ? 'page' : undefined"
-                      @click="navigateAndClose(subChild.to)"
+                      @click="emit('close')"
                     >
                       <span
                         v-if="isActive(subChild)"
@@ -204,28 +202,43 @@ onMounted(async () => {
                         class="absolute inset-y-1 start-0 w-0.5 rounded-full bg-n-blue-11"
                       />
                       <component
-                        :is="renderIcon(subChild.icon).component"
-                        v-if="subChild.icon"
-                        v-bind="renderIcon(subChild.icon).props"
-                        class="size-4 flex-shrink-0"
+                        :is="subChild.component"
+                        v-if="shouldRenderComponent(subChild)"
+                        v-bind="{
+                          label: subChild.label,
+                          icon: subChild.icon,
+                          active: isActive(subChild),
+                          badgeCount: subChild.badgeCount,
+                        }"
                       />
-                      <span class="flex-1 truncate">{{ subChild.label }}</span>
-                      <SidebarUnreadBadge :count="subChild.badgeCount" />
-                    </button>
+                      <template v-else>
+                        <component
+                          :is="renderIcon(subChild.icon).component"
+                          v-if="subChild.icon"
+                          v-bind="renderIcon(subChild.icon).props"
+                          class="size-4 flex-shrink-0"
+                        />
+                        <span class="flex-1 truncate">
+                          {{ subChild.label }}
+                        </span>
+                        <SidebarUnreadBadge :count="subChild.badgeCount" />
+                      </template>
+                    </router-link>
                   </li>
                 </ul>
               </Transition>
             </li>
             <!-- Direct child item -->
             <li v-else class="py-0.5">
-              <button
+              <router-link
+                :to="child.to"
                 class="flex relative items-center gap-2 px-2 py-1.5 w-full rounded-lg text-sm text-left rtl:text-right transition-colors duration-150 ease-out"
                 :class="{
                   'text-n-blue-11 bg-n-brand/10 font-medium': isActive(child),
                   'text-n-slate-11 hover:bg-n-alpha-2': !isActive(child),
                 }"
                 :aria-current="isActive(child) ? 'page' : undefined"
-                @click="navigateAndClose(child.to)"
+                @click="emit('close')"
               >
                 <span
                   v-if="isActive(child)"
@@ -233,14 +246,26 @@ onMounted(async () => {
                   class="absolute inset-y-1 start-0 w-0.5 rounded-full bg-n-blue-11"
                 />
                 <component
-                  :is="renderIcon(child.icon).component"
-                  v-if="child.icon"
-                  v-bind="renderIcon(child.icon).props"
-                  class="size-4 flex-shrink-0"
+                  :is="child.component"
+                  v-if="shouldRenderComponent(child)"
+                  v-bind="{
+                    label: child.label,
+                    icon: child.icon,
+                    active: isActive(child),
+                    badgeCount: child.badgeCount,
+                  }"
                 />
-                <span class="flex-1 truncate">{{ child.label }}</span>
-                <SidebarUnreadBadge :count="child.badgeCount" />
-              </button>
+                <template v-else>
+                  <component
+                    :is="renderIcon(child.icon).component"
+                    v-if="child.icon"
+                    v-bind="renderIcon(child.icon).props"
+                    class="size-4 flex-shrink-0"
+                  />
+                  <span class="flex-1 truncate">{{ child.label }}</span>
+                  <SidebarUnreadBadge :count="child.badgeCount" />
+                </template>
+              </router-link>
             </li>
           </template>
         </ul>

@@ -74,10 +74,12 @@ export default {
       align: 'end',
     },
     {
+      // Upstream v4.18.0 moved the reset control to a back chevron on the left
+      // of the header, so this step now anchors at the start of the row.
       target: '[data-tour="chatlist-reset-filters"]',
       i18nKey: 'CONVERSATION_FILTERS.RESET',
       side: 'bottom',
-      align: 'end',
+      align: 'start',
     },
     {
       target: '[data-tour="sidebar-conversation"]',
