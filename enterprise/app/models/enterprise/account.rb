@@ -1,9 +1,4 @@
 module Enterprise::Account
-  # Transitional marker for the Captain V1 to V2 rollout. Set this to false only
-  # for accounts that must remain on V1 during paid plan reconciliation.
-  # Remove once every account is migrated to V2.
-  CAPTAIN_V2_DEFAULT_ELIGIBLE = 'captain_v2_default_eligible'.freeze
-
   def self.prepended(base)
     # Every write path has to honour the advanced_assignment dependency: the super admin UI,
     # billing reconciliation, the platform API and the default-feature bootstrap all save here.
@@ -60,7 +55,7 @@ module Enterprise::Account
 
   def captain_document_sync_interval(sync_intervals = Enterprise::Account.captain_document_sync_intervals)
     plan = custom_attributes['plan_name']
-    plan = 'enterprise' if plan.blank? && ChatwootApp.self_hosted_enterprise?
+    plan = 'enterprise' if plan.blank? && ChatwootApp.self_hosted_paid?
     return nil if plan.blank?
 
     interval_hours = sync_intervals[plan.downcase]
@@ -107,11 +102,7 @@ module Enterprise::Account
 
   def enable_default_features
     super
-    if ChatwootApp.self_hosted_enterprise?
-      enable_features('captain_integration', 'captain_integration_v2')
-    elsif ChatwootApp.chatwoot_cloud?
-      internal_attributes[CAPTAIN_V2_DEFAULT_ELIGIBLE] = true
-    end
+    enable_features('captain_integration', 'captain_integration_v2') if ChatwootApp.self_hosted_paid?
   end
 
   # LuxoInbox fork: premium toggles are per-account and not tied to a pricing plan, so the only

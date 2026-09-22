@@ -11,6 +11,7 @@ import NextButton from 'dashboard/components-next/button/Button.vue';
 
 const props = defineProps({
   pageTitle: { type: String, required: true },
+  contactFilter: { type: Object, default: null },
   hasAppliedFilters: { type: Boolean, required: true },
   hasActiveFolders: { type: Boolean, required: true },
   activeStatus: { type: String, required: true },
@@ -41,6 +42,20 @@ const hasAppliedFiltersOrActiveFolders = computed(() => {
 const allCount = computed(() => props.conversationStats?.allCount || 0);
 const formattedAllCount = computed(() => formatNumber(allCount.value));
 
+// While filters narrow the list, the header names it and the back button exits.
+const showFilterScope = computed(
+  () => props.hasAppliedFilters && !props.hasActiveFolders
+);
+
+// The contact scope is set from the contact panel; it is exited, not edited.
+const isContactScoped = computed(
+  () => showFilterScope.value && !!props.contactFilter
+);
+
+const title = computed(
+  () => (isContactScoped.value && props.contactFilter.name) || props.pageTitle
+);
+
 const toggleConversationLayout = () => {
   const { LAYOUT_TYPES } = wootConstants;
   const {
@@ -62,7 +77,20 @@ const toggleConversationLayout = () => {
     class="relative z-10 flex items-center justify-between gap-2 px-4 h-16 bg-white/80 dark:bg-n-solid-3/80 backdrop-blur-sm border-b border-n-slate-2 dark:border-n-solid-2"
   >
     <div class="flex items-center gap-3 min-w-0 flex-1">
+      <NextButton
+        v-if="showFilterScope"
+        v-tooltip.right="t('FILTER.CLEAR_BUTTON_LABEL')"
+        :aria-label="t('FILTER.CLEAR_BUTTON_LABEL')"
+        data-tour="chatlist-reset-filters"
+        icon="i-lucide-chevron-left"
+        class="shrink-0 -ms-2 !h-6 !w-6"
+        slate
+        sm
+        ghost
+        @click="emit('resetFilters')"
+      />
       <div
+        v-else
         class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-woot-500 to-woot-600 shadow-lg shadow-woot-500/25"
       >
         <span class="i-lucide-messages-square text-orbis-navy size-5" />
@@ -71,9 +99,9 @@ const toggleConversationLayout = () => {
         <div class="flex items-center gap-2">
           <h1
             class="text-sm font-semibold truncate text-n-slate-12"
-            :title="pageTitle"
+            :title="title"
           >
-            {{ pageTitle }}
+            {{ title }}
           </h1>
           <span
             v-if="
@@ -115,15 +143,6 @@ const toggleConversationLayout = () => {
             :class="{ 'ltr:right-0 rtl:left-0': isOnExpandedLayout }"
           />
         </div>
-        <NextButton
-          v-tooltip.top-end="t('FILTER.CLEAR_BUTTON_LABEL')"
-          data-tour="chatlist-reset-filters"
-          icon="i-lucide-circle-x"
-          ruby
-          faded
-          xs
-          @click="emit('resetFilters')"
-        />
       </template>
 
       <template v-if="hasActiveFolders">
@@ -154,7 +173,7 @@ const toggleConversationLayout = () => {
         />
       </template>
 
-      <div v-else class="relative">
+      <div v-else-if="!isContactScoped" class="relative">
         <NextButton
           id="toggleConversationFilterButton"
           v-tooltip.right="t('FILTER.TOOLTIP_LABEL')"
@@ -172,8 +191,9 @@ const toggleConversationLayout = () => {
       </div>
 
       <ConversationBasicFilter
-        v-if="!hasAppliedFiltersOrActiveFolders"
+        v-if="!isContactScoped"
         :is-on-expanded-layout="isOnExpandedLayout"
+        :show-status-filter="!hasAppliedFiltersOrActiveFolders"
         @change-filter="onBasicFilterChange"
       />
 

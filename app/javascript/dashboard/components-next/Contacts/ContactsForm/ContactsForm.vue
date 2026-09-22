@@ -69,6 +69,7 @@ const SOCIAL_CONFIG = {
   LINKEDIN: 'i-ri-linkedin-box-fill',
   FACEBOOK: 'i-ri-facebook-circle-fill',
   INSTAGRAM: 'i-ri-instagram-line',
+  WHATSAPP: 'i-ri-whatsapp-line',
   TELEGRAM: 'i-ri-telegram-fill',
   TIKTOK: 'i-ri-tiktok-fill',
   TWITTER: 'i-ri-twitter-x-fill',
@@ -98,6 +99,7 @@ const defaultState = {
       tiktok: '',
       linkedin: '',
       twitter: '',
+      whatsapp: '',
     },
   },
 };
@@ -112,6 +114,7 @@ const validationRules = {
 const v$ = useVuelidate(validationRules, state);
 
 const isFormInvalid = computed(() => v$.value.$invalid);
+const normalizeWhatsAppUsername = value => value?.toString().replace(/^@+/, '');
 const hasCompaniesFeature = computed(
   () =>
     currentAccount.value?.id && isCloudFeatureEnabled(FEATURE_FLAGS.COMPANIES)
@@ -144,11 +147,15 @@ const prepareStateBasedOnProps = () => {
     country = '',
     city = '',
     socialTelegramUserName = '',
+    socialWhatsappUserName = '',
     socialProfiles = {},
   } = additionalAttributes || {};
 
   const telegramUsername =
     socialProfiles?.telegram || socialTelegramUserName || '';
+  const whatsappUsername = normalizeWhatsAppUsername(
+    socialProfiles?.whatsapp || socialWhatsappUserName || ''
+  );
 
   Object.assign(state, {
     id,
@@ -168,6 +175,7 @@ const prepareStateBasedOnProps = () => {
       socialProfiles: {
         ...socialProfiles,
         telegram: telegramUsername,
+        whatsapp: whatsappUsername,
       },
     },
   });
@@ -274,6 +282,16 @@ const handleCompanySelection = async ({ id, name }) => {
   state.companyId = id || '';
   state.additionalAttributes.companyName = name || '';
   await emitValidatedState();
+};
+
+const handleSocialProfileInput = item => {
+  const key = item.key.toLowerCase();
+  if (key === 'whatsapp') {
+    state.additionalAttributes.socialProfiles[key] = normalizeWhatsAppUsername(
+      state.additionalAttributes.socialProfiles[key]
+    );
+  }
+  emit('update', state);
 };
 
 const resetValidation = () => {
@@ -399,7 +417,7 @@ defineExpose({
             class="w-auto min-w-[100px] text-sm bg-transparent outline-none reset-base text-n-slate-12 dark:text-n-slate-12 placeholder:text-n-slate-10 dark:placeholder:text-n-slate-10"
             :placeholder="item.placeholder"
             :size="item.placeholder.length"
-            @input="emitValidatedState"
+            @input="handleSocialProfileInput(item)"
           />
         </div>
       </div>

@@ -261,6 +261,7 @@
 - name: whatsapp_reconfigure
   display_name: WhatsApp Reconfigure
   enabled: false
+  deprecated: true
   column: feature_flags_ext_1
 - name: whatsapp_embedded_signup_inbox_creation
   display_name: WhatsApp Embedded Signup Flow
@@ -273,4 +274,12 @@
 - name: messenger_simulator
   display_name: Messenger Simulator
   enabled: false
+  column: feature_flags_ext_1
+# Fork: messenger_simulator already owns bit 6 in every deployed database, so upstream features
+# added at this position must be appended after it — the bit is the entry's index in this list.
+- name: audit_log_ip_address
+  display_name: Audit Log IP Address
+  help_url: https://chwt.app/hc/audit-logs
+  enabled: false
+  premium: true
   column: feature_flags_ext_1
