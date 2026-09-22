@@ -48,6 +48,9 @@ class LandingController < ActionController::Base
   # page only owns "/" on the installation's own domain, and the subpages
   # redirect back to the portal home on a custom domain.
   around_action :switch_locale, only: PAGE_ACTIONS
+  # A fresh install still has to reach the setup wizard from "/", as it did when
+  # DashboardController owned the root.
+  before_action :ensure_installation_onboarding, only: [:index]
   before_action :render_help_center_if_custom_domain, only: [:index]
   before_action :redirect_custom_domain_to_root, only: PAGE_ACTIONS - [:index]
   before_action :set_wompi_public_key, only: PAGE_ACTIONS
@@ -94,6 +97,10 @@ class LandingController < ActionController::Base
   end
 
   private
+
+  def ensure_installation_onboarding
+    redirect_to '/installation/onboarding' if ::Redis::Alfred.get(::Redis::Alfred::CHATWOOT_INSTALLATION_ONBOARDING)
+  end
 
   # Wompi's public key is safe to ship to the browser; the landing layout embeds it and
   # landing.js uses its prefix to pick the sandbox or production API when resolving the

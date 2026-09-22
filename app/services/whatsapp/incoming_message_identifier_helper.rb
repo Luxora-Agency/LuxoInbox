@@ -42,13 +42,8 @@ module Whatsapp::IncomingMessageIdentifierHelper
   end
 
   def find_or_create_contact_inbox(source_ids:, contact_attributes:, origin: nil)
-    ContactInboxSourceIdResolver.new(
-      inbox: inbox,
-      source_ids: source_ids,
-      contact_attributes: contact_attributes,
-      origin: origin,
-      prefer_first_source_id: true
-    ).perform
+    ContactInboxSourceIdResolver.new(inbox: inbox, source_ids: source_ids, contact_attributes: contact_attributes, origin: origin,
+                                     prefer_first_source_id: true).perform
   end
 
   # Preserve existing conversation history: phone history wins for mixed payloads, BSUID history
