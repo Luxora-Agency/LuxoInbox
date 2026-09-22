@@ -799,11 +799,21 @@ describe('#getters', () => {
         appliedFilters: [],
       };
 
+      // Administrator role keeps every conversation in scope so the assertion
+      // exercises sorting rather than the role filter.
+      const rootGetters = {
+        ...mockRootGetters,
+        getCurrentUser: {
+          ...mockRootGetters.getCurrentUser,
+          accounts: [{ id: 1, role: 'administrator', permissions: [] }],
+        },
+      };
+
       const result = getters.getFilteredConversations(
         state,
         {},
         {},
-        mockRootGetters
+        rootGetters
       );
 
       expect(result.map(conversation => conversation.id)).toEqual([3, 2, 1]);
